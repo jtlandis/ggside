@@ -71,3 +71,53 @@ scale_xfill_discrete <- scale_xfill_hue
 #' @usage NULL
 #' @export
 scale_xfill_continuous <- scale_xfill_gradient
+
+
+#' scale_yfill_hue
+#' @rdname scale_yfill
+#' @usage NULL
+#' @export
+scale_yfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
+                            direction = 1, na.value = "grey50", aesthetics = "yfill")
+{
+  ggplot2::discrete_scale(aesthetics, "hue",
+                          scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+}
+
+#' scale_yfill_gradient
+#' @rdname scale_yfill
+#' @usage NULL
+#' @export
+scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
+                                  space = "Lab",na.value = "grey50",
+                                  guide = "colourbar", aesthetics = "yfill")
+{
+  continuous_scale(aesthetics,
+                   "gradient",
+                   seq_gradient_pal(low, high, space),
+                   na.value = na.value, guide = guide, ...)
+}
+
+scale_yfill_gradientn <- function (..., colours, values = NULL,
+                                   space = "Lab", na.value = "grey50",
+                                   guide = "colourbar", aesthetics = "fill", colors)
+{
+  colours <- if (missing(colours))
+    colors
+  else colours
+  continuous_scale(aesthetics, "gradientn",
+                   gradient_n_pal(colours,values, space),
+                   na.value = na.value, guide = guide, ...)
+}
+
+#' scale_yfill_discrete
+#' @rdname scale_yfill
+#' @usage NULL
+#' @export
+scale_yfill_discrete <- scale_yfill_hue
+
+#' scale_yfill_continuous
+#' @rdname scale_yfill
+#' @usage NULL
+#' @export
+scale_yfill_continuous <- scale_yfill_gradient
