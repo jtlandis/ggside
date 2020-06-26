@@ -226,11 +226,11 @@ GeomYsideBar <- ggplot2::ggproto("YsideBar",
                                      indx <- 2
                                      # .expand <- -.6
                                    }
-                                   if(panel_params$y$is_discrete()){
+                                   if(panel_params$x$is_discrete()){
                                      # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
                                      # panel_params$y$limits <- if(loc=="left") c(panel_params$y$limits, "ybar") else c("ybar", panel_params$y$limits)
                                    } else {
-                                     panel_params$y$continuous_range[indx] <- panel_params$y$limits[indx]
+                                     panel_params$x$continuous_range[indx] <- panel_params$x$limits[indx]
                                    }
                                    if (!coord$is_linear()) {
                                      aesthetics <- setdiff(names(data), c("x", "y", "xmin",
@@ -244,12 +244,12 @@ GeomYsideBar <- ggplot2::ggproto("YsideBar",
                                      ggname("bar", do.call("grobTree", polys))
                                    }
                                    else {
-                                     browser()
+                                     #browser()
                                      coords <- coord$transform(data, panel_params)
                                      ggname("geom_rect", rectGrob(coords$xmin, coords$ymax,
                                                                   width = coords$xmax - coords$xmin,
                                                                   height = coords$ymax - coords$ymin,
-                                                                  default.units = "native", just = c("left","right"),
+                                                                  default.units = "native", just = c("left","top"),
                                                                   gp = gpar(col = coords$colour %||% alpha(coords$yfill,coords$alpha),
                                                                             fill = alpha(coords$yfill,coords$alpha),
                                                                             lwd = coords$size * .pt,
