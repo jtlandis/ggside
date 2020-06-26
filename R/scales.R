@@ -50,7 +50,7 @@ scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 
 scale_xfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
-                                   guide = "colourbar", aesthetics = "fill", colors)
+                                   guide = "colourbar", aesthetics = "xfill", colors)
 {
   colours <- if (missing(colours))
     colors
@@ -100,7 +100,7 @@ scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 
 scale_yfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
-                                   guide = "colourbar", aesthetics = "fill", colors)
+                                   guide = "colourbar", aesthetics = "yfill", colors)
 {
   colours <- if (missing(colours))
     colors
