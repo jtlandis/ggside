@@ -44,7 +44,7 @@ scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 {
   continuous_scale(aesthetics,
                    "gradient",
-                   seq_gradient_pal(low, high, space),
+                   scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
@@ -56,7 +56,7 @@ scale_xfill_gradientn <- function (..., colours, values = NULL,
     colors
   else colours
   continuous_scale(aesthetics, "gradientn",
-                   gradient_n_pal(colours,values, space),
+                   scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
@@ -94,7 +94,7 @@ scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 {
   continuous_scale(aesthetics,
                    "gradient",
-                   seq_gradient_pal(low, high, space),
+                   scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
@@ -106,7 +106,7 @@ scale_yfill_gradientn <- function (..., colours, values = NULL,
     colors
   else colours
   continuous_scale(aesthetics, "gradientn",
-                   gradient_n_pal(colours,values, space),
+                   scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
