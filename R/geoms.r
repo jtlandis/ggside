@@ -1,7 +1,74 @@
-GeomXSideBar <- ggproto("XSideBar",
-                        GeomTile,
+
+
+#' geom_*sidebar: Plot a sidebar along an axis
+#'
+#' @param mapping Set of aesthetic mappings reated by [`aes()`] or
+#' [`aes_()`]. If specified and `inherit.aes = TRUE`, it will be
+#' combined with the default mapping at the top level of the plot.
+#' `mapping` must be supplied in this layer if ther is no plot mapping.
+#' @param data The data to be displayed in this layer. If `NULL`, the default,
+#' then the data is inherited from the plot data as specified i nthe call to [`ggplot()`].
+#' @param stat The statistical transformation to use on the data for this layer, as a string.
+#' @param position Position adjustment, either as a string, or the result of
+#'  a call to a position adjustment function.
+#' @param inherit.aes If `FALSE`, overrides the default aesthetics,
+#'   rather than combining with them.
+#' @param na.rm If `FALSE`, the default, missing values are removed with
+#'   a warning. If `TRUE`, missing values are silently removed.
+#' @param ... other arguments passed on to [`layer()`]. These are
+#'   often aesthetics, used to set an aesthetic to a fixed value, like
+#'   `color = "red"` or `size = 3`. They may also be parameters
+#'   to the paired geom/stat.
+#'
+#'
+#' @section Aesthetics:
+#'
+#' Required aesthetics are in bold.
+#'
+#' \itemize{
+#' \item \strong{x}
+#' \item \strong{y}
+#' \item \emph{xfill} Fill color of the xsidebar
+#' \item \emph{yfill} Fill color of the ysidebar
+#' \item \emph{width} specifies the width of each bar
+#' \item \emph{height} specifies the height of each bar
+#' \item \emph{alpha} Transparency level of `xfill` or `yfill` depending on which [`geom_*sidbar`]
+#' \item \emph{size} size of the border line. --uneeded??
+#' \item \emph{location} Specifies where the sidebar should be placed.
+#' geom_xsidebar may specify either "bottom" or "top" and
+#' geom_ysidebar may specify either "left" or "right.
+#' "bottom" and "left" are defaults of geom_xsidebar and
+#' geom_ysidebar respecitively.
+#'
+#' }
+#'
+#'
+#'
+#'
+#' @import ggplot2
+#' @export
+geom_xsidebar <- function(mapping = NULL, data = NULL,
+                          na.rm = FALSE, show.legend = TRUE,
+                          position = "identity",stat = "identity", inherit.aes = TRUE, ...) {
+  #browser()
+  # if(!location%in%c("bottom","top")){
+  #   stop("location must be specified as top or bottom")
+  # }
+  layer(
+    geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
+    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
+    params = list(na.rm = na.rm, ...)
+  )
+}
+
+#' @rdname geom_xsidebar
+#' @format NULL
+#' @usage NULL
+#' @importFrom ggplot2 ggproto Geom GeomTile
+GeomXSideBar <- ggplot2::ggproto("XSideBar",
+                        ggplot2::GeomTile,
                         requied_aes = c("x","y"),
-                        default_aes = aes(xfill = "grey20",
+                        default_aes = c(xfill = "grey20",
                                           width = 1, height = 1,
                                           size = 0.1, alpha = 1, location = "bottom"),
                         draw_key = function(data, params, size){
@@ -46,10 +113,10 @@ GeomXSideBar <- ggproto("XSideBar",
                           loc <- unique(data$location)
                           if(loc=="bottom"){
                             indx <- 1
-                            .expand <- .6
+                           # .expand <- .6
                           } else if(loc=="top"){
                             indx <- 2
-                            .expand <- -.6
+                           # .expand <- -.6
                           }
                           if(panel_params$y$is_discrete()){
                             # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
@@ -87,17 +154,4 @@ GeomXSideBar <- ggproto("XSideBar",
 )
 
 
-geom_xsidebar <- function(mapping = NULL, data = NULL,
-                          na.rm = FALSE, show.legend = TRUE,
-                          position = "identity",stat = "identity", inherit.aes = TRUE, ...) {
-  #browser()
-  # if(!location%in%c("bottom","top")){
-  #   stop("location must be specified as top or bottom")
-  # }
-  layer(
-    geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
-    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
-  )
 
-}
