@@ -72,7 +72,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                                           width = 1, height = 1,
                                           size = 0.1, alpha = 1, location = "bottom"),
                         draw_key = function(data, params, size){
-                          {
+                          { #browser()
                             if (is.null(data$size)) {
                               data$size <- 0.5
                             }
@@ -88,6 +88,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           }
                         },
                         setup_data = function(data, params){
+                          browser()
                           #pad the width and height
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                           yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
@@ -98,16 +99,17 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                             stop("xbar location must be either \"bottom\" or \"top\"\n")
                           }
                           if(loc=="bottom"){
-                            data$yint <- min(data$y) - unique(data$height)
+                            data$y <- min(data$y) - unique(data$height)
                           } else if(loc=="top"){
-                            data$yint <- max(data$y) + unique(data$height)
+                            data$y <- max(data$y) + unique(data$height)
                           }
-                          transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
-                                    ymin = yint - height/2, ymax = yint + height/2, height = NULL)
+                          tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
+                                    ymin = y - height/2, ymax = y + height/2, height = NULL)
+                          distinct_all(select(tran, -group))
                         },
                         draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                         {
-                          #browser()
+                          browser()
                           loc <- unique(data$location)
                           if(loc=="bottom"){
                             indx <- 1
@@ -208,12 +210,13 @@ GeomYsideBar <- ggplot2::ggproto("YsideBar",
                                      stop("ybar location must be either \"left\" or \"right\"\n")
                                    }
                                    if(loc=="left"){
-                                     data$xint <- min(data$x) - unique(data$width)
+                                     data$x <- min(data$x) - unique(data$width)
                                    } else if(loc=="right"){
-                                     data$xint <- max(data$x) + unique(data$width)
+                                     data$x <- max(data$x) + unique(data$width)
                                    }
-                                   transform(data, xmin = xint - width/2, xmax = xint + width/2, width = NULL,
+                                   tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                              ymin = y - height/2, ymax = y + height/2, height = NULL)
+                                   distinct_all(select(tran, -group))
                                  },
                                  draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                                  {
