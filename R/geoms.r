@@ -90,20 +90,27 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         },
                         setup_data = function(data, params){
                           browser()
-                          #pad the width and height
+                          #height is already calculated in stat_sidebar...
+                          #if params$height exists, then override and adjust y for overlap.
+                          #geom_tile is paramatized from middle.
+                          h_new <- params$height
+                          if(!is.null(h_new)){
+                            data$y <- data$y + (data$height/2)-(h_new/2)
+                            data$height <- h_new
+                          }
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
-                          yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
-                          data$height <- data$height %||% params$height %||% yres
                           data$location <- data$location %||% params$location
                           loc <- unique(data$location)
                           if(!loc%in%c("bottom","top")||length(loc)>1){
                             stop("xbar location must be either \"bottom\" or \"top\"\n")
                           }
-                          if(loc=="bottom"){
-                            data$y <- min(data$y) - unique(data$height)
-                          } else if(loc=="top"){
-                            data$y <- max(data$y) + unique(data$height)
-                          }
+                          # if(loc=="bottom"){
+                          #   data$y <- min(data$y) - unique(data$height)
+                          # } else if(loc=="top"){
+                          #   data$y <- max(data$y) + unique(data$height)
+                          # }
+                          data <- data %>%
+                            filter(stat_key %in% loc)
                           tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                     ymin = y - height/2, ymax = y + height/2, height = NULL)
                           distinct_all(select(tran, -group))
