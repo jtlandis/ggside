@@ -45,3 +45,12 @@ manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
   }
   discrete_scale(aesthetic, "manual", pal, breaks = breaks, ...)
 }
+
+
+is.waive <- function(x) inherits(x, "waiver")
+
+uniquecols <- function(df) {
+  df <- df[1, sapply(df, function(x) length(unique(x)) == 1), drop = FALSE]
+  rownames(df) <- 1:nrow(df)
+  df
+}
