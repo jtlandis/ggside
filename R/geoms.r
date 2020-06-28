@@ -48,7 +48,7 @@
 #' @import ggplot2
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,
-                          na.rm = FALSE, show.legend = TRUE,
+                          na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "identity", inherit.aes = TRUE, ...) {
   #browser()
   # if(!location%in%c("bottom","top")){
@@ -69,10 +69,10 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         ggplot2::GeomTile,
                         requied_aes = c("x","y"),
                         default_aes = aes(xfill = "grey20",
-                                          width = 1, height = 1,
-                                          size = 0.1, alpha = 1, location = "bottom"),
+                                          width = NA, height = NA,
+                                          size = 0.1, alpha = NA, location = "bottom"),
                         draw_key = function(data, params, size){
-                          { #browser()
+                          {
                             if (is.null(data$size)) {
                               data$size <- 0.5
                             }
@@ -88,7 +88,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           }
                         },
                         setup_data = function(data, params){
-                          browser()
+                          #browser()
                           #pad the width and height
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                           yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
@@ -109,7 +109,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         },
                         draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                         {
-                          browser()
+                          #browser()
                           loc <- unique(data$location)
                           if(loc=="bottom"){
                             indx <- 1
@@ -159,7 +159,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
 #' @aliases geom_ysidebar
 #' @export
 geom_ysidebar <- function(mapping = NULL, data = NULL,
-                          na.rm = FALSE, show.legend = TRUE,
+                          na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "identity",
                           inherit.aes = TRUE, location = "left", ...) {
   #browser()
@@ -167,7 +167,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   #   sright("location must be specified as right or left")
   # }
   layer(
-    geom = GeomYsideBar, mapping = mapping, data = data, stat = stat,
+    geom = GeomYSideBar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = list(location = location, na.rm = na.rm, ...)
   )
@@ -175,15 +175,14 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
 
 #' @rdname geom_xsidebar
 #' @format NULL
-#' @usage NULL
-GeomYsideBar <- ggplot2::ggproto("YsideBar",
+GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                  ggplot2::GeomTile,
                                  requied_aes = c("x","y"),
                                  default_aes = aes(yfill = "grey20",
-                                                   width = 1, height = 1,
-                                                   size = 0.1, alpha = 1, location = "left"),
+                                                   width = NA, height = NA,
+                                                   size = 0.1, alpha = NA, location = "left"),
                                  draw_key = function(data, params, size){
-                                   {
+                                   { #browser()
                                      if (is.null(data$size)) {
                                        data$size <- 0.5
                                      }
