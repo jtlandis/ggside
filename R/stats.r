@@ -12,18 +12,22 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                          is_xbar <- "xfill"%in%colnames(data)
                          if(is_xbar){
                            yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
-                           pos.posit <- range(data$y) + (yres*c(-1,1))
+                           data$height <- data$height %||% yres
                            data <- data %>%
-                             select(-y) %>%
-                             mutate(bottom = pos.posit[1],
-                                    top = pos.posit[2],
+                             mutate(bottom = min(y)-height,
+                                    top = max(y)-height,
                                     group = x) %>%
-                             gather(key = "stat_key", value = "y", ymin, ymax)
+                             select(-y) %>%
+                             gather(key = "stat_key", value = "y", bottom, top)
                          } else {
                            xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.05) else 1
-                           data <- mutate(data,
-                                          x = xrex,
-                                          group = y)
+                           data$width <- data$width %||% xres
+                           data <- data %>%
+                             mutate(left = min(x)-width,
+                                    right = max(x)+width,
+                                    group = y) %>%
+                             select(-x) %>%
+                             gather(key = "stat_key", value = "x", left, right)
                          }
                          groups <- split(data, data$group)
                          stats <- lapply(groups, function(group) {
