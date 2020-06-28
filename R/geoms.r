@@ -49,7 +49,8 @@
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
-                          position = "identity",stat = "identity", inherit.aes = TRUE, ...) {
+                          position = "identity",stat = "sidebar",
+                          location = "bottom", inherit.aes = TRUE, ...) {
   #browser()
   # if(!location%in%c("bottom","top")){
   #   stop("location must be specified as top or bottom")
@@ -57,7 +58,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   layer(
     geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
+    params = list(location = location, na.rm = na.rm, ...)
   )
 }
 
@@ -88,7 +89,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           }
                         },
                         setup_data = function(data, params){
-                          #browser()
+                          browser()
                           #pad the width and height
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                           yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
@@ -160,7 +161,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
 #' @export
 geom_ysidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
-                          position = "identity",stat = "identity",
+                          position = "identity",stat = "sidebar",
                           inherit.aes = TRUE, location = "left", ...) {
   #browser()
   # if(!location%in%c("left","right")){
