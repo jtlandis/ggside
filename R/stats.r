@@ -6,26 +6,30 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                        Stat,
                        required_aes = c("x|y", "xfill|yfill"),
                        compute_panel = function(self, data, scales, ...) {
-                         browser()
+                         #browser()
                          if (empty(data)) return(new_data_frame())
                          #determine if xfill or yfill was passed...
                          is_xbar <- "xfill"%in%colnames(data)
                          if(is_xbar){
-                           yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.05) else 1
-                           data$height <- data$height %||% yres
+                           yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
+                           data$height <- data$height %||% yres #insure height is positive
+                           data$height <- abs(data$height)
                            data <- data %>%
-                             mutate(bottom = min(y)-height,
-                                    top = max(y)-height,
-                                    group = x) %>%
+                             mutate(bottom = min(y)-yres,
+                                    top = max(y)+yres,
+                                    group = x,
+                                    yres = yres) %>%
                              select(-y) %>%
                              gather(key = "stat_key", value = "y", bottom, top)
                          } else {
-                           xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.05) else 1
+                           xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
                            data$width <- data$width %||% xres
+                           data$width <- abs(data$width)
                            data <- data %>%
-                             mutate(left = min(x)-width,
-                                    right = max(x)+width,
-                                    group = y) %>%
+                             mutate(left = min(x)-xres,
+                                    right = max(x)+xres,
+                                    group = y,
+                                    xres = xres) %>%
                              select(-x) %>%
                              gather(key = "stat_key", value = "x", left, right)
                          }

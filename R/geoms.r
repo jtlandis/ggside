@@ -89,31 +89,31 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           }
                         },
                         setup_data = function(data, params){
-                          browser()
+                          #browser()
                           #height is already calculated in stat_sidebar...
                           #if params$height exists, then override and adjust y for overlap.
                           #geom_tile is paramatized from middle.
                           h_new <- params$height
                           if(!is.null(h_new)){
-                            data$y <- data$y + (data$height/2)-(h_new/2)
+                            data <- data %>%
+                              mutate(y = case_when(stat_key=="bottom" ~ y + ((height-h_new)/2),
+                                                   stat_key=="top" ~ y - ((height-h_new)/2)))
                             data$height <- h_new
                           }
+                          #if data$height isn't unique, adjust y positions to prevent overlap.
+                          data <- data %>%
+                            mutate(y = case_when(stat_key=="bottom" ~ y + ((yres-height)/2),
+                                                 stat_key=="top" ~ y - ((yres-height)/2)))
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
-                          data$location <- data$location %||% params$location
-                          loc <- unique(data$location)
+                          loc <- unique(data$location %||% params$location)
                           if(!loc%in%c("bottom","top")||length(loc)>1){
                             stop("xbar location must be either \"bottom\" or \"top\"\n")
                           }
-                          # if(loc=="bottom"){
-                          #   data$y <- min(data$y) - unique(data$height)
-                          # } else if(loc=="top"){
-                          #   data$y <- max(data$y) + unique(data$height)
-                          # }
                           data <- data %>%
-                            filter(stat_key %in% loc)
+                            filter(stat_key %in% loc) %>% rename(location = stat_key)
                           tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                     ymin = y - height/2, ymax = y + height/2, height = NULL)
-                          distinct_all(select(tran, -group))
+
                         },
                         draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                         {
