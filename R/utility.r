@@ -132,3 +132,53 @@ rbind_dfs <- function(dfs) {
   out
 }
 
+check_required_aesthetics <- function(required, present, name) {
+  if (is.null(required)) return()
+
+  required <- strsplit(required, "|", fixed = TRUE)
+  if (any(vapply(required, length, integer(1)) > 1)) {
+    required <- lapply(required, rep_len, 2)
+    required <- list(
+      vapply(required, `[`, character(1), 1),
+      vapply(required, `[`, character(1), 2)
+    )
+  } else {
+    required <- list(unlist(required))
+  }
+  missing_aes <- lapply(required, setdiff, present)
+  if (any(vapply(missing_aes, length, integer(1)) == 0)) return()
+
+  abort(glue(
+    "{name} requires the following missing aesthetics: ",
+    glue_collapse(lapply(missing_aes, glue_collapse, sep = ", ", last = " and "), sep = " or ")
+  ))
+}
+
+
+dapply <- function(df, by, fun, ..., drop = TRUE) {
+  grouping_cols <- .subset(df, by)
+  fallback_order <- unique(c(by, names(df)))
+  apply_fun <- function(x) {
+    res <- fun(x, ...)
+    if (is.null(res)) return(res)
+    if (length(res) == 0) return(new_data_frame())
+    vars <- lapply(setNames(by, by), function(col) .subset2(x, col)[1])
+    if (is.matrix(res)) res <- split_matrix(res)
+    if (is.null(names(res))) names(res) <- paste0("V", seq_along(res))
+    if (all(by %in% names(res))) return(new_data_frame(unclass(res)))
+    res <- modify_list(unclass(vars), unclass(res))
+    new_data_frame(res[intersect(c(fallback_order, names(res)), names(res))])
+  }
+
+  # Shortcut when only one group
+  if (all(vapply(grouping_cols, single_value, logical(1)))) {
+    return(apply_fun(df))
+  }
+
+  ids <- id(grouping_cols, drop = drop)
+  group_rows <- split_with_index(seq_len(nrow(df)), ids)
+  rbind_dfs(lapply(seq_along(group_rows), function(i) {
+    cur_data <- df_rows(df, group_rows[[i]])
+    apply_fun(cur_data)
+  }))
+}
