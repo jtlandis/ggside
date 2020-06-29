@@ -6,7 +6,7 @@
 # y in the context of geom_xsidebar is only used to determine an appropriate location for
 # sidebars such that they do not overlap points in top layer. Passing a scalar value or vector
 # whose unique length equals 1 to y will force yintercept behavior. Note, if both y and yintercept
-# are passed, yintercept takes precidence over y.
+# are passed, yintercept takes precidence over y in StatSidebar and StatSummarise.
 #' @importFrom tidyr gather
 
 StatSidebar <- ggplot2::ggproto("Sidebar",

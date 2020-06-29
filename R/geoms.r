@@ -96,7 +96,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           #No conversions should occure here. Simply ensure data has structure
                           data$xfill <- data$xfill %||% params$xfill
                           #statIdentity will just use y positions, so long as yintercept was never passed.
-                          data$y <- data$yintercept %||% data$y %||% 0
+                          data$y <- data$y %||% data$yintercept %||% 0
                           data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
 
@@ -200,7 +200,7 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                    #No conversions should occure here. Simply ensure data has structure
                                    data$yfill <- data$yfill %||% params$yfill
                                    #statIdentity will just use y positions, so long as yintercept was never passed.
-                                   data$x <- data$xintercept %||% data$x %||% 0
+                                   data$x <- data$x %||% data$xintercept %||% 0
                                    data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                                    data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                                    transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
