@@ -6,6 +6,7 @@
 #' @importFrom dplyr distinct_all
 #' @importFrom rlang warn
 #' @importFrom rlang as_function
+#' @importFrom rlang abort
 #' @importFrom glue glue
 #' @importFrom grid grobName
 
