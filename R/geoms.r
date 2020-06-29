@@ -51,7 +51,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "sidebar",
                           location = "bottom", inherit.aes = TRUE, ...) {
-  #
+  #browser()
   # if(!location%in%c("bottom","top")){
   #   stop("location must be specified as top or bottom")
   # }
@@ -68,7 +68,8 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 #' @importFrom ggplot2 ggproto Geom GeomTile
 GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         ggplot2::GeomTile,
-                        requied_aes = c("x","y"),
+                        requied_aes = c("x"),
+                        optional_aes = c("yintercept"),
                         default_aes = aes(xfill = "grey20",
                                           width = NA, height = NA,
                                           size = 0.1, alpha = NA, location = "bottom"),
@@ -90,32 +91,15 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         },
                         setup_data = function(data, params){
                           #
-                          #height is already calculated in stat_sidebar...
-                          #if stat_idenity is used yres should not exists. calc yres
-                          yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
-                          data$height <- data$height %||% params$height %||% yres
-                          #if params$height exists, then override and adjust y for overlap.
-                          #geom_tile is paramatized from middle.
-                          h_new <- params$height
-                          if(!is.null(h_new)){
-                            data <- data %>%
-                              mutate(y = case_when(stat_key=="bottom" ~ y + ((height-h_new)/2),
-                                                   stat_key=="top" ~ y - ((height-h_new)/2)))
-                            data$height <- h_new
-                          }
-                          #adjust yposition to touch x axis.
-                          data <- data %>%
-                            mutate(y = case_when(stat_key=="bottom" ~ y + ((yres-height)/2),
-                                                 stat_key=="top" ~ y - ((yres-height)/2)))
+                          #browser()
+                          #when using StatSidebar - all positions should be absolute.
+                          #No conversions should occure here. Simply ensure data has structure
+                          data$xfill <- data$xfill %||% params$xfill
+                          #statIdentity will just use y positions, so long as yintercept was never passed.
+                          data$y <- data$yintercept %||% data$y %||% 0
+                          data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
-                          loc <- unique(data$location %||% params$location)
-                          #again, if stat_identity is used stat_key is not available
-                          data$stat_key <- data$stat_key %||% loc
-                          if(!loc%in%c("bottom","top")||length(loc)>1){
-                            stop("xbar location must be either \"bottom\" or \"top\"\n")
-                          }
-                          data <- data %>%
-                            filter(stat_key %in% loc) %>% dplyr::rename(location = stat_key)
+
                           transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                     ymin = y - height/2, ymax = y + height/2, height = NULL)
 
@@ -211,28 +195,14 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                    }
                                  },
                                  setup_data = function(data, params){
-                                   xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
-                                   data$width <- data$width %||% params$width %||% xres
-                                   w_new <- params$width
-                                   if(!is.null(w_new)){
-                                     data <- data %>%
-                                       mutate(x = case_when(stat_key=="left" ~ x + ((width-w_new)/2),
-                                                            stat_key=="right" ~ x - ((width-w_new)/2)))
-                                     data$width <- w_new
-                                   }
-                                   #set x positions such that it touches y axis.
-                                   data <- data %>%
-                                     mutate(x = case_when(stat_key=="left" ~ x + ((xres-width)/2),
-                                                          stat_key=="right" ~ x - ((xres-width)/2)))
-                                   data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
-                                   loc <- unique(data$location %||% params$location)
-                                   data$stat_key <- data$stat_key %||% loc
-                                   if(!loc%in%c("left","right")||length(loc)>1){
-                                     stop("ybar location must be either \"left\" or \"right\"\n")
-                                   }
 
-                                   data <- data %>%
-                                     filter(stat_key %in% loc) %>% dplyr::rename(location = stat_key)
+                                   #when using StatSidebar - all positions should be absolute.
+                                   #No conversions should occure here. Simply ensure data has structure
+                                   data$yfill <- data$yfill %||% params$yfill
+                                   #statIdentity will just use y positions, so long as yintercept was never passed.
+                                   data$x <- data$xintercept %||% data$x %||% 0
+                                   data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
+                                   data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                                    transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                              ymin = y - height/2, ymax = y + height/2, height = NULL)
                                  },

@@ -1,54 +1,98 @@
 #Stat
 
+# Notes: overriding y is not effective for absolute positions, unless statIdentity is used.
+# If user wants to place bars at specific points with StatSidebar, use yintercept aesthetic.
+# using statidentity or yintercept aesthetics causes location assignments to be ignored.
+# y in the context of geom_xsidebar is only used to determine an appropriate location for
+# sidebars such that they do not overlap points in top layer. Passing a scalar value or vector
+# whose unique length equals 1 to y will force yintercept behavior. Note, if both y and yintercept
+# are passed, yintercept takes precidence over y.
+#' @importFrom tidyr gather
 
-#' @import dplyr
 StatSidebar <- ggplot2::ggproto("Sidebar",
                        Stat,
                        required_aes = c("x|y", "xfill|yfill"),
-                       compute_panel = function(self, data, scales, ...) {
+                       optional_aes = c("yintercept|xintercept"),
+                       compute_panel = function(self, data, scales,location = NULL,
+                                                height = NULL,width = NULL,
+                                                yintercept = NULL, xintercept = NULL) {
                          #
+                         #browser()
                          if (empty(data)) return(new_data_frame())
                          #determine if xfill or yfill was passed...
                          is_xbar <- "xfill"%in%colnames(data)
                          if(is_xbar){
+                           #check if y exists in data, if not assign 0
+                           data$y <- data$y %||% 0
+                           #if unique length is 1, treat as if it was yintercept
+                           #WARNING: this disables location functionality
+                           if(length(unique(data$y))==1){
+                             yintercept <- yintercept %||% data$y
+                           }
+                           #check resolution of y data to see how far to adjust
                            yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
-                           data$height <- data$height %||% yres #insure height is positive
-                           data$height <- abs(data$height)
-                           data <- data %>%
-                             mutate(bottom = min(y)-yres,
-                                    top = max(y)+yres,
-                                    group = x,
-                                    yres = yres) %>%
-                             select(-y) %>%
-                             gather(key = "stat_key", value = "y", bottom, top)
+                           #provide the height adjustment. If none specified, use yres
+                           data$height <- data$height %||% height %||% yres
+                           if(any(data$height<0)){
+                             warn("height has been given a negative value. Using abosulte value")
+                             data$height <- abs(data$height)
+                           }
+                           data$width <- data$width %||% width %||% resolution(data$x, FALSE)
+                           data$location <- data$location %||% location %||% "bottom"
+                           data <- mutate(data, group = x)
+                           yint <- data$yintercept %||% yintercept
+                           if(is.null(yint)){ #e.i. user prefer's StatSidebar to determine y positions
+                             if(!all(data$location%in%c("top","bottom"))){
+                               .badLoc <- !data$location%in%c("top","bottom")
+                               warn(glue("unrecognized location assignments:\n",
+                                         "{paste(unique(data$location[.badLoc]),collapse = \", \")}",
+                                         "\nConverting to default: bottom"))
+                               data$location[.badLoc] <- "bottom"
+                             }
+                             data <-  mutate(data,
+                                             y = case_when(location=="bottom" ~ min(y)-yres + ((yres-height)/2),
+                                                           location=="top" ~ max(y)+yres - ((yres-height)/2)))
+
+                           } else {
+                             data$y <- yint
+                           }
                          } else {
+                           #check if x exists in data, if not assign 0
+                           data$x <- data$x %||% 0
+                           #if unique length is 1, treat as if it was xintercept
+                           #WARNING: this disables location functionality
+                           if(length(unique(data$x))==1){
+                             xintercept <- xintercept %||% data$x
+                           }
+                           #check resolution of x data to see how far to adjust
                            xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
-                           data$width <- data$width %||% xres
-                           data$width <- abs(data$width)
-                           data <- data %>%
-                             mutate(left = min(x)-xres,
-                                    right = max(x)+xres,
-                                    group = y,
-                                    xres = xres) %>%
-                             select(-x) %>%
-                             gather(key = "stat_key", value = "x", left, right)
+                           #provide the width adjustment. If none specified, use xres
+                           data$width <- data$width %||% width %||% xres
+                           if(any(data$width<0)){
+                             warn("width has been given a negative value. Using abosulte value")
+                             data$width <- abs(data$width)
+                           }
+                           data$height <- data$height %||% height %||% resolution(data$y, FALSE)
+                           data$location <- data$location %||% location %||% "left"
+                           data <- mutate(data, group = y)
+                           xint <- data$xintercept %||% xintercept
+                           if(is.null(xint)){ #e.i. user prefer's StatSidebar to determine x positions
+                             if(!all(data$location%in%c("right","left"))){
+                               .badLoc <- !data$location%in%c("right","left")
+                               warn(glue("unrecognized location assignments:\n",
+                                         "{paste(unique(data$location[.badLoc]),collapse = \", \")}",
+                                         "\nConverting to default: left"))
+                               data$location[.badLoc] <- "left"
+                             }
+                             data <-  mutate(data,
+                                             x = case_when(location=="left" ~ min(x)-xres + ((xres-width)/2),
+                                                           location=="right" ~ max(x)+xres - ((xres-width)/2)))
+
+                           } else {
+                             data$x <- xint
+                           }
                          }
-                         groups <- split(data, data$group)
-                         stats <- lapply(groups, function(group) {
-                           self$compute_group(data = group, scales = scales, ...)
-                         })
-
-                         stats <- mapply(function(new, old) {
-                           if (empty(new)) return(new_data_frame())
-                           unique <- uniquecols(old)
-                           missing <- !(names(unique) %in% names(new))
-                           cbind(
-                             new,
-                             unique[rep(1, nrow(new)), missing,drop = FALSE]
-                           )
-                         }, stats, groups, SIMPLIFY = FALSE)
-
-                         rbind_dfs(stats)
+                         dplyr::distinct_all(data)
                        },
                        compute_group = function(self, data, scales){
                          dplyr::distinct_all(data)
@@ -90,7 +134,10 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
 StatSummarise <- ggplot2::ggproto("Summarise",
                                 StatSidebar,
                                 required_aes = c("x|y", "xfill|yfill"),
-                                compute_panel = function(self, data, scales, fun = NULL, fun.args = list()) {
+                                compute_panel = function(self, data, scales,location = NULL,
+                                                         height = NULL,width = NULL,
+                                                         yintercept = NULL, xintercept = NULL,
+                                                         fun = NULL, fun.args = list()) {
                                   #
                                   #browser()
                                   if(is.null(fun)) {
@@ -112,46 +159,83 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                       dplyr::summarise(xfill=call_f(fun, xfill))
                                     data <- select(data,-xfill) %>%
                                       left_join(., y = fun.data, by = "x")
+                                    #check if y exists in data, if not assign 0
+                                    data$y <- data$y %||% 0
+                                    #if unique length is 1, treat as if it was yintercept
+                                    #WARNING: this disables location functionality
+                                    if(length(unique(data$y))==1){
+                                      yintercept <- yintercept %||% data$y
+                                    }
+                                    #check resolution of y data to see how far to adjust
                                     yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
-                                    data$height <- data$height %||% yres #insure height is positive
-                                    data$height <- abs(data$height)
-                                    data <- data %>%
-                                      mutate(bottom = min(y)-yres,
-                                             top = max(y)+yres,
-                                             group = x,
-                                             yres = yres) %>%
-                                      select(-y) %>%
-                                      gather(key = "stat_key", value = "y", bottom, top)
+                                    #provide the height adjustment. If none specified, use yres
+                                    data$height <- data$height %||% height %||% yres
+                                    if(any(data$height<0)){
+                                      warn("height has been given a negative value. Using abosulte value")
+                                      data$height <- abs(data$height)
+                                    }
+                                    data$width <- data$width %||% width %||% resolution(data$x, FALSE)
+                                    data$location <- data$location %||% location %||% "bottom"
+                                    data <- mutate(data, group = x)
+                                    yint <- data$yintercept %||% yintercept
+                                    if(is.null(yint)){ #e.i. user prefer's StatSidebar to determine y positions
+                                      if(!all(data$location%in%c("top","bottom"))){
+                                        .badLoc <- !data$location%in%c("top","bottom")
+                                        warn(glue("unrecognized location assignments:\n",
+                                                  "{paste(unique(data$location[.badLoc]),collapse = \", \")}",
+                                                  "\nConverting to default: bottom"))
+                                        data$location[.badLoc] <- "bottom"
+                                      }
+                                      data <-  mutate(data,
+                                                      y = case_when(location=="bottom" ~ min(y)-yres + ((yres-height)/2),
+                                                                    location=="top" ~ max(y)+yres - ((yres-height)/2)))
+
+                                    } else {
+                                      data$y <- yint
+                                    }
                                   } else {
+                                    fun.data <- data %>%
+                                      group_by(y) %>%
+                                      dplyr::summarise(yfill=call_f(fun, yfill))
+                                    data <- select(data,-yfill) %>%
+                                      left_join(., y = fun.data, by = "y")
+                                    #check if x exists in data, if not assign 0
+                                    data$x <- data$x %||% 0
+                                    #if unique length is 1, treat as if it was xintercept
+                                    #WARNING: this disables location functionality
+                                    if(length(unique(data$x))==1){
+                                      xintercept <- xintercept %||% data$x
+                                    }
+                                    #check resolution of x data to see how far to adjust
                                     xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
-                                    data$width <- data$width %||% xres
-                                    data$width <- abs(data$width)
-                                    data <- data %>%
-                                      mutate(left = min(x)-xres,
-                                             right = max(x)+xres,
-                                             group = y,
-                                             xres = xres) %>%
-                                      select(-x) %>%
-                                      gather(key = "stat_key", value = "x", left, right)
+                                    #provide the width adjustment. If none specified, use xres
+                                    data$width <- data$width %||% width %||% xres
+                                    if(any(data$width<0)){
+                                      warn("width has been given a negative value. Using abosulte value")
+                                      data$width <- abs(data$width)
+                                    }
+                                    data$height <- data$height %||% height %||% resolution(data$y, FALSE)
+                                    data$location <- data$location %||% location %||% "left"
+                                    data <- mutate(data, group = y)
+                                    xint <- data$xintercept %||% xintercept
+                                    if(is.null(xint)){ #e.i. user prefer's StatSidebar to determine x positions
+                                      if(!all(data$location%in%c("right","left"))){
+                                        .badLoc <- !data$location%in%c("right","left")
+                                        warn(glue("unrecognized location assignments:\n",
+                                                  "{paste(unique(data$location[.badLoc]),collapse = \", \")}",
+                                                  "\nConverting to default: left"))
+                                        data$location[.badLoc] <- "left"
+                                      }
+                                      data <-  mutate(data,
+                                                      x = case_when(location=="left" ~ min(x)-xres + ((xres-width)/2),
+                                                                    location=="right" ~ max(x)+xres - ((xres-width)/2)))
+
+                                    } else {
+                                      data$x <- xint
+                                    }
                                   }
+
                                   data <- distinct_all(data)
-                                  # groups <- split(data, data$group)
-                                  # stats <- lapply(groups, function(group) {
-                                  #
-                                  #   self$compute_group(data = group, scales = scales, ...)
-                                  # })
-                                  #
-                                  # stats <- mapply(function(new, old) {
-                                  #   if (empty(new)) return(new_data_frame())
-                                  #   unique <- uniquecols(old)
-                                  #   missing <- !(names(unique) %in% names(new))
-                                  #   cbind(
-                                  #     new,
-                                  #     unique[rep(1, nrow(new)), missing,drop = FALSE]
-                                  #   )
-                                  # }, stats, groups, SIMPLIFY = FALSE)
-                                  #
-                                  # df <- rbind_dfs(stats)
                                   data
                                 },
                                 compute_group = function(self, data, scales){
