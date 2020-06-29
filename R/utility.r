@@ -10,6 +10,21 @@
 #' @importFrom glue glue
 #' @importFrom grid grobName
 
+find_build_plotEnv <- function(){
+  items <- lapply(sys.frames(), ls, all.names = T)
+  expected_items <- c("by_layer","data","layer_data",
+                      "layers","layout","plot","scale_x",
+                      "scale_y","scales")
+  EnvIndex <- unlist(lapply(items, function(x,y){all(y%in%x)}, y = expected_items))
+  Env <- sys.frames()[EnvIndex]
+  return(Env[[1]])
+}
+
+get_variable <- function(x, envir){
+  if(is.null(envir)) return(NULL)
+  if(!x%in%ls(envir, all.names = T)) return(NULL)
+  return(get(x, envir = envir))
+}
 
 "%||%" <- function(a, b) {
   if (!is.null(a)) a else b
