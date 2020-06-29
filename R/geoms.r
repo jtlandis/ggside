@@ -51,7 +51,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "sidebar",
                           location = "bottom", inherit.aes = TRUE, ...) {
-  #browser()
+  #
   # if(!location%in%c("bottom","top")){
   #   stop("location must be specified as top or bottom")
   # }
@@ -89,8 +89,11 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           }
                         },
                         setup_data = function(data, params){
-                          #browser()
+                          #
                           #height is already calculated in stat_sidebar...
+                          #if stat_idenity is used yres should not exists. calc yres
+                          yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
+                          data$height <- data$height %||% params$height %||% yres
                           #if params$height exists, then override and adjust y for overlap.
                           #geom_tile is paramatized from middle.
                           h_new <- params$height
@@ -100,24 +103,26 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                                                    stat_key=="top" ~ y - ((height-h_new)/2)))
                             data$height <- h_new
                           }
-                          #if data$height isn't unique, adjust y positions to prevent overlap.
+                          #adjust yposition to touch x axis.
                           data <- data %>%
                             mutate(y = case_when(stat_key=="bottom" ~ y + ((yres-height)/2),
                                                  stat_key=="top" ~ y - ((yres-height)/2)))
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                           loc <- unique(data$location %||% params$location)
+                          #again, if stat_identity is used stat_key is not available
+                          data$stat_key <- data$stat_key %||% loc
                           if(!loc%in%c("bottom","top")||length(loc)>1){
                             stop("xbar location must be either \"bottom\" or \"top\"\n")
                           }
                           data <- data %>%
-                            filter(stat_key %in% loc) %>% rename(location = stat_key)
-                          tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
+                            filter(stat_key %in% loc) %>% dplyr::rename(location = stat_key)
+                          transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                     ymin = y - height/2, ymax = y + height/2, height = NULL)
 
                         },
                         draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                         {
-                          #browser()
+                          #
                           loc <- unique(data$location)
                           if(loc=="bottom"){
                             indx <- 1
@@ -144,7 +149,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                             ggname("bar", do.call("grobTree", polys))
                           }
                           else {
-                            #browser()
+                            #
                             coords <- coord$transform(data, panel_params)
                             ggname("geom_rect", rectGrob(coords$xmin, coords$ymax,
                                                          width = coords$xmax - coords$xmin,
@@ -170,7 +175,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "sidebar",
                           inherit.aes = TRUE, location = "left", ...) {
-  #browser()
+
   # if(!location%in%c("left","right")){
   #   sright("location must be specified as right or left")
   # }
@@ -190,7 +195,7 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                                    width = NA, height = NA,
                                                    size = 0.1, alpha = NA, location = "left"),
                                  draw_key = function(data, params, size){
-                                   { #browser()
+                                   { #
                                      if (is.null(data$size)) {
                                        data$size <- 0.5
                                      }
@@ -206,28 +211,34 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                    }
                                  },
                                  setup_data = function(data, params){
-                                   #browser()
-                                   #pad the width and height
-                                   data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
-                                   xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.05) else 1
+                                   xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
                                    data$width <- data$width %||% params$width %||% xres
-                                   data$location <- data$location %||% params$location
-                                   loc <- unique(data$location)
+                                   w_new <- params$width
+                                   if(!is.null(w_new)){
+                                     data <- data %>%
+                                       mutate(x = case_when(stat_key=="left" ~ x + ((width-w_new)/2),
+                                                            stat_key=="right" ~ x - ((width-w_new)/2)))
+                                     data$width <- w_new
+                                   }
+                                   #set x positions such that it touches y axis.
+                                   data <- data %>%
+                                     mutate(x = case_when(stat_key=="left" ~ x + ((xres-width)/2),
+                                                          stat_key=="right" ~ x - ((xres-width)/2)))
+                                   data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
+                                   loc <- unique(data$location %||% params$location)
+                                   data$stat_key <- data$stat_key %||% loc
                                    if(!loc%in%c("left","right")||length(loc)>1){
                                      stop("ybar location must be either \"left\" or \"right\"\n")
                                    }
-                                   if(loc=="left"){
-                                     data$x <- min(data$x) - unique(data$width)
-                                   } else if(loc=="right"){
-                                     data$x <- max(data$x) + unique(data$width)
-                                   }
-                                   tran <- transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
+
+                                   data <- data %>%
+                                     filter(stat_key %in% loc) %>% dplyr::rename(location = stat_key)
+                                   transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
                                              ymin = y - height/2, ymax = y + height/2, height = NULL)
-                                   distinct_all(select(tran, -group))
                                  },
                                  draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                                  {
-                                   #browser()
+                                   #
                                    loc <- unique(data$location)
                                    if(loc=="left"){
                                      indx <- 1
@@ -254,7 +265,7 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                      ggname("bar", do.call("grobTree", polys))
                                    }
                                    else {
-                                     #browser()
+                                     #
                                      coords <- coord$transform(data, panel_params)
                                      ggname("geom_rect", rectGrob(coords$xmin, coords$ymax,
                                                                   width = coords$xmax - coords$xmin,
