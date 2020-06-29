@@ -6,7 +6,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                        Stat,
                        required_aes = c("x|y", "xfill|yfill"),
                        compute_panel = function(self, data, scales, ...) {
-                         #browser()
+                         #
                          if (empty(data)) return(new_data_frame())
                          #determine if xfill or yfill was passed...
                          is_xbar <- "xfill"%in%colnames(data)
@@ -52,4 +52,37 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                        },
                        compute_group = function(self, data, scales){
                          dplyr::distinct_all(data)
+                       },
+                       compute_layer = function(self, data, params, layout) {
+                         #
+                         check_required_aesthetics(
+                           self$required_aes,
+                           c(names(data), names(params)),
+                           snake_class(self)
+                         )
+
+                         # Make sure required_aes consists of the used set of aesthetics in case of
+                         # "|" notation in self$required_aes
+                         required_aes <- intersect(
+                           names(data),
+                           unlist(strsplit(self$required_aes, "|", fixed = TRUE))
+                         )
+
+                         data <- remove_missing(data, params$na.rm,
+                                                c(required_aes, self$non_missing_aes),
+                                                snake_class(self),
+                                                finite = FALSE
+                         )
+
+                         # Trim off extra parameters
+                         params <- params[intersect(names(params), self$parameters())]
+
+                         args <- c(list(data = quote(data), scales = quote(scales)), params)
+                         dapply(data, "PANEL", function(data) {
+                           scales <- layout$get_scales(data$PANEL[1])
+                           tryCatch(do.call(self$compute_panel, args), error = function(e) {
+                             warn(glue("Computation failed in `{snake_class(self)}()`:\n{e$message}"))
+                             new_data_frame()
+                           })
+                         })
                        })
