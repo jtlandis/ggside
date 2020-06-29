@@ -1,8 +1,12 @@
 #' @import ggplot2
 #' @import grid
-#' @import dplyr
-#' @import rlang
-#' @import glue
+#' @importFrom dplyr select
+#' @importFrom dplyr summarise
+#' @importFrom dplyr left_join
+#' @importFrom dplyr distinct_all
+#' @importFrom rlang warn
+#' @importFrom rlang as_function
+#' @importFrom glue glue
 #' @importFrom grid grobName
 
 
