@@ -50,7 +50,7 @@
 geom_xsidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "sidebar",
-                          location = "bottom", inherit.aes = TRUE, ...) {
+                          inherit.aes = TRUE, ...) {
   #browser()
   # if(!location%in%c("bottom","top")){
   #   stop("location must be specified as top or bottom")
@@ -58,7 +58,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   layer(
     geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(location = location, na.rm = na.rm, ...)
+    params = list(na.rm = na.rm, ...)
   )
 }
 
@@ -108,13 +108,8 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         {
                           #
                           loc <- unique(data$location)
-                          if(loc=="bottom"){
-                            indx <- 1
-                           # .expand <- .6
-                          } else if(loc=="top"){
-                            indx <- 2
-                           # .expand <- -.6
-                          }
+                          .loc <- data_frame(indx = c(1,2), pos = c("bottom","top"))
+                          indx <- .loc[.loc$pos%in%loc,,drop=F]$indx
                           if(panel_params$y$is_discrete()){
                             # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
                             # panel_params$y$limits <- if(loc=="bottom") c(panel_params$y$limits, "xbar") else c("xbar", panel_params$y$limits)
@@ -158,7 +153,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
 geom_ysidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
                           position = "identity",stat = "sidebar",
-                          inherit.aes = TRUE, location = "left", ...) {
+                          inherit.aes = TRUE, ...) {
 
   # if(!location%in%c("left","right")){
   #   sright("location must be specified as right or left")
@@ -166,7 +161,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   layer(
     geom = GeomYSideBar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(location = location, na.rm = na.rm, ...)
+    params = list(na.rm = na.rm, ...)
   )
 }
 
@@ -174,7 +169,8 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
 #' @format NULL
 GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                  ggplot2::GeomTile,
-                                 requied_aes = c("x","y"),
+                                 requied_aes = c("y"),
+                                 optional_aes = c("xintercept"),
                                  default_aes = aes(yfill = "grey20",
                                                    width = NA, height = NA,
                                                    size = 0.1, alpha = NA, location = "left"),
@@ -210,13 +206,8 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                  {
                                    #
                                    loc <- unique(data$location)
-                                   if(loc=="left"){
-                                     indx <- 1
-                                     # .expand <- .6
-                                   } else if(loc=="right"){
-                                     indx <- 2
-                                     # .expand <- -.6
-                                   }
+                                   .loc <- data_frame(indx = c(1,2), pos = c("left","right"))
+                                   indx <- .loc[.loc$pos%in%loc,,drop=F]$indx
                                    if(panel_params$x$is_discrete()){
                                      # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
                                      # panel_params$y$limits <- if(loc=="left") c(panel_params$y$limits, "ybar") else c("ybar", panel_params$y$limits)
