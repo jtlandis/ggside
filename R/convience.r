@@ -39,11 +39,22 @@ sidebar <- function(data = NULL,
       mutate(instance = 1:n(),
              yint = case_when(location=="bottom" ~ ymin-(yres*instance),
                               location=="top" ~ ymax+(yres*instance))) %>% ungroup()
-    .xdata <- data %>% select(!!mapping$x, !!!xfill) %>%
-      tidyr::gather(key = "xfill", value = "xbar", -1) %>%
-      left_join(., y = xdata, by = "xfill")
-    p <- p +
-      geom_xsidebar(data = .xdata, aes(xfill = xbar, y = 0, yintercept = yint, location = .xdata$location))
+    for(i in 1:nrow(xdata)){
+      if(xstat=="summarise"&&length(xfun)>0){
+        for(j in 1:length(xfun)){
+          p <- p +
+            geom_xsidebar(aes_(xfill = xfill[[i]],
+                               y = 0,
+                               yintercept = xdata$yint[i]),
+                          fun = xfun[[j]])
+        }
+      }else{
+        p <- p +
+          geom_xsidebar(aes_(xfill = xfill[[i]],
+                             y = 0,
+                             yintercept = xdata$yint[i]))
+      }
+    }
   }
 
   if(length(yfill)>0){
@@ -59,8 +70,22 @@ sidebar <- function(data = NULL,
       tidyr::gather(key = "yfill", value = "ybar", -1) %>%
       left_join(., y = ydata, by = "yfill")
 
-    p <- p +
-      geom_ysidebar(data = .ydata, aes(yfill = ybar, x = 0, xintercept = xint, location = .ydata$location))
+    for(i in 1:nrow(ydata)){
+      if(ystat=="summarise"&&length(yfun)>0){
+        for(j in 1:length(yfun)){
+          p <- p +
+            geom_ysidebar(aes_(yfill = yfill[[i]],
+                               x = 0,
+                               xintercept = ydata$xint[i]),
+                          fun = yfun[[j]])
+        }
+      }else{
+        p <- p +
+          geom_ysidebar(aes_(yfill = yfill[[i]],
+                             x = 0,
+                             xintercept = ydata$xint[i]))
+      }
+    }
   }
 
 
@@ -85,5 +110,6 @@ sidebar <- function(data = NULL,
 #   group_by(qualities) %>%
 #   mutate(mean_qual=mean(value)) %>% ungroup()
 #
-sidebar(mtcars1, aes(Cars, qualities), xfill = vars(carCase, endCase), xlocation = "top") +
-  geom_tile(aes(fill = scaledValue))
+# sidebar(mtcars1, aes(Cars, qualities), xfill = vars(carCase, endCase), xlocation = "top",
+#         yfill = vars(scaledValue, mean_qual), yfun = list(mean, sd), ystat = "summarise") +
+#   geom_tile(aes(fill = scaledValue))
