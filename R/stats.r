@@ -17,9 +17,10 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                                 height = NULL,width = NULL,
                                                 yintercept = NULL, xintercept = NULL) {
                          #
-                         #browser()
-                         xint <- NULL
-                         yint <- NULL
+                         #
+                         browser()
+                         x_ <- data$xintercept %||% xintercept %||% NULL
+                         y_ <- data$yintercept %||% yintercept %||% NULL
                          env <- find_build_plotEnv()
                          .hs <- get_variable(".build_history", envir = env) %||% data_frame(loc = c("top","right","bottom","left"),
                                                                                             indx = c(1,1,1,1))
@@ -97,7 +98,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                            }
                          }
                          data <- data[,!colnames(data)%in%"indx"] %>% dplyr::distinct_all()
-                         suppress.Location <- !(is.null(xint)&is.null(yint))
+                         suppress.Location <- is.null(x_)&is.null(y_)
                          if(suppress.Location){
                            logi <- .hs$loc %in% data$location
                            .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
@@ -151,9 +152,9 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                          yintercept = NULL, xintercept = NULL,
                                                          fun = NULL, fun.args = list()) {
                                   #
-                                  browser()
-                                  xint <- NULL
-                                  yint <- NULL
+                                  #browser()
+                                  x_ <- data$xintercept %||% xintercept %||% NULL
+                                  y_ <- data$yintercept %||% yintercept %||% NULL
                                   env <- find_build_plotEnv()
                                   .hs <- get_variable(".build_history", envir = env) %||% data_frame(loc = c("top","right","bottom","left"),
                                                                                                      indx = c(1,1,1,1))
@@ -253,7 +254,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                   }
 
                                   data <- data[,!colnames(data)%in%"indx"] %>% distinct_all()
-                                  suppress.Location <- !(is.null(xint)&is.null(yint))
+                                  suppress.Location <- is.null(x_)&is.null(y_)
                                   if(suppress.Location){
                                     logi <- .hs$loc %in% data$location
                                     .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
