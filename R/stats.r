@@ -18,6 +18,8 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                                 yintercept = NULL, xintercept = NULL) {
                          #
                          #browser()
+                         xint <- NULL
+                         yint <- NULL
                          env <- find_build_plotEnv()
                          .hs <- get_variable(".build_history", envir = env) %||% data_frame(loc = c("top","right","bottom","left"),
                                                                                             indx = c(1,1,1,1))
@@ -90,16 +92,17 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                              data <-  left_join(data, .hs, by = c("location"="loc")) %>%
                                mutate(x = case_when(location=="left" ~ min(x)-xres*indx + ((xres-width)/2),
                                                     location=="right" ~ max(x)+xres*indx - ((xres-width)/2)))
-
-
                            } else {
                              data$x <- xint
                            }
                          }
                          data <- data[,!colnames(data)%in%"indx"] %>% dplyr::distinct_all()
-                         logi <- .hs$loc %in% data$location
-                         .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
-                         assign(".build_history", value = .hs, envir = env)
+                         suppress.Location <- !(is.null(xint)&is.null(yint))
+                         if(suppress.Location){
+                           logi <- .hs$loc %in% data$location
+                           .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
+                           assign(".build_history", value = .hs, envir = env)
+                         }
                          data
                        },
                        compute_group = function(self, data, scales){
@@ -149,7 +152,11 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                          fun = NULL, fun.args = list()) {
                                   #
                                   browser()
+                                  xint <- NULL
+                                  yint <- NULL
                                   env <- find_build_plotEnv()
+                                  .hs <- get_variable(".build_history", envir = env) %||% data_frame(loc = c("top","right","bottom","left"),
+                                                                                                     indx = c(1,1,1,1))
                                   if(is.null(fun)) {
                                     warn("fun is null, using mean as default")
                                     fun <- mean
@@ -196,9 +203,9 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                   "\nConverting to default: bottom"))
                                         data$location[.badLoc] <- "bottom"
                                       }
-                                      data <-  mutate(data,
-                                                      y = case_when(location=="bottom" ~ min(y)-yres + ((yres-height)/2),
-                                                                    location=="top" ~ max(y)+yres - ((yres-height)/2)))
+                                      data <- left_join(data, .hs, by = c("location"="loc")) %>%
+                                        mutate(y = case_when(location=="bottom" ~ min(y)-yres*indx + ((yres-height)/2),
+                                                             location=="top" ~ max(y)+yres*indx - ((yres-height)/2)))
 
                                     } else {
                                       data$y <- yint
@@ -236,16 +243,22 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                   "\nConverting to default: left"))
                                         data$location[.badLoc] <- "left"
                                       }
-                                      data <-  mutate(data,
-                                                      x = case_when(location=="left" ~ min(x)-xres + ((xres-width)/2),
-                                                                    location=="right" ~ max(x)+xres - ((xres-width)/2)))
+                                      data <-  left_join(data, .hs, by = c("location"="loc")) %>%
+                                        mutate(x = case_when(location=="left" ~ min(x)-xres*indx + ((xres-width)/2),
+                                                             location=="right" ~ max(x)+xres*indx - ((xres-width)/2)))
 
                                     } else {
                                       data$x <- xint
                                     }
                                   }
 
-                                  data <- distinct_all(data)
+                                  data <- data[,!colnames(data)%in%"indx"] %>% distinct_all()
+                                  suppress.Location <- !(is.null(xint)&is.null(yint))
+                                  if(suppress.Location){
+                                    logi <- .hs$loc %in% data$location
+                                    .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
+                                    assign(".build_history", value = .hs, envir = env)
+                                  }
                                   data
                                 },
                                 compute_group = function(self, data, scales){
