@@ -30,6 +30,8 @@ get_variable <- function(x, envir){
   if (!is.null(a)) a else b
 }
 
+# proto2 TODO: better way of getting formals for self$draw
+ggproto_formals <- function(x) formals(environment(x)$f)
 
 ggname <- function(prefix, grob) {
   grob$name <- grobName(grob, prefix)
@@ -205,3 +207,4 @@ dapply <- function(df, by, fun, ..., drop = TRUE) {
     apply_fun(cur_data)
   }))
 }
+
