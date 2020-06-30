@@ -11,7 +11,7 @@
 #' @importFrom grid grobName
 
 find_build_plotEnv <- function(){
-  items <- lapply(sys.frames(), ls, all.names = T)
+  items <- lapply(sys.frames(), ls)
   expected_items <- c("by_layer","data","layer_data",
                       "layers","layout","plot","scale_x",
                       "scale_y","scales")
