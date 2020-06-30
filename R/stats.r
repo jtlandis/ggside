@@ -18,7 +18,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                                 yintercept = NULL, xintercept = NULL) {
                          #
                          #
-                         browser()
+                         #browser()
                          x_ <- data$xintercept %||% xintercept %||% NULL #is.null(x_) indicates if xintercept was passed.
                          y_ <- data$yintercept %||% yintercept %||% NULL
                          env <- find_build_plotEnv()
