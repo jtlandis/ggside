@@ -19,7 +19,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                          #
                          #
                          browser()
-                         x_ <- data$xintercept %||% xintercept %||% NULL
+                         x_ <- data$xintercept %||% xintercept %||% NULL #is.null(x_) indicates if xintercept was passed.
                          y_ <- data$yintercept %||% yintercept %||% NULL
                          env <- find_build_plotEnv()
                          .hs <- get_variable(".build_history", envir = env) %||% data_frame(loc = c("top","right","bottom","left"),
@@ -30,11 +30,6 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                          if(is_xbar){
                            #check if y exists in data, if not assign 0
                            data$y <- data$y %||% 0
-                           #if unique length is 1, treat as if it was yintercept
-                           #WARNING: this disables location functionality
-                           if(length(unique(data$y))==1){
-                             yintercept <- yintercept %||% data$y
-                           }
                            #check resolution of y data to see how far to adjust
                            yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
                            #provide the height adjustment. If none specified, use yres
@@ -46,8 +41,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                            data$width <- data$width %||% width %||% resolution(data$x, FALSE)
                            data$location <- data$location %||% location %||% "bottom"
                            data <- mutate(data, group = x)
-                           yint <- data$yintercept %||% yintercept
-                           if(is.null(yint)){ #e.i. user prefer's StatSidebar to determine y positions
+                           if(is.null(y_)){ #e.i. user prefer's StatSidebar to determine y positions
                              if(!all(data$location%in%c("top","bottom"))){
                                .badLoc <- !data$location%in%c("top","bottom")
                                warn(glue("unrecognized location assignments:\n",
@@ -60,16 +54,11 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                                     location=="top" ~ max(y)+yres*indx - ((yres-height)/2)))
 
                            } else {
-                             data$y <- yint
+                             data$y <- y_
                            }
                          } else {
                            #check if x exists in data, if not assign 0
                            data$x <- data$x %||% 0
-                           #if unique length is 1, treat as if it was xintercept
-                           #WARNING: this disables location functionality
-                           if(length(unique(data$x))==1){
-                             xintercept <- xintercept %||% data$x
-                           }
                            #check resolution of x data to see how far to adjust
                            xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
                            #provide the width adjustment. If none specified, use xres
@@ -81,8 +70,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                            data$height <- data$height %||% height %||% resolution(data$y, FALSE)
                            data$location <- data$location %||% location %||% "left"
                            data <- mutate(data, group = y)
-                           xint <- data$xintercept %||% xintercept
-                           if(is.null(xint)){ #e.i. user prefer's StatSidebar to determine x positions
+                           if(is.null(x_)){ #e.i. user prefer's StatSidebar to determine x positions
                              if(!all(data$location%in%c("right","left"))){
                                .badLoc <- !data$location%in%c("right","left")
                                warn(glue("unrecognized location assignments:\n",
@@ -94,11 +82,11 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                mutate(x = case_when(location=="left" ~ min(x)-xres*indx + ((xres-width)/2),
                                                     location=="right" ~ max(x)+xres*indx - ((xres-width)/2)))
                            } else {
-                             data$x <- xint
+                             data$x <- x_
                            }
                          }
                          data <- data[,!colnames(data)%in%"indx"] %>% dplyr::distinct_all()
-                         suppress.Location <- is.null(x_)&is.null(y_)
+                         suppress.Location <- is.null(x_)&is.null(y_) #if *intcercept is passed. dont update .build_history
                          if(suppress.Location){
                            logi <- .hs$loc %in% data$location
                            .hs[logi,"indx"] <- .hs[logi,"indx"] + 1
@@ -179,11 +167,6 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                       left_join(., y = fun.data, by = "x")
                                     #check if y exists in data, if not assign 0
                                     data$y <- data$y %||% 0
-                                    #if unique length is 1, treat as if it was yintercept
-                                    #WARNING: this disables location functionality
-                                    if(length(unique(data$y))==1){
-                                      yintercept <- yintercept %||% data$y
-                                    }
                                     #check resolution of y data to see how far to adjust
                                     yres <- if(resolution(data$y, FALSE)!=1) (diff(range(data$y))*.1) else 1
                                     #provide the height adjustment. If none specified, use yres
@@ -195,8 +178,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                     data$width <- data$width %||% width %||% resolution(data$x, FALSE)
                                     data$location <- data$location %||% location %||% "bottom"
                                     data <- mutate(data, group = x)
-                                    yint <- data$yintercept %||% yintercept
-                                    if(is.null(yint)){ #e.i. user prefer's StatSidebar to determine y positions
+                                    if(is.null(y_)){ #e.i. user prefer's StatSidebar to determine y positions
                                       if(!all(data$location%in%c("top","bottom"))){
                                         .badLoc <- !data$location%in%c("top","bottom")
                                         warn(glue("unrecognized location assignments:\n",
@@ -209,7 +191,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                              location=="top" ~ max(y)+yres*indx - ((yres-height)/2)))
 
                                     } else {
-                                      data$y <- yint
+                                      data$y <- y_
                                     }
                                   } else {
                                     fun.data <- data %>%
@@ -219,11 +201,6 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                       left_join(., y = fun.data, by = "y")
                                     #check if x exists in data, if not assign 0
                                     data$x <- data$x %||% 0
-                                    #if unique length is 1, treat as if it was xintercept
-                                    #WARNING: this disables location functionality
-                                    if(length(unique(data$x))==1){
-                                      xintercept <- xintercept %||% data$x
-                                    }
                                     #check resolution of x data to see how far to adjust
                                     xres <- if(resolution(data$x, FALSE)!=1) (diff(range(data$x))*.1) else 1
                                     #provide the width adjustment. If none specified, use xres
@@ -235,8 +212,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                     data$height <- data$height %||% height %||% resolution(data$y, FALSE)
                                     data$location <- data$location %||% location %||% "left"
                                     data <- mutate(data, group = y)
-                                    xint <- data$xintercept %||% xintercept
-                                    if(is.null(xint)){ #e.i. user prefer's StatSidebar to determine x positions
+                                    if(is.null(x_)){ #e.i. user prefer's StatSidebar to determine x positions
                                       if(!all(data$location%in%c("right","left"))){
                                         .badLoc <- !data$location%in%c("right","left")
                                         warn(glue("unrecognized location assignments:\n",
@@ -249,7 +225,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
                                                              location=="right" ~ max(x)+xres*indx - ((xres-width)/2)))
 
                                     } else {
-                                      data$x <- xint
+                                      data$x <- x_
                                     }
                                   }
 
