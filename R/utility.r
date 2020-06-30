@@ -26,21 +26,12 @@ get_variable <- function(x, envir){
   return(get(x, envir = envir))
 }
 
-"%||%" <- function(a, b) {
-  if (!is.null(a)) a else b
-}
-
 # proto2 TODO: better way of getting formals for self$draw
 ggproto_formals <- function(x) formals(environment(x)$f)
 
 ggname <- function(prefix, grob) {
   grob$name <- grobName(grob, prefix)
   grob
-}
-
-
-empty <- function(df) {
-  is.null(df) || nrow(df) == 0 || ncol(df) == 0 || is.waive(df)
 }
 
 manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
