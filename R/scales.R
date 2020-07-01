@@ -40,7 +40,7 @@ scale_xfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 
 #' @export
 scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                                   space = "Lab",na.value = "grey50",
-                                  guide = "colourbar", aesthetics = "xfill")
+                                  guide = guide_colorbar(available_aes = "xfill"), aesthetics = "xfill")
 {
   continuous_scale(aesthetics,
                    "gradient",
@@ -50,7 +50,7 @@ scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 
 scale_xfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
-                                   guide = "colourbar", aesthetics = "xfill", colors)
+                                   guide = guide_colorbar(available_aes = "xfill"), aesthetics = "xfill", colors)
 {
   colours <- if (missing(colours))
     colors
@@ -90,7 +90,7 @@ scale_yfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 
 #' @export
 scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                                   space = "Lab",na.value = "grey50",
-                                  guide = "colourbar", aesthetics = "yfill")
+                                  guide = guide_colorbar(available_aes = "yfill"), aesthetics = "yfill")
 {
   continuous_scale(aesthetics,
                    "gradient",
@@ -100,7 +100,7 @@ scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
 
 scale_yfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
-                                   guide = "colourbar", aesthetics = "yfill", colors)
+                                   guide = guide_colorbar(available_aes = "yfill"), aesthetics = "yfill", colors)
 {
   colours <- if (missing(colours))
     colors
