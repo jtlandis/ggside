@@ -1,0 +1,20 @@
+Package: ggsidebar
+Type: Package
+Title: Side Bar Grammar Graphics
+Version: 0.1.0
+Authors@R: c(person("Justin T.","Landis", rol = c("aut", "cre"), email = "<jtlandis314@gmail.com>"))
+Maintainer: Justin Landis <jtlandis314@gmail.com>
+Description: This package allows the user to add metadata information about any discrete axis.
+License: GPL (>= 2)
+Encoding: UTF-8
+LazyData: true
+Imports:
+  ggplot2,
+  grid,
+  rlang,
+  dplyr
+RoxygenNote: 7.1.0
+VignetteBuilder: knitr
+Suggests: 
+    knitr,
+    rmarkdown
