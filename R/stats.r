@@ -133,7 +133,7 @@
 
 
 StatSummarise <- ggplot2::ggproto("Summarise",
-                                StatSidebar,
+                                Stat,
                                 required_aes = c("x|y", "xfill|yfill"),
                                 option_aes = c("yintercept|xintercept"),
                                 compute_panel = function(self, data, scales, location = NULL,
