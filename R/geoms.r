@@ -64,7 +64,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   layer(
     geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
-    position = posit, show.legend = show.legend, inherit.aes = inherit.aes,
+    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = c(list(na.rm = na.rm), other_args)
   )
 }
@@ -74,6 +74,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @importFrom ggplot2 ggproto Geom GeomTile
+#' @export
 GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         ggplot2::GeomTile,
                         requied_aes = c("x"),
