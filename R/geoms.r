@@ -49,18 +49,26 @@
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
-                          position = "identity",stat = "sidebar",
-                          inherit.aes = TRUE, ...) {
-  #browser()
-  # if(!location%in%c("bottom","top")){
-  #   stop("location must be specified as top or bottom")
-  # }
+                          position = "rescale", stat = "identity",
+                          inherit.aes = TRUE, instance = NULL, ...) {
+  extra_args <- list(...)
+  rescaleArgs <- c("rescale","location","midpoint","range","instance")
+  if(position=="rescale"){
+    args <- extra_args[intersect(names(extra_args), rescaleArgs)]
+    posit <- position_rescale(rescale = args$rescale %||% "y",
+                              location = args$location,
+                              midpoint = args$midpoint,
+                              range = args$range,
+                              instance = args$instance)
+  }
+  other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   layer(
     geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
-    position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
+    position = posit, show.legend = show.legend, inherit.aes = inherit.aes,
+    params = c(list(na.rm = na.rm), other_args)
   )
 }
+
 
 #' @rdname geom_xsidebar
 #' @format NULL
@@ -69,10 +77,9 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         ggplot2::GeomTile,
                         requied_aes = c("x"),
-                        optional_aes = c("yintercept"),
-                        default_aes = aes(xfill = "grey20",
+                        default_aes = aes(y = 0, xfill = "grey20",
                                           width = NA, height = NA,
-                                          size = 0.1, alpha = NA, location = "bottom"),
+                                          size = 0.1, alpha = NA),
                         draw_key = function(data, params, size){
                           {
                             if (is.null(data$size)) {
@@ -95,8 +102,8 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           #when using StatSidebar - all positions should be absolute.
                           #No conversions should occure here. Simply ensure data has structure
                           data$xfill <- data$xfill %||% params$xfill
-                          #statIdentity will just use y positions, so long as yintercept was never passed.
-                          data$y <- data$y %||% data$yintercept %||% 0
+                          #GeomXSidebar is special in that all y values are coerced to a single value
+                          data$y <- 0
                           data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
 
@@ -107,15 +114,15 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
                         {
                           #
-                          loc <- unique(data$location)
-                          .loc <- data_frame(indx = c(1,2), pos = c("bottom","top"))
-                          indx <- .loc[.loc$pos%in%loc,,drop=F]$indx
-                          if(panel_params$y$is_discrete()){
-                            # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
-                            # panel_params$y$limits <- if(loc=="bottom") c(panel_params$y$limits, "xbar") else c("xbar", panel_params$y$limits)
-                          } else {
-                            panel_params$y$continuous_range[indx] <- panel_params$y$limits[indx]
-                          }
+                          # loc <- unique(data$location)
+                          # .loc <- data_frame(indx = c(1,2), pos = c("bottom","top"))
+                          # indx <- .loc[.loc$pos%in%loc,,drop=F]$indx
+                          # if(panel_params$y$is_discrete()){
+                          #   # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
+                          #   # panel_params$y$limits <- if(loc=="bottom") c(panel_params$y$limits, "xbar") else c("xbar", panel_params$y$limits)
+                          # } else {
+                          #   panel_params$y$continuous_range[indx] <- panel_params$y$limits[indx]
+                          # }
                           if (!coord$is_linear()) {
                             aesthetics <- setdiff(names(data), c("x", "y", "xmin",
                                                                  "xmax", "ymin", "ymax"))
@@ -152,16 +159,24 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
 #' @export
 geom_ysidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
-                          position = "identity",stat = "sidebar",
+                          position = "rescale",stat = "identity",
                           inherit.aes = TRUE, ...) {
 
-  # if(!location%in%c("left","right")){
-  #   sright("location must be specified as right or left")
-  # }
+  extra_args <- list(...)
+  rescaleArgs <- c("rescale","location","midpoint","range","instance")
+  if(position=="rescale"){
+    args <- extra_args[intersect(names(extra_args), rescaleArgs)]
+    posit <- position_rescale(rescale = args$rescale %||% "x",
+                              location = args$location,
+                              midpoint = args$midpoint,
+                              range = args$range,
+                              instance = args$instance)
+  }
+  other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   layer(
     geom = GeomYSideBar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
-    params = list(na.rm = na.rm, ...)
+    params = c(list(na.rm = na.rm), other_args)
   )
 }
 
