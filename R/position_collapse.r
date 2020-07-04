@@ -21,7 +21,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                      range = NULL, #range about midpoint that y/x is scaled onto.
                                      instance = NULL, #if instance is used then previous
                                      setup_params = function(self, data){
-                                       browser()
+                                       #browser()
 
                                        suggested_var <- c("x","y")
                                        env <- find_build_plotEnv()
@@ -34,7 +34,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                        if(!is.null(instance)){#check if previous instance exists
                                          .tmp <- .hs[.hs$cvar==self$rescale&.hs$instance==instance,]
-                                         if(nrow(.tmp)==1){
+                                         if(!is.null(.tmp)&&nrow(.tmp)==1){
                                            return(
                                              list(rescale_var = self$rescale,
                                                 rescale_onto = suggested_var[!suggested_var%in%self$rescale],
@@ -120,33 +120,37 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        #browser()
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
-                                       if(!all(suggested_var%in%colnames(data))){
-                                         missing_var <- suggested_var[!suggested_var%in%colnames(data)]
-                                         if(missing_var==cvar){
-                                           warn(glue("rescale variable \"{missing_var}\" is missing from layer data.",
-                                                     " Coercing value to 0"))
-                                           data[[missing_var]] <- 0
-                                           data[[paste0(missing_var,"max")]] <- 0.5
-                                           data[[paste0(missing_var,"min")]] <- -.5
-                                         } else {
-                                           warn(glue("Collapsing \"{cvar}\" onto \"{missing_var}\" is not well defined ",
-                                                     "because \"{missing_var}\" is missing in layer data.\n Setting \"{missing_var}\" to 1."))
-                                           data[[missing_var]] <- 1
-                                           data[[paste0(missing_var,"max")]] <- 1.5
-                                           data[[paste0(missing_var,"min")]] <- 0.5
-                                         }
-                                       }
-                                       varmin <- data[[paste0(cvar,"min")]] %||% min(data[[cvar]])
-                                       varmax <- data[[paste0(cvar,"max")]] %||% max(data[[cvar]])
-                                       from_range <- c(varmin, varmax)
+                                       suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")
+                                       # if(!all(suggested_var%in%colnames(data))){
+                                       #   missing_var <- suggested_var[!suggested_var%in%colnames(data)]
+                                       #   if(missing_var==cvar){
+                                       #     warn(glue("rescale variable \"{missing_var}\" is missing from layer data.",
+                                       #               " Coercing value to 0"))
+                                       #     data[[missing_var]] <- 0
+                                       #   } else {
+                                       #     warn(glue("Collapsing \"{cvar}\" onto \"{missing_var}\" is not well defined ",
+                                       #               "because \"{missing_var}\" is missing in layer data.\n Setting \"{missing_var}\" to 1."))
+                                       #     data[[missing_var]] <- 1
+                                       #   }
+                                       # }
+                                       cdata <- data %>% select(tidyselect::any_of(c(paste0(cvar,suffix),"outliers"))) %>% gather() %>% unnest(cols = value)
+                                       from_range <- range(cdata$value)
                                        rerange <- params$midpoint + (c(-1,1)*c(params$range/2))
-                                       data[[cvar]] <- scales::rescale(data[[cvar]], to = rerange, from = from_range)
-                                       data[[paste0(cvar,"max")]] <- scales::rescale(data[[paste0(cvar,"max")]], to = rerange, from = from_range)
-                                       data[[paste0(cvar,"min")]] <- scales::rescale(data[[paste0(cvar,"min")]], to = rerange, from = from_range)
+                                       data <- mutate_at(data, vars(tidyselect::any_of(c(paste0(cvar,suffix),"outliers",suffix))), function(x){
+                                         if(is.list(x)){
+                                           x <- lapply(x, scales::rescale, to = rerange, from = from_range)
+                                         } else {
+                                           x <- scales::rescale(x, to = rerange, from = from_range)
+                                         }
+                                         return(x)
+                                       })
+                                       # data[[cvar]] <- scales::rescale(data[[cvar]], to = rerange, from = from_range)
+                                       # data[[paste0(cvar,"max")]] <- scales::rescale(data[[paste0(cvar,"max")]], to = rerange, from = from_range)
+                                       # data[[paste0(cvar,"min")]] <- scales::rescale(data[[paste0(cvar,"min")]], to = rerange, from = from_range)
                                        data
                                      },
                                      compute_panel = function(data, params, scales){
-                                       distinct_all(data)
+                                       suppressWarnings({distinct_all(data)})
                                      })
 
 
