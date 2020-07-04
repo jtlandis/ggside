@@ -9,6 +9,7 @@
 #' @importFrom rlang abort
 #' @importFrom glue glue
 #' @importFrom grid grobName
+#' @importFrom rlang eval_tidy
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)
@@ -24,6 +25,22 @@ get_variable <- function(x, envir){
   if(is.null(envir)) return(NULL)
   if(!x%in%ls(envir, all.names = T)) return(NULL)
   return(get(x, envir = envir))
+}
+
+
+grab_Main_Mapping <- function(env = NULL){
+  if(is.null(env)|!is.environment(env)){
+    env <- find_build_plotEnv()
+  }
+  p <- get_variable("plot", env)
+  # Evaluate aesthetics
+  evaled <- lapply(p$mapping, eval_tidy, data = p$data)
+  evaled <- compact(evaled)
+  evaled <- as_gg_data_frame(evaled)
+  evaled <- mutate_if(evaled,
+                      function(x){!(is.numeric(x)|is.integer(x))},
+                      function(x){as.numeric(as.factor(x))})
+  return(evaled)
 }
 
 # proto2 TODO: better way of getting formals for self$draw
@@ -197,5 +214,27 @@ dapply <- function(df, by, fun, ..., drop = TRUE) {
     cur_data <- df_rows(df, group_rows[[i]])
     apply_fun(cur_data)
   }))
+}
+
+new_data_frame <- function(x = list(), n = NULL) {
+  if (length(x) != 0 && is.null(names(x))) {
+    abort("Elements must be named")
+  }
+  lengths <- vapply(x, length, integer(1))
+  if (is.null(n)) {
+    n <- if (length(x) == 0 || min(lengths) == 0) 0 else max(lengths)
+  }
+  for (i in seq_along(x)) {
+    if (lengths[i] == n) next
+    if (lengths[i] != 1) {
+      abort("Elements must equal the number of rows or 1")
+    }
+    x[[i]] <- rep(x[[i]], n)
+  }
+
+  class(x) <- "data.frame"
+
+  attr(x, "row.names") <- .set_row_names(n)
+  x
 }
 
