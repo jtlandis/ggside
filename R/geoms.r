@@ -55,7 +55,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   rescaleArgs <- c("rescale","location","midpoint","range","instance")
   if(position=="rescale"){
     args <- extra_args[intersect(names(extra_args), rescaleArgs)]
-    posit <- position_rescale(rescale = args$rescale %||% "y",
+    position <- position_rescale(rescale = args$rescale %||% "y",
                               location = args$location,
                               midpoint = args$midpoint,
                               range = args$range,
@@ -159,14 +159,14 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
 #' @export
 geom_ysidebar <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE, show.legend = NA,
-                          position = "rescale",stat = "identity",
+                          position = "rescale", stat = "identity",
                           inherit.aes = TRUE, ...) {
 
   extra_args <- list(...)
   rescaleArgs <- c("rescale","location","midpoint","range","instance")
   if(position=="rescale"){
     args <- extra_args[intersect(names(extra_args), rescaleArgs)]
-    posit <- position_rescale(rescale = args$rescale %||% "x",
+    position <- position_rescale(rescale = args$rescale %||% "x",
                               location = args$location,
                               midpoint = args$midpoint,
                               range = args$range,
