@@ -7,13 +7,13 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                      required_aes = c("x|y"),
                                      rescale = "y", #rescale y onto x
                                                      #if y exists in data, then this is used to calculate
-                                                     #waivered scale_range. Other
+                                                     #waivered range. Other
                                      location = NULL, #rescale y defaults location to "bottom", and
                                                           #rescale x defaults location to "left".
                                                           #location helps specify how waivered midpoint is calculated
                                      midpoint = NULL, #center point of rescaled y/x about the geom is built.
                                                           #If midpoint is specified - location is ignored
-                                     scale_range = NULL, #range about midpoint that y/x is scaled onto.
+                                     range = NULL, #range about midpoint that y/x is scaled onto.
                                      instance = NULL, #if instance is used then previous
                                      setup_params = function(self, data){
                                        browser()
@@ -34,7 +34,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                              list(rescale_var = self$rescale,
                                                 rescale_onto = suggested_var[!suggested_var%in%self$rescale],
                                                 midpoint = .hs[.hs$instance==instance,]$mid,
-                                                scale_range = .hs[.hs$instance==instance,]$max - .hs[.hs$instance==instance,]$min,
+                                                range = .hs[.hs$instance==instance,]$max - .hs[.hs$instance==instance,]$min,
                                                 location = .hs[.hs$instance==instance,]$location,
                                                 instance = instance))
                                          }
@@ -62,9 +62,9 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                        rescale_dat <- mainData[[rescale_var]]
                                        var_reso <- if(resolution(rescale_dat, FALSE)!=1) (diff(range(rescale_dat))*.05) else 1
-                                       scale_range <- self$scale_range %||% var_reso
-                                       if(!is_scalar_double(scale_range)){
-                                         abort(glue("scale_range should be a double scalar value"))
+                                       range <- self$range %||% var_reso
+                                       if(!is_scalar_double(range)){
+                                         abort(glue("range should be a double scalar value"))
                                        }
                                        location <- self$location %||% switch(rescale_onto, x = "bottom", y = "left")
                                        if(!is_scalar_character(location)){
@@ -77,11 +77,11 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        }
                                        if((instance-1) %in% .hs$instance & location %in% .hs$location){
                                          logi <- .hs$instance%in%(instance-1)&.hs$location%in%location
-                                         adjust.lb <- .hs[logi,]$mid - (.hs[logi,]$max - .hs[logi,]$min)/2 - scale_range/2
-                                         adjust.ru <- .hs[logi,]$mid + (.hs[logi,]$max - .hs[logi,]$min)/2 + scale_range/2
+                                         adjust.lb <- .hs[logi,]$mid - (.hs[logi,]$max - .hs[logi,]$min)/2 - range/2
+                                         adjust.ru <- .hs[logi,]$mid + (.hs[logi,]$max - .hs[logi,]$min)/2 + range/2
                                        } else {
-                                         adjust.lb <- min(rescale_dat) - (var_reso +scale_range)/2
-                                         adjust.ru <- max(rescale_dat) + (var_reso + scale_range)/2
+                                         adjust.lb <- min(rescale_dat) - (var_reso +range)/2
+                                         adjust.ru <- max(rescale_dat) + (var_reso + range)/2
                                        }
 
                                        midpoint <- self$midpoint %||% case_when(location%in%c("bottom","left") ~ adjust.lb,
@@ -92,11 +92,11 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                          rescale_var = rescale_var,
                                          rescale_onto = rescale_onto,
                                          midpoint = midpoint,
-                                         scale_range = scale_range,
+                                         range = range,
                                          location = location,
                                          instance = instance
                                        )
-                                       .hr <- params$scale_range/2
+                                       .hr <- params$range/2
                                        .hs <- rbind(.hs,
                                                     data_frame(cvar = rescale_var,
                                                                min = params$midpoint-.hr,
@@ -131,10 +131,10 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        varmin <- data[[paste0(cvar,"min")]] %||% min(data[[cvar]])
                                        varmax <- data[[paste0(cvar,"max")]] %||% max(data[[cvar]])
                                        from_range <- c(varmin, varmax)
-                                       rescale_range <- params$midpoint + (c(-1,1)*c(params$scale_range/2))
-                                       data[[cvar]] <- scales::rescale(data[[cvar]], to = rescale_range, from = from_range)
-                                       data[[paste0(cvar,"max")]] <- scales::rescale(data[[paste0(cvar,"max")]], to = rescale_range, from = from_range)
-                                       data[[paste0(cvar,"min")]] <- scales::rescale(data[[paste0(cvar,"min")]], to = rescale_range, from = from_range)
+                                       rerange <- params$midpoint + (c(-1,1)*c(params$range/2))
+                                       data[[cvar]] <- scales::rescale(data[[cvar]], to = rerange, from = from_range)
+                                       data[[paste0(cvar,"max")]] <- scales::rescale(data[[paste0(cvar,"max")]], to = rerange, from = from_range)
+                                       data[[paste0(cvar,"min")]] <- scales::rescale(data[[paste0(cvar,"min")]], to = rerange, from = from_range)
                                        data
                                      },
                                      compute_panel = function(data, params, scales){
@@ -143,6 +143,6 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
 
 
-position_rescale <- function(rescale = "y", midpoint = NULL, scale_range = NULL, location = NULL, instance = NULL){
-  ggproto(NULL, PositionRescale, rescale = rescale, midpoint = midpoint, scale_range = scale_range, location = location, instance = instance)
+position_rescale <- function(rescale = "y", midpoint = NULL, range = NULL, location = NULL, instance = NULL){
+  ggproto(NULL, PositionRescale, rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
 }
