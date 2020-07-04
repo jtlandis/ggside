@@ -18,7 +18,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                                                 yintercept = NULL, xintercept = NULL) {
                          #
                          #
-                         #browser()
+                         browser()
                          x_ <- data$xintercept %||% xintercept %||% NULL #is.null(x_) indicates if xintercept was passed.
                          y_ <- data$yintercept %||% yintercept %||% NULL
                          env <- find_build_plotEnv()
@@ -98,6 +98,7 @@ StatSidebar <- ggplot2::ggproto("Sidebar",
                          dplyr::distinct_all(data)
                        },
                        compute_layer = function(self, data, params, layout) {
+                         browser()
                          check_required_aesthetics(
                            self$required_aes,
                            c(names(data), names(params)),
