@@ -77,7 +77,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXSideBar <- ggplot2::ggproto("XSideBar",
                         ggplot2::GeomTile,
-                        requied_aes = c("x"),
+                        required_aes = c("x"),
                         default_aes = aes(y = 0, xfill = "grey20",
                                           width = NA, height = NA,
                                           size = 0.1, alpha = NA),
@@ -185,9 +185,9 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
 #' @format NULL
 GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                  ggplot2::GeomTile,
-                                 requied_aes = c("y"),
-                                 optional_aes = c("xintercept"),
-                                 default_aes = aes(yfill = "grey20",
+                                 required_aes = c("y"),
+                                 # optional_aes = c("xintercept"),
+                                 default_aes = aes(x =0, yfill = "grey20",
                                                    width = NA, height = NA,
                                                    size = 0.1, alpha = NA, location = "left"),
                                  draw_key = function(data, params, size){
@@ -212,7 +212,7 @@ GeomYSideBar <- ggplot2::ggproto("YSideBar",
                                    #No conversions should occure here. Simply ensure data has structure
                                    data$yfill <- data$yfill %||% params$yfill
                                    #statIdentity will just use y positions, so long as yintercept was never passed.
-                                   data$x <- data$x %||% data$xintercept %||% 0
+                                   data$x <- 0
                                    data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                                    data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
                                    transform(data, xmin = x - width/2, xmax = x + width/2, width = NULL,
