@@ -13,9 +13,10 @@ geom_xsidebar(
   data = NULL,
   na.rm = FALSE,
   show.legend = NA,
-  position = "identity",
-  stat = "sidebar",
+  position = "rescale",
+  stat = "identity",
   inherit.aes = TRUE,
+  instance = NULL,
   ...
 )
 
@@ -24,8 +25,8 @@ geom_ysidebar(
   data = NULL,
   na.rm = FALSE,
   show.legend = NA,
-  position = "identity",
-  stat = "sidebar",
+  position = "rescale",
+  stat = "identity",
   inherit.aes = TRUE,
   ...
 )

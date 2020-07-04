@@ -2,6 +2,7 @@
 
 S3method(single_value,default)
 S3method(single_value,factor)
+export(GeomXSideBar)
 export(PositionRescale)
 export(alpha)
 export(flip_data)
