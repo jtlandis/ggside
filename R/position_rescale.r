@@ -3,8 +3,8 @@
 #Position rescale
 
 #' Rescale x or y onto new range in margin
-#' @name position_range
-#' @rdname position_range
+#' @name position_rescale
+#' @rdname position_rescale
 #' @usage NULL
 #' @export
 PositionRescale <- ggplot2::ggproto("PositionRescale",
@@ -172,3 +172,11 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 position_rescale <- function(rescale = "y", midpoint = NULL, range = NULL, location = NULL, instance = NULL){
   ggproto(NULL, PositionRescale, rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
 }
+
+#' @rdname position_rescale
+#' @export
+position_rescaley <- function(rescale = "y", ...) position_rescale(rescale = rescale, ...)
+
+#' @rdname position_rescale
+#' @export
+position_rescalex <- function(rescale = "x", ...) position_rescale(rescale = rescale, ...)
