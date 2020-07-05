@@ -56,10 +56,10 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   if(position=="rescale"){
     args <- extra_args[intersect(names(extra_args), rescaleArgs)]
     position <- position_rescale(rescale = args$rescale %||% "y",
-                              location = args$location,
-                              midpoint = args$midpoint,
-                              range = args$range,
-                              instance = args$instance)
+                                 location = args$location,
+                                 midpoint = args$midpoint,
+                                 range = args$range,
+                                 instance = args$instance)
   }
   other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   layer(
