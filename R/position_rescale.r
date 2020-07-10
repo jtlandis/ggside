@@ -117,7 +117,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                      },
                                      setup_data = function(data, params){
-                                       #browser()
+                                      #browser()
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
                                        suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")
@@ -133,10 +133,10 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        #     data[[missing_var]] <- 1
                                        #   }
                                        # }
-                                       cdata <- data %>% select(tidyselect::any_of(c(paste0(cvar,suffix),"outliers"))) %>% gather() %>% unnest(cols = value)
+                                       cdata <- data %>% select(tidyselect::any_of(c(paste0(cvar,suffix)))) %>% gather() %>% unnest(cols = value)
                                        from_range <- range(cdata$value)
                                        rerange <- params$midpoint + (c(-1,1)*c(params$range/2))
-                                       data <- mutate_at(data, vars(tidyselect::any_of(c(paste0(cvar,suffix),"outliers",suffix))), function(x){
+                                       data <- mutate_at(data, vars(tidyselect::any_of(c(paste0(cvar,suffix),suffix))), function(x){
                                          if(is.list(x)){
                                            x <- lapply(x, scales::rescale, to = rerange, from = from_range)
                                          } else {
