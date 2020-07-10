@@ -57,6 +57,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   panels <- panels[panel_order]
   panel_pos <- convertInd(layout$ROW, layout$COL, nrow)
   layout$panel_pos <- panel_pos
+  side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
@@ -100,12 +101,24 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
 
   #need to register theme element
   sidepanel.spacing <- theme$sidepanel.spacing %||% unit(as.numeric(theme$panel.spacing)*.25,"pt")
-  sidepanel.spacing.x <- theme$sidepanel.spacing.x %||% if(is.null(theme$panel.spacing.x)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.x)*.25,"pt")
-  sidepanel.spacing.y <- theme$sidepanel.spacing.y %||% if(is.null(theme$panel.spacing.y)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.y)*.25,"pt")
-  col.widths <- unit(rep(c(sidepanel.spacing.x, (theme$panel.spacing.x %||% theme$panel.spacing)), length.out = length(panel_table$widths)-1), "pt")
-  panel_table <- gtable_add_col_space(panel_table,
-                                      col.widths)
-  row.heights <- unit(rep(c(sidepanel.spacing.y, (theme$panel.spacing.y %||% theme$panel.spacing)), length.out = length(panel_table$heights)-1), "pt")
+  sidepanel.spacing.x <- theme$sidepanel.spacing.x %||%
+    if(is.null(theme$panel.spacing.x)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.x)*.25,"pt")
+  xpanel_spacing <- theme$panel.spacing.x %||% theme$panel.spacing
+  sidepanel.spacing.y <- theme$sidepanel.spacing.y %||%
+    if(is.null(theme$panel.spacing.y)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.y)*.25,"pt")
+  ypanel_spacing <- theme$panel.spacing.y %||% theme$panel.spacing
+  col.widths <- if("x"%in%side_panels_present){
+    unit(rep(c(sidepanel.spacing.x, xpanel_spacing), length.out = length(panel_table$widths)-1), "pt")
+  } else {
+    xpanel_spacing
+  }
+  panel_table <- gtable_add_col_space(panel_table, col.widths)
+  row.heights <- if("y"%in%side_panels_present){
+    unit(rep(c(sidepanel.spacing.y, ypanel_spacing), length.out = length(panel_table$heights)-1), "pt")
+  } else {
+    ypanel_spacing
+  }
+
   panel_table <- gtable_add_row_space(panel_table,
                                       row.heights)
   browser()
@@ -118,14 +131,24 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   axis_mat_y_left[panel_pos] <- axes$y$left[layout$SCALE_Y]
   axis_mat_y_right <- empty_table
   axis_mat_y_right[panel_pos] <- axes$y$right[layout$SCALE_Y]
-  if (!params$free$x) {
+  if (!params$free$x) { # Remove axis except for left side & bottom side
+    tmp <- layout %>% group_by(COL) %>%
+      summarise(ROW = max(ROW)) %>% {
+        suppressMessages(anti_join(x = layout, y = .))
+      } %>% pull(panel_pos)
 
-    axis_mat_x_top[-1,]<- list(zeroGrob())
-    axis_mat_x_bottom[-nrow,]<- list(zeroGrob())
+    axis_mat_x_top[tmp]<- list(zeroGrob())
+    axis_mat_x_bottom[tmp]<- list(zeroGrob())
+  } else { # for each main panel keep left and bottom side
+
   }
   if (!params$free$y) {
-    axis_mat_y_left[, -1] <- list(zeroGrob())
-    axis_mat_y_right[, -ncol] <- list(zeroGrob())
+    tmp <- layout %>% group_by(ROW) %>%
+      summarise(COL = min(COL)) %>% {
+        suppressMessages(anti_join(x = layout, y = .))
+      } %>% pull(panel_pos)
+    axis_mat_y_left[tmp] <- list(zeroGrob())
+    axis_mat_y_right[tmp] <- list(zeroGrob())
   }
   axis_height_top <- unit(
     apply(axis_mat_x_top, 1, max_height, value_only = TRUE),
@@ -143,39 +166,11 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
     apply(axis_mat_y_right, 2, max_width, value_only = TRUE),
     "cm"
   )
-  # Add back missing axes
-  # if (any(empties)) {
-  #   first_row <- which(apply(empties, 1, any))[1] - 1
-  #   first_col <- which(apply(empties, 2, any))[1] - 1
-  #   row_panels <- which(layout$ROW == first_row & layout$COL > first_col)
-  #   row_pos <- convertInd(layout$ROW[row_panels], layout$COL[row_panels], nrow)
-  #   row_axes <- axes$x$bottom[layout$SCALE_X[row_panels]]
-  #   col_panels <- which(layout$ROW > first_row & layout$COL == first_col)
-  #   col_pos <- convertInd(layout$ROW[col_panels], layout$COL[col_panels], nrow)
-  #   col_axes <- axes$y$right[layout$SCALE_Y[col_panels]]
-  #   inside <- (theme$strip.placement %||% "inside") == "inside"
-  #   if (params$strip.position == "bottom" &&
-  #       !inside &&
-  #       any(!vapply(row_axes, is.zero, logical(1))) &&
-  #       !params$free$x) {
-  #     warn("Suppressing axis rendering when strip.position = 'bottom' and strip.placement == 'outside'")
-  #   } else {
-  #     axis_mat_x_bottom[row_pos] <- row_axes
-  #   }
-  #   if (params$strip.position == "right" &&
-  #       !inside &&
-  #       any(!vapply(col_axes, is.zero, logical(1))) &&
-  #       !params$free$y) {
-  #     warn("Suppressing axis rendering when strip.position = 'right' and strip.placement == 'outside'")
-  #   } else {
-  #     axis_mat_y_right[col_pos] <- col_axes
-  #   }
-  # }
   panel_table <- weave_tables_row(panel_table, axis_mat_x_top, -1, axis_height_top, "axis-t", 3)
   panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, axis_height_bottom, "axis-b", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, axis_width_left, "axis-l", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_right, 0, axis_width_right, "axis-r", 3)
-  #return(panel_table)
+
   params$strip.position <- params$strip.position %||% "top"
   main_panel_pos <- layout %>% filter(PANEL_TYPE%in%"main") %>% pull(panel_pos)
 
@@ -239,7 +234,13 @@ make_sideFacets <- function(facet){
                COL = COL*2-1,
                SCALE_Y = max(SCALE_Y) + 1,
                PANEL_TYPE = "x")
-      layout <- bind_rows(main, yp, xp)
+      even <- layout %>%
+        mutate(ROW = ROW*2,
+               COL = COL*2,
+               PANEL_TYPE = "empty",
+               SCALE_X = max(SCALE_X) + 1,
+               SCALE_Y = max(SCALE_Y) + 1)
+      layout <- bind_rows(main, yp, xp, even)
 
     } else if("x"%in% sidePanel){
       main <- layout %>%
@@ -281,15 +282,18 @@ make_sideFacets <- function(facet){
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
             if(is.null(facet_vars)){
               data <- mutate(data,
-                             PANEL = list(unique(layout$PANEL)))
+                             PANEL = list(layout$PANEL),
+                             PANEL_TYPE = list(layout$PANEL_TYPE)) %>%
+                tidyr::unnest(PANEL, PANEL_TYPE)
             } else {
-              panels <- layout %>% group_by(.dots = facet_vars) %>%
+              panels <- layout %>% group_by(PANEL_TYPE, .dots = facet_vars) %>%
                 summarise(PANEL = list(unique(PANEL)))
-              data <- left_join(data, panels, by = facet_vars)
+              data <- left_join(data, panels, by = facet_vars) %>%
+                tidyr::unnest(PANEL)
             }
 
             data %>%
-              tidyr::unnest(PANEL)
+              filter(!PANEL_TYPE %in% "empty")
           },
           draw_panels = sideFacet_draw_panels
 
