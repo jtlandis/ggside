@@ -1,11 +1,10 @@
 #' @import ggplot2
 #' @import grid
 #' @import rlang
-#' @import glue
-#' @importFrom dplyr select
-#' @importFrom dplyr summarise
-#' @importFrom dplyr left_join
-#' @importFrom dplyr distinct_all
+#' @importFrom glue glue
+#' @import gtable
+#' @import dplyr
+#' @import tidyr
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)
