@@ -3,9 +3,9 @@
 \docType{data}
 \name{geom_xsidebar}
 \alias{geom_xsidebar}
-\alias{GeomXSideBar}
+\alias{GeomXsidebar}
 \alias{geom_ysidebar}
-\alias{GeomYSideBar}
+\alias{GeomYsidebar}
 \title{geom_*sidebar: Plot a sidebar along an axis}
 \usage{
 geom_xsidebar(
@@ -31,7 +31,7 @@ geom_ysidebar(
   ...
 )
 
-GeomYSideBar
+GeomYsidebar
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings reated by [`aes()`] or

@@ -63,7 +63,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   }
   other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   l <- layer(
-    geom = GeomXSideBar, mapping = mapping, data = data, stat = stat,
+    geom = GeomXsidebar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = c(list(na.rm = na.rm), other_args)
   )
@@ -71,18 +71,48 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   l
 }
 
+draw_geom_xsidebar <- function(self, data, panel_params, coord, linejoin = "mitre")
+{
+  if(self$panel_type!=unique(data$PANEL_TYPE)) return(NULL)
+  if (!coord$is_linear()) {
+    aesthetics <- setdiff(names(data), c("x", "y", "xmin",
+                                         "xmax", "ymin", "ymax"))
+    polys <- lapply(split(data, seq_len(nrow(data))), function(row) {
+      poly <- rect_to_poly(row$xmin, row$xmax, row$ymin,
+                           row$ymax)
+      aes <- new_data_frame(row[aesthetics])[rep(1, 5),]
+      GeomPolygon$draw_panel(cbind(poly, aes), panel_params,coord)
+    })
+    ggname("bar", do.call("grobTree", polys))
+  }
+  else {
+    #
+    coords <- coord$transform(data, panel_params)
+    ggname("geom_rect", rectGrob(coords$xmin, coords$ymax,
+                                 width = coords$xmax - coords$xmin,
+                                 height = coords$ymax - coords$ymin,
+                                 default.units = "native", just = c("left","top"),
+                                 gp = gpar(col = coords$colour %||% alpha(coords$xfill,coords$alpha),
+                                           fill = alpha(coords$xfill,coords$alpha),
+                                           lwd = coords$size * .pt,
+                                           lty = coords$linetype,
+                                           linejoin = linejoin,
+                                           lineend = if (identical(linejoin,"round"))"round" else "square")))
+  }
+}
 
 #' @rdname geom_xsidebar
 #' @format NULL
 #' @usage NULL
 #' @importFrom ggplot2 ggproto Geom GeomTile
 #' @export
-GeomXSideBar <- ggplot2::ggproto("XSideBar",
+GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                         ggplot2::GeomTile,
                         required_aes = c("x"),
                         default_aes = aes(y = 0, xfill = "grey20",
                                           width = NA, height = NA,
                                           size = 0.1, alpha = NA),
+                        panel_type = "x",
                         draw_key = function(data, params, size){
                           {
                             if (is.null(data$size)) {
@@ -105,7 +135,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                           #when using StatSidebar - all positions should be absolute.
                           #No conversions should occure here. Simply ensure data has structure
                           data$xfill <- data$xfill %||% params$xfill
-                          #GeomXSidebar is special in that all y values are coerced to a single value
+                          #GeomXsidebar is special in that all y values are coerced to a single value
                           data$y <- 0
                           data$height <- data$height %||% params$height %||% resolution(data$y, FALSE)
                           data$width <- data$width %||% params$width %||% resolution(data$x, FALSE)
@@ -114,44 +144,7 @@ GeomXSideBar <- ggplot2::ggproto("XSideBar",
                                     ymin = y - height/2, ymax = y + height/2, height = NULL)
 
                         },
-                        draw_panel = function (self, data, panel_params, coord, linejoin = "mitre")
-                        {
-                          #
-                          # loc <- unique(data$location)
-                          # .loc <- data_frame(indx = c(1,2), pos = c("bottom","top"))
-                          # indx <- .loc[.loc$pos%in%loc,,drop=F]$indx
-                          # if(panel_params$y$is_discrete()){
-                          #   # panel_params$y$continuous_range[indx] <- panel_params$y$continuous_range[indx] + .expand
-                          #   # panel_params$y$limits <- if(loc=="bottom") c(panel_params$y$limits, "xbar") else c("xbar", panel_params$y$limits)
-                          # } else {
-                          #   panel_params$y$continuous_range[indx] <- panel_params$y$limits[indx]
-                          # }
-                          if (!coord$is_linear()) {
-                            aesthetics <- setdiff(names(data), c("x", "y", "xmin",
-                                                                 "xmax", "ymin", "ymax"))
-                            polys <- lapply(split(data, seq_len(nrow(data))), function(row) {
-                              poly <- rect_to_poly(row$xmin, row$xmax, row$ymin,
-                                                   row$ymax)
-                              aes <- new_data_frame(row[aesthetics])[rep(1, 5),]
-                              GeomPolygon$draw_panel(cbind(poly, aes), panel_params,coord)
-                            })
-                            ggname("bar", do.call("grobTree", polys))
-                          }
-                          else {
-                            #
-                            coords <- coord$transform(data, panel_params)
-                            ggname("geom_rect", rectGrob(coords$xmin, coords$ymax,
-                                                         width = coords$xmax - coords$xmin,
-                                                         height = coords$ymax - coords$ymin,
-                                                         default.units = "native", just = c("left","top"),
-                                                         gp = gpar(col = coords$colour %||% alpha(coords$xfill,coords$alpha),
-                                                                   fill = alpha(coords$xfill,coords$alpha),
-                                                                   lwd = coords$size * .pt,
-                                                                   lty = coords$linetype,
-                                                                   linejoin = linejoin,
-                                                                   lineend = if (identical(linejoin,"round"))"round" else "square")))
-                          }
-                        }
+                        draw_panel = draw_geom_xsidebar
 
 
 )
@@ -177,7 +170,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   }
   other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
   layer(
-    geom = GeomYSideBar, mapping = mapping, data = data, stat = stat,
+    geom = GeomYsidebar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = c(list(na.rm = na.rm), other_args)
   )
@@ -185,7 +178,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
 
 #' @rdname geom_xsidebar
 #' @format NULL
-GeomYSideBar <- ggplot2::ggproto("YSideBar",
+GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                  ggplot2::GeomTile,
                                  required_aes = c("y"),
                                  # optional_aes = c("xintercept"),

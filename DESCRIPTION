@@ -13,8 +13,31 @@ Imports:
   grid,
   rlang,
   dplyr
-RoxygenNote: 7.1.0
+RoxygenNote: 7.1.1
 VignetteBuilder: knitr
 Suggests: 
     knitr,
     rmarkdown
+Collate: 
+    'aes-evaluation.r'
+    'compat-plyr.R'
+    'utilities.r'
+    'aes.r'
+    'all_draw_panel.R'
+    'convience.r'
+    'geoms.r'
+    'ggplot-global.R'
+    'ggplot2_Extras.R'
+    'ggproto.r'
+    'ggsidebar.r'
+    'other_utils.r'
+    'performance.R'
+    'plot-build.R'
+    'plot-construction.R'
+    'position_rescale.r'
+    'scale-type.R'
+    'scales-.R'
+    'scales.R'
+    'sideFacets.R'
+    'stat-.r'
+    'stats.r'

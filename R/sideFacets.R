@@ -140,11 +140,23 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
     axis_mat_x_top[tmp]<- list(zeroGrob())
     axis_mat_x_bottom[tmp]<- list(zeroGrob())
   } else { # for each main panel keep left and bottom side
-
+    tmp <- layout %>%
+      filter(PANEL_TYPE %in% c("empty","x")) %>% {
+        suppressMessages(anti_join(x = layout, y = .))
+      } %>% pull(panel_pos)
+    axis_mat_x_top[tmp]<- list(zeroGrob())
+    axis_mat_x_bottom[tmp]<- list(zeroGrob())
   }
   if (!params$free$y) {
     tmp <- layout %>% group_by(ROW) %>%
       summarise(COL = min(COL)) %>% {
+        suppressMessages(anti_join(x = layout, y = .))
+      } %>% pull(panel_pos)
+    axis_mat_y_left[tmp] <- list(zeroGrob())
+    axis_mat_y_right[tmp] <- list(zeroGrob())
+  } else {
+    tmp <- layout %>%
+      filter(PANEL_TYPE %in% c("main","x")) %>% {
         suppressMessages(anti_join(x = layout, y = .))
       } %>% pull(panel_pos)
     axis_mat_y_left[tmp] <- list(zeroGrob())

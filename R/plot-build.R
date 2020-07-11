@@ -1,3 +1,27 @@
+
+simple_switch <- function(geom_type, default = GeomBlank) {
+  switch(geom_type,
+         Point = GeomMainpoint,
+         default)
+}
+
+clone_layers <- function(layers){
+  layers <- lapply(layers, function(layer){
+   #browser()
+    #cl <- grep("(X|Y)side",class(layer$geom))
+    l <- cloneLayer(layer)
+    g <- l$geom
+    fclass <- stringr::str_extract(class(g), "(?<=Geom).+")[1]
+    geom <- simple_switch(fclass, default = g)
+    layer <- ggproto(NULL, l,
+                 compute_aesthetics = aes_compute,
+                 geom = geom)
+
+    layer
+  })
+  layers
+}
+
 #' @import ggplot2
 #' @export
 ggplot_build.ggside <- function(plot){
@@ -7,6 +31,7 @@ ggplot_build.ggside <- function(plot){
   }
   browser()
 
+  plot$layers <- clone_layers(plot$layers)
   layers <- plot$layers
   layer_data <- lapply(layers, function(y) y$layer_data(plot$data))
 
