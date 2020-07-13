@@ -73,7 +73,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 
 draw_geom_xsidebar <- function(self, data, panel_params, coord, linejoin = "mitre")
 {
-  if(self$panel_type!=unique(data$PANEL_TYPE)) return(NULL)
+  #if(self$panel_type!=unique(data$PANEL_TYPE)) return(NULL)
   if (!coord$is_linear()) {
     aesthetics <- setdiff(names(data), c("x", "y", "xmin",
                                          "xmax", "ymin", "ymax"))

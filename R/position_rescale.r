@@ -117,7 +117,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                      },
                                      setup_data = function(data, params){
-                                      #browser()
+                                       #browser()
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
                                        suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")

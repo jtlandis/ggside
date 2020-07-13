@@ -1,4 +1,15 @@
 
+guess_layer_mapping <- function(layer) {
+  geom_class <- stringr::str_extract(class(layer$geom), "(X|Y)side")
+  val <- if(all(is.na(geom_class))){
+    "main"
+  } else {
+    geom_class <- geom_class[!is.na(geom_class)]
+    to_lower_ascii(substr(geom_class,1,1))
+  }
+  return(val)
+}
+
 simple_switch <- function(geom_type, default = GeomBlank) {
   switch(geom_type,
          Point = GeomMainpoint,
@@ -31,10 +42,14 @@ ggplot_build.ggside <- function(plot){
   }
   browser()
 
-  plot$layers <- clone_layers(plot$layers)
+  #plot$layers <- clone_layers(plot$layers)
   layers <- plot$layers
+  layer_mappings <- lapply(layers, guess_layer_mapping)
   layer_data <- lapply(layers, function(y) y$layer_data(plot$data))
 
+  for(i in seq_along(layer_data)){
+    layer_data[[i]] <- mutate(layer_data[[i]], PANEL_TYPE = list(unique(layer_mappings[[i]])))
+  }
   scales <- plot$scales
   # Apply function to layer and matching data
   by_layer <- function(f) {

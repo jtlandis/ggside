@@ -35,7 +35,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-  #browser()
+  browser()
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -119,18 +119,16 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
     ypanel_spacing
   }
 
-  panel_table <- gtable_add_row_space(panel_table,
-                                      row.heights)
-  browser()
+  panel_table <- gtable_add_row_space(panel_table, row.heights)
   # Add axes
   axis_mat_x_top <- empty_table
-  axis_mat_x_top[panel_pos] <- axes$x$top[layout$SCALE_X]
+  axis_mat_x_top[panel_pos] <- axes$x$top #[layout$SCALE_X]
   axis_mat_x_bottom <- empty_table
-  axis_mat_x_bottom[panel_pos] <- axes$x$bottom[layout$SCALE_X]
+  axis_mat_x_bottom[panel_pos] <- axes$x$bottom #[layout$SCALE_X]
   axis_mat_y_left <- empty_table
-  axis_mat_y_left[panel_pos] <- axes$y$left[layout$SCALE_Y]
+  axis_mat_y_left[panel_pos] <- axes$y$left# [layout$SCALE_Y]
   axis_mat_y_right <- empty_table
-  axis_mat_y_right[panel_pos] <- axes$y$right[layout$SCALE_Y]
+  axis_mat_y_right[panel_pos] <- axes$y$right#[layout$SCALE_Y]
   if (!params$free$x) { # Remove axis except for left side & bottom side
     tmp <- layout %>% group_by(COL) %>%
       summarise(ROW = max(ROW)) %>% {
@@ -284,23 +282,23 @@ make_sideFacets <- function(facet){
           facet,
           compute_layout = function(data, params,
                                     facet_compute = facet$compute_layout){
-            browser()
+            #browser()
             layout <- facet_compute(data, params)
             layout <- sideFacets(layout)
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            browser()
+            #browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
+            data <- unnest(data, PANEL_TYPE)
             if(is.null(facet_vars)){
               data <- mutate(data,
-                             PANEL = list(layout$PANEL),
-                             PANEL_TYPE = list(layout$PANEL_TYPE)) %>%
-                tidyr::unnest(PANEL, PANEL_TYPE)
+                             PANEL = list(layout$PANEL)) %>%
+                tidyr::unnest(PANEL)
             } else {
               panels <- layout %>% group_by(PANEL_TYPE, .dots = facet_vars) %>%
                 summarise(PANEL = list(unique(PANEL)))
-              data <- left_join(data, panels, by = facet_vars) %>%
+              data <- left_join(data, panels, by = c(facet_vars, "PANEL_TYPE")) %>%
                 tidyr::unnest(PANEL)
             }
 
