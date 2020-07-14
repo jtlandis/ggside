@@ -7,12 +7,13 @@ free_fun <- function(x){
   max(x)+(1L:length(x))
 }
 
-sideFacets <- function(layout,
-                       sidePanel = c("x","y"),
-                       x.pos = "top",
-                       y.pos = "right",
-                       scales = "fixed"){
+sidePanelLayout <- function(layout,
+                            ggside,
+                            sidePanel = c("x","y")){
   #browser()
+  x.pos = ggside$x.pos
+  y.pos = ggside$y.pos
+  scales = ggside$scales
   xrow <- ifelse(x.pos=="top","ODD","EVEN")
   mrow <- ifelse(xrow=="EVEN","ODD","EVEN")
   ycol <- ifelse(y.pos=="right","EVEN", "ODD")
@@ -64,17 +65,33 @@ sideFacets <- function(layout,
   return(layout)
 }
 
-#' @export
-make_sideFacets <- function(facet, sides = c("x","y"), x.pos = "top", y.pos = "right", scales = "fixed"){
+sideFacetDraw <- function(facet){
+  UseMethod("sideFacetDraw")
+}
 
+sideFacetDraw.FacetWrap <- function(facet){
+  sideFacetWrap_draw_panels
+}
+
+
+
+#' @export
+make_sideFacets <- function(facet, ggside, sides = c("x","y")){
+
+  sideFacet_draw_panels <- sideFacetDraw(facet)
 
   ggproto(NULL,
           facet,
+          setup_params = function(data, params){
+            params$.possible_columns <- unique(unlist(lapply(data, names)))
+            params$ggside <- ggside
+            params
+          },
           compute_layout = function(data, params,
                                     facet_compute = facet$compute_layout){
             #browser()
             layout <- facet_compute(data, params)
-            layout <- sideFacets(layout, sidePanel = sides, x.pos = x.pos, y.pos = y.pos, scales = scales)
+            layout <- sidePanelLayout(layout, sidePanel = sides, ggside = ggside)
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){

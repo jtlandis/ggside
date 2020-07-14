@@ -33,7 +33,7 @@ weave_tables_row <- function(table, table2, row_shift, row_height, name, z = 1, 
 
 
 
-sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params, ggside) {
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -60,14 +60,8 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   panel_pos <- convertInd(layout$ROW, layout$COL, nrow)
   layout$panel_pos <- panel_pos
   side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
-  if("x" %in% side_panels_present){
-    x.pos <- layout %>% filter(PANEL_TYPE %in% "x") %>% pull(ROW)
-    x.pos <- if(all((x.pos%%2L)==0L)) "bottom" else "top"
-  }
-  if("y" %in% side_panels_present){
-    y.pos <- layout %>% filter(PANEL_TYPE %in% "y") %>% pull(COL)
-    y.pos <- if(all((y.pos%%2L)==0L)) "right" else "left"
-  }
+  x.pos <- params$ggside$x.pos
+  y.pos <- params$ggside$y.pos
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
