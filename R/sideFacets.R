@@ -233,50 +233,89 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
 
 sideFacets <- function(layout,
                        sidePanel = c("x","y"),
-                       scales = "fixed"){
-  if(all(c("x","y")%in%sidePanel)){
-    main <- layout %>%
-      mutate(ROW = ROW*2-1,
-             COL = COL*2-1,
-             PANEL_TYPE = "main")
-    yp <- layout %>%
-      mutate(ROW = ROW*2-1,
-             COL = COL*2,
-             SCALE_X = max(SCALE_X) + 1,
-             PANEL_TYPE = "y")
-    xp <- layout %>%
-      mutate(ROW = ROW*2,
-             COL = COL*2-1,
-             SCALE_Y = max(SCALE_Y) + 1,
-             PANEL_TYPE = "x")
-    even <- layout %>%
-      mutate(ROW = ROW*2,
-             COL = COL*2,
-             PANEL_TYPE = "empty",
-             SCALE_X = max(SCALE_X) + 1,
-             SCALE_Y = max(SCALE_Y) + 1)
-    layout <- bind_rows(main, yp, xp, even)
-
-  } else if("x"%in% sidePanel){
-    main <- layout %>%
-      mutate(ROW = ROW*2-1,
-             PANEL_TYPE = "main")
-    xp <- layout %>%
-      mutate(ROW = ROW*2,
-             SCALE_Y = max(SCALE_Y) + 1,
-             PANEL_TYPE = "x")
-    layout <- bind_rows(main, xp)
+                       x.pos = "top",
+                       y.pos = "right"){
+  #browser()
+  xrow <- ifelse(x.pos=="top","ODD","EVEN")
+  mrow <- ifelse(xrow=="EVEN","ODD","EVEN")
+  ycol <- ifelse(y.pos=="right","EVEN", "ODD")
+  mcol <- ifelse(ycol=="EVEN","ODD","EVEN")
+  if( all(c("x","y")%in% sidePanel)){
+    xcol <- xrow
+    yrow <- ycol
   } else {
-    main <- layout %>%
-      mutate(COL = COL*2-1,
-             PANEL_TYPE = "main")
-    yp <- layout %>%
-      mutate(COL = COL*2,
-             SCALE_X = max(SCALE_X) + 1,
-             PANEL_TYPE = "y")
-    layout <- bind_rows(main, yp)
-
+    xcol <- "ALL"
+    yrow <- "ALL"
+    if("x"%in%sidePanel){
+      mcol <- "ALL"
+    } else {
+      mrow <- "ALL"
+    }
   }
+  data <- data.frame(PANEL_TYPE = c("main", "x", "y"),
+                     ROW_trans = c(mrow,xrow,yrow),
+                     COL_trans = c(mcol,xcol,ycol)) %>%
+    filter(PANEL_TYPE %in% c("main",sidePanel))
+
+  layout <- layout %>%
+    mutate(PANEL_TYPE = list(data$PANEL_TYPE),
+           ROW_trans = list(data$ROW_trans),
+           COL_trans = list(data$COL_trans)) %>%
+    unnest(cols = c(PANEL_TYPE, ROW_trans, COL_trans)) %>%
+    mutate(ROW = case_when(ROW_trans=="EVEN" ~ ROW*2L,
+                           ROW_trans=="ODD" ~ ROW*2L-1L,
+                           ROW_trans=="ALL" ~ ROW),
+           COL = case_when(COL_trans=="EVEN" ~ COL*2L,
+                           COL_trans=="ODD" ~ COL*2L-1L,
+                           COL_trans=="ALL" ~ COL),
+           SCALE_X = case_when(PANEL_TYPE=="y" ~ max(SCALE_X)+1L,
+                               TRUE ~ SCALE_X),
+           SCALE_Y = case_when(PANEL_TYPE=="x" ~ max(SCALE_Y)+1L,
+                               TRUE ~ SCALE_Y))
+
+  # if(all(c("x","y")%in%sidePanel)){
+  #   main <- layout %>%
+  #     mutate(ROW = ROW*2-1,
+  #            COL = COL*2-1,
+  #            PANEL_TYPE = "main")
+  #   yp <- layout %>%
+  #     mutate(ROW = ROW*2-1,
+  #            COL = COL*2,
+  #            SCALE_X = max(SCALE_X) + 1,
+  #            PANEL_TYPE = "y")
+  #   xp <- layout %>%
+  #     mutate(ROW = ROW*2,
+  #            COL = COL*2-1,
+  #            SCALE_Y = max(SCALE_Y) + 1,
+  #            PANEL_TYPE = "x")
+  #   even <- layout %>%
+  #     mutate(ROW = ROW*2,
+  #            COL = COL*2,
+  #            PANEL_TYPE = "empty",
+  #            SCALE_X = max(SCALE_X) + 1,
+  #            SCALE_Y = max(SCALE_Y) + 1)
+  #   layout <- bind_rows(main, yp, xp, even)
+  #
+  # } else if("x"%in% sidePanel){
+  #   main <- layout %>%
+  #     mutate(ROW = ROW*2-1,
+  #            PANEL_TYPE = "main")
+  #   xp <- layout %>%
+  #     mutate(ROW = ROW*2,
+  #            SCALE_Y = max(SCALE_Y) + 1,
+  #            PANEL_TYPE = "x")
+  #   layout <- bind_rows(main, xp)
+  # } else {
+  #   main <- layout %>%
+  #     mutate(COL = COL*2-1,
+  #            PANEL_TYPE = "main")
+  #   yp <- layout %>%
+  #     mutate(COL = COL*2,
+  #            SCALE_X = max(SCALE_X) + 1,
+  #            PANEL_TYPE = "y")
+  #   layout <- bind_rows(main, yp)
+  #
+  # }
   layout <- layout %>%
     arrange(ROW, COL) %>%
     mutate(PANEL = factor(1:n()))
