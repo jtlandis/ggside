@@ -91,8 +91,16 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   panel_table <- empty_table
   panel_table[panel_pos] <- panels
   empties <- apply(panel_table, c(1,2), function(x) is.zero(x[[1]]))
-  p.widths <- unit(rep(c(1,.1), ncol/2), "null")
-  p.heights <- unit(rep(abs(c(aspect_ratio,aspect_ratio*.1)), nrow/2), "null")
+  p.widths <- if("y"%in% side_panels_present) {
+    unit(rep(c(1,.1), ncol/2), "null")
+  } else {
+    unit(rep(1, ncol), "null")
+  }
+  p.heights <- if("x"%in% side_panels_present) {
+    unit(rep(abs(c(aspect_ratio,aspect_ratio*.1)), nrow/2), "null")
+  } else {
+      unit(rep(aspect_ratio, nrow), "null")
+    }
   panel_table <- gtable_matrix("layout", panel_table,
                                widths = p.widths,
                                heights = p.heights, respect = respect,
@@ -107,13 +115,13 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   sidepanel.spacing.y <- theme$sidepanel.spacing.y %||%
     if(is.null(theme$panel.spacing.y)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.y)*.25,"pt")
   ypanel_spacing <- theme$panel.spacing.y %||% theme$panel.spacing
-  col.widths <- if("x"%in%side_panels_present){
+  col.widths <- if("y"%in%side_panels_present){
     unit(rep(c(sidepanel.spacing.x, xpanel_spacing), length.out = length(panel_table$widths)-1), "pt")
   } else {
     xpanel_spacing
   }
   panel_table <- gtable_add_col_space(panel_table, col.widths)
-  row.heights <- if("y"%in%side_panels_present){
+  row.heights <- if("x"%in%side_panels_present){
     unit(rep(c(sidepanel.spacing.y, ypanel_spacing), length.out = length(panel_table$heights)-1), "pt")
   } else {
     ypanel_spacing
@@ -223,60 +231,61 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   panel_table
 }
 
-#' @export
-make_sideFacets <- function(facet){
+sideFacets <- function(layout,
+                       sidePanel = c("x","y"),
+                       scales = "fixed"){
+  if(all(c("x","y")%in%sidePanel)){
+    main <- layout %>%
+      mutate(ROW = ROW*2-1,
+             COL = COL*2-1,
+             PANEL_TYPE = "main")
+    yp <- layout %>%
+      mutate(ROW = ROW*2-1,
+             COL = COL*2,
+             SCALE_X = max(SCALE_X) + 1,
+             PANEL_TYPE = "y")
+    xp <- layout %>%
+      mutate(ROW = ROW*2,
+             COL = COL*2-1,
+             SCALE_Y = max(SCALE_Y) + 1,
+             PANEL_TYPE = "x")
+    even <- layout %>%
+      mutate(ROW = ROW*2,
+             COL = COL*2,
+             PANEL_TYPE = "empty",
+             SCALE_X = max(SCALE_X) + 1,
+             SCALE_Y = max(SCALE_Y) + 1)
+    layout <- bind_rows(main, yp, xp, even)
 
-  sideFacets <- function(layout,
-                         sidePanel = c("x","y"),
-                         scales = "fixed"){
-    if(all(c("x","y")%in%sidePanel)){
-      main <- layout %>%
-        mutate(ROW = ROW*2-1,
-               COL = COL*2-1,
-               PANEL_TYPE = "main")
-      yp <- layout %>%
-        mutate(ROW = ROW*2-1,
-               COL = COL*2,
-               SCALE_X = max(SCALE_X) + 1,
-               PANEL_TYPE = "y")
-      xp <- layout %>%
-        mutate(ROW = ROW*2,
-               COL = COL*2-1,
-               SCALE_Y = max(SCALE_Y) + 1,
-               PANEL_TYPE = "x")
-      even <- layout %>%
-        mutate(ROW = ROW*2,
-               COL = COL*2,
-               PANEL_TYPE = "empty",
-               SCALE_X = max(SCALE_X) + 1,
-               SCALE_Y = max(SCALE_Y) + 1)
-      layout <- bind_rows(main, yp, xp, even)
+  } else if("x"%in% sidePanel){
+    main <- layout %>%
+      mutate(ROW = ROW*2-1,
+             PANEL_TYPE = "main")
+    xp <- layout %>%
+      mutate(ROW = ROW*2,
+             SCALE_Y = max(SCALE_Y) + 1,
+             PANEL_TYPE = "x")
+    layout <- bind_rows(main, xp)
+  } else {
+    main <- layout %>%
+      mutate(COL = COL*2-1,
+             PANEL_TYPE = "main")
+    yp <- layout %>%
+      mutate(COL = COL*2,
+             SCALE_X = max(SCALE_X) + 1,
+             PANEL_TYPE = "y")
+    layout <- bind_rows(main, yp)
 
-    } else if("x"%in% sidePanel){
-      main <- layout %>%
-        mutate(ROW = ROW*2-1,
-               PANEL_TYPE = "main")
-      xp <- layout %>%
-        mutate(ROW = ROW*2,
-               SCALE_Y = max(SCALE_Y) + 1,
-               PANEL_TYPE = "x")
-      layout <- bind_rows(main, xp)
-    } else {
-      main <- layout %>%
-        mutate(COL = COL*2-1,
-               PANEL_TYPE = "main")
-      yp <- layout %>%
-        mutate(COL = COL*2,
-               SCALE_X = max(SCALE_X) + 1,
-               PANEL_TYPE = "y")
-      layout <- bind_rows(main, yp)
-
-    }
-    layout <- layout %>%
-      arrange(ROW, COL) %>%
-      mutate(PANEL = factor(1:n()))
-    return(layout)
   }
+  layout <- layout %>%
+    arrange(ROW, COL) %>%
+    mutate(PANEL = factor(1:n()))
+  return(layout)
+}
+
+#' @export
+make_sideFacets <- function(facet, sides = c("x","y")){
+
 
   ggproto(NULL,
           facet,
@@ -284,7 +293,7 @@ make_sideFacets <- function(facet){
                                     facet_compute = facet$compute_layout){
             #browser()
             layout <- facet_compute(data, params)
-            layout <- sideFacets(layout)
+            layout <- sideFacets(layout, sidePanel = sides)
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
@@ -292,8 +301,9 @@ make_sideFacets <- function(facet){
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
             data <- unnest(data, PANEL_TYPE)
             if(is.null(facet_vars)){
-              data <- mutate(data,
-                             PANEL = list(layout$PANEL)) %>%
+              panels <- layout %>% group_by(PANEL_TYPE) %>%
+                summarise(PANEL = list(unique(PANEL)))
+              data <- left_join(data, panels, by = c("PANEL_TYPE")) %>%
                 tidyr::unnest(PANEL)
             } else {
               panels <- layout %>% group_by(PANEL_TYPE, .dots = facet_vars) %>%
