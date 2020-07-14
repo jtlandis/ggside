@@ -37,7 +37,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-  browser()
+  #browser()
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -60,6 +60,14 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   panel_pos <- convertInd(layout$ROW, layout$COL, nrow)
   layout$panel_pos <- panel_pos
   side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
+  if("x" %in% side_panels_present){
+    x.pos <- layout %>% filter(PANEL_TYPE %in% "x") %>% pull(ROW)
+    x.pos <- if(all((x.pos%%2L)==0L)) "bottom" else "top"
+  }
+  if("y" %in% side_panels_present){
+    y.pos <- layout %>% filter(PANEL_TYPE %in% "y") %>% pull(COL)
+    y.pos <- if(all((y.pos%%2L)==0L)) "right" else "left"
+  }
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
@@ -99,7 +107,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   p.widths <- if("y"%in% side_panels_present) {
     .widths <- c(1, side.panel.scale.y)
     .tmp <- filter(layout, PANEL_TYPE %in%"y") %>% pull(COL)
-    if(!all((.tmp%%2)==0)){
+    if(y.pos=="left"){
       .widths <- rev(.widths)
     }
     unit(rep(.widths, ncol/2), "null")
@@ -109,7 +117,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   p.heights <- if("x"%in% side_panels_present) {
     .heights <- c(aspect_ratio, aspect_ratio*side.panel.scale.x)
     .tmp <- filter(layout, PANEL_TYPE %in% "x") %>% pull(ROW)
-    if(!all((.tmp%%2)==0)){
+    if(x.pos=="top"){
       .heights <- rev(.heights)
     }
     unit(rep(abs(.heights), nrow/2), "null")
@@ -141,17 +149,17 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   } else {
     ypanel_spacing
   }
-
+  browser()
   panel_table <- gtable_add_row_space(panel_table, row.heights)
   # Add axes
   axis_mat_x_top <- empty_table
-  axis_mat_x_top[panel_pos] <- axes$x$top #[layout$SCALE_X]
+  axis_mat_x_top[panel_pos] <- axes$x$top
   axis_mat_x_bottom <- empty_table
-  axis_mat_x_bottom[panel_pos] <- axes$x$bottom #[layout$SCALE_X]
+  axis_mat_x_bottom[panel_pos] <- axes$x$bottom
   axis_mat_y_left <- empty_table
-  axis_mat_y_left[panel_pos] <- axes$y$left# [layout$SCALE_Y]
+  axis_mat_y_left[panel_pos] <- axes$y$left
   axis_mat_y_right <- empty_table
-  axis_mat_y_right[panel_pos] <- axes$y$right#[layout$SCALE_Y]
+  axis_mat_y_right[panel_pos] <- axes$y$right
 
   .xgroupby <- if(!params$free$x) "COL" else c("COL","PANEL_GROUP")
   bottom <- layout %>% group_by(.dots = .xgroupby) %>%
@@ -178,6 +186,30 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
 
   axis_mat_y_left[left] <- list(zeroGrob())
   axis_mat_y_right[right] <- list(zeroGrob())
+
+  if(all(c("x","y") %in% side_panels_present)){
+    x_pos <- layout %>% filter(PANEL_TYPE %in%"x") %>% pull(panel_pos)
+    if(y.pos=="left"){
+      for(i in x_pos){
+        axis_mat_y_left[i][[1]]$width <- NULL
+      }
+    } else {
+      for(i in x_pos){
+        axis_mat_y_right[i][[1]]$width <- NULL
+      }
+    }
+
+    y_pos <- layout %>% filter(PANEL_TYPE %in%"y") %>% pull(panel_pos)
+    if(x.pos=="top"){
+      for(i in y_pos){
+        axis_mat_x_top[i][[1]]$height <- NULL
+      }
+    } else {
+      for(i in y_pos){
+        axis_mat_x_bottom[i][[1]]$height <- NULL
+      }
+    }
+  }
 
   axis_height_top <- unit(
     apply(axis_mat_x_top, 1, max_height, value_only = TRUE),
@@ -219,7 +251,7 @@ sideFacet_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, co
   strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
   strip_name <- paste0("strip-", substr(params$strip.position, 1, 1))
   strip_mat <- empty_table
-  strip_mat[strip_panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]]
+  suppressWarnings({strip_mat[strip_panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]]})
   if (params$strip.position %in% c("top", "bottom")) {
     inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
     if (params$strip.position == "top") {

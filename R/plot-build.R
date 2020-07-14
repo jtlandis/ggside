@@ -71,7 +71,7 @@ ggplot_build.ggside <- function(plot){
   pfacet <- if(length(sides_used)==0) {
     plot$facet
     }else{
-      make_sideFacets(plot$facet, sides = sides_used)
+      make_sideFacets(plot$facet, sides = sides_used, x.pos = "top", y.pos = "right", scales = "free")
   }
   layout <- ggproto(NULL, Layout, facet = pfacet, coord = plot$coordinates)
   data <- layout$setup(data, plot$data, plot$plot_env)

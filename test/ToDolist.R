@@ -14,6 +14,7 @@
 # A lot of what is taken is just to get ggplot2 running correctly. Not
 # everything is needed. I should spend a day and take things out till only the bare bones are present.
 
+# Create a Collapse argument that collapse side Panels per row or column to one side.
 
 #if x is top, then x is odd rows and m is even rows.
 #if y is right, then y is even columns and m is odd columns

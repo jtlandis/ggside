@@ -38,13 +38,6 @@ grab_Main_Mapping <- function(env = NULL){
   return(evaled)
 }
 
-make_ggside <- function(object){
-  if(is.ggside(object)) return(object)
-  class(object) <- c("ggside",class(object))
-  return(object)
-}
-
-is.ggside <- function(x) inherits(x, "ggside")
 
 # proto2 TODO: better way of getting formals for self$draw
 ggproto_formals <- function(x) formals(environment(x)$f)
