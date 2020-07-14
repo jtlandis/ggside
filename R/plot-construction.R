@@ -13,7 +13,7 @@ make_ggside <- function(object, ggside){
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   object$ggside$y.pos <- ggside$y.pos %||% object$ggside$y.pos %||% "right"
-  object$ggside$scales <- ggside$scales %||% object$ggisde$scales %||% "fixed"
+  object$ggside$scales <- ggside$scales %||% object$ggside$scales %||% "fixed"
   return(object)
 }
 

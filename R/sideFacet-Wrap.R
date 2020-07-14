@@ -156,28 +156,51 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right[panel_pos] <- axes$y$right
 
   .xgroupby <- if(!params$free$x) "COL" else c("COL","PANEL_GROUP")
-  bottom <- layout %>% group_by(.dots = .xgroupby) %>%
-    summarise(ROW = max(ROW)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  top <- layout %>% group_by(COL) %>%
-    summarise(ROW = min(ROW)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
+  .ygroupby <- if(!params$free$y) "ROW" else c("ROW","PANEL_GROUP")
 
+  bottom <- layout %>% group_by(.dots = .xgroupby) %>%
+    mutate(ROW2 = max(ROW))
+  top <- layout %>% group_by(COL) %>%
+    mutate(ROW2 = min(ROW))
+  right <- layout %>% group_by(.dots = .ygroupby) %>%
+    mutate(COL2 = max(COL))
+  left <- layout %>% group_by(.dots = .ygroupby) %>%
+    mutate(COL2 = min(COL))
+
+  if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
+    right <- filter(right, COL==COL2|PANEL_TYPE%in%"x")
+    left <- filter(left, COL==COL2|PANEL_TYPE%in%"x")
+  } else {
+    right <- filter(right, COL==COL2)
+    left <- filter(left, COL==COL2)
+  }
+  if(params$ggside$scales%in%c("free","free_x")){ #if x is free, include y PANELS_TYPES
+    top <- filter(top, ROW==ROW2|PANEL_TYPE%in%"y")
+    bottom <- filter(bottom, ROW==ROW2|PANEL_TYPE%in%"y")
+  } else {
+    top <- filter(top, ROW==ROW2)
+    bottom <- filter(bottom, ROW==ROW2)
+  }
+
+  #top, left, bottom, right, variables includes panels that would have axis shown
+  #for their relavent positions.
+  #Do an anti_join against layout to find panels that should get a zeroGrobe
+  bottom <- bottom %>% select(-ROW2) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
+  top <- top %>% select(-ROW2) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
+  right <- right %>% select(-COL2) %>% {
+    suppressMessages(anti_join(x = layout, y = .))
+  } %>% pull(panel_pos)
+  left <- left %>% select(-COL2) %>% {
+    suppressMessages(anti_join(x = layout, y = .))
+  } %>% pull(panel_pos)
+  #pulled panel positions
+  #Place ZeroGrobs
   axis_mat_x_top[top]<- list(zeroGrob())
   axis_mat_x_bottom[bottom]<- list(zeroGrob())
-
-  .ygroupby <- if(!params$free$y) "ROW" else c("ROW","PANEL_GROUP")
-  right <- layout %>% group_by(.dots = .ygroupby) %>%
-    summarise(COL = max(COL)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  left <- layout %>% group_by(.dots = .ygroupby) %>%
-    summarise(COL = min(COL)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-
   axis_mat_y_left[left] <- list(zeroGrob())
   axis_mat_y_right[right] <- list(zeroGrob())
 
