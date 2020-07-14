@@ -169,11 +169,11 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
                               instance = args$instance)
   }
   other_args <- extra_args[!names(extra_args)%in%rescaleArgs]
-  layer(
+  structure(list(layer = layer(
     geom = GeomYsidebar, mapping = mapping, data = data, stat = stat,
     position = position, show.legend = show.legend, inherit.aes = inherit.aes,
     params = c(list(na.rm = na.rm), other_args)
-  )
+  )), class = "ggside")
 }
 
 #' @rdname geom_xsidebar
