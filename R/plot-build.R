@@ -46,7 +46,8 @@ ggplot_build.ggside <- function(plot){
   layers <- plot$layers
   layer_mappings <- lapply(layers, guess_layer_mapping)
   layer_data <- lapply(layers, function(y) y$layer_data(plot$data))
-
+  sides_used <- unlist(layer_mappings)
+  sides_used <- sides_used[!sides_used %in% "main"]
   for(i in seq_along(layer_data)){
     layer_data[[i]] <- mutate(layer_data[[i]], PANEL_TYPE = list(unique(layer_mappings[[i]])))
   }
@@ -67,7 +68,11 @@ ggplot_build.ggside <- function(plot){
 
   # Initialise panels, add extra data for margins & missing faceting
   # variables, and add on a PANEL variable to data
-  pfacet <- make_sideFacets(plot$facet)
+  pfacet <- if(length(sides_used)==0) {
+    plot$facet
+    }else{
+      make_sideFacets(plot$facet, sides = sides_used)
+  }
   layout <- ggproto(NULL, Layout, facet = pfacet, coord = plot$coordinates)
   data <- layout$setup(data, plot$data, plot$plot_env)
 
