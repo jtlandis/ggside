@@ -12,14 +12,6 @@
 These are the various scales that can be applied to the xsidebar or ysidebar
 fill aesthetics, such as xfill and yfill. They have the same usage as
 existing standard ggplot2 scales.
-
-scale_xfill_hue
-
-scale_xfill_gradient
-
-scale_xfill_discrete
-
-scale_xfill_continuous
 }
 \section{Related Functions}{
 

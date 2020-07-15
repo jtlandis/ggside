@@ -35,6 +35,7 @@ Collate:
     'scales-.R'
     'scales.R'
     'sideFacets.R'
+    'sideFacet-Grid.R'
     'sideFacet-Wrap.R'
     'stat-.r'
     'stats.r'

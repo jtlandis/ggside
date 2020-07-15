@@ -4,14 +4,20 @@
 \name{position_rescale}
 \alias{position_rescale}
 \alias{PositionRescale}
-\alias{position_rescale}
 \alias{position_rescaley}
 \alias{position_rescalex}
 \title{Rescale x or y onto new range in margin}
-\format{An object of class \code{PositionRescale} (inherits from \code{Position}, \code{ggproto}, \code{gg}) of length 10.}
+\format{
+An object of class \code{PositionRescale} (inherits from \code{Position}, \code{ggproto}, \code{gg}) of length 10.
+}
 \usage{
-position_rescale(rescale = "y", midpoint = NULL, range = NULL,
-  location = NULL, instance = NULL)
+position_rescale(
+  rescale = "y",
+  midpoint = NULL,
+  range = NULL,
+  location = NULL,
+  instance = NULL
+)
 
 position_rescaley(rescale = "y", ...)
 
@@ -32,8 +38,6 @@ layer with the same instance exists, then the same midpoint and range are used f
 indexed independently.}
 }
 \description{
-Rescale x or y onto new range in margin
-
 Take the range of the specified axsis and rescale it to a new range about a midpoint. By default
 the range will be calculated from the associated main plot axis mapping. The range will either be the resolution
 or 5% of the axsis range, depending if original data is discrete or continuous respectively. Each layer called

@@ -7,9 +7,16 @@
 \alias{flipped_names}
 \title{Utilities for working with bidirectional layers}
 \usage{
-has_flipped_aes(data, params = list(), main_is_orthogonal = NA,
-  range_is_orthogonal = NA, group_has_equal = FALSE, ambiguous = FALSE,
-  main_is_continuous = FALSE, main_is_optional = FALSE)
+has_flipped_aes(
+  data,
+  params = list(),
+  main_is_orthogonal = NA,
+  range_is_orthogonal = NA,
+  group_has_equal = FALSE,
+  ambiguous = FALSE,
+  main_is_continuous = FALSE,
+  main_is_optional = FALSE
+)
 
 flip_data(data, flip = NULL)
 

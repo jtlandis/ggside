@@ -3,8 +3,4 @@
 \docType{package}
 \name{ggsidebar}
 \alias{ggsidebar}
-\alias{ggsidebar-package}
 \title{Please see vignettes for usage instructions}
-\description{
-Please see vignettes for usage instructions
-}

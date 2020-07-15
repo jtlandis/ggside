@@ -4,19 +4,38 @@
 \name{stat_summarise}
 \alias{stat_summarise}
 \alias{stat_summarize}
-\alias{stat_summarize}
 \alias{StatSummarise}
 \alias{StatSummarize}
 \title{Summarise by grouping variable}
-\format{An object of class \code{Summarise} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.}
-\usage{
-stat_summarise(mapping = NULL, data = NULL, geom = "bar",
-  position = "identity", ..., fun = NULL, fun.args = list(),
-  show.legend = NA, inherit.aes = TRUE)
+\format{
+An object of class \code{Summarise} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
 
-stat_summarize(mapping = NULL, data = NULL, geom = "bar",
-  position = "identity", ..., fun = NULL, fun.args = list(),
-  show.legend = NA, inherit.aes = TRUE)
+An object of class \code{Summarize} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
+}
+\usage{
+stat_summarise(
+  mapping = NULL,
+  data = NULL,
+  geom = "bar",
+  position = "identity",
+  ...,
+  fun = NULL,
+  fun.args = list(),
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+stat_summarize(
+  mapping = NULL,
+  data = NULL,
+  geom = "bar",
+  position = "identity",
+  ...,
+  fun = NULL,
+  fun.args = list(),
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 }
 \description{
 Applies a function to a specified grouping variable

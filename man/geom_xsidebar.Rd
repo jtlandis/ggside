@@ -8,13 +8,28 @@
 \alias{GeomYsidebar}
 \title{geom_*sidebar: Plot a sidebar along an axis}
 \usage{
-geom_xsidebar(mapping = NULL, data = NULL, na.rm = FALSE,
-  show.legend = NA, position = "rescale", stat = "identity",
-  inherit.aes = TRUE, instance = NULL, ...)
+geom_xsidebar(
+  mapping = NULL,
+  data = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  position = "rescale",
+  stat = "identity",
+  inherit.aes = TRUE,
+  instance = NULL,
+  ...
+)
 
-geom_ysidebar(mapping = NULL, data = NULL, na.rm = FALSE,
-  show.legend = NA, position = "rescale", stat = "identity",
-  inherit.aes = TRUE, ...)
+geom_ysidebar(
+  mapping = NULL,
+  data = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  position = "rescale",
+  stat = "identity",
+  inherit.aes = TRUE,
+  ...
+)
 
 GeomYsidebar
 }
