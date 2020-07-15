@@ -4,7 +4,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-  #browser()
+
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -32,8 +32,8 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
-  col_vars <- unique(layout[names(params$cols)])
-  row_vars <- unique(layout[names(params$rows)])
+  col_vars <- unique(as.data.frame(layout[names(params$cols)]))
+  row_vars <- unique(as.data.frame(layout[names(params$rows)]))
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
   attr(col_vars, "facet") <- "grid"
@@ -231,7 +231,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, axis_height_bottom, "axis-b", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, axis_width_left, "axis-l", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_right, 0, axis_width_right, "axis-r", 3)
-  browser()
+  #browser()
   #By default strip.positions are top and right. if switch == "both" set to bottom and left
   strip.position <- params$switch %||% "default"
   strip.position <- switch(strip.position,
@@ -276,7 +276,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   }
 
   #Vertical strips/ Cols
-  if(!empty(row_vars)){
+  if(!empty(col_vars)){
     vstrip_name <- paste0("strip-", substr(vertical.strip, 1, 1))
     vstrip_mat <- empty_table
     vstrip_mat[Vstrip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[vertical.strip]]

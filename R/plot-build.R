@@ -40,7 +40,10 @@ ggplot_build.ggside <- function(plot){
   if (length(plot$layers) == 0) {
     plot <- plot + geom_blank()
   }
-  browser()
+
+  if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
+    abort("ggside is not currently compatable with CoordFlip or CoordPolar")
+  }
 
   #plot$layers <- clone_layers(plot$layers)
   layers <- plot$layers

@@ -143,7 +143,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   } else {
     ypanel_spacing
   }
-  browser()
+
   panel_table <- gtable_add_row_space(panel_table, row.heights)
   # Add axes
   axis_mat_x_top <- empty_table
