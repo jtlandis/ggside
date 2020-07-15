@@ -33,7 +33,7 @@ weave_tables_row <- function(table, table2, row_shift, row_height, name, z = 1, 
 
 
 
-sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params, ggside) {
+sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
