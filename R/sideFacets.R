@@ -78,7 +78,7 @@ sideFacetDraw.FacetGrid <- function(facet){
 }
 
 sideFacetDraw.FacetNull <- function(facet){
-  sideFacetNull_draw_panels()
+  sideFacetNull_draw_panels
 }
 
 #' @export
