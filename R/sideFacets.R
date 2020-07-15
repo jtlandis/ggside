@@ -77,6 +77,9 @@ sideFacetDraw.FacetGrid <- function(facet){
   sideFacetGrid_draw_panels
 }
 
+sideFacetDraw.FacetNull <- function(facet){
+  sideFacetNull_draw_panels()
+}
 
 #' @export
 make_sideFacets <- function(facet, ggside, sides = c("x","y")){

@@ -9,7 +9,7 @@
 # Create S3 class for sideFacets when it inherits from NULL, FacetWrap, or FacetGrid.
 #     S3 should exist for compute_layout, map_data, and draw_panels
 #
-# Stop make_sideFacets from making empty panels... A bit unintuative.
+# insure coordflip works correctly... should it change placement of xsidepanels and ysidepanels????
 # REDUCE THE FUNCTIONS IMPORTED.
 # A lot of what is taken is just to get ggplot2 running correctly. Not
 # everything is needed. I should spend a day and take things out till only the bare bones are present.
