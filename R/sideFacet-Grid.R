@@ -1,6 +1,6 @@
 
 
-sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params, ggside) {
+sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -252,42 +252,48 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     filter(!PANEL_TYPE %in% "x") %>% distinct(PANEL, panel_pos)
 
   strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
-  hstrip_name <- paste0("strip-", substr(horizont.strip, 1, 1))
-  vstrip_name <- paste0("strip-", substr(vertical.strip, 1, 1))
-  vstrip_mat <- empty_table
-  vstrip_mat[Vstrip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[vertical.strip]]
-  hstrip_mat <- empty_table
-  hstrip_mat[Hstrip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[horizont.strip]]
 
-  inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
-  if (vertical.strip == "top") {
-    placement <- if (inside_x) -1 else -2
-    strip_pad <- axis_height_top
-  } else {
-    placement <- if (inside_x) 0 else 1
-    strip_pad <- axis_height_bottom
-  }
-  strip_height <- unit(apply(vstrip_mat, 1, max_height, value_only = TRUE), "cm")
-  panel_table <- weave_tables_row(panel_table, vstrip_mat, placement, strip_height, vstrip_name, 2, coord$clip)
-  if (!inside_x) {
+  #Horizontal strips/ Rows
+  if(!empty(row_vars)){
+    hstrip_name <- paste0("strip-", substr(horizont.strip, 1, 1))
+    hstrip_mat <- empty_table
+    hstrip_mat[Hstrip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[horizont.strip]]
+    inside_y <- (theme$strip.placement.y %||% theme$strip.placement %||% "inside") == "inside"
+    if (horizont.strip == "left") {
+      placement <- if (inside_y) -1 else -2
+      strip_pad <- axis_width_left
+    } else {
+      placement <- if (inside_y) 0 else 1
+      strip_pad <- axis_width_right
+    }
     strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
-    panel_table <- weave_tables_row(panel_table, row_shift = placement, row_height = strip_pad)
+    strip_width <- unit(apply(hstrip_mat, 2, max_width, value_only = TRUE), "cm")
+    panel_table <- weave_tables_col(panel_table, hstrip_mat, placement, strip_width, hstrip_name, 2, coord$clip)
+    if (!inside_y) {
+      strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
+      panel_table <- weave_tables_col(panel_table, col_shift = placement, col_width = strip_pad)
+    }
   }
 
-  inside_y <- (theme$strip.placement.y %||% theme$strip.placement %||% "inside") == "inside"
-  if (horizont.strip == "left") {
-    placement <- if (inside_y) -1 else -2
-    strip_pad <- axis_width_left
-  } else {
-    placement <- if (inside_y) 0 else 1
-    strip_pad <- axis_width_right
-  }
-  strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
-  strip_width <- unit(apply(hstrip_mat, 2, max_width, value_only = TRUE), "cm")
-  panel_table <- weave_tables_col(panel_table, hstrip_mat, placement, strip_width, hstrip_name, 2, coord$clip)
-  if (!inside_y) {
-    strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
-    panel_table <- weave_tables_col(panel_table, col_shift = placement, col_width = strip_pad)
+  #Vertical strips/ Cols
+  if(!empty(row_vars)){
+    vstrip_name <- paste0("strip-", substr(vertical.strip, 1, 1))
+    vstrip_mat <- empty_table
+    vstrip_mat[Vstrip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[vertical.strip]]
+    inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
+    if (vertical.strip == "top") {
+      placement <- if (inside_x) -1 else -2
+      strip_pad <- axis_height_top
+    } else {
+      placement <- if (inside_x) 0 else 1
+      strip_pad <- axis_height_bottom
+    }
+    strip_height <- unit(apply(vstrip_mat, 1, max_height, value_only = TRUE), "cm")
+    panel_table <- weave_tables_row(panel_table, vstrip_mat, placement, strip_height, vstrip_name, 2, coord$clip)
+    if (!inside_x) {
+      strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
+      panel_table <- weave_tables_row(panel_table, row_shift = placement, row_height = strip_pad)
+    }
   }
 
 
