@@ -73,6 +73,9 @@ sideFacetDraw.FacetWrap <- function(facet){
   sideFacetWrap_draw_panels
 }
 
+sideFacetDraw.FacetGrid <- function(facet){
+  sideFacetGrid_draw_panels
+}
 
 
 #' @export
