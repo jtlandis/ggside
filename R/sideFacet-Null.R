@@ -1,22 +1,17 @@
 
 
-sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params, ggside) {
-  if ((params$free$x || params$free$y) && !coord$is_free()) {
-    abort(glue("{snake_class(coord)} doesn't support free scales"))
-  }
+sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+
   #browser()
-  if (inherits(coord, "CoordFlip")) {
-    if (params$free$x) {
-      layout$SCALE_X <- seq_len(nrow(layout))
-    } else {
-      layout$SCALE_X <- 1L
-    }
-    if (params$free$y) {
-      layout$SCALE_Y <- seq_len(nrow(layout))
-    } else {
-      layout$SCALE_Y <- 1L
-    }
-  }
+  # if (inherits(coord, "CoordFlip")) {
+  #   if (params$free$x) {
+  #     layout$SCALE_X <- seq_len(nrow(layout))
+  #   } else {
+  #     layout$SCALE_X <- 1L
+  #   }
+  #     layout$SCALE_Y <- 1L
+  #   }
+  # }
 
   ncol <- max(layout$COL)
   nrow <- max(layout$ROW)
@@ -35,7 +30,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   # If user hasn't set aspect ratio, and we have fixed scales, then
   # ask the coordinate system if it wants to specify one
   aspect_ratio <- theme$aspect.ratio
-  if (is.null(aspect_ratio) && !params$free$x && !params$free$y) {
+  if (is.null(aspect_ratio)) {
     aspect_ratio <- coord$aspect(ranges[[1]])
   }
 
@@ -110,48 +105,26 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right <- empty_table
   axis_mat_y_right[panel_pos] <- axes$y$right
 
-  .xgroupby <- if(!params$free$x) "COL" else c("COL","PANEL_GROUP")
-  .ygroupby <- if(!params$free$y) "ROW" else c("ROW","PANEL_GROUP")
+  #with FacetNull there should be at most 3 panels
 
-  bottom <- layout %>% group_by(.dots = .xgroupby) %>%
-    mutate(ROW2 = max(ROW))
+  bottom <- layout %>% group_by(COL) %>%
+    summarise(ROW=max(ROW)) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
   top <- layout %>% group_by(COL) %>%
-    mutate(ROW2 = min(ROW))
-  right <- layout %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = max(COL))
-  left <- layout %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = min(COL))
+    summarise(ROW=min(ROW)) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
+  left <- layout %>% group_by(ROW) %>%
+    summarise(COL=min(COL)) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
+  right <- layout %>% group_by(ROW) %>%
+    summarise(COL=max(COL)) %>% {
+      suppressMessages(anti_join(x = layout, y = .))
+    } %>% pull(panel_pos)
 
-  if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
-    right <- filter(right, COL==COL2|PANEL_TYPE%in%"x")
-    left <- filter(left, COL==COL2|PANEL_TYPE%in%"x")
-  } else {
-    right <- filter(right, COL==COL2)
-    left <- filter(left, COL==COL2)
-  }
-  if(params$ggside$scales%in%c("free","free_x")){ #if x is free, include y PANELS_TYPES
-    top <- filter(top, ROW==ROW2|PANEL_TYPE%in%"y")
-    bottom <- filter(bottom, ROW==ROW2|PANEL_TYPE%in%"y")
-  } else {
-    top <- filter(top, ROW==ROW2)
-    bottom <- filter(bottom, ROW==ROW2)
-  }
 
-  #top, left, bottom, right, variables includes panels that would have axis shown
-  #for their relavent positions.
-  #Do an anti_join against layout to find panels that should get a zeroGrobe
-  bottom <- bottom %>% select(-ROW2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  top <- top %>% select(-ROW2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  right <- right %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  left <- left %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
   #pulled panel positions
   #Place ZeroGrobs
   axis_mat_x_top[top]<- list(zeroGrob())
