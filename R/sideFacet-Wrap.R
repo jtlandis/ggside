@@ -255,20 +255,20 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       summarise(ROW = case_when(params$strip.position=="top" ~ min(ROW),
                                 TRUE ~ max(ROW))) %>%
       semi_join(x = layout, y = ., by = c("PANEL_GROUP","ROW")) %>%
-      filter(!PANEL_TYPE %in% "y") %>% pull(panel_pos)
+      filter(!PANEL_TYPE %in% "y") %>% distinct(PANEL, panel_pos)
   } else if(any(c("left","right")%in%params$strip.position)){
     strip_panel_pos <- layout %>% group_by(PANEL_GROUP) %>%
       summarise(COL = case_when(params$strip.position=="left" ~ min(COL),
                                 TRUE ~ max(COL))) %>%
       semi_join(x = layout, y = ., by = c("PANEL_GROUP","COL")) %>%
-      filter(!PANEL_TYPE %in% "x") %>% pull(panel_pos)
+      filter(!PANEL_TYPE %in% "x") %>% distinct(PANEL, panel_pos)
   }
 
 
   strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
   strip_name <- paste0("strip-", substr(params$strip.position, 1, 1))
   strip_mat <- empty_table
-  suppressWarnings({strip_mat[strip_panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]]})
+  strip_mat[strip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]][strip_panel_pos$PANEL]
   if (params$strip.position %in% c("top", "bottom")) {
     inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
     if (params$strip.position == "top") {
