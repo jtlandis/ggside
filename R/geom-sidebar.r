@@ -72,6 +72,36 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   structure(list(layer = l), class="ggside")
 }
 
+#' @export
+geom_xsidehistogram <- function(mapping = NULL, data = NULL,
+         stat = "bin", position = "stack",
+         ...,
+         binwidth = NULL,
+         bins = NULL,
+         na.rm = FALSE,
+         orientation = NA,
+         show.legend = NA,
+         inherit.aes = TRUE) {
+
+  l <- layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomXsidebar,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      binwidth = binwidth,
+      bins = bins,
+      na.rm = na.rm,
+      orientation = orientation,
+      pad = FALSE,
+      ...
+    )
+  )
+  structure(list(layer=l), class = "ggside")
+}
 
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                         ggplot2::GeomBar,
@@ -79,13 +109,13 @@ GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                                           fill = "grey35", xfill = NA,
                                           size = 0.5, linetype = 1, alpha = NA),
                         setup_data = function(data, params){
-                          data <- parse_side_aes(data, params),
+                          data <- parse_side_aes(data, params)
                           ggplot2::GeomBar$setup_data(data, params)
                         },
                         draw_panel = function(self, data, panel_params, coord, width = NULL, flipped_aes = FALSE){
                           data <- use_xside_aes(data)
-                          ggplot2::GeomBar$setup_data(data = data, panel_params = panel_params,
-                                                      coord = coord, widht = width, flipped_aes = flipped_aes)
+                          ggplot2::GeomBar$draw_panel(data = data, panel_params = panel_params,
+                                                      coord = coord, width = width, flipped_aes = flipped_aes)
                         },
                         draw_key = function(data, params, size){
                           data <- use_xside_aes(data)
@@ -122,6 +152,36 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   structure(list(layer = l), class="ggside")
 }
 
+#' @export
+geom_ysidehistogram <- function(mapping = NULL, data = NULL,
+                                stat = "bin", position = "stack",
+                                ...,
+                                binwidth = NULL,
+                                bins = NULL,
+                                na.rm = FALSE,
+                                orientation = NA,
+                                show.legend = NA,
+                                inherit.aes = TRUE) {
+
+  l <- layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomYsidebar,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      binwidth = binwidth,
+      bins = bins,
+      na.rm = na.rm,
+      orientation = orientation,
+      pad = FALSE,
+      ...
+    )
+  )
+  structure(list(layer = l), class = "ggside")
+}
 
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                  ggplot2::GeomBar,
@@ -129,13 +189,13 @@ GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                                    fill = "grey35", yfill = NA,
                                                    size = 0.5, linetype = 1, alpha = NA),
                                  setup_data = function(data, params){
-                                   data <- parse_side_aes(data, params),
+                                   data <- parse_side_aes(data, params)
                                    ggplot2::GeomBar$setup_data(data, params)
                                  },
                                  draw_panel = function(self, data, panel_params, coord, width = NULL, flipped_aes = FALSE){
                                    data <- use_yside_aes(data)
-                                   ggplot2::GeomBar$setup_data(data = data, panel_params = panel_params,
-                                                               coord = coord, widht = width, flipped_aes = flipped_aes)
+                                   ggplot2::GeomBar$draw_panel(data = data, panel_params = panel_params,
+                                                               coord = coord, width = width, flipped_aes = flipped_aes)
                                  },
                                  draw_key = function(data, params, size){
                                    data <- use_yside_aes(data)
