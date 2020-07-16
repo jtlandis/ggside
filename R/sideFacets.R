@@ -90,7 +90,7 @@ sidePanelLayout <- function(layout,
       .tmp1 <- .tmp %>% select(all_of(c("COL", facet_vars))) %>% distinct()
       .tmp <- .tmp %>%
         summarise(ROW = 0,
-                  PANEL_GROUP = case_when(x.pos=="bottom" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
+                  #PANEL_GROUP = case_when(x.pos=="bottom" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
                   PANEL_TYPE = factor("x", levels = levels(layout$PANEL_TYPE)),
                   SCALE_X = unique(SCALE_X),
                   SCALE_Y = 0) %>%
@@ -111,7 +111,7 @@ sidePanelLayout <- function(layout,
       .tmp1 <- .tmp %>% select(all_of(c("ROW", facet_vars))) %>% distinct()
       .tmp <- .tmp %>%
         summarise(COL = 0,
-                  PANEL_GROUP = case_when(y.pos=="left" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
+                 # PANEL_GROUP = case_when(y.pos=="left" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
                   PANEL_TYPE = factor("y", levels = levels(layout$PANEL_TYPE)),
                   SCALE_X = 0,
                   SCALE_Y = unique(SCALE_Y)) %>%

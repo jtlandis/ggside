@@ -4,7 +4,6 @@
 \alias{scale_xfill}
 \alias{scale_yfill}
 \alias{scale_xfill_hue}
-\alias{scale_xfill_gradient}
 \alias{scale_xfill_discrete}
 \alias{scale_xfill_continuous}
 \title{Scales for the *fill aesthetics}

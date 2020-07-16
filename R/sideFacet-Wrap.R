@@ -50,7 +50,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       layout$SCALE_Y <- 1L
     }
   }
-  browser()
+
   collapse <- params$ggside$collapse %||% "default"
   collapse_y <- collapse %in% c("all","y")
   collapse_x <- collapse %in% c("all","x")
@@ -72,7 +72,8 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     # Add a dummy label
     labels_df <- new_data_frame(list("(all)" = "(all)"), n = 1)
   } else {
-    labels_df <- layout[names(params$facets)]
+    labels_df <- layout %>% select(PANEL_TYPE, all_of(names(params$facets)))%>%
+      filter(PANEL_TYPE%in%"main") %>% select(-PANEL_TYPE) %>% unnest(cols = names(params$facets))
   }
   attr(labels_df, "facet") <- "wrap"
   strips <- render_strips(
@@ -288,13 +289,15 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   params$strip.position <- params$strip.position %||% "top"
   if(any(c("top","bottom")%in%params$strip.position)){
-    strip_panel_pos <- layout %>% group_by(PANEL_GROUP) %>%
+    strip_panel_pos <- layout %>% filter_at(vars(PANEL_GROUP), function(x){!is.na(x)}) %>%
+      group_by(PANEL_GROUP) %>%
       summarise(ROW = case_when(params$strip.position=="top" ~ min(ROW),
                                 TRUE ~ max(ROW))) %>%
       semi_join(x = layout, y = ., by = c("PANEL_GROUP","ROW")) %>%
       filter(!PANEL_TYPE %in% "y") %>% distinct(PANEL, panel_pos)
   } else if(any(c("left","right")%in%params$strip.position)){
-    strip_panel_pos <- layout %>% group_by(PANEL_GROUP) %>%
+    strip_panel_pos <- layout %>% filter_at(vars(PANEL_GROUP), function(x){!is.na(x)}) %>%
+      group_by(PANEL_GROUP) %>%
       summarise(COL = case_when(params$strip.position=="left" ~ min(COL),
                                 TRUE ~ max(COL))) %>%
       semi_join(x = layout, y = ., by = c("PANEL_GROUP","COL")) %>%
