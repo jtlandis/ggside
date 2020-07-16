@@ -41,6 +41,21 @@ grab_Main_Mapping <- function(env = NULL){
   return(evaled)
 }
 
+#' @export
+use_xside_aes <- function(data){
+  data$fill <- data$xfill %NA% data$fill
+  data$colour <- data$xcolour %NA% data$colour
+  data
+}
+
+#' @export
+use_yside_aes <- function(data){
+  data$fill <- data$yfill %NA% data$fill
+  data$colour <- data$ycolour %NA% data$colour
+  data
+}
+
+#' @export
 parse_side_aes <- function(data, params){
   #determine if fill, xfill, or yfill should be used
   all_names <- c(colnames(data),names(params))
