@@ -21,7 +21,7 @@ min_factor <- function(x){
 sidePanelLayout <- function(layout,
                                     ggside,
                                     sidePanel = c("x","y")){
-  browser()
+  #browser()
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -196,7 +196,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            browser()
+            #browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
             layout <- layout %>% unnest(c(facet_vars))
             data <- unnest(data, PANEL_TYPE)

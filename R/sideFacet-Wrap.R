@@ -50,7 +50,10 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       layout$SCALE_Y <- 1L
     }
   }
-
+  browser()
+  collapse <- params$ggside$collapse %||% "default"
+  collapse_y <- collapse %in% c("all","y")
+  collapse_x <- collapse %in% c("all","x")
   ncol <- max(layout$COL)
   nrow <- max(layout$ROW)
   n <- nrow(layout)
@@ -99,22 +102,38 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table[panel_pos] <- panels
   empties <- apply(panel_table, c(1,2), function(x) is.zero(x[[1]]))
   p.widths <- if("y"%in% side_panels_present) {
-    .widths <- c(1, side.panel.scale.y)
-    .tmp <- filter(layout, PANEL_TYPE %in%"y") %>% pull(COL)
-    if(y.pos=="left"){
-      .widths <- rev(.widths)
+    if(collapse_y){
+      .widths <- rep(1, ncol-1)
+      .widths <- c(.widths, sum(.widths)*side.panel.scale.y)
+      if(y.pos=="left"){
+        .widths <- rev(.widths)
+      }
+      unit(.widths, "null")
+    } else {
+      .widths <- c(1, side.panel.scale.y)
+      if(y.pos=="left"){
+        .widths <- rev(.widths)
+      }
+      unit(rep(.widths, ncol/2), "null")
     }
-    unit(rep(.widths, ncol/2), "null")
   } else {
     unit(rep(1, ncol), "null")
   }
   p.heights <- if("x"%in% side_panels_present) {
-    .heights <- c(aspect_ratio, aspect_ratio*side.panel.scale.x)
-    .tmp <- filter(layout, PANEL_TYPE %in% "x") %>% pull(ROW)
-    if(x.pos=="top"){
-      .heights <- rev(.heights)
+    if(collapse_x){
+      .heights <- rep(c(aspect_ratio), nrow-1)
+      .heights <- c(.heights, sum(.heights)*side.panel.scale.x)
+      if(x.pos=="top"){
+        .heights <- rev(.heights)
+      }
+      unit(.heights, "null")
+    } else {
+      .heights <- c(aspect_ratio, aspect_ratio*side.panel.scale.x)
+      if(x.pos=="top"){
+        .heights <- rev(.heights)
+      }
+      unit(rep(abs(.heights), nrow/2), "null")
     }
-    unit(rep(abs(.heights), nrow/2), "null")
   } else {
     unit(rep(aspect_ratio, nrow), "null")
   }
@@ -133,13 +152,31 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     if(is.null(theme$panel.spacing.y)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.y)*.25,"pt")
   ypanel_spacing <- theme$panel.spacing.y %||% theme$panel.spacing
   col.widths <- if("y"%in%side_panels_present){
-    unit(rep(c(sidepanel.spacing.x, xpanel_spacing), length.out = length(panel_table$widths)-1), "pt")
+    if(collapse_y){
+      .tmp <- rep(c(xpanel_spacing), length(panel_table$widths)-2)
+      if(y.pos=="left"){
+        unit(c(sidepanel.spacing.x, .tmp), "pt")
+      } else {
+        unit(c(.tmp, sidepanel.spacing.x), "pt")
+      }
+    } else {
+      unit(rep(c(sidepanel.spacing.x, xpanel_spacing), length.out = length(panel_table$widths)-1), "pt")
+    }
   } else {
     xpanel_spacing
   }
   panel_table <- gtable_add_col_space(panel_table, col.widths)
   row.heights <- if("x"%in%side_panels_present){
-    unit(rep(c(sidepanel.spacing.y, ypanel_spacing), length.out = length(panel_table$heights)-1), "pt")
+    if(collapse_x){
+      .tmp <- rep(c(ypanel_spacing), length(panel_table$heights)-2)
+      if(x.pos=="top"){
+        unit(c(sidepanel.spacing.y, .tmp), "pt")
+      } else {
+        unit(c(.tmp, sidepanel.spacing.y), "pt")
+      }
+    } else {
+      unit(rep(c(sidepanel.spacing.y, ypanel_spacing), length.out = length(panel_table$heights)-1), "pt")
+    }
   } else {
     ypanel_spacing
   }
@@ -268,7 +305,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
   strip_name <- paste0("strip-", substr(params$strip.position, 1, 1))
   strip_mat <- empty_table
-  strip_mat[strip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]][strip_panel_pos$PANEL]
+  strip_mat[strip_panel_pos$panel_pos] <- unlist(unname(strips), recursive = FALSE)[[params$strip.position]]
   if (params$strip.position %in% c("top", "bottom")) {
     inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
     if (params$strip.position == "top") {
