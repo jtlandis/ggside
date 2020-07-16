@@ -10,8 +10,9 @@
 #' cause all y scales of the x side Panels to be independent.
 #'
 #' @export
-ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed"){
+ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL){
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
-                 scales = scales), class = "ggside")
+                 scales = scales,
+                 collapse = collapse), class = "ggside")
 }

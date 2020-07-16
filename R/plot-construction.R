@@ -27,6 +27,7 @@ make_ggside <- function(object, ggside){
   if(!object$ggside$scales%in%c("fixed","free","free_x","free_y")){
     abort("scales may only be \"fixed\", \"free\", \"free_x\" or \"free_y\".")
   }
+  object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
   return(object)
 }
 

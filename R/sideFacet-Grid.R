@@ -4,7 +4,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-
+  browser()
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -17,7 +17,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       layout$SCALE_Y <- 1L
     }
   }
-
+  collapse <- params$ggside$collapse %||% "default"
   ncol <- max(layout$COL)
   nrow <- max(layout$ROW)
   n <- nrow(layout)
@@ -32,8 +32,8 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
-  col_vars <- unique(as.data.frame(layout[names(params$cols)]))
-  row_vars <- unique(as.data.frame(layout[names(params$rows)]))
+  col_vars <- unique(as.data.frame(unnest(layout[names(params$cols)])))
+  row_vars <- unique(as.data.frame(unnest(layout[names(params$rows)])))
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
   attr(col_vars, "facet") <- "grid"
@@ -66,34 +66,55 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     widths <- rep(1, ncol)
   }
   if ("y" %in% side_panels_present){
-    widths <- vapply(widths, function(x, y, z){
-      vec <- c(1, y)
-      if(z){
-        vec <- rev(vec)
+    if(collapse %in% c("all","y")){
+      if(y.pos=="left"){
+        widths <- widths[2:length(widths)]
+        widths <- c(sum(widths)*side.panel.scale.y, widths)
+      } else {
+        widths <- widths[1:(length(widths)-1)]
+        widths <- c(widths, sum(widths)*side.panel.scale.y)
       }
-      x <- x*vec
-      x}, FUN.VALUE = numeric(2), y = side.panel.scale.y, z = y.pos=="left")
-    widths <- as.vector(widths)
+    } else {
+      widths <- vapply(widths, function(x, y, z){
+        vec <- c(1, y)
+        if(z){
+          vec <- rev(vec)
+        }
+        x <- x*vec
+        x}, FUN.VALUE = numeric(2), y = side.panel.scale.y, z = y.pos=="left")
+      widths <- as.vector(widths)
+    }
   }
   panel_widths <- unit(widths, "null")
 
   if (params$space_free$y) {
     ps <- layout$PANEL[layout$COL == 1]
     heights <- vapply(ps, function(i) diff(ranges[[i]]$y.range), numeric(1))
-  } else if ("x"%in%side_panels_present){
+  } else if (("x"%in%side_panels_present)&(!collapse %in% c("all","x"))){
     heights <- rep(1*aspect_ratio, nrow/2)
   } else {
     heights <- rep(1*aspect_ratio, nrow)
   }
   if ("x" %in% side_panels_present){
-    heights <- vapply(heights, function(x, y, z){
-      vec <- c(1, y)
-      if(z){
-        vec <- rev(vec)
+    if(collapse %in% c("all","x")){
+      if(x.pos=="top"){
+        heights <- heights[2:length(heights)]
+        heights <- c(sum(heights)*side.panel.scale.x, heights)
+      } else {
+        heights <- heights[1:(length(heights)-1)]
+        heights <- c(heights, sum(heights)*side.panel.scale.x)
       }
-      x <- x*vec
-      x}, FUN.VALUE = numeric(2), y = side.panel.scale.x, z = x.pos=="top")
-    heights <- as.vector(heights)
+
+    } else {
+      heights <- vapply(heights, function(x, y, z){
+        vec <- c(1, y)
+        if(z){
+          vec <- rev(vec)
+        }
+        x <- x*vec
+        x}, FUN.VALUE = numeric(2), y = side.panel.scale.x, z = x.pos=="top")
+      heights <- as.vector(heights)
+    }
   }
   panel_heights <- unit(heights, "null")
 
