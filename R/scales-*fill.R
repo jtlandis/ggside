@@ -16,6 +16,8 @@
 #' \item scale_yfill_discrete
 #' \item scale_xfill_continuous
 #' \item scale_yfill_continuous
+#' \item scale_xfill_manual
+#' \item scale_yfill_manual
 #' \item scale_xfill_gradient
 #' \item scale_yfill_gradient
 #' \item scale_xfill_gradientn
@@ -32,6 +34,14 @@ scale_xfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 
 {
   ggplot2::discrete_scale(aesthetics, "hue",
                           scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+}
+
+#' scale_xfill_manual
+#' @rdname scale_xfill
+#' @usage NULL
+#' @export
+scale_xfill_manual <- function(..., values, aesthetics = "xfill", breaks = waiver()) {
+  manual_scale(aesthetics, values, breaks, ...)
 }
 
 #' scale_xfill_gradient
@@ -82,6 +92,14 @@ scale_yfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 
 {
   ggplot2::discrete_scale(aesthetics, "hue",
                           scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+}
+
+#' scale_yfill_manual
+#' @rdname scale_yfill
+#' @usage NULL
+#' @export
+scale_yfill_manual <- function(..., values, aesthetics = "yfill", breaks = waiver()) {
+  manual_scale(aesthetics, values, breaks, ...)
 }
 
 #' scale_yfill_gradient
