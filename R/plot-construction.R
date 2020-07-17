@@ -1,7 +1,7 @@
 
 
 #' @export
-ggplot_add.ggside <- function(object, plot, object_name){
+ggplot_add.ggside_layer <- function(object, plot, object_name){
   plot <- make_ggside(plot, object)
   if("layer"%in%names(object)){
     plot + object$layer
@@ -12,7 +12,7 @@ ggplot_add.ggside <- function(object, plot, object_name){
 
 
 make_ggside <- function(object, ggside){
-  if(!is.ggside(object)){
+  if(!is.ggside_layer(object)){
     class(object) <- c("ggside",class(object))
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
@@ -27,7 +27,10 @@ make_ggside <- function(object, ggside){
   if(!object$ggside$scales%in%c("fixed","free","free_x","free_y")){
     abort("scales may only be \"fixed\", \"free\", \"free_x\" or \"free_y\".")
   }
+  object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
   return(object)
 }
 
 is.ggside <- function(x) inherits(x, "ggside")
+
+is.ggside_layer <- function(x) inherits(x, "ggside_layer")

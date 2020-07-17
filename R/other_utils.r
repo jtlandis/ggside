@@ -1,7 +1,7 @@
 #' @import ggplot2
 #' @import grid
 #' @import rlang
-#' @importFrom glue glue
+#' @importFrom glue glue glue_collapse
 #' @import gtable
 #' @import dplyr
 #' @import tidyr
@@ -16,12 +16,15 @@ find_build_plotEnv <- function(){
   return(Env[[1]])
 }
 
+"%NA%" <- function(a, b){
+  if(all(is.na(a))) b else a
+}
+
 get_variable <- function(x, envir){
   if(is.null(envir)) return(NULL)
   if(!x%in%ls(envir, all.names = T)) return(NULL)
   return(get(x, envir = envir))
 }
-
 
 grab_Main_Mapping <- function(env = NULL){
   if(is.null(env)|!is.environment(env)){
@@ -38,6 +41,56 @@ grab_Main_Mapping <- function(env = NULL){
   return(evaled)
 }
 
+#' @export
+use_xside_aes <- function(data){
+  data$fill <- data$xfill %NA% data$fill
+  data$colour <- data$xcolour %NA% data$colour
+  data
+}
+
+#' @export
+use_yside_aes <- function(data){
+  data$fill <- data$yfill %NA% data$fill
+  data$colour <- data$ycolour %NA% data$colour
+  data
+}
+
+#' @export
+parse_side_aes <- function(data, params){
+  #determine if fill, xfill, or yfill should be used
+  all_names <- c(colnames(data),names(params))
+  if(any(c("fill", "xfill", "yfill")%in% all_names)) {
+    fill_opts <- all_names[all_names %in% c("fill", "xfill", "yfill")]
+    side_fill <- c("xfill","yfill")%in%fill_opts
+    if(any(side_fill)){
+      fill_prec <- c("xfill","yfill")[side_fill]
+    } else {
+      fill_prec <- "fill"
+    }
+    data[[fill_prec]] <- data[[fill_prec]] %||% params[[fill_prec]]
+    exclude <- fill_opts[!fill_opts %in% fill_prec]
+    if(length(exclude)!=0){
+      data <- select(data, -all_of(exclude))
+    }
+  }
+
+  if(any(c("colour", "xcolour", "ycolour")%in% all_names)) {
+    colour_opts <- all_names[all_names %in% c("colour", "xcolour", "ycolour")]
+    side_colour <- c("xcolour","ycolour")%in%colour_opts
+    if(any(side_colour)){
+      colour_prec <- c("xcolour","ycolour")[side_colour]
+    } else {
+      colour_prec <- "colour"
+    }
+    data[[colour_prec]] <- data[[colour_prec]] %||% params[[colour_prec]]
+    exclude <- colour_opts[!colour_opts %in% colour_prec]
+    if(length(exclude)!=0){
+      data <- select(data, -all_of(exclude))
+    }
+  }
+
+  return(data)
+}
 
 # proto2 TODO: better way of getting formals for self$draw
 ggproto_formals <- function(x) formals(environment(x)$f)

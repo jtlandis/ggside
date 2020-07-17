@@ -21,7 +21,8 @@ min_factor <- function(x){
 sidePanelLayout <- function(layout,
                                     ggside,
                                     sidePanel = c("x","y")){
-  browser()
+  #browser()
+  facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
   scales = ggside$scales
@@ -85,13 +86,16 @@ sidePanelLayout <- function(layout,
 
     if(!"x"%in% include){
       .tmp <- layout %>% filter(PANEL_TYPE %in% "main") %>%
-        group_by(COL) %>%
+        group_by(COL)
+      .tmp1 <- .tmp %>% select(all_of(c("COL", facet_vars))) %>% distinct()
+      .tmp <- .tmp %>%
         summarise(ROW = 0,
-                  PANEL_GROUP = case_when(x.pos=="bottom" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
+                  #PANEL_GROUP = case_when(x.pos=="bottom" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
                   PANEL_TYPE = factor("x", levels = levels(layout$PANEL_TYPE)),
                   SCALE_X = unique(SCALE_X),
                   SCALE_Y = 0) %>%
-        left_join(x = ., y = collapsed, by = c("PANEL_TYPE"))
+        left_join(x = . , y = collapsed, by = c("PANEL_TYPE")) %>%
+        left_join(x = ., y = .tmp1, by = "COL")
       layout <- bind_rows(layout, .tmp)
       if(x.pos=="bottom"){
         layout <- mutate(layout, ROW = case_when(ROW_trans=="bottom" ~ max(ROW)+1L, TRUE ~ ROW))
@@ -103,13 +107,16 @@ sidePanelLayout <- function(layout,
 
     if(!"y"%in% include){
       .tmp <- layout%>% filter(PANEL_TYPE %in% "main") %>%
-        group_by(ROW) %>%
+        group_by(ROW)
+      .tmp1 <- .tmp %>% select(all_of(c("ROW", facet_vars))) %>% distinct()
+      .tmp <- .tmp %>%
         summarise(COL = 0,
-                  PANEL_GROUP = case_when(y.pos=="left" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
+                 # PANEL_GROUP = case_when(y.pos=="left" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
                   PANEL_TYPE = factor("y", levels = levels(layout$PANEL_TYPE)),
                   SCALE_X = 0,
                   SCALE_Y = unique(SCALE_Y)) %>%
-        left_join(x = ., y = collapsed, by = c("PANEL_TYPE"))
+        left_join(x = ., y = collapsed, by = c("PANEL_TYPE")) %>%
+        left_join(x = ., y = .tmp1, by = "ROW")
       layout <- bind_rows(layout, .tmp)
       if(y.pos=="right"){
         layout <- mutate(layout, COL = case_when(COL_trans=="right" ~ max(COL)+1L, TRUE ~ COL))
@@ -125,8 +132,11 @@ sidePanelLayout <- function(layout,
            SCALE_Y = case_when(PANEL_TYPE=="x" ~ y_scale_fun(SCALE_Y),
                                TRUE ~ SCALE_Y)) %>%
     arrange(ROW, COL) %>%
+    select(-ROW_trans, -COL_trans, -PANEL) %>% group_by(ROW, COL) %>%
+    summarise_all(function(x){list(x)}) %>% ungroup() %>%
     mutate(PANEL = factor(1:n())) %>%
-    select(-ROW_trans, -COL_trans)
+    unnest(c("SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE")) %>%
+    distinct_all()
   return(layout)
 }
 
@@ -169,7 +179,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 summarise(SCALE_X = list(unique(SCALE_X))) %>%
                 pull(SCALE_X) %>% lapply(FUN = length) %>% unlist()
               if(!all(checkX==1)){
-                warn("free x scales is not compatible with collapse {collapse}. Assigning new x scales")
+                warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales"))
                 layout <- mutate(layout, SCALE_X = COL)
               }
             }
@@ -178,7 +188,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 summarise(SCALE_Y = list(unique(SCALE_Y))) %>%
                 pull(SCALE_Y) %>% lapply(FUN = length) %>% unlist()
               if(!all(checkY==1)){
-                warn("free y scales is not compatible with collapse {collapse}. Assigning new y scales")
+                warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales"))
                 layout <- mutate(layout, SCALE_Y = ROW)
               }
             }
@@ -186,12 +196,10 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            browser()
+            #browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-            collapsedSet <- layout %>% filter_at(vars(matches(facet_vars)), any_vars(is.na(.)))
-            layout <- layout %>% filter_at(vars(matches(facet_vars)), any_vars(!is.na(.)))
+            layout <- layout %>% unnest(c(facet_vars))
             data <- unnest(data, PANEL_TYPE)
-            .data <- data
             if(is.null(facet_vars)){
               panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
                 group_by(PANEL_TYPE) %>%
@@ -206,8 +214,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 tidyr::unnest(PANEL)
             }
 
-            data %>%
-              filter(!PANEL_TYPE %in% "empty")
+            data
           },
           draw_panels = sideFacet_draw_panels
 
