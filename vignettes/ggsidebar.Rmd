@@ -1,0 +1,205 @@
+---
+title: "ggsidebar"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{ggsidebar}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  fig.width = 7,
+  fig.height = 4
+)
+```
+
+```{r setup}
+library(dplyr)
+library(ggsidebar)
+library(ggplot2)
+```
+
+
+# ggsidebar
+
+The package **ggsidebar** was designed to enable users to add metadata to their ggplots with ease. While adding metadata information is not extremely difficult to do with `geom_tile` or other geoms, it can be frustrating to the user positioning these geometires away from the main plot. Additionally, if the user wants to use a color guide with the `fill` aesthetic, then they may run into conflicts when one layer uses a discrete scale and another uses a continuous scale.
+
+
+# Motivation
+
+Lets look at a very simple example set using `dplyr` to summarise the `diamonds` dataset.
+
+```{r}
+library(dplyr)
+summariseDiamond <- diamonds %>%
+  mutate(`Cut Clarity` = paste(cut, clarity)) %>%
+  group_by(`Cut Clarity`,cut, clarity, color) %>%
+  summarise(n = n(),
+            `mean Price` = mean(price),
+            sd = sd(price))
+ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`))
+```
+
+
+
+```{r, error=T}
+p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_tile(aes(x=0, fill = cut))
+tryCatch({
+  p
+  },
+  error = function(p) p
+)
+```
+
+As you can see, trying to place a colorbar causes an error because the previous `geom_tile` call has already mapped `mean Price` to `fill` and has deemed the scale as continuous. Thus a categorical variable is unable to map to the `fill` aesthetic anymore.
+
+However, you could map another continuous variable, but this will place these to the same guide, shifting the limits and washing out all color.
+
+```{r}
+summariseDiamond <- summariseDiamond %>%
+  group_by(`Cut Clarity`) %>%
+  mutate(`sd of means` = sd(`mean Price`))
+#distinct(summariseDiamond, `Summarise Colors`, `Total Summarised`)
+ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_tile(aes(x=0, fill = `sd of means`))
+```
+
+Using **ggsidebar** allows for aesthetics to be mapped to a separate scale, which can also be controlled with `scale_*fill_gradient` functions (more on this later).  
+
+```{r}
+ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_ysidetile(aes(x = "sd of means", yfill = `sd of means`)) +
+  scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
+```
+
+```{r}
+ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_ysidetile(aes(x = "max", yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = max) +
+  geom_ysidetile(aes(x = "mean",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = mean) +
+  geom_ysidetile(aes(x = "median",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = median) +
+  geom_ysidetile(aes(x = "min",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = min) +
+  scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
+```
+
+```{r}
+.tmp <- summariseDiamond %>% group_by(`Cut Clarity`) %>%
+  summarise_at(vars(`mean Price`),.funs = list(max,median,mean,min)) %>%
+  tidyr::gather(key = key, value = value, -`Cut Clarity`)
+
+ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_ysidetile(data = .tmp, aes(x = key, yfill = value)) +
+  scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
+```
+
+Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respecitively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggsidebar** can give some ease to plotting information to the sides of the main figure.
+
+```{r, error=T}
+p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+  geom_tile(aes(fill = `mean Price`)) +
+  geom_ysidetile(aes(yfill = `sd of means`)) + #sets yfill to a continuous scale
+  geom_ysidetile(aes(yfill = cut)) #attempting to add discrete color values
+tryCatch({
+  p
+},
+error = function(err){
+  print(paste(err))
+})
+
+```
+
+
+# How to Use
+### Geom
+
+`geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometeries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precidence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
+
+### Available Geoms
+
+The following geoms are currently available to use right away from the `ggside` package. Each of the following ggproto `Geom*`'s are total clones to `GeomXside*` or `GeomYside*` with the only variations being the additional color aesthetics. The `geom_*side*` functions return a *ggside_layer* object. When a *ggside_layer* is added to a ggplot, the plot is transformed into a *ggside* object which has a different `ggplot_build` S3 method. This method is what allows for the side geoms to be plotted on a separate panel.
+
+* GeomBar
+* GeomBoxplot
+* GeomDensity
+* GeomFreqpoly
+* GeomLine
+* GeomPath
+* GeomPoint
+* GeomText
+* GeomTile
+* GeomViolin
+
+### Facets
+
+Techniquely speaking `ggside`'s main workhorse is the `Facet` framework. In `ggplot_build.ggside`, each layer's geom class is inspected to see if they match the pattern **"(X|Y)side"**, in which case, `ggplot_build.ggside` will return a `PANEL_TYPE` indicating either `"main"`,`"x"`, or `"y"`. The values in `PANEL_TYPE` help predict which extra panels needed to be drawn per main panel produced by the original `Facet` class the ggplot holds.
+
+`ggside` Currently works with `ggplot2`'s three base facet classes, `FacetNull`, `FacetWrap` and `FacetGrid`. If you wish to extend `ggside` to another package's custom facet function, then you must also export a `sideFacetDraw` S3 method, which will be called inplace of the original Facet's `draw_panels` method. Helpful computed variables in the `layout` object are `PANEL_TYPE` which indicates if the `PANEL` expects a side geom or default geom, and `PANEL_GROUP` which helps clarify which `PANEL`'s are grouped together in a facet. These additional computed variables and the `ggside` object passed to `params` will have the information needed to help you draw panels for you custom facet with `ggside`.
+
+#### Examples with Facets
+
+```{r}
+i2 <- iris %>%
+  mutate(Species2 = rep(c("A","B"), 75))
+p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
+  geom_point()
+```
+
+
+```{r}
+p2 <- p + geom_xsidedensity(aes(y=stat(density)))+
+  geom_ysidedensity(aes(x=stat(density))) +
+  theme_bw()
+p2 + labs(title = "FacetNull")
+```
+
+```{r}
+p2 + facet_wrap(Species~Species2) +
+  labs(title = "FacetWrap")
+```
+
+```{r}
+p2 + facet_grid(Species~Species2) +
+  labs(title = "FacetGrid")
+```
+
+
+Further control on how the `sideFacets` are handled may be done with the `ggside` function.
+
+```{r}
+p2 + ggside(x.pos = "bottom", y.pos = "left") +
+  labs(title = "FacetNull", subtitle = "Xside placed bottom, Yside placed left")
+```
+
+When using having multiple panels, it may be handy to collapse side panels to one side, which helps save space.
+
+```{r}
+p2 + facet_wrap(Species~Species2) +
+  labs(title = "FacetWrap", subtitle = "Collapsing Xside Panels") +
+  ggside(collapse = "x")
+```
+
+```{r}
+p2 + facet_grid(Species~Species2) +
+  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
+  ggside(collapse = "all")
+```
+
+Note that when collapsing panels on `FacetGrid`, the panels apear under the strips whereas on `FacetWrap` they appear above the strips. This is because `FacetWrap`, collapsing panels in the same column or row may not share the same facet variable, which would be confusing since the strip would not represent the data entirely. This is not the case with `FacetGrid` since each row or column is dictated by the facet variable.
+
+Collaping on an x or y coerces all panels in that column or row to the same scale, thus `scales = "free_x"` is uncompatible with `collapse = "x"`.
+
+```{r}
+p2 + facet_wrap(Species~Species2, scales = "free") +
+  labs(title = "FacetWrap", subtitle = "Collapsing Xside Panels") +
+  ggside(collapse = "x")
+```
+

@@ -30,14 +30,7 @@ mtcars1$testPositions <- rep(c("left","right"),176)
 #Test1 mainplot tile fill - continuous on x, discrete on y
 ggplot(mtcars1, aes(Cars, qualities)) +
   geom_tile(aes(fill = scaledValue)) +
-  geom_line(aes(y = scaledValue, color = qualities, group = qualities),
-            position = "rescale") +
-  geom_point(aes(y = scaledValue, color = qualities, group = qualities),
-             position = position_rescale(instance = 1)) +
-  geom_boxplot(aes(x = scaledValue, color = qualities),
-               position = position_rescale(rescale = "x")) +
-  facet_grid(rows = vars(qualityCase), cols = vars(carCase), scales = "free",space = "free") +
-  theme(axis.text.x = element_text(angle = 90))
+  geom_ysidetile(aes(yfill = qualityCase))
 
 ggplot(mtcars1, aes(Cars, qualities)) +
   geom_tile(aes(fill = scaledValue)) +

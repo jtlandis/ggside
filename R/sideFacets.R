@@ -179,7 +179,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 summarise(SCALE_X = list(unique(SCALE_X))) %>%
                 pull(SCALE_X) %>% lapply(FUN = length) %>% unlist()
               if(!all(checkX==1)){
-                warn("free x scales is not compatible with collapse {collapse}. Assigning new x scales")
+                warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales"))
                 layout <- mutate(layout, SCALE_X = COL)
               }
             }
@@ -188,7 +188,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 summarise(SCALE_Y = list(unique(SCALE_Y))) %>%
                 pull(SCALE_Y) %>% lapply(FUN = length) %>% unlist()
               if(!all(checkY==1)){
-                warn("free y scales is not compatible with collapse {collapse}. Assigning new y scales")
+                warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales"))
                 layout <- mutate(layout, SCALE_Y = ROW)
               }
             }
