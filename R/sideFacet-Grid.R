@@ -32,9 +32,9 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   y.pos <- params$ggside$y.pos
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
-
-  col_vars <- unique(as.data.frame(unnest(layout[names(params$cols)], cols = names(params$cols))))
-  row_vars <- unique(as.data.frame(unnest(layout[names(params$rows)], cols = names(params$rows))))
+  layout <- layout %>% unnest(cols = c(names(params$cols),names(params$rows)))
+  col_vars <- unique(as.data.frame(layout[names(params$cols)]))
+  row_vars <- unique(as.data.frame(layout[names(params$rows)]))
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
   attr(col_vars, "facet") <- "grid"
@@ -177,8 +177,8 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right <- empty_table
   axis_mat_y_right[panel_pos] <- axes$y$right
 
-  .xgroupby <- if(!params$free$x) "COL" else c("COL","PANEL_GROUP")
-  .ygroupby <- if(!params$free$y) "ROW" else c("ROW","PANEL_GROUP")
+  .xgroupby <- "COL"
+  .ygroupby <- "ROW"
 
   bottom <- layout %>% group_by(.dots = .xgroupby) %>%
     mutate(ROW2 = max(ROW))

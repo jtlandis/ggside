@@ -44,7 +44,7 @@ ggplot_build.ggside <- function(plot){
   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
   }
-
+  #browser()
   #plot$layers <- clone_layers(plot$layers)
   layers <- plot$layers
   layer_mappings <- lapply(layers, guess_layer_mapping)

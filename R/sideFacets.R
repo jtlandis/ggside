@@ -126,17 +126,20 @@ sidePanelLayout <- function(layout,
     }
 
   }
+  #browser()
+  layout
   layout <- layout %>%
     mutate(SCALE_X = case_when(PANEL_TYPE=="y" ~ x_scale_fun(SCALE_X),
                                TRUE ~ SCALE_X),
            SCALE_Y = case_when(PANEL_TYPE=="x" ~ y_scale_fun(SCALE_Y),
                                TRUE ~ SCALE_Y)) %>%
-    arrange(ROW, COL) %>%
-    select(-ROW_trans, -COL_trans, -PANEL) %>% group_by(ROW, COL) %>%
-    summarise_all(function(x){list(x)}) %>% ungroup() %>%
+    select(-ROW_trans, -COL_trans, -PANEL)
+  Facet_Vars <- layout %>% select(ROW, COL, all_of(facet_vars)) %>%
+    distinct_all() %>% group_by(ROW, COL) %>% summarise_all(function(x){list(x)})
+  layout <- layout %>% select(-all_of(facet_vars)) %>%
+    distinct_all() %>% arrange(ROW, COL) %>%
     mutate(PANEL = factor(1:n())) %>%
-    unnest(c("SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE")) %>%
-    distinct_all()
+    left_join(x = ., y = Facet_Vars, by = c("ROW","COL"))
   return(layout)
 }
 
@@ -192,7 +195,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 layout <- mutate(layout, SCALE_Y = ROW)
               }
             }
-            layout <- sidePanelLayout(layout, sidePanel = sides, ggside = ggside)
+            layout <- sidePanelLayout(layout, sidePanel = sides, ggside = params$ggside)
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){

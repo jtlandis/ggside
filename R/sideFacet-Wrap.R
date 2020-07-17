@@ -50,7 +50,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       layout$SCALE_Y <- 1L
     }
   }
-
+  #browser()
   collapse <- params$ggside$collapse %||% "default"
   collapse_y <- collapse %in% c("all","y")
   collapse_x <- collapse %in% c("all","x")
@@ -68,12 +68,13 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
+  layout <- layout %>% unnest(cols = names(params$facets))
+
   if (length(params$facets) == 0) {
     # Add a dummy label
     labels_df <- new_data_frame(list("(all)" = "(all)"), n = 1)
   } else {
-    labels_df <- layout %>% select(PANEL_TYPE, all_of(names(params$facets)))%>%
-      filter(PANEL_TYPE%in%"main") %>% select(-PANEL_TYPE) %>% unnest(cols = names(params$facets))
+    labels_df <- layout %>% filter(PANEL_TYPE%in%"main") %>% select(all_of(names(params$facets))) %>% distinct()
   }
   attr(labels_df, "facet") <- "wrap"
   strips <- render_strips(
@@ -193,16 +194,18 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right <- empty_table
   axis_mat_y_right[panel_pos] <- axes$y$right
 
-  .xgroupby <- if(!params$free$x) "COL" else c("COL","PANEL_GROUP")
-  .ygroupby <- if(!params$free$y) "ROW" else c("ROW","PANEL_GROUP")
+  .xgroupby <- if(!params$free$x|collapse_x) "COL" else c("COL","PANEL_GROUP")
+  .y <- if("PANEL_GROUP" %in% .xgroupby) "y" else NULL
+  .ygroupby <- if(!params$free$y|collapse_y) "ROW" else c("ROW","PANEL_GROUP")
+  .x <- if("PANEL_GROUP" %in% .ygroupby) "x" else NULL
 
-  bottom <- layout %>% group_by(.dots = .xgroupby) %>%
+  bottom <- filter(layout, !PANEL_TYPE%in%.y) %>% group_by(.dots = .xgroupby) %>%
     mutate(ROW2 = max(ROW))
-  top <- layout %>% group_by(COL) %>%
+  top <- filter(layout, !PANEL_TYPE%in%.y) %>% group_by(.dots = .xgroupby) %>%
     mutate(ROW2 = min(ROW))
-  right <- layout %>% group_by(.dots = .ygroupby) %>%
+  right <- filter(layout, !PANEL_TYPE%in%.x) %>% group_by(.dots = .ygroupby) %>%
     mutate(COL2 = max(COL))
-  left <- layout %>% group_by(.dots = .ygroupby) %>%
+  left <- filter(layout, !PANEL_TYPE%in%.x) %>% group_by(.dots = .ygroupby) %>%
     mutate(COL2 = min(COL))
 
   if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES

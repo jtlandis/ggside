@@ -162,44 +162,66 @@ p2 + labs(title = "FacetNull")
 ```
 
 ```{r}
-# p2 + facet_wrap(Species~Species2) +
-#   labs(title = "FacetWrap")
+p2 + facet_wrap(Species~Species2) +
+  labs(title = "FacetWrap") +
+  guides(guide_axis(check.overlap = T))
 ```
 
 ```{r}
-# p2 + facet_grid(Species~Species2) +
-#   labs(title = "FacetGrid")
+p2 + facet_grid(Species~Species2, space = "free", scale = "free_y") 
 ```
 
 
 Further control on how the `sideFacets` are handled may be done with the `ggside` function.
 
 ```{r}
-# p2 + ggside(x.pos = "bottom", y.pos = "left") +
-#   labs(title = "FacetNull", subtitle = "Xside placed bottom, Yside placed left")
+p2 + ggside(x.pos = "bottom", y.pos = "left") +
+  labs(title = "FacetNull", subtitle = "Xside placed bottom, Yside placed left")
 ```
 
 When using having multiple panels, it may be handy to collapse side panels to one side, which helps save space.
 
 ```{r}
-# p2 + facet_wrap(Species~Species2) +
-#   labs(title = "FacetWrap", subtitle = "Collapsing Xside Panels") +
-#   ggside(collapse = "x")
+p2 + facet_wrap(Species~Species2) +
+  labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
+  ggside(collapse = "x")
 ```
 
 ```{r}
-# p2 + facet_grid(Species~Species2) +
-#   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
-#   ggside(collapse = "all")
+p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
+  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
+  ggside(collapse = "all")
 ```
+
+```{r}
+p + geom_xsidedensity(aes(y=stat(density)))+
+  geom_ysidedensity(aes(x=stat(density), ycolor = Species2)) +
+  theme_bw() + 
+  facet_grid(Species~Species2, space = "free", scales = "free") +
+  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
+  ggside(collapse = "all")
+```
+
+```{r}
+p + geom_xsidedensity(aes(y=stat(density), xfill = Species), position = "stack")+
+  geom_ysidedensity(aes(x=stat(density), yfill = Species2), position = "stack") +
+  theme_bw() + 
+  facet_grid(Species~Species2, space = "free", scales = "free") +
+  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
+  ggside(collapse = "all") +
+  scale_xfill_manual(values = c("darkred","darkgreen","darkblue")) +
+  scale_yfill_manual(values = c("black","gold"))+
+  scale_x_continuous(position = "top")
+```
+
 
 Note that when collapsing panels on `FacetGrid`, the panels apear under the strips whereas on `FacetWrap` they appear above the strips. This is because `FacetWrap`, collapsing panels in the same column or row may not share the same facet variable, which would be confusing since the strip would not represent the data entirely. This is not the case with `FacetGrid` since each row or column is dictated by the facet variable.
 
 Collaping on an x or y coerces all panels in that column or row to the same scale, thus `scales = "free_x"` is uncompatible with `collapse = "x"`.
 
 ```{r}
-# p2 + facet_wrap(Species~Species2, scales = "free") +
-#   labs(title = "FacetWrap", subtitle = "Collapsing Xside Panels") +
-#   ggside(collapse = "x")
+p2 + facet_wrap(Species~Species2, scales = "free") +
+  labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
+  ggside(collapse = "x") 
 ```
 

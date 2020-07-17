@@ -36,7 +36,7 @@ GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
                                   },
                                   draw_group = function(self, data, panel_params, coord, linejoin = linejoin) {
                                     data <- use_xside_aes(data)
-                                    ggplot2::GeomTile$draw_panel(self, data, panel_params, coord, linejoin = linejoin)
+                                    ggplot2::GeomTile$draw_panel(data = data, panel_params = panel_params, coord = coord, linejoin = linejoin)
                                   },
                                   draw_key = function(data, params, size){
                                     data <- use_xside_aes(data)
