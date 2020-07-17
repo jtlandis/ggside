@@ -14,5 +14,5 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
-                 collapse = collapse), class = "ggside")
+                 collapse = collapse), class = "ggside_layer")
 }

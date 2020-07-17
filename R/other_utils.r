@@ -1,7 +1,7 @@
 #' @import ggplot2
 #' @import grid
 #' @import rlang
-#' @importFrom glue glue
+#' @importFrom glue glue glue_collapse
 #' @import gtable
 #' @import dplyr
 #' @import tidyr
