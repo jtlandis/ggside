@@ -17,7 +17,7 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 
@@ -62,7 +62,7 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 

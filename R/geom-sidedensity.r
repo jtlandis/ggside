@@ -23,7 +23,7 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
@@ -71,7 +71,7 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",

@@ -19,7 +19,7 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 GeomXsidepoint <- ggplot2::ggproto("GeomXsidepoint",
@@ -62,7 +62,7 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
       ...
     )
   )
-  structure(list(layer = l), class = "ggside")
+  structure(list(layer = l), class = "ggside_layer")
 }
 
 GeomYsidepoint <- ggplot2::ggproto("GeomYsidepoint",
