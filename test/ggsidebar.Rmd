@@ -1,5 +1,5 @@
 ---
-title: "ggsidebar"
+title: "ggside"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{ggsidebar}
@@ -23,9 +23,9 @@ library(ggplot2)
 ```
 
 
-# ggsidebar
+# ggside
 
-The package **ggsidebar** was designed to enable users to add metadata to their ggplots with ease. While adding metadata information is not extremely difficult to do with `geom_tile` or other geoms, it can be frustrating to the user positioning these geometires away from the main plot. Additionally, if the user wants to use a color guide with the `fill` aesthetic, then they may run into conflicts when one layer uses a discrete scale and another uses a continuous scale.
+The package **ggside** was designed to enable users to add metadata to their ggplots with ease. While adding metadata information is not extremely difficult to do with `geom_tile` or other geoms, it can be frustrating to the user positioning these geometires away from the main plot. Additionally, if the user wants to use a color guide with the `fill` aesthetic, then they may run into conflicts when one layer uses a discrete scale and another uses a continuous scale.
 
 
 # Motivation
@@ -184,7 +184,7 @@ When using having multiple panels, it may be handy to collapse side panels to on
 ```{r}
 p2 + facet_wrap(Species~Species2) +
   labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
-  ggside(collapse = "x")
+  ggside(collapse = "x") 
 ```
 
 ```{r}
@@ -210,8 +210,7 @@ p + geom_xsidedensity(aes(y=stat(density), xfill = Species), position = "stack")
   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
   ggside(collapse = "all") +
   scale_xfill_manual(values = c("darkred","darkgreen","darkblue")) +
-  scale_yfill_manual(values = c("black","gold"))+
-  scale_x_continuous(position = "top")
+  scale_yfill_manual(values = c("black","gold")) 
 ```
 
 
@@ -224,4 +223,25 @@ p2 + facet_wrap(Species~Species2, scales = "free") +
   labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
   ggside(collapse = "x") 
 ```
+
+You may also change the size of the side panels with the theme elements `ggside.panel.scale`, `ggside.panel.scale.x` and `ggside.panel.scale.y`. These theme elements take a positive numeric value as input and indicate how large the side panel's heights or widths are relative to the main plot's height or width. For example, setting `ggside.panel.scale.x = 1` will mean the x side panels height will be equal in size to the main panel's heights (or if x is collapsed, is equal to the sum of the heights). 
+
+```{r}
+p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
+  labs(title = "FacetGrid", subtitle = "Collapsing X Side Panels and \nAdjusted Side Panel Relative Size") +
+  ggside(collapse = "x") +
+  theme(ggside.panel.scale.x = .4,
+        ggside.panel.scale.y = .25)
+```
+
+```{r}
+p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
+  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels and \nAdjusted Side Panel Relative Size") +
+  ggside(collapse = "all") +
+  theme(ggside.panel.scale.x = .4,
+        ggside.panel.scale.y = .25,
+        ggside.panel.spacing.x = unit(8, "pt"))
+```
+
+
 

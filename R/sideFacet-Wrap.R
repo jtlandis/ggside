@@ -146,12 +146,10 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table$layout$name <- paste0('panel-', rep(seq_len(ncol), nrow), '-', rep(seq_len(nrow), each = ncol))
 
   #need to register theme element
-  sidepanel.spacing <- theme$sidepanel.spacing %||% unit(as.numeric(theme$panel.spacing)*.25,"pt")
-  sidepanel.spacing.x <- theme$sidepanel.spacing.x %||%
-    if(is.null(theme$panel.spacing.x)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.x)*.25,"pt")
+  sidepanel.spacing <- theme$ggside.panel.spacing %||% theme$panel.spacing
+  sidepanel.spacing.x <- theme$ggside.panel.spacing.x %||% sidepanel.spacing
   xpanel_spacing <- theme$panel.spacing.x %||% theme$panel.spacing
-  sidepanel.spacing.y <- theme$sidepanel.spacing.y %||%
-    if(is.null(theme$panel.spacing.y)) sidepanel.spacing else unit(as.numeric(theme$panel.spacing.y)*.25,"pt")
+  sidepanel.spacing.y <- theme$ggside.panel.spacing.y %||% sidepanel.spacing
   ypanel_spacing <- theme$panel.spacing.y %||% theme$panel.spacing
   col.widths <- if("y"%in%side_panels_present){
     if(collapse_y){
