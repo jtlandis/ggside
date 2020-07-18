@@ -41,8 +41,8 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     respect <- TRUE
   }
   #theme side panel scale
-  side.panel.scale.x <- theme$sidepanel.scale.x %||% theme$sidepanel.scale %||% .1
-  side.panel.scale.y <- theme$sidepanel.scale.y %||% theme$sidepanel.scale %||% .1
+  side.panel.scale.x <- theme$ggside.panel.scale.x %||% theme$ggside.panel.scale %||% .1
+  side.panel.scale.y <- theme$ggside.panel.scale.y %||% theme$ggside.panel.scale %||% .1
 
   empty_table <- matrix(list(zeroGrob()), nrow = nrow, ncol = ncol)
   panel_table <- empty_table

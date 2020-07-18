@@ -55,8 +55,8 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     respect <- TRUE
   }
   #theme side panel scale
-  side.panel.scale.x <- theme$sidepanel.scale.x %||% theme$sidepanel.scale %||% .1
-  side.panel.scale.y <- theme$sidepanel.scale.y %||% theme$sidepanel.scale %||% .1
+  side.panel.scale.x <- theme$ggside.panel.scale.x %||% theme$ggside.panel.scale %||% .1
+  side.panel.scale.y <- theme$ggside.panel.scale.y %||% theme$ggside.panel.scale %||% .1
 
   if (params$space_free$x) {
     ps <- layout %>% filter(PANEL_TYPE %in% "main") %>% filter(ROW%in%min(ROW)) %>% pull(PANEL)
