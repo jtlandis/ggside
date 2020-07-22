@@ -33,7 +33,6 @@ The package **ggside** was designed to enable users to add metadata to their ggp
 Lets look at a very simple example set using `dplyr` to summarise the `diamonds` dataset.
 
 ```{r}
-library(dplyr)
 summariseDiamond <- diamonds %>%
   mutate(`Cut Clarity` = paste(cut, clarity)) %>%
   group_by(`Cut Clarity`,cut, clarity, color) %>%
@@ -131,6 +130,7 @@ The following geoms are currently available to use right away from the `ggside` 
 * GeomBoxplot
 * GeomDensity
 * GeomFreqpoly
+* GeomHistogram
 * GeomLine
 * GeomPath
 * GeomPoint
