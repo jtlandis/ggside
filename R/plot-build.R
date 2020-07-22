@@ -10,12 +10,6 @@ guess_layer_mapping <- function(layer) {
   return(val)
 }
 
-simple_switch <- function(geom_type, default = GeomBlank) {
-  switch(geom_type,
-         Point = GeomMainpoint,
-         default)
-}
-
 clone_layers <- function(layers){
   layers <- lapply(layers, function(layer){
    #browser()
