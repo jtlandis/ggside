@@ -2,7 +2,7 @@
 title: "ggside"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ggsidebar}
+  %\VignetteIndexEntry{ggside}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -18,7 +18,7 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(dplyr)
-library(ggsidebar)
+library(ggside)
 library(ggplot2)
 ```
 
