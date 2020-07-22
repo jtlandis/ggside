@@ -37,7 +37,6 @@ Collate:
     'ggplot-global.R'
     'ggplot2_Extras.R'
     'ggside.R'
-    'ggsidebar.r'
     'other_utils.r'
     'performance.R'
     'plot-build.R'
