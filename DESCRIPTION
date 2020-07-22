@@ -1,10 +1,13 @@
-Package: ggsidebar
+Package: ggside
 Type: Package
-Title: Side Bar Grammar Graphics
+Title: Side Grammar Graphics
 Version: 0.1.0
 Authors@R: c(person("Justin T.","Landis", rol = c("aut", "cre"), email = "<jtlandis314@gmail.com>"))
 Maintainer: Justin Landis <jtlandis314@gmail.com>
-Description: This package allows the user to add metadata information about any discrete axis.
+Description: This package allows the user to add graphical information 
+            about one of the main panel's axis. This is particulary useful for
+            metadata for discrete axis, or summary graphics on a continuous axis such
+            as a boxplot or a density distribution.
 License: GPL (>= 2)
 Encoding: UTF-8
 LazyData: true
