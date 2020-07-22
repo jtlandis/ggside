@@ -96,7 +96,6 @@ uniquecols <- function(df) {
 #' @param name Optional function name to improve error message.
 #' @param finite If `TRUE`, will also remove non-finite values.
 #' @keywords internal
-#' @export
 remove_missing <- function(df, na.rm = FALSE, vars = names(df), name = "",
                            finite = FALSE) {
   if (!is.logical(na.rm)) {
@@ -160,7 +159,6 @@ is_complete <- function(x) {
 #' Used in examples to illustrate when errors should occur.
 #'
 #' @param expr code to evaluate.
-#' @export
 #' @keywords internal
 #' @examples
 #' should_stop(stop("Hi!"))
@@ -181,7 +179,6 @@ should_stop <- function(expr) {
 #' functions to distinguish between displaying nothing (`NULL`) and
 #' displaying a default value calculated elsewhere (`waiver()`)
 #'
-#' @export
 #' @keywords internal
 waiver <- function() structure(list(), class = "waiver")
 
@@ -199,38 +196,7 @@ binned_pal <- function(palette) {
   }
 }
 
-#' Give a deprecation error, warning, or message, depending on version number.
-#'
-#' This function is deprecated.
-#'
-#' @param version The last version of ggplot2 where this function was good
-#'   (in other words, the last version where it was not deprecated).
-#' @param msg The message to print.
-#' @keywords internal
-#' @export
-gg_dep <- function(version, msg) {
-  .Deprecated()
-  v <- as.package_version(version)
-  cv <- utils::packageVersion("ggplot2")
-  text <- "{msg} (Defunct; last used in version {version})"
 
-  # If current major number is greater than last-good major number, or if
-  #  current minor number is more than 1 greater than last-good minor number,
-  #  give error.
-  if (cv[[1,1]] > v[[1,1]]  ||  cv[[1,2]] > v[[1,2]] + 1) {
-    abort(glue(text))
-
-  # If minor number differs by one, give warning
-  } else if (cv[[1,2]] > v[[1,2]]) {
-    warn(glue(text))
-
-  # If only subminor number is greater, give message
-  } else if (cv[[1,3]] > v[[1,3]]) {
-    message(glue(text))
-  }
-
-  invisible()
-}
 
 has_name <- function(x) {
   nms <- names(x)
@@ -435,182 +401,7 @@ switch_orientation <- function(aesthetics) {
   aesthetics
 }
 
-#' Utilities for working with bidirectional layers
-#'
-#' These functions are what underpins the ability of certain geoms to work
-#' automatically in both directions. See the *Extending ggplot2* vignette for
-#' how they are used when implementing `Geom`, `Stat`, and `Position` classes.
-#'
-#' `has_flipped_aes()` is used to sniff out the orientation of the layer from
-#' the data. It has a range of arguments that can be used to finetune the
-#' sniffing based on what the data should look like. `flip_data()` will switch
-#' the column names of the data so that it looks like x-oriented data.
-#' `flipped_names()` provides a named list of aesthetic names that corresponds
-#' to the orientation of the layer.
-#'
-#' @section Controlling the sniffing:
-#' How the layer data should be interpreted depends on its specific features.
-#' `has_flipped_aes()` contains a range of flags for defining what certain
-#' features in the data correspond to:
-#'
-#' - `main_is_orthogonal`: This argument controls how the existence of only a `x`
-#'   or `y` aesthetic is understood. If `TRUE` then the exisiting aesthetic
-#'   would be then secondary axis. This behaviour is present in [stat_ydensity()]
-#'   and [stat_boxplot()]. If `FALSE` then the exisiting aesthetic is the main
-#'   axis as seen in e.g. [stat_bin()], [geom_count()], and [stat_density()].
-#' - `range_is_orthogonal`: This argument controls whether the existance of
-#'   range-like aesthetics (e.g. `xmin` and `xmax`) represents the main or
-#'   secondary axis. If `TRUE` then the range is given for the secondary axis as
-#'   seen in e.g. [geom_ribbon()] and [geom_linerange()].
-#' - `group_has_equal`: This argument controls whether to test for equality of
-#'   all `x` and `y` values inside each group and set the main axis to the one
-#'   where all is equal. This test is only performed if `TRUE`, and only after
-#'   less computationally heavy tests has come up empty handed. Examples are
-#'   [stat_boxplot()] and [stat_ydensity]
-#' - `ambiguous`: This argument tells the function that the layer, while
-#'   bidirectional, doesn't treat each axis differently. It will circumvent any
-#'   data based guessing and only take hint from the `orientation` element in
-#'   `params`. If this is not present it will fall back to `FALSE`. Examples are
-#'   [geom_line()] and [geom_area()]
-#' - `main_is_continuous`: This argument controls how the test for discreteness
-#'   in the scales should be interpreted. If `TRUE` then the main axis will be
-#'   the one which is not discrete-like. Conversely, if `FALSE` the main axis
-#'   will be the discrete-like one. Examples of `TRUE` is [stat_density()] and
-#'   [stat_bin()], while examples of `FALSE` is [stat_ydensity()] and
-#'   [stat_boxplot()]
-#' - `main_is_optional`: This argument controls the rare case of layers were the
-#'   main direction is an optional aesthetic. This is only seen in
-#'   [stat_boxplot()] where `x` is set to `0` if not given. If `TRUE` there will
-#'   be a check for whether all `x` or all `y` are equal to `0`
-#'
-#' @param data The layer data
-#' @param params The parameters of the `Stat`/`Geom`. Only the `orientation`
-#'   parameter will be used.
-#' @param main_is_orthogonal If only `x` or `y` are present do they correspond
-#'   to the main orientation or the reverse. E.g. If `TRUE` and `y` is present
-#'   it is not flipped. If `NA` this check will be ignored.
-#' @param range_is_orthogonal If `xmin`/`xmax` or `ymin`/`ymax` is present do
-#'   they correspond to the main orientation or reverse. If `NA` this check will
-#'   be ignored.
-#' @param group_has_equal Is it expected that grouped data has either a single
-#'   `x` or `y` value that will correspond to the orientation.
-#' @param ambiguous Is the layer ambiguous in its mapping by nature. If so, it
-#'   will only be flipped if `params$orientation == "y"`
-#' @param main_is_continuous If there is a discrete and continuous axis, does
-#'   the continuous one correspond to the main orientation?
-#' @param main_is_optional Is the main axis aesthetic optional and, if not
-#'   given, set to `0`
-#' @param flip Logical. Is the layer flipped.
-#'
-#' @return `has_flipped_aes()` returns `TRUE` if it detects a layer in the other
-#' orientation and `FALSE` otherwise. `flip_data()` will return the input
-#' unchanged if `flip = FALSE` and the data with flipped aesthetic names if
-#' `flip = TRUE`. `flipped_names()` returns a named list of strings. If
-#' `flip = FALSE` the name of the element will correspond to the element, e.g.
-#' `flipped_names(FALSE)$x == "x"` and if `flip = TRUE` it will correspond to
-#' the flipped name, e.g. `flipped_names(FALSE)$x == "y"`
-#'
-#' @export
-#' @keywords internal
-#' @name bidirection
-#'
-has_flipped_aes <- function(data, params = list(), main_is_orthogonal = NA,
-                            range_is_orthogonal = NA, group_has_equal = FALSE,
-                            ambiguous = FALSE, main_is_continuous = FALSE,
-                            main_is_optional = FALSE) {
-  # Is orientation already encoded in data?
-  if (!is.null(data$flipped_aes)) {
-    not_na <- which(!is.na(data$flipped_aes))
-    if (length(not_na) != 0) {
-      return(data$flipped_aes[[not_na[1L]]])
-    }
-  }
 
-  # Is orientation requested in the params
-  if (!is.null(params$orientation) && !is.na(params$orientation)) {
-    return(params$orientation == "y")
-  }
-
-  x <- data$x %||% params$x
-  y <- data$y %||% params$y
-  xmin <- data$xmin %||% params$xmin
-  ymin <- data$ymin %||% params$ymin
-  xmax <- data$xmax %||% params$xmax
-  ymax <- data$ymax %||% params$ymax
-
-  # Does a single x or y aesthetic corespond to a specific orientation
-  if (!is.na(main_is_orthogonal) && xor(is.null(x), is.null(y))) {
-    return(is.null(y) == main_is_orthogonal)
-  }
-
-  has_x <- !is.null(x)
-  has_y <- !is.null(y)
-
-  # Does a provided range indicate an orientation
-  if (!is.na(range_is_orthogonal)) {
-    if (!is.null(ymin) || !is.null(ymax)) {
-      return(!range_is_orthogonal)
-    }
-    if (!is.null(xmin) || !is.null(xmax)) {
-      return(range_is_orthogonal)
-    }
-  }
-
-  # If ambiguous orientation = NA will give FALSE
-  if (ambiguous && (is.null(params$orientation) || is.na(params$orientation))) {
-    return(FALSE)
-  }
-
-  # Is there a single actual discrete position
-  y_is_discrete <- is_mapped_discrete(y)
-  x_is_discrete <- is_mapped_discrete(x)
-  if (xor(y_is_discrete, x_is_discrete)) {
-    return(y_is_discrete != main_is_continuous)
-  }
-
-  # Does each group have a single x or y value
-  if (group_has_equal) {
-    if (has_x) {
-      if (length(x) == 1) return(FALSE)
-      x_groups <- vapply(split(data$x, data$group), function(x) length(unique(x)), integer(1))
-      if (all(x_groups == 1)) {
-        return(FALSE)
-      }
-    }
-    if (has_y) {
-      if (length(y) == 1) return(TRUE)
-      y_groups <- vapply(split(data$y, data$group), function(x) length(unique(x)), integer(1))
-      if (all(y_groups == 1)) {
-        return(TRUE)
-      }
-    }
-  }
-
-  # default to no
-  FALSE
-}
-#' @rdname bidirection
-#' @export
-flip_data <- function(data, flip = NULL) {
-  flip <- flip %||% any(data$flipped_aes) %||% FALSE
-  if (isTRUE(flip)) {
-    names(data) <- switch_orientation(names(data))
-  }
-  data
-}
-#' @rdname bidirection
-#' @export
-flipped_names <- function(flip = FALSE) {
-  x_aes <- ggplot_global$x_aes
-  y_aes <- ggplot_global$y_aes
-  if (flip) {
-    ret <- as.list(c(y_aes, x_aes))
-  } else {
-    ret <- as.list(c(x_aes, y_aes))
-  }
-  names(ret) <- c(x_aes, y_aes)
-  ret
-}
 
 split_with_index <- function(x, f, n = max(f)) {
   if (n == 1) return(list(x))

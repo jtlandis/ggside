@@ -24,7 +24,7 @@ The R package ggside expands on the ggplot2 package. This package allows the use
 
 ## Installation
 
-```{r}
+```{r, eval = FALSE}
 devtools::install_github("jtlandis/ggside")
 ```
 
