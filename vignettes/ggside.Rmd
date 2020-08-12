@@ -25,7 +25,7 @@ library(ggplot2)
 
 # ggside
 
-The package **ggside** was designed to enable users to add metadata to their ggplots with ease. While adding metadata information is not extremely difficult to do with `geom_tile` or other geoms, it can be frustrating to the user positioning these geometires away from the main plot. Additionally, if the user wants to use a color guide with the `fill` aesthetic, then they may run into conflicts when one layer uses a discrete scale and another uses a continuous scale.
+The package **ggside** was designed to enable users to add metadata to their ggplots with ease. While adding metadata information is not extremely difficult to do with `geom_tile` or other geoms, it can be frustrating to the user positioning these geometries away from the main plot. Additionally, if the user wants to use a color guide with the `fill` aesthetic, then they may run into conflicts when one layer uses a discrete scale and another uses a continuous scale.
 
 
 # Motivation
@@ -82,10 +82,14 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 ```{r}
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
-  geom_ysidetile(aes(x = "max", yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = max) +
-  geom_ysidetile(aes(x = "mean",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = mean) +
-  geom_ysidetile(aes(x = "median",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = median) +
-  geom_ysidetile(aes(x = "min",yfill = after_stat(summarise), domain = `mean Price`), stat = "summarise", fun = min) +
+  geom_ysidetile(aes(x = "max", yfill = after_stat(summarise),
+                     domain = `mean Price`), stat = "summarise", fun = max) +
+  geom_ysidetile(aes(x = "mean",yfill = after_stat(summarise),
+                     domain = `mean Price`), stat = "summarise", fun = mean) +
+  geom_ysidetile(aes(x = "median",yfill = after_stat(summarise),
+                     domain = `mean Price`), stat = "summarise", fun = median) +
+  geom_ysidetile(aes(x = "min",yfill = after_stat(summarise),
+                     domain = `mean Price`), stat = "summarise", fun = min) +
   scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
 ```
 
@@ -100,7 +104,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
 ```
 
-Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respecitively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggsidebar** can give some ease to plotting information to the sides of the main figure.
+Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respecitively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggside** can give some ease to plotting information to the sides of the main figure.
 
 ```{r, error=T}
 p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
@@ -120,7 +124,7 @@ error = function(err){
 # How to Use
 ### Geom
 
-`geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometeries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precidence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
+`geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precidence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
 
 ### Available Geoms
 
