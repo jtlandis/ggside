@@ -17,11 +17,11 @@ min_factor <- function(x){
   min_ <- lvl[min(which(lvl%in%x))]
   unique(x[x%in%min_])
 }
-
+#' @importFrom dplyr case_when
 sidePanelLayout <- function(layout,
                                     ggside,
                                     sidePanel = c("x","y")){
-  #browser()
+  browser()
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -57,11 +57,11 @@ sidePanelLayout <- function(layout,
 
   data <- data.frame(PANEL_TYPE = c("main", "x", "y"),
                      ROW_trans = c(mrow,xrow,yrow),
-                     COL_trans = c(mcol,xcol,ycol)) %>%
-    filter(PANEL_TYPE %in% c("main",sidePanel))
+                     COL_trans = c(mcol,xcol,ycol))
+  data <- data[data$PANEL_TYPE %in% c("main", sidePanel),]
   include <- switch(collapse, x = c("main","y"), y = c("main","x"), all = c("main"), c("main","x","y"))
-  collapsed <- filter(data, !PANEL_TYPE %in% include)
-  data <- filter(data, PANEL_TYPE %in% include)
+  collapsed <- data[!data$PANEL_TYPE %in% include,]
+  data <- data[data$PANEL_TYPE %in% include,]
   x_scale_fun <- switch(scales,
                         free_x = free_fun,
                         free = free_fun,
@@ -70,18 +70,16 @@ sidePanelLayout <- function(layout,
                         free_y = free_fun,
                         free = free_fun,
                         fixed_fun)
-  layout <- layout %>%
-    mutate(PANEL_GROUP = PANEL) %>%
-    mutate(PANEL_TYPE = list(data$PANEL_TYPE),
-           ROW_trans = list(data$ROW_trans),
-           COL_trans = list(data$COL_trans)) %>%
-    unnest(cols = c(PANEL_TYPE, ROW_trans, COL_trans)) %>%
-    mutate(ROW = case_when(ROW_trans=="EVEN" ~ ROW*2L,
-                           ROW_trans=="ODD" ~ ROW*2L-1L,
-                           ROW_trans=="ALL" ~ ROW),
-           COL = case_when(COL_trans=="EVEN" ~ COL*2L,
-                           COL_trans=="ODD" ~ COL*2L-1L,
-                           COL_trans=="ALL" ~ COL))
+  layout$PANEL_GROUP <- layout$PANEL
+  layout <- bind_cols(layout[rep(1:nrow(layout), each = nrow(data)),],
+                      data[rep(1:nrow(data), nrow(layout)),])
+  layout$ROW <- case_when(layout$ROW_trans=="EVEN" ~ layout$ROW*2L,
+                          layout$ROW_trans=="ODD"  ~ layout$ROW*2L-1L,
+                          layout$ROW_trans=="ALL"  ~ layout$ROW)
+  layout$COL <- case_when(layout$COL_trans=="EVEN" ~ layout$COL*2L,
+                          layout$COL_trans=="ODD"  ~ layout$COL*2L-1L,
+                          layout$COL_trans=="ALL"  ~ layout$COL)
+
   if(!empty(collapsed)){
 
     if(!"x"%in% include){
@@ -127,19 +125,14 @@ sidePanelLayout <- function(layout,
 
   }
   #browser()
-  layout
-  layout <- layout %>%
-    mutate(SCALE_X = case_when(PANEL_TYPE=="y" ~ x_scale_fun(SCALE_X),
-                               TRUE ~ SCALE_X),
-           SCALE_Y = case_when(PANEL_TYPE=="x" ~ y_scale_fun(SCALE_Y),
-                               TRUE ~ SCALE_Y)) %>%
-    select(-ROW_trans, -COL_trans, -PANEL)
-  Facet_Vars <- layout %>% select(ROW, COL, all_of(facet_vars)) %>%
-    distinct_all() %>% group_by(ROW, COL) %>% summarise_all(function(x){list(x)})
-  layout <- layout %>% select(-all_of(facet_vars)) %>%
-    distinct_all() %>% arrange(ROW, COL) %>%
-    mutate(PANEL = factor(1:n())) %>%
-    left_join(x = ., y = Facet_Vars, by = c("ROW","COL"))
+  layout$SCALE_X <- case_when(layout$PANEL_TYPE=="y" ~ x_scale_fun(layout$SCALE_X),
+                              TRUE ~ layout$SCALE_X)
+  layout$SCALE_Y <- case_when(layout$PANEL_TYPE=="x" ~ y_scale_fun(layout$SCALE_Y),
+                              TRUE ~ layout$SCALE_Y)
+  layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
+  layout <- unique(layout)
+  layout <- layout[order(layout$ROW, layout$COL),]
+  layout$PANEL <- 1:nrow(layout)
   return(layout)
 }
 
@@ -174,7 +167,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
           },
           compute_layout = function(data, params,
                                     facet_compute = facet$compute_layout){
-            #browser()
+            browser()
             collapse <- params$ggside$collapse %||% "default"
             layout <- facet_compute(data, params)
             if(collapse %in%c("all","x")){
@@ -199,23 +192,26 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            #browser()
+            browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-            layout <- layout %>% unnest(c(facet_vars))
-            data <- unnest(data, PANEL_TYPE)
-            if(is.null(facet_vars)){
-              panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
-                group_by(PANEL_TYPE) %>%
-                summarise(PANEL = list(unique(PANEL)))
-              data <- left_join(data, panels, by = c("PANEL_TYPE")) %>%
-                tidyr::unnest(PANEL)
-            } else {
-              panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
-                group_by(PANEL_TYPE, .dots = facet_vars) %>%
-                summarise(PANEL = list(unique(PANEL)))
-              data <- left_join(data, panels, by = c(facet_vars, "PANEL_TYPE")) %>%
-                tidyr::unnest(PANEL)
-            }
+            # layout <- layout %>% unnest(c(facet_vars))
+            # data <- unnest(data, PANEL_TYPE)
+            .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
+            .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
+            data <- bind_cols(data, layout[match(.x,.y),setdiff(colnames(layout), c(facet_vars,"PANEL_TYPE"))])
+            # if(is.null(facet_vars)){
+            #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
+            #     group_by(PANEL_TYPE) %>%
+            #     summarise(PANEL = list(unique(PANEL)))
+            #   data <- left_join(data, panels, by = c("PANEL_TYPE")) %>%
+            #     tidyr::unnest(PANEL)
+            # } else {
+            #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
+            #     group_by(PANEL_TYPE, .dots = facet_vars) %>%
+            #     summarise(PANEL = list(unique(PANEL)))
+            #   data <- left_join(data, panels, by = c(facet_vars, "PANEL_TYPE")) %>%
+            #     tidyr::unnest(PANEL)
+            # }
 
             data
           },
