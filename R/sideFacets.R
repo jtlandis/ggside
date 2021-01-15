@@ -198,7 +198,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             # data <- unnest(data, PANEL_TYPE)
             .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
             .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
-            data <- bind_cols(data, layout[match(.x,.y),setdiff(colnames(layout), c(facet_vars,"PANEL_TYPE"))])
+            data <- bind_cols(data, layout[match(.x,.y),"PANEL", drop = FALSE])
             # if(is.null(facet_vars)){
             #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
             #     group_by(PANEL_TYPE) %>%
