@@ -47,9 +47,9 @@ ggplot_build.ggside <- function(plot){
     sides_used <- unlist(layer_mappings)
     sides_used <- sides_used[!sides_used %in% "main"]
     for(i in seq_along(layer_data)){
-      layer_data[[i]] <- mutate(layer_data[[i]], PANEL_TYPE = list(unique(layer_mappings[[i]])))
+      layer_data[[i]]$PANEL_TYPE <- layer_mappings[[i]]
     }
-    browser()
+    #browser()
     scales <- plot$scales
     # Apply function to layer and matching data
     by_layer <- function(f) {

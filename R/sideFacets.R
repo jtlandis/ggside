@@ -21,7 +21,7 @@ min_factor <- function(x){
 sidePanelLayout <- function(layout,
                                     ggside,
                                     sidePanel = c("x","y")){
-  browser()
+  #browser()
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -132,7 +132,7 @@ sidePanelLayout <- function(layout,
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]
-  layout$PANEL <- 1:nrow(layout)
+  layout$PANEL <- factor(1:nrow(layout))
   return(layout)
 }
 
@@ -167,7 +167,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
           },
           compute_layout = function(data, params,
                                     facet_compute = facet$compute_layout){
-            browser()
+            #browser()
             collapse <- params$ggside$collapse %||% "default"
             layout <- facet_compute(data, params)
             if(collapse %in%c("all","x")){
@@ -192,7 +192,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            browser()
+            #browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
             # layout <- layout %>% unnest(c(facet_vars))
             # data <- unnest(data, PANEL_TYPE)
