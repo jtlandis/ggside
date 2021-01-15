@@ -1,6 +1,7 @@
 
 
 sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+  browser()
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -32,9 +33,9 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   y.pos <- params$ggside$y.pos
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
-  layout <- layout %>% unnest(cols = c(names(params$cols),names(params$rows)))
-  col_vars <- unique(as.data.frame(layout[names(params$cols)]))
-  row_vars <- unique(as.data.frame(layout[names(params$rows)]))
+  #layout <- layout %>% unnest(cols = c(names(params$cols),names(params$rows)))
+  col_vars <- unique(layout[names(params$cols)])
+  row_vars <- unique(layout[names(params$rows)])
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
   attr(col_vars, "facet") <- "grid"

@@ -21,7 +21,7 @@ min_factor <- function(x){
 sidePanelLayout <- function(layout,
                                     ggside,
                                     sidePanel = c("x","y")){
-  #browser()
+  browser()
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -83,6 +83,7 @@ sidePanelLayout <- function(layout,
   if(!empty(collapsed)){
 
     if(!"x"%in% include){
+      .tmp <- layout[layout$PANEL_TYPE %in% "main",]
       .tmp <- layout %>% filter(PANEL_TYPE %in% "main") %>%
         group_by(COL)
       .tmp1 <- .tmp %>% select(all_of(c("COL", facet_vars))) %>% distinct()
@@ -132,6 +133,7 @@ sidePanelLayout <- function(layout,
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]
+  #i_ <- interaction(layout[,c("ROW","COL")]) ; factor(match(i_, unique(i_)))
   layout$PANEL <- factor(1:nrow(layout))
   return(layout)
 }
@@ -198,7 +200,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             # data <- unnest(data, PANEL_TYPE)
             .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
             .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
-            data <- bind_cols(data, layout[match(.x,.y),"PANEL", drop = FALSE])
+            data <- cbind.data.frame(data, layout[match(.x,.y),"PANEL", drop = FALSE])
             # if(is.null(facet_vars)){
             #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
             #     group_by(PANEL_TYPE) %>%
