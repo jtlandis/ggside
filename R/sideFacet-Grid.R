@@ -26,8 +26,9 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_order <- order(layout$ROW, layout$COL)
   layout <- layout[panel_order, ]
   panels <- panels[panel_order]
-  panel_pos <- convertInd(layout$ROW, layout$COL, nrow)
-  layout$panel_pos <- panel_pos
+  layout$panel_pos <- convertInd(layout$ROW, layout$COL, nrow)
+  #FIX THE LINE BELOW THIS --- SHOULD BEE UNIQUE
+  panel_pos <- unique(layout$panel_pos)
   side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
   x.pos <- params$ggside$x.pos
   y.pos <- params$ggside$y.pos
