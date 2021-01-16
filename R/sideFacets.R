@@ -17,11 +17,11 @@ min_factor <- function(x){
   min_ <- lvl[min(which(lvl%in%x))]
   unique(x[x%in%min_])
 }
+
 #' @importFrom dplyr case_when
 sidePanelLayout <- function(layout,
-                                    ggside,
-                                    sidePanel = c("x","y")){
-  browser()
+                            ggside,
+                            sidePanel = c("x","y")){
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -125,7 +125,6 @@ sidePanelLayout <- function(layout,
     }
 
   }
-  #browser()
   layout$SCALE_X <- case_when(layout$PANEL_TYPE=="y" ~ x_scale_fun(layout$SCALE_X),
                               TRUE ~ layout$SCALE_X)
   layout$SCALE_Y <- case_when(layout$PANEL_TYPE=="x" ~ y_scale_fun(layout$SCALE_Y),
@@ -133,11 +132,43 @@ sidePanelLayout <- function(layout,
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]
-  #i_ <- interaction(layout[,c("ROW","COL")]) ; factor(match(i_, unique(i_)))
+  layout <- wrapup(layout, by = c("ROW","COL"), facet_vars)
   layout$PANEL <- factor(1:nrow(layout))
   return(layout)
 }
 
+wrapup <- function(df, by, vars = NULL){
+  if(is.null(vars)) return(df)
+  indx <- interaction(df[,by])
+  indx <- match(indx, unique(indx))
+  l_ <- split(df, indx)
+  l_ <- lapply(l_, function(x){
+    nest <- lapply(x[,vars],function(x) list(x))
+    x <- unique(x[,setdiff(colnames(x), vars), drop = FALSE])
+    x[,vars] <- nest
+    x
+  })
+  data <- do.call(rbind, l_)
+  rownames(data) <- 1:nrow(data)
+  data
+}
+
+unwrap <- function(df, by, vars = NULL){
+  if(is.null(vars)) return(df)
+  indx <- interaction(df[,by])
+  indx <- match(indx, unique(indx))
+  l_ <- split(df, indx)
+  l_ <- lapply(l_, function(x){
+    nest <- data.frame(lapply(x[,vars], function(x) unlist(x)))
+    names(nest) <- vars
+    x <- x[, setdiff(colnames(x), vars), drop = FALSE]
+    if(nrow(x)!=1) stop("by must uniquely index df")
+    cbind(x[rep(1, nrow(nest)),], nest)
+  })
+  data <- do.call(rbind, l_)
+  rownames(data) <- 1:nrow(data)
+  data
+}
 
 sideFacetDraw <- function(facet){
   UseMethod("sideFacetDraw")
@@ -194,26 +225,11 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
-            #browser()
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-            # layout <- layout %>% unnest(c(facet_vars))
-            # data <- unnest(data, PANEL_TYPE)
+            layout <- unwrap(layout, c("ROW","COL"), facet_vars)
             .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
             .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
             data <- cbind.data.frame(data, layout[match(.x,.y),"PANEL", drop = FALSE])
-            # if(is.null(facet_vars)){
-            #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
-            #     group_by(PANEL_TYPE) %>%
-            #     summarise(PANEL = list(unique(PANEL)))
-            #   data <- left_join(data, panels, by = c("PANEL_TYPE")) %>%
-            #     tidyr::unnest(PANEL)
-            # } else {
-            #   panels <- layout %>% mutate(PANEL_TYPE = as.character(PANEL_TYPE)) %>%
-            #     group_by(PANEL_TYPE, .dots = facet_vars) %>%
-            #     summarise(PANEL = list(unique(PANEL)))
-            #   data <- left_join(data, panels, by = c(facet_vars, "PANEL_TYPE")) %>%
-            #     tidyr::unnest(PANEL)
-            # }
 
             data
           },
