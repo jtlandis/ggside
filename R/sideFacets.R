@@ -223,6 +223,12 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
+            if (ggplot2:::is.waive(data))
+              return(new_data_frame(list(PANEL = factor())))
+
+            if (ggplot2:::empty(data))
+              return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
+
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
             if(!"PANEL_TYPE"%in%colnames(data)){
               data$PANEL_TYPE <- "main"
