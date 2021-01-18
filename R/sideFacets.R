@@ -83,44 +83,43 @@ sidePanelLayout <- function(layout,
   if(!empty(collapsed)){
 
     if(!"x"%in% include){
-      .tmp <- layout[layout$PANEL_TYPE %in% "main",]
-      .tmp <- layout %>% filter(PANEL_TYPE %in% "main") %>%
-        group_by(COL)
-      .tmp1 <- .tmp %>% select(all_of(c("COL", facet_vars))) %>% distinct()
-      .tmp <- .tmp %>%
-        summarise(ROW = 0,
-                  #PANEL_GROUP = case_when(x.pos=="bottom" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
-                  PANEL_TYPE = factor("x", levels = levels(layout$PANEL_TYPE)),
-                  SCALE_X = unique(SCALE_X),
-                  SCALE_Y = 0) %>%
-        left_join(x = . , y = collapsed, by = c("PANEL_TYPE")) %>%
-        left_join(x = ., y = .tmp1, by = "COL")
-      layout <- bind_rows(layout, .tmp)
+      x_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
+                                  c("COL","ROW","PANEL_TYPE",
+                                    "SCALE_X","SCALE_Y",
+                                    "ROW_trans","COL_trans",
+                                    facet_vars)])
+      x_collapse$ROW <- 0
+      x_collapse$PANEL_TYPE <- factor("x", levels = levels(layout$PANEL_TYPE))
+      x_collapse$SCALE_Y <- 0
+      x_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"x",
+                                                           c("ROW_trans","COL_trans")]
+      layout <- bind_rows(layout, x_collapse)
       if(x.pos=="bottom"){
-        layout <- mutate(layout, ROW = case_when(ROW_trans=="bottom" ~ max(ROW)+1L, TRUE ~ ROW))
+        layout$ROW <- case_when(layout$ROW_trans=="bottom" ~ max(layout$ROW)+1L,
+                                TRUE ~ layout$ROW)
       } else {
-        layout <- mutate(layout, ROW = ROW + 1L)
+        layout$ROW <- layout$ROW + 1L
       }
       #Need to do something with scales on a collapse...
     }
 
     if(!"y"%in% include){
-      .tmp <- layout%>% filter(PANEL_TYPE %in% "main") %>%
-        group_by(ROW)
-      .tmp1 <- .tmp %>% select(all_of(c("ROW", facet_vars))) %>% distinct()
-      .tmp <- .tmp %>%
-        summarise(COL = 0,
-                 # PANEL_GROUP = case_when(y.pos=="left" ~ max_factor(PANEL_GROUP), TRUE ~ min_factor(PANEL_GROUP)),
-                  PANEL_TYPE = factor("y", levels = levels(layout$PANEL_TYPE)),
-                  SCALE_X = 0,
-                  SCALE_Y = unique(SCALE_Y)) %>%
-        left_join(x = ., y = collapsed, by = c("PANEL_TYPE")) %>%
-        left_join(x = ., y = .tmp1, by = "ROW")
-      layout <- bind_rows(layout, .tmp)
+      y_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
+                                  c("COL","ROW","PANEL_TYPE",
+                                    "SCALE_X","SCALE_Y",
+                                    "ROW_trans","COL_trans",
+                                    facet_vars)])
+      y_collapse$COL <- 0
+      y_collapse$PANEL_TYPE <- factor("y", levels = levels(layout$PANEL_TYPE))
+      y_collapse$SCALE_X <- 0
+      y_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"y",
+                                                           c("ROW_trans","COL_trans")]
+      layout <- bind_rows(layout, y_collapse)
       if(y.pos=="right"){
-        layout <- mutate(layout, COL = case_when(COL_trans=="right" ~ max(COL)+1L, TRUE ~ COL))
+        layout$COL <- case_when(layout$COL_trans=="right" ~ max(layout$COL)+1L,
+                                TRUE ~ layout$COL)
       } else {
-        layout <- mutate(layout, COL = COL + 1L)
+        layout$COL <- layout$COL + 1L
       }
     }
 
