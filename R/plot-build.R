@@ -10,28 +10,12 @@ guess_layer_mapping <- function(layer) {
   return(val)
 }
 
-clone_layers <- function(layers){
-  layers <- lapply(layers, function(layer){
-   #browser()
-    #cl <- grep("(X|Y)side",class(layer$geom))
-    l <- cloneLayer(layer)
-    g <- l$geom
-    fclass <- stringr::str_extract(class(g), "(?<=Geom).+")[1]
-    geom <- simple_switch(fclass, default = g)
-    layer <- ggproto(NULL, l,
-                 compute_aesthetics = aes_compute,
-                 geom = geom)
-
-    layer
-  })
-  layers
-}
 
 #' @import ggplot2
 #' @export
 ggplot_build.ggside <- function(plot){
 
-    plot <- plot_clone(plot)
+    plot <- ggplot2:::plot_clone(plot)
     if (length(plot$layers) == 0) {
       plot <- plot + geom_blank()
     }
