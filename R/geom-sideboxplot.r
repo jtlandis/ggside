@@ -49,7 +49,8 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }
@@ -124,7 +125,8 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }

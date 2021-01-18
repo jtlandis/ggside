@@ -199,7 +199,6 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
           },
           compute_layout = function(data, params,
                                     facet_compute = facet$compute_layout){
-            #browser()
             collapse <- params$ggside$collapse %||% "default"
             layout <- facet_compute(data, params)
             if(collapse %in%c("all","x")){
@@ -225,6 +224,9 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){
             facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
+            if(!"PANEL_TYPE"%in%colnames(data)){
+              data$PANEL_TYPE <- "main"
+            }
             layout <- unwrap(layout, c("ROW","COL"), facet_vars)
             .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
             .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])

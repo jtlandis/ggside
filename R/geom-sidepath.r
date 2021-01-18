@@ -25,7 +25,8 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }
@@ -79,7 +80,8 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }

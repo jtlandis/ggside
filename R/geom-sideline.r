@@ -15,7 +15,8 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }
@@ -60,7 +61,8 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }

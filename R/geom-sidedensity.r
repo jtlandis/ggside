@@ -21,7 +21,8 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }
@@ -69,7 +70,8 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }

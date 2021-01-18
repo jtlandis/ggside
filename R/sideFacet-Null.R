@@ -2,7 +2,6 @@
 
 sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
 
-  #browser()
   # if (inherits(coord, "CoordFlip")) {
   #   if (params$free$x) {
   #     layout$SCALE_X <- seq_len(nrow(layout))

@@ -3,13 +3,22 @@
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
   plot <- make_ggside(plot, object)
-  if("layer"%in%names(object)){
+  plot <- if("layer"%in%names(object)){
     plot + object$layer
   } else {
     plot
   }
+  plot$sides_used <- get_sides(plot$layers)
+  plot$facet <- make_sideFacets(facet = plot$facet, sides = plot$sides_used, ggside = plot$ggside)
+  plot
 }
 
+get_sides <- function(layers){
+  layer_mappings <- lapply(layers, guess_layer_mapping)
+  sides_used <- unlist(layer_mappings)
+  sides_used <- unique(sides_used[!sides_used %in% "main"])
+  return(sides_used)
+}
 
 make_ggside <- function(object, ggside){
   if(!is.ggside_layer(object)){

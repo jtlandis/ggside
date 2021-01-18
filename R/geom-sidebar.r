@@ -67,7 +67,8 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer = l), class="ggside_layer")
 }
@@ -98,7 +99,8 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       pad = FALSE,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
   structure(list(layer=l), class = "ggside_layer")
 }
@@ -147,7 +149,8 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class="ggside_layer")
 }
@@ -178,7 +181,8 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       pad = FALSE,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
   structure(list(layer = l), class = "ggside_layer")
 }
