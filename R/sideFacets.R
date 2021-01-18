@@ -22,6 +22,10 @@ min_factor <- function(x){
 sidePanelLayout <- function(layout,
                             ggside,
                             sidePanel = c("x","y")){
+  # browser()
+  # if("PANEL_TYPE" %in% colnames(layout)){
+  #   layout <- layout[layout$PANEL_TYPE %in% "main", setdiff(colnames(layout), "PANEL_TYPE")]
+  # }
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -82,7 +86,7 @@ sidePanelLayout <- function(layout,
 
   if(!empty(collapsed)){
 
-    if(!"x"%in% include){
+    if("x"%in% sidePanel){
       x_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
                                   c("COL","ROW","PANEL_TYPE",
                                     "SCALE_X","SCALE_Y",
@@ -103,7 +107,7 @@ sidePanelLayout <- function(layout,
       #Need to do something with scales on a collapse...
     }
 
-    if(!"y"%in% include){
+    if("y"%in% sidePanel){
       y_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
                                   c("COL","ROW","PANEL_TYPE",
                                     "SCALE_X","SCALE_Y",
@@ -185,20 +189,36 @@ sideFacetDraw.FacetNull <- function(facet){
   sideFacetNull_draw_panels
 }
 
+get_Facet <- function(facet){
+  UseMethod("get_Facet")
+}
+
+get_Facet.default <- function(facet){
+  abort(glue("No method implimented for facet of class {class(facet)[1]}"))
+}
+
+get_Facet.FacetNull <- function(facet) ggplot2::FacetNull
+
+get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
+
+get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
+
 #' @export
 make_sideFacets <- function(facet, ggside, sides = c("x","y")){
 
-  sideFacet_draw_panels <- sideFacetDraw(facet)
+  base_facet <- get_Facet(facet)
+  sideFacet_draw_panels <- sideFacetDraw(base_facet)
 
   ggproto(NULL,
-          facet,
+          base_facet,
+          params = facet$params,
           setup_params = function(data, params){
             params$.possible_columns <- unique(unlist(lapply(data, names)))
             params$ggside <- ggside
             params
           },
           compute_layout = function(data, params,
-                                    facet_compute = facet$compute_layout){
+                                    facet_compute = base_facet$compute_layout){
             collapse <- params$ggside$collapse %||% "default"
             layout <- facet_compute(data, params)
             if(collapse %in%c("all","x")){
@@ -244,5 +264,6 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
 
   )
 }
+
 
 
