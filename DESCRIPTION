@@ -50,6 +50,7 @@ Collate:
     'sideFacet-Grid.R'
     'sideFacet-Null.R'
     'sideFacet-Wrap.R'
+    'sideLayer.R'
     'stat-.r'
     'stats.r'
     'zzz.R'
