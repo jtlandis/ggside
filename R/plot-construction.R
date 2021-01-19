@@ -2,12 +2,19 @@
 
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
+  browser()
   plot <- make_ggside(plot, object)
-  plot <- if("layer"%in%names(object)){
+  if("layer"%in%names(object)){
     plot + object$layer
   } else {
     plot
   }
+}
+
+#' @export
+"+.ggside" <- function(e1, e2) {
+  browser()
+  plot <- NextMethod()
   plot$sides_used <- get_sides(plot$layers)
   plot$facet <- make_sideFacets(facet = plot$facet, sides = plot$sides_used, ggside = plot$ggside)
   plot
@@ -21,7 +28,7 @@ get_sides <- function(layers){
 }
 
 make_ggside <- function(object, ggside){
-  if(!is.ggside_layer(object)){
+  if(!is.ggside_layer(ggside)||!is.ggside(object)){
     class(object) <- c("ggside",class(object))
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
