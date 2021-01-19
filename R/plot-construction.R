@@ -12,7 +12,7 @@ ggplot_add.ggside_layer <- function(object, plot, object_name){
 
 
 make_ggside <- function(object, ggside){
-  if(!is.ggside_layer(object)){
+  if(!is.ggside_layer(ggside)||!is.ggside(object)){
     class(object) <- c("ggside",class(object))
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
