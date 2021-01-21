@@ -20,17 +20,14 @@ min_factor <- function(x){
 
 #' @importFrom dplyr case_when
 sidePanelLayout <- function(layout,
-                            ggside,
-                            sidePanel = c("x","y")){
-  # browser()
-  # if("PANEL_TYPE" %in% colnames(layout)){
-  #   layout <- layout[layout$PANEL_TYPE %in% "main", setdiff(colnames(layout), "PANEL_TYPE")]
-  # }
+                            ggside){
+
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
   scales = ggside$scales
   collapse <- ggside$collapse %||% "default" #default is no collapsing
+  sidePanel <- ggside$sides_used
   if(collapse%in%c("all","x")){
     xrow <- x.pos
     mrow <- "ALL"
@@ -204,7 +201,10 @@ get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
 get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
 
 #' @export
-make_sideFacets <- function(facet, ggside, sides = c("x","y")){
+make_sideFacets <- function(facet, ggside) UseMethod("make_sideFacets")
+
+#' @export
+make_sideFacets.default <- function(facet, ggside){
 
   base_facet <- get_Facet(facet)
   sideFacet_draw_panels <- sideFacetDraw(base_facet)
@@ -239,7 +239,7 @@ make_sideFacets <- function(facet, ggside, sides = c("x","y")){
                 layout <- mutate(layout, SCALE_Y = ROW)
               }
             }
-            layout <- sidePanelLayout(layout, sidePanel = sides, ggside = params$ggside)
+            layout <- sidePanelLayout(layout, ggside = params$ggside)
             layout },
           map_data = function(data, layout,
                               params, facet_mapping = facet$map_data){

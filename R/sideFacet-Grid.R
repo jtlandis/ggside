@@ -1,6 +1,7 @@
 
 
 sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -57,7 +58,6 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   #theme side panel scale
   side.panel.scale.x <- theme$ggside.panel.scale.x %||% theme$ggside.panel.scale %||% .1
   side.panel.scale.y <- theme$ggside.panel.scale.y %||% theme$ggside.panel.scale %||% .1
-
   if (params$space_free$x) {
     ps <- layout %>% filter(PANEL_TYPE %in% "main") %>% filter(ROW%in%min(ROW)) %>% pull(PANEL)
     widths <- vapply(ps, function(i) diff(ranges[[i]]$x.range), numeric(1))
