@@ -83,7 +83,7 @@ sidePanelLayout <- function(layout,
 
   if(!empty(collapsed)){
 
-    if("x"%in% sidePanel){
+    if(collapse %in% c("all","x")){
       x_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
                                   c("COL","ROW","PANEL_TYPE",
                                     "SCALE_X","SCALE_Y",
@@ -104,7 +104,7 @@ sidePanelLayout <- function(layout,
       #Need to do something with scales on a collapse...
     }
 
-    if("y"%in% sidePanel){
+    if(collapse %in% c("all","y")){
       y_collapse <- unique(layout[layout$PANEL_TYPE %in% "main",
                                   c("COL","ROW","PANEL_TYPE",
                                     "SCALE_X","SCALE_Y",
@@ -143,7 +143,7 @@ wrapup <- function(df, by, vars = NULL){
   indx <- match(indx, unique(indx))
   l_ <- split(df, indx)
   l_ <- lapply(l_, function(x){
-    nest <- lapply(x[,vars],function(x) list(x))
+    nest <- lapply(x[,vars, drop = FALSE],function(x) list(x))
     x <- unique(x[,setdiff(colnames(x), vars), drop = FALSE])
     x[,vars] <- nest
     x
