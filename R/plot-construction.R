@@ -5,11 +5,14 @@ ggplot_add.ggside_layer <- function(object, plot, object_name){
   if("layer"%in%names(object)){
     plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
   }
-  plot <- make_ggside(plot, object)
+  as_ggside(plot, object)
+}
+
+as_ggside <- function(plot, ggside = NULL){
+  plot <- make_ggside(plot, ggside)
   plot[["facet"]] <- make_sideFacets(plot[["facet"]], plot[["ggside"]])
   plot
 }
-
 
 get_sides <- function(layers){
   layer_mappings <- lapply(layers, guess_layer_mapping)
@@ -20,7 +23,7 @@ get_sides <- function(layers){
 
 make_ggside <- function(object, ggside){
   if(!is.ggside(object)){
-    class(object) <- c("ggside",class(object))
+    object <- new("ggside", object)
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   if(!object$ggside$x.pos%in%c("top","bottom")) {
