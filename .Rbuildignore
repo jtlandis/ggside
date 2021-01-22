@@ -1,0 +1,6 @@
+^.*\.Rproj$
+^\.Rproj\.user$
+^doc$
+^Meta$
+ggside.Rmd
+^LICENSE\.md$
