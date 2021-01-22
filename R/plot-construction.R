@@ -23,7 +23,7 @@ get_sides <- function(layers){
 
 make_ggside <- function(object, ggside){
   if(!is.ggside(object)){
-    object <- new("ggside", object)
+    class(object) <- c("ggside", class(object))
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   if(!object$ggside$x.pos%in%c("top","bottom")) {
