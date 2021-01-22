@@ -22,33 +22,10 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
                  collapse = collapse), class = "ggside_layer")
 }
 
-
-setOldClass(c("gg","ggplot"))
+#' @export
+is.ggside <- function(x) inherits(x, "ggside")
 
 #' @export
-setClass("ggside", contains = c("gg","ggplot","list"))
+is.ggside_layer <- function(x) inherits(x, "ggside_layer")
 
-#' @export
-setMethod("initialize", "ggside",
-          function(.Object, plot){
-            .Object[names(plot)] <- plot
-            .Object
-          })
 
-#' @export
-setMethod("+", signature(e1 = "ggside", e2 = "gg"),
-          function(e1, e2){
-            cat("using ggside + method\n")
-            browser()
-            plot <- ggplot2:::`+.gg`(e1, e2)
-            if(!is.ggside_layer(e2)){
-              plot <- make_ggside(plot, e2)
-            }
-            plot
-          })
-
-#' @export
-setMethod("show", signature("ggside"),
-          function(object){
-            ggplot2:::print.ggplot(object)
-            })

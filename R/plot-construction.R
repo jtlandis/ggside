@@ -59,6 +59,4 @@ check_collapse <- function(collapse, sides){
   return(collapse)
 }
 
-is.ggside <- function(x) inherits(x, "ggside")
 
-is.ggside_layer <- function(x) inherits(x, "ggside_layer")
