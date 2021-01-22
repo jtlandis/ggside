@@ -239,12 +239,18 @@ p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
 ```
 
 ```{r}
-p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
+profvis::profvis({
+ .p <-  p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels and \nAdjusted Side Panel Relative Size") +
   ggside(collapse = "all") +
+  theme_dark() +
   theme(ggside.panel.scale.x = .4,
         ggside.panel.scale.y = .25,
         ggside.panel.spacing.x = unit(8, "pt"))
+ 
+ print(.p)
+})
+
 ```
 
 
