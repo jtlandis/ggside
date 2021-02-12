@@ -33,7 +33,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   y.pos <- params$ggside$y.pos
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
-  layout <- unwrap(layout, c("ROW","COL"), c(names(params$cols),names(params$rows)))
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
   col_vars <- unique(layout[names(params$cols)])
   row_vars <- unique(layout[names(params$rows)])
   # Adding labels metadata, useful for labellers

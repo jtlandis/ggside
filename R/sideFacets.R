@@ -56,7 +56,7 @@ sidePanelLayout <- function(layout,
     xcol <- "ALL"
   }
 
-  data <- data.frame(PANEL_TYPE = c("main", "x", "y"),
+  data <- data_frame(PANEL_TYPE = factor(c("main", "x", "y")),
                      ROW_trans = c(mrow,xrow,yrow),
                      COL_trans = c(mcol,xcol,ycol))
   data <- data[data$PANEL_TYPE %in% c("main", sidePanel),]
@@ -132,41 +132,42 @@ sidePanelLayout <- function(layout,
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]
-  layout <- wrapup(layout, by = c("ROW","COL"), facet_vars)
+  layout <- wrapup(layout, by = c("ROW","COL"), FACET_VARS = facet_vars)
   layout$PANEL <- factor(1:nrow(layout))
   return(layout)
 }
 
-wrapup <- function(df, by, vars = NULL){
-  if(is.null(vars)) return(df)
-  indx <- interaction(df[,by])
+wrapup <- function(df, by, ...){
+  if(...length()==0) return(df)
+  indx <- interaction(df[,by], drop = T)
   indx <- match(indx, unique(indx))
+  dots_ <- list(...)
+  if(!all(unlist(lapply(dots_, function(x,y){all(x%in%y)}, y = colnames(df))))) abort("all RHS must exist in column names of `df`.")
+  wrap_columns <- unlist(dots_)
   l_ <- split(df, indx)
-  l_ <- lapply(l_, function(x){
-    nest <- lapply(x[,vars, drop = FALSE],function(x) list(x))
-    x <- unique(x[,setdiff(colnames(x), vars), drop = FALSE])
-    x[,vars] <- nest
+  l_ <- lapply(l_, function(x, d){
+    wrap <- lapply(d, function(y) list(x[,y, drop = FALSE]))
+    x <- unique(x[,setdiff(colnames(x), wrap_columns), drop = FALSE])
+    x[,names(d)] <- wrap
     x
-  })
-  data <- do.call(rbind, l_)
-  rownames(data) <- 1:nrow(data)
+  }, d = dots_)
+  data <- rbind_dfs(l_)
   data
 }
 
-unwrap <- function(df, by, vars = NULL){
-  if(is.null(vars)) return(df)
-  indx <- interaction(df[,by])
+unwrap <- function(df, by, cols = NULL){
+  if(is.null(cols)) return(df)
+  if(!all(cols%in%colnames(df))) abort("all `cols` must exist in column names of `df`")
+  indx <- interaction(df[,by], drop = T)
   indx <- match(indx, unique(indx))
   l_ <- split(df, indx)
   l_ <- lapply(l_, function(x){
-    nest <- data.frame(lapply(x[,vars], function(x) unlist(x)))
-    names(nest) <- vars
-    x <- x[, setdiff(colnames(x), vars), drop = FALSE]
+    nest <- do.call('cbind',unlist(Map(function(d, y) {d[,y,drop=T]}, d = list(x), y = cols),recursive = F))
+    x <- x[, setdiff(colnames(x), cols), drop = FALSE]
     if(nrow(x)!=1) stop("by must uniquely index df")
     cbind(x[rep(1, nrow(nest)),], nest)
   })
-  data <- do.call(rbind, l_)
-  rownames(data) <- 1:nrow(data)
+  data <- rbind_dfs(l_)
   data
 }
 
@@ -253,7 +254,7 @@ make_sideFacets.default <- function(facet, ggside){
             if(!"PANEL_TYPE"%in%colnames(data)){
               data$PANEL_TYPE <- "main"
             }
-            layout <- unwrap(layout, c("ROW","COL"), facet_vars)
+            layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
             .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
             .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
             data <- cbind.data.frame(data, layout[match(.x,.y),"PANEL", drop = FALSE])
