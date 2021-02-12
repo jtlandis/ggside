@@ -2,9 +2,14 @@
 
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
-  if("layer"%in%names(object)){
-    plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
-  }
+  plot <- NextMethod("ggplot_add")
+  # if("layer"%in%names(object)){
+  #   plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
+  # }
+  as_ggside(plot, object)
+}
+
+ggplot_add.ggside_options <- function(object, plot, object_name){
   as_ggside(plot, object)
 }
 

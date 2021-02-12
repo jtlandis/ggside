@@ -19,7 +19,7 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
-                 collapse = collapse), class = "ggside_layer")
+                 collapse = collapse), class = "ggside_options")
 }
 
 #' @export
@@ -27,5 +27,87 @@ is.ggside <- function(x) inherits(x, "ggside")
 
 #' @export
 is.ggside_layer <- function(x) inherits(x, "ggside_layer")
+
+
+#
+# setOldClass(c("ggproto"))
+# setOldClass(c("gg", "ggplot"))
+# setOldClass(c("theme"))
+# setOldClass(c("guides"))
+# setOldClass(c("Facet"))
+# setOldClass("FacetWrap")
+# setClass("ggside", contains = c("gg", "ggplot", "list"))
+#
+# #' @export
+# setMethod("initialize", "ggside",
+#           function(.Object, plot){
+#             .Object[names(plot)] <- plot
+#             .Object
+#           })
+#
+# #' @export
+# setMethod("+", c("ggside", "ggproto"),
+#           function(e1, e2){
+#             browser()
+#             e2name <- deparse(substitute(e2))
+#             plot <- ggplot2:::add_ggplot(e1, e2, e2name)
+#             if(!is.ggside_layer(e2)){
+#               plot <- as_ggside(plot, e2)
+#             }
+#             plot
+#           }
+#           )
+#
+# #' @export
+# setMethod("+", c("ggside", "theme"),
+#           function(e1, e2){
+#             e2name <- deparse(substitute(e2))
+#             ggplot2:::add_ggplot(e1, e2, e2name)
+#           }
+# )
+#
+# #' @export
+# setMethod("+", c("ggside", "guides"),
+#           function(e1, e2){
+#             e2name <- deparse(substitute(e2))
+#             ggplot2:::add_ggplot(e1, e2, e2name)
+#           }
+# )
+#
+# # #' @export
+# # setMethod("+", c("ggside", "Facet"),
+# #           function(e1, e2){
+# #             browser()
+# #             e2name <- deparse(substitute(e2))
+# #             plot <- ggplot2:::add_ggplot(e1, e2, e2name)
+# #             if(!is.ggside_layer(e2)){
+# #               plot <- as_ggside(plot, e2)
+# #             }
+# #             plot
+# #           }
+# # )
+#
+# # #' @export
+# # setMethod("+", c("ggside", "FacetWrap"),
+# #           function(e1, e2){
+# #             browser()
+# #             e2name <- deparse(substitute(e2))
+# #             plot <- ggplot2:::add_ggplot(e1, e2, e2name)
+# #             if(!is.ggside_layer(e2)){
+# #               plot <- as_ggside(plot, e2)
+# #             }
+# #             plot
+# #           }
+# #)
+#
+# #' @export
+# setMethod("show", signature("ggside"),
+#           function(object){
+#             ggplot2:::print.ggplot(object)})
+#
+#
+#
+
+
 
 
