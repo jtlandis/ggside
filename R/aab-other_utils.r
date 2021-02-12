@@ -1,4 +1,5 @@
 #' @import ggplot2
+#' @import scales
 #' @import grid
 #' @import rlang
 #' @importFrom glue glue glue_collapse
@@ -103,7 +104,7 @@ ggname <- function(prefix, grob) {
 manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
   # check for missing `values` parameter, in lieu of providing
   # a default to all the different scale_*_manual() functions
-  if (is_missing(values)) {
+  if (rlang::is_missing(values)) {
     values <- NULL
   } else {
     force(values)
