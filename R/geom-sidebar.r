@@ -70,7 +70,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer = l), class="ggside_layer")
+  structure(l, class="ggside_layer")
 }
 
 #' @export
@@ -152,7 +152,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = c("ggside_layer",class(l)))
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @export
@@ -184,7 +184,7 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = c("ggside_layer",class(l)))
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
