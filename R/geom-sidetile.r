@@ -22,7 +22,7 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
@@ -68,7 +68,7 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",

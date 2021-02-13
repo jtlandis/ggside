@@ -52,7 +52,7 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
@@ -128,7 +128,7 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",

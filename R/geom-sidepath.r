@@ -28,7 +28,7 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
@@ -83,7 +83,7 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(list(layer = l), class = class("ggside_layer",l))
 }
 
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",

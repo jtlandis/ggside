@@ -221,7 +221,7 @@ make_sideFacets.default <- function(facet, ggside){
           compute_layout = function(data, params,
                                     facet_compute = base_facet$compute_layout){
             layout <- facet_compute(data, params)
-            layout <- check_scales_collapse(data, params)
+            layout <- check_scales_collapse(layout, params)
             layout <- sidePanelLayout(layout, ggside = params$ggside)
             layout },
           map_data = function(data, layout,
