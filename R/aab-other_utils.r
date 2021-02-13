@@ -3,9 +3,6 @@
 #' @import grid
 #' @import rlang
 #' @importFrom glue glue glue_collapse
-#' @import gtable
-#' @import dplyr
-#' @import tidyr
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)
@@ -289,7 +286,7 @@ new_data_frame <- function(x = list(), n = NULL) {
 }
 
 guess_layer_mapping <- function(layer) {
-  geom_class <- stringr::str_extract(class(layer$geom), "(X|Y)side")
+  geom_class <- str_extr(class(layer$geom), "(X|Y)side")
   val <- if(all(is.na(geom_class))){
     "main"
   } else {
@@ -299,3 +296,12 @@ guess_layer_mapping <- function(layer) {
   return(val)
 }
 
+
+str_extr <- function(string, pattern){
+  matches <- regexec(pattern, text = string)
+  unlist(Map(function(x,y){
+    start <- y[1]
+    end <- start + attr(y, "match.length")[1] - 1L
+    if(start==-1L) return(NA_character_)
+    substr(x, start, end)}, x = string, y = matches))
+}
