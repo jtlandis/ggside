@@ -62,7 +62,7 @@ add_gg.ggproto <- function(e1, e2, e2name) {
 
 add_gg.ggside <- function(e1, e2, e2name) {
   p <- NextMethod("add_gg")
-  if(!is.ggside_layer(e2)){
+  if(!(is.ggside_layer(e2)|inherits(e2, "ggside_options"))){
     p <- as_ggside(p, e2)
   }
   p

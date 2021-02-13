@@ -6,7 +6,7 @@ ggplot_add.ggside_layer <- function(object, plot, object_name){
   # if("layer"%in%names(object)){
   #   plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
   # }
-  as_ggside(plot, object)
+  as_ggside(plot)
 }
 
 ggplot_add.ggside_options <- function(object, plot, object_name){
@@ -15,6 +15,9 @@ ggplot_add.ggside_options <- function(object, plot, object_name){
 
 as_ggside <- function(plot, ggside = NULL){
   plot <- make_ggside(plot, ggside)
+  if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
+    abort("ggside is not currently compatable with CoordFlip or CoordPolar")
+  }
   plot[["facet"]] <- make_sideFacets(plot[["facet"]], plot[["ggside"]])
   plot
 }
