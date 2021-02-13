@@ -35,7 +35,7 @@ geom_xsidetext <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer = l), class = class("ggside_layer",l))
+  structure(list(layer = l), class = c("ggside_layer",class(l)))
 }
 
 GeomXsidetext <- ggplot2::ggproto("GeomXsidetext",
@@ -96,7 +96,7 @@ geom_ysidetext <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
-  structure(list(layer = l), class = class("ggside_layer",l))
+  structure(list(layer = l), class = c("ggside_layer",class(l)))
 }
 
 
