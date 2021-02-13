@@ -175,8 +175,16 @@ position_rescale <- function(rescale = "y", midpoint = NULL, range = NULL, locat
 
 #' @rdname position_rescale
 #' @export
-position_rescaley <- function(rescale = "y", ...) position_rescale(rescale = rescale, ...)
+position_yrescale <- function(rescale = "y", midpoint = NULL,
+                              range = NULL, location = NULL,
+                              instance = NULL) {
+  position_rescale(rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
+  }
 
 #' @rdname position_rescale
 #' @export
-position_rescalex <- function(rescale = "x", ...) position_rescale(rescale = rescale, ...)
+position_xrescale <- function(rescale = "x", midpoint = NULL,
+                              range = NULL, location = NULL,
+                              instance = NULL) {
+  position_rescale(rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
+  }
