@@ -220,26 +220,8 @@ make_sideFacets.default <- function(facet, ggside){
           },
           compute_layout = function(data, params,
                                     facet_compute = base_facet$compute_layout){
-            collapse <- params$ggside$collapse %||% "default"
             layout <- facet_compute(data, params)
-            if(collapse %in%c("all","x")){
-              checkX <- layout %>% group_by(COL) %>%
-                summarise(SCALE_X = list(unique(SCALE_X))) %>%
-                pull(SCALE_X) %>% lapply(FUN = length) %>% unlist()
-              if(!all(checkX==1)){
-                warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales"))
-                layout <- mutate(layout, SCALE_X = COL)
-              }
-            }
-            if(collapse %in%c("all","y")){
-              checkY <- layout %>% group_by(ROW) %>%
-                summarise(SCALE_Y = list(unique(SCALE_Y))) %>%
-                pull(SCALE_Y) %>% lapply(FUN = length) %>% unlist()
-              if(!all(checkY==1)){
-                warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales"))
-                layout <- mutate(layout, SCALE_Y = ROW)
-              }
-            }
+            layout <- check_scales_collapse(data, params)
             layout <- sidePanelLayout(layout, ggside = params$ggside)
             layout },
           map_data = function(data, layout,
@@ -266,5 +248,34 @@ make_sideFacets.default <- function(facet, ggside){
   )
 }
 
-
+check_scales_collapse <- function(data, params) {
+  collapse <- params$ggside$collapse %||% "default"
+  if(collapse %in%c("all","x")){
+    checkX <- unlist(
+      lapply(
+        split(data[["SCALE_X"]],
+              data[["COL"]]),
+        function(x) length(unique(x))
+        )
+      )
+    if(!all(checkX==1)){
+      warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales."))
+      data[["SCALE_X"]] <- data[["COL"]]
+    }
+  }
+  if(collapse %in%c("all","y")){
+    checkY <- unlist(
+      lapply(
+        split(data[["SCALE_Y"]],
+              data[["ROW"]]),
+        function(x) length(unique(x))
+      )
+    )
+    if(!all(checkY==1)){
+      warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales."))
+      data[["SCALE_Y"]] <- data[["ROW"]]
+    }
+  }
+  data
+}
 
