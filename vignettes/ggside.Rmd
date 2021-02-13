@@ -159,7 +159,7 @@ p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
 
 
 ```{r}
-p2 <- p + geom_xsidedensity(aes(y=stat(density)))+
+p2 <- p + geom_xsidedensity(aes(y=stat(density)))
   geom_ysidedensity(aes(x=stat(density))) +
   theme_bw()
 p2 + labs(title = "FacetNull")
