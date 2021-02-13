@@ -13,7 +13,7 @@
 #' @title Summarise by grouping variable
 #' @description Applies a function to a specified grouping variable
 #' @examples
-#' #library(tidyr)
+#' library(tidyr)
 #' i <- gather(iris,"key","value",-Species)
 #' ggplot(i, aes(Species, fill = key, domain = value)) +
 #'    geom_bar(aes(y = after_stat(summarise)), stat = "summarise") +

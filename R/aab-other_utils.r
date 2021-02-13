@@ -1,6 +1,7 @@
 #' @import ggplot2
 #' @import scales
 #' @import grid
+#' @import gtable
 #' @import rlang
 #' @importFrom glue glue glue_collapse
 

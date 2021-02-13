@@ -1,6 +1,7 @@
 
 
 
+
 XLayer <- ggplot2::ggproto("XLayer",
                            ggplot2:::Layer,
                            setup_layer = function(self, data, plot){
