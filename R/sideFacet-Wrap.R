@@ -37,7 +37,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-  #browser()
+
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -68,7 +68,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
-  layout <- layout %>% unnest(cols = names(params$facets))
+  layout <- unwrap(layout, by = c("ROW","COL"),cols = "FACET_VARS")
 
   if (length(params$facets) == 0) {
     # Add a dummy label

@@ -19,9 +19,10 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
       linejoin = linejoin,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
@@ -64,9 +65,10 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
       linejoin = linejoin,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",

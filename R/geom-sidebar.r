@@ -67,9 +67,10 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class="ggside_layer")
+  structure(l, class="ggside_layer")
 }
 
 #' @export
@@ -98,9 +99,10 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       pad = FALSE,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer=l), class = "ggside_layer")
+  structure(list(layer=l), class = c("ggside_layer",class(l)))
 }
 
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
@@ -147,9 +149,10 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class="ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @export
@@ -178,9 +181,10 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       pad = FALSE,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",

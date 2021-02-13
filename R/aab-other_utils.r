@@ -1,4 +1,5 @@
 #' @import ggplot2
+#' @import scales
 #' @import grid
 #' @import rlang
 #' @importFrom glue glue glue_collapse
@@ -103,7 +104,7 @@ ggname <- function(prefix, grob) {
 manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
   # check for missing `values` parameter, in lieu of providing
   # a default to all the different scale_*_manual() functions
-  if (is_missing(values)) {
+  if (rlang::is_missing(values)) {
     values <- NULL
   } else {
     force(values)
@@ -285,5 +286,16 @@ new_data_frame <- function(x = list(), n = NULL) {
 
   attr(x, "row.names") <- .set_row_names(n)
   x
+}
+
+guess_layer_mapping <- function(layer) {
+  geom_class <- stringr::str_extract(class(layer$geom), "(X|Y)side")
+  val <- if(all(is.na(geom_class))){
+    "main"
+  } else {
+    geom_class <- geom_class[!is.na(geom_class)]
+    to_lower_ascii(substr(geom_class,1,1))
+  }
+  return(val)
 }
 

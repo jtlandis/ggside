@@ -40,7 +40,7 @@ indexed independently.}
 \description{
 Take the range of the specified axsis and rescale it to a new range about a midpoint. By default
 the range will be calculated from the associated main plot axis mapping. The range will either be the resolution
-or 5% of the axsis range, depending if original data is discrete or continuous respectively. Each layer called
+or 5\% of the axsis range, depending if original data is discrete or continuous respectively. Each layer called
 with position_rescale will possess an instance value that indexes with axis rescale. By default, each
 position_rescale will dodge the previous call unless instance is specified to a previous layer.
 }

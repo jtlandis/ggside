@@ -25,7 +25,8 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
 }
 
@@ -76,7 +77,8 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
 }
 

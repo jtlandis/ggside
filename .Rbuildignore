@@ -1,2 +1,13 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+<<<<<<< HEAD
+=======
+^doc$
+^Meta$
+ggside.Rmd
+README.Rmd
+^LICENSE\.md$
+R/test2.R
+R/test\ files.R
+examples/*
+>>>>>>> trimming

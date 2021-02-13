@@ -32,28 +32,28 @@ geom_ysidebar(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings reated by [`aes()`] or
-[`aes_()`]. If specified and `inherit.aes = TRUE`, it will be
+\item{mapping}{Set of aesthetic mappings reated by \code{\link[=aes]{aes()}} or
+\code{\link[=aes_]{aes_()}}. If specified and \code{inherit.aes = TRUE}, it will be
 combined with the default mapping at the top level of the plot.
-`mapping` must be supplied in this layer if ther is no plot mapping.}
+\code{mapping} must be supplied in this layer if ther is no plot mapping.}
 
-\item{data}{The data to be displayed in this layer. If `NULL`, the default,
-then the data is inherited from the plot data as specified i nthe call to [`ggplot()`].}
+\item{data}{The data to be displayed in this layer. If \code{NULL}, the default,
+then the data is inherited from the plot data as specified i nthe call to \code{\link[=ggplot]{ggplot()}}.}
 
 \item{stat}{The statistical transformation to use on the data for this layer, as a string.}
 
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
-\item{...}{other arguments passed on to [`layer()`]. These are
+\item{...}{other arguments passed on to \code{\link[=layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
-`color = "red"` or `size = 3`. They may also be parameters
+\code{color = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
 
-\item{na.rm}{If `FALSE`, the default, missing values are removed with
-a warning. If `TRUE`, missing values are silently removed.}
+\item{na.rm}{If \code{FALSE}, the default, missing values are removed with
+a warning. If \code{TRUE}, missing values are silently removed.}
 
-\item{inherit.aes}{If `FALSE`, overrides the default aesthetics,
+\item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them.}
 }
 \description{
@@ -71,7 +71,7 @@ Required aesthetics are in bold.
 \item \emph{yfill} Fill color of the ysidebar
 \item \emph{width} specifies the width of each bar
 \item \emph{height} specifies the height of each bar
-\item \emph{alpha} Transparency level of `xfill` or `yfill` depending on which [`geom_*sidbar`]
+\item \emph{alpha} Transparency level of \code{xfill} or \code{yfill} depending on which \code{\link{geom_*sidbar}}
 \item \emph{size} size of the border line. --uneeded??
 \item \emph{location} Specifies where the sidebar should be placed.
 geom_xsidebar may specify either "bottom" or "top" and
