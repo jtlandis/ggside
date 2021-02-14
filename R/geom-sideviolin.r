@@ -1,4 +1,9 @@
-
+#' @title Side Violin plots
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_violin}
+#' @inheritParams ggplot2::geom_violin
+#' @aliases geom_*sideviolin
+#' @seealso [geom_*sideboxplot]
 #' @export
 geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               stat = "ydensity", position = "dodge",
@@ -50,7 +55,7 @@ GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
                                     })
 
 
-
+#' @rdname geom_xsideviolin
 #' @export
 geom_ysideviolin <- function(mapping = NULL, data = NULL,
                              stat = "ydensity", position = "dodge",

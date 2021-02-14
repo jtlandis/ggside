@@ -1,4 +1,8 @@
-
+#' @title Side text
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_text}.
+#' @inheritParams ggplot2::geom_text
+#' @aliases geom_*sidetext
 #' @export
 geom_xsidetext <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -59,7 +63,7 @@ GeomXsidetext <- ggplot2::ggproto("GeomXsidetext",
                                   })
 
 
-
+#' @rdname geom_xsidetext
 #' @export
 geom_ysidetext <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",

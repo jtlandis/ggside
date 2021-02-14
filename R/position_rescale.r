@@ -121,22 +121,11 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
                                        suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")
-                                       # if(!all(suggested_var%in%colnames(data))){
-                                       #   missing_var <- suggested_var[!suggested_var%in%colnames(data)]
-                                       #   if(missing_var==cvar){
-                                       #     warn(glue("rescale variable \"{missing_var}\" is missing from layer data.",
-                                       #               " Coercing value to 0"))
-                                       #     data[[missing_var]] <- 0
-                                       #   } else {
-                                       #     warn(glue("Collapsing \"{cvar}\" onto \"{missing_var}\" is not well defined ",
-                                       #               "because \"{missing_var}\" is missing in layer data.\n Setting \"{missing_var}\" to 1."))
-                                       #     data[[missing_var]] <- 1
-                                       #   }
-                                       # }
-                                       cdata <- data %>% select(tidyselect::any_of(c(paste0(cvar,suffix)))) %>% gather() %>% unnest(cols = value)
-                                       from_range <- range(cdata$value)
+                                       .cols <- base::intersect(colnames(data), c(paste0(cvar,suffix),suffix))
+                                       cdata <- data[,.cols, drop = FALSE]
+                                       from_range <- range(unlist(lapply(cdata, range)))
                                        rerange <- params$midpoint + (c(-1,1)*c(params$range/2))
-                                       data <- mutate_at(data, vars(tidyselect::any_of(c(paste0(cvar,suffix),suffix))), function(x){
+                                       data[,.cols] <- lapply(data[,.cols, drop = FALSE],function(x){
                                          if(is.list(x)){
                                            x <- lapply(x, scales::rescale, to = rerange, from = from_range)
                                          } else {
@@ -150,7 +139,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        data
                                      },
                                      compute_panel = function(data, params, scales){
-                                       suppressWarnings({distinct_all(data)})
+                                       suppressWarnings({unique(data)})
                                      })
 
 

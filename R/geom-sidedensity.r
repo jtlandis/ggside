@@ -1,3 +1,12 @@
+#' @title Side density distributions
+#'
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_density} is
+#' [geom_xsidedensity] and [geom_ysidedensity].
+#'
+#' @inheritParams ggplot2::geom_density
+#'
+#' @aliases geom_*sidedensity
 #' @export
 geom_xsidedensity <- function(mapping = NULL, data = NULL,
          stat = "density", position = "identity",
@@ -46,7 +55,7 @@ GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                        ggplot2::GeomDensity$draw_key(data, params, size)
                                        })
 
-
+#' @rdname geom_xsidedensity
 #' @export
 geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               stat = "density", position = "identity",

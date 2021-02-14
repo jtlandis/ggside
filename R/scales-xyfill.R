@@ -58,6 +58,9 @@ scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                    na.value = na.value, guide = guide, ...)
 }
 
+#' @rdname scale_xfill
+#' @usage NULL
+#' @export
 scale_xfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "xfill"), aesthetics = "xfill", colors)
@@ -116,6 +119,9 @@ scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                    na.value = na.value, guide = guide, ...)
 }
 
+#' @rdname scale_xfill
+#' @usage NULL
+#' @export
 scale_yfill_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "yfill"), aesthetics = "yfill", colors)

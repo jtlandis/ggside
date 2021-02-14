@@ -1,4 +1,10 @@
-
+#' @title Side line plot
+#' @description
+#' The [xside] and [yside] of \link[ggplot2]{geom_line}.
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_path}
+#' @inheritParams ggplot2::geom_line
+#'
+#' @aliases geom_*sideline
 #' @export
 geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
@@ -44,7 +50,7 @@ GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   })
 
 
-
+#' @rdname geom_xsideline
 #' @export
 geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,

@@ -1,4 +1,8 @@
-
+#' @title Side tile plot
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_tile}
+#' @inheritParams ggplot2::geom_tile
+#' @aliases geom_*sidetile
 #' @export
 geom_xsidetile <- function(mapping = NULL, data = NULL,
                           stat = "identity", position = "identity",
@@ -44,7 +48,7 @@ GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
                                     ggplot2::GeomTile$draw_key(data, params, size)
                                   })
 
-
+#' @rdname geom_xsidetile
 #' @export
 geom_ysidetile <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",

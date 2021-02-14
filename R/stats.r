@@ -12,25 +12,28 @@
 #' @aliases stat_summarize
 #' @title Summarise by grouping variable
 #' @description Applies a function to a specified grouping variable
+#' @inheritParams ggplot2::layer
+#' @param fun Summarising function to use. If no function provided
+#' it will default to \link[base]{length}.
+#' @param args List of additional arguments passed to the function.
+#' @section Aesthetics:
+#' Using stat_summarise requires that you use `domain` as an aesthetic
+#' mapping. This allows you to summarise other data instead of assuming
+#' that `x` is the function's `domain`.
 #' @examples
 #' library(tidyr)
 #' i <- gather(iris,"key","value",-Species)
 #' ggplot(i, aes(Species, fill = key, domain = value)) +
-#'    geom_bar(aes(y = after_stat(summarise)), stat = "summarise") +
+#'    geom_bar(aes(y = after_stat(summarise)), stat = "summarise", fun = mean) +
 #'    stat_summarise(aes(y = after_stat(summarise),
 #'                   label = after_stat(summarise)),
-#'                   position = position_stack(vjust = .5), geom = "text")
-#' ggplot(i, aes(key, fill = Species, domain = value)) +
-#'    geom_bar(aes(y = after_stat(summarise)), stat = "summarise") +
-#'    stat_summarise(aes(y = after_stat(summarise),
-#'                   label = after_stat(summarise)),
-#'                   position = position_stack(vjust = .5), geom = "text")
+#'                   position = position_stack(vjust = .5), geom = "text", fun = mean)
 #' @export
 stat_summarise <- function(mapping = NULL, data = NULL, geom = "bar", position = "identity",
-                          ..., fun = NULL, fun.args = list(), show.legend = NA,
+                          ..., fun = NULL, args = list(), show.legend = NA,
                           inherit.aes = TRUE){
   layer(geom = geom, stat = StatSummarise, data = data, mapping = mapping, position = position,
-        params = list(fun = fun, fun.args = fun.args, ...), inherit.aes = inherit.aes,
+        params = list(fun = fun, args = args, ...), inherit.aes = inherit.aes,
         show.legend = show.legend)
 }
 
@@ -39,42 +42,38 @@ stat_summarise <- function(mapping = NULL, data = NULL, geom = "bar", position =
 stat_summarize <- stat_summarise
 
 #' @rdname stat_summarise
-#' @importFrom dplyr summarise
-#' @usage NULL
+#' @usage NULLzz
 #' @export
 StatSummarise <- ggplot2::ggproto("Summarise",
                                 Stat,
                                 required_aes = c("domain"),
                                 compute_panel = function(self, data, scales, domain = NULL,
-                                                         fun = NULL, fun.args = list()) {
+                                                         fun = NULL, args = list()) {
                                   #
                                   if (empty(data)) return(new_data_frame())
                                   #browser()
 
                                   if(is.null(fun)) {
-                                    warn("fun is null, using mean as default")
-                                    fun <- mean
+                                    warn("fun is NULL, using length as default")
+                                    fun <- length
                                   }
 
                                   groups <- split(data, data$group)
                                   stats <- lapply(groups, function(group){
-                                    self$compute_group(data = group, fun = fun, fun.args = fun.args)
+                                    self$compute_group(data = group, fun = fun, args = args)
                                   })
 
                                   rbind_dfs(stats)
                                 },
-                                compute_group = function(self, data, scales,  fun = NULL, fun.args = fun.args){
+                                compute_group = function(self, data, scales,  fun = NULL, args = args){
 
                                   call_f <- function(fun = fun, x) {
                                     if (is.null(fun)) return(NA_real_)
                                     fun <- as_function(fun)
-                                    do.call(fun, c(list(quote(x)), fun.args))
+                                    do.call(fun, c(list(quote(x)), args))
                                   }
-                                  #browser()
-                                  data <- data %>%
-                                    transform(summarise = call_f(fun, domain), domain = NULL) %>%
-                                    dplyr::distinct_all() %>%
-                                    mutate(summarize = summarise)
+                                  data <- unique(transform(data, summarise = call_f(fun, domain), domain = NULL))
+                                  data[['summarize']] <- data[['summarise']]
                                   data
                                 },
                                 compute_layer = function(self, data, params, layout) {
@@ -117,35 +116,32 @@ StatSummarize <- ggplot2::ggproto("Summarize",
                                   Stat,
                                   required_aes = c("domain"),
                                   compute_panel = function(self, data, scales, domain = NULL,
-                                                           fun = NULL, fun.args = list()) {
+                                                           fun = NULL, args = list()) {
                                     #
                                     if (empty(data)) return(new_data_frame())
                                     #browser()
 
                                     if(is.null(fun)) {
-                                      warn("fun is null, using mean as default")
-                                      fun <- mean
+                                      warn("fun is NULL, using length as default")
+                                      fun <- length
                                     }
 
                                     groups <- split(data, data$group)
                                     stats <- lapply(groups, function(group){
-                                      self$compute_group(data = group, fun = fun, fun.args = fun.args)
+                                      self$compute_group(data = group, fun = fun, args = args)
                                     })
 
                                     rbind_dfs(stats)
                                   },
-                                  compute_group = function(self, data, scales,  fun = NULL, fun.args = fun.args){
+                                  compute_group = function(self, data, scales,  fun = NULL, args = args){
 
                                     call_f <- function(fun = fun, x) {
                                       if (is.null(fun)) return(NA_real_)
                                       fun <- as_function(fun)
-                                      do.call(fun, c(list(quote(x)), fun.args))
+                                      do.call(fun, c(list(quote(x)), args))
                                     }
-                                    #browser()
-                                    data <- data %>%
-                                      transform(summarise = call_f(fun, domain), domain = NULL) %>%
-                                      dplyr::distinct_all() %>%
-                                      mutate(summarize = summarise)
+                                    data <- unique(transform(data, summarise = call_f(fun, domain), domain = NULL))
+                                    data[['summarize']] <- data[['summarise']]
                                     data
                                   },
                                   compute_layer = function(self, data, params, layout) {

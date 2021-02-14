@@ -1,4 +1,14 @@
 
+#' @title Side boxplots
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_boxplot}
+#' is [geom_xsideboxplot] and [geom_ysideboxplot].
+#'
+#' @inheritParams ggplot2::geom_boxplot
+#'
+#' @seealso [geom_*sideviolin]
+#' @aliases geom_*sideboxplot
+#'
 #' @export
 geom_xsideboxplot <- function(mapping = NULL, data = NULL,
                               stat = "boxplot", position = "dodge2",
@@ -55,6 +65,7 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      ggplot2::GeomBoxplot,
                                      default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
@@ -74,7 +85,7 @@ GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      })
 
 
-
+#' @rdname geom_xsideboxplot
 #' @export
 geom_ysideboxplot <- function(mapping = NULL, data = NULL,
                               stat = "boxplot", position = "dodge2",

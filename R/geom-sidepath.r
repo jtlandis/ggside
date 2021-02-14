@@ -1,4 +1,4 @@
-
+#' @rdname geom_xsideline
 #' @export
 geom_xsidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -53,7 +53,7 @@ GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
 
 
 
-
+#' @rdname geom_xsideline
 #' @export
 geom_ysidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
