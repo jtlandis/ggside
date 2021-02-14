@@ -201,10 +201,10 @@ get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
 
 get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
 
-#' @export
+
 make_sideFacets <- function(facet, ggside) UseMethod("make_sideFacets")
 
-#' @export
+
 make_sideFacets.default <- function(facet, ggside){
 
   base_facet <- get_Facet(facet)

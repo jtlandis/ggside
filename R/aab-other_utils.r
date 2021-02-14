@@ -34,12 +34,14 @@ grab_Main_Mapping <- function(env = NULL){
   evaled <- lapply(p$mapping, eval_tidy, data = p$data)
   evaled <- compact(evaled)
   evaled <- as_gg_data_frame(evaled)
-  evaled <- mutate_if(evaled,
-                      function(x){!(is.numeric(x)|is.integer(x))},
-                      function(x){as.numeric(as.factor(x))})
+  evaled <- lapply(evaled, FUN = function(x){
+    if(!(is.numeric(x)|is.integer(x))) return(as.numeric(as.factor(x)))
+    return(x)
+  })
   return(evaled)
 }
 
+#' @rdname ggside-ggproto
 #' @export
 use_xside_aes <- function(data){
   data$fill <- data$xfill %NA% data$fill
@@ -47,6 +49,7 @@ use_xside_aes <- function(data){
   data
 }
 
+#' @rdname ggside-ggproto
 #' @export
 use_yside_aes <- function(data){
   data$fill <- data$yfill %NA% data$fill
@@ -54,6 +57,7 @@ use_yside_aes <- function(data){
   data
 }
 
+#' @rdname ggside-ggproto
 #' @export
 parse_side_aes <- function(data, params){
   #determine if fill, xfill, or yfill should be used
@@ -69,7 +73,7 @@ parse_side_aes <- function(data, params){
     data[[fill_prec]] <- data[[fill_prec]] %||% params[[fill_prec]]
     exclude <- fill_opts[!fill_opts %in% fill_prec]
     if(length(exclude)!=0){
-      data <- select(data, -all_of(exclude))
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
     }
   }
 
@@ -84,7 +88,7 @@ parse_side_aes <- function(data, params){
     data[[colour_prec]] <- data[[colour_prec]] %||% params[[colour_prec]]
     exclude <- colour_opts[!colour_opts %in% colour_prec]
     if(length(exclude)!=0){
-      data <- select(data, -all_of(exclude))
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
     }
   }
 
@@ -306,3 +310,24 @@ str_extr <- function(string, pattern){
     if(start==-1L) return(NA_character_)
     substr(x, start, end)}, x = string, y = matches))
 }
+
+do_by <- function(data, by, fun, ...){
+  order_cache <- do.call('order', lapply(by, function(x){data[[x]]}))
+  data <- data[order_cache,]
+  split_by <- interaction(data[,by, drop = F], drop = T, lex.order = T)
+  data <- rbind_dfs(lapply(split(data, split_by), FUN = fun, ...))
+  data <- data[order(order_cache),]
+  rownames(data) <- seq_len(nrow(data))
+  data
+}
+
+anti_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[!keys$x%in%keys$y,]
+}
+semi_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[keys$x%in%keys$y,]
+}
+
+index <- do.call(order, lapply(c("Sepal.Width","Sepal.Length"), function(x){iris[[x]]}))

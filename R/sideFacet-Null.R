@@ -49,7 +49,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   empties <- apply(panel_table, c(1,2), function(x) is.zero(x[[1]]))
   p.widths <- if("y"%in% side_panels_present) {
     .widths <- c(1, side.panel.scale.y)
-    .tmp <- filter(layout, PANEL_TYPE %in%"y") %>% pull(COL)
+    .tmp <- layout[layout[["PANEL_TYPE"]]=="y",][["COL"]]
     if(y.pos=="left"){
       .widths <- rev(.widths)
     }
@@ -59,7 +59,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   }
   p.heights <- if("x"%in% side_panels_present) {
     .heights <- c(aspect_ratio, aspect_ratio*side.panel.scale.x)
-    .tmp <- filter(layout, PANEL_TYPE %in% "x") %>% pull(ROW)
+    .tmp <- layout[layout[["PANEL_TYPE"]]=="x",][["ROW"]]
     if(x.pos=="top"){
       .heights <- rev(.heights)
     }
@@ -104,22 +104,10 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   #with FacetNull there should be at most 3 panels
 
-  bottom <- layout %>% group_by(COL) %>%
-    summarise(ROW=max(ROW)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  top <- layout %>% group_by(COL) %>%
-    summarise(ROW=min(ROW)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  left <- layout %>% group_by(ROW) %>%
-    summarise(COL=min(COL)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  right <- layout %>% group_by(ROW) %>%
-    summarise(COL=max(COL)) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
+  bottom <- layout[layout[["ROW"]]==1L,][["panel_pos"]]
+  top <- layout[layout[["ROW"]]==2L,][["panel_pos"]]
+  left <- layout[layout[["COL"]]==2L,][["panel_pos"]]
+  right <- layout[layout[["COL"]]==1L,][["panel_pos"]]
 
 
   #pulled panel positions
@@ -130,7 +118,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right[right] <- list(zeroGrob())
 
   if(all(c("x","y") %in% side_panels_present)){
-    x_pos <- layout %>% filter(PANEL_TYPE %in%"x") %>% pull(panel_pos)
+    x_pos <- layout[layout[["PANEL_TYPE"]]=="x",][["panel_pos"]]
     if(y.pos=="left"){
       for(i in x_pos){
         axis_mat_y_left[i][[1]]$width <- NULL
@@ -141,7 +129,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       }
     }
 
-    y_pos <- layout %>% filter(PANEL_TYPE %in%"y") %>% pull(panel_pos)
+    y_pos <- layout[layout[["PANEL_TYPE"]]=="y",][["panel_pos"]]
     if(x.pos=="top"){
       for(i in y_pos){
         axis_mat_x_top[i][[1]]$height <- NULL
