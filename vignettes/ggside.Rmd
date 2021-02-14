@@ -159,7 +159,7 @@ p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
 
 
 ```{r}
-p2 <- p + geom_xsidedensity(aes(y=stat(density)))
+p2 <- p + geom_xsidedensity(aes(y=stat(density))) +
   geom_ysidedensity(aes(x=stat(density))) +
   theme_bw()
 p2 + labs(title = "FacetNull")
@@ -183,7 +183,7 @@ p2 + ggside(x.pos = "bottom", y.pos = "left") +
   labs(title = "FacetNull", subtitle = "Xside placed bottom, Yside placed left")
 ```
 
-When using having multiple panels, it may be handy to collapse side panels to one side, which helps save space.
+When using having multiple panels, it may be handy to collapse side panels to one side, which helps save space and computation time!
 
 ```{r}
 p2 + facet_wrap(Species~Species2) +
@@ -239,17 +239,17 @@ p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
 ```
 
 ```{r}
-profvis::profvis({
- .p <-  p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
-  labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels and \nAdjusted Side Panel Relative Size") +
-  ggside(collapse = "all") +
-  theme_dark() +
-  theme(ggside.panel.scale.x = .4,
-        ggside.panel.scale.y = .25,
-        ggside.panel.spacing.x = unit(8, "pt"))
- 
- print(.p)
-})
+# profvis::profvis({
+#  .p <-  p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
+#   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels and \nAdjusted Side Panel Relative Size") +
+#   ggside(collapse = "all") +
+#   theme_dark() +
+#   theme(ggside.panel.scale.x = .4,
+#         ggside.panel.scale.y = .25,
+#         ggside.panel.spacing.x = unit(8, "pt"))
+#  
+#  print(.p)
+# })
 
 ```
 
