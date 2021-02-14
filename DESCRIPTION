@@ -23,6 +23,11 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 Depends: ggplot2 (>= 3.0.0)
 Imports: grid,
+    gtable,
     rlang,
     scales,
-    utils
+    utils,
+    glue,
+    dplyr
+Suggests:
+    tidyr
