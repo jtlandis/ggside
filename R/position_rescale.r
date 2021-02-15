@@ -21,7 +21,6 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                      range = NULL, #range about midpoint that y/x is scaled onto.
                                      instance = NULL, #if instance is used then previous
                                      setup_params = function(self, data){
-                                       #browser()
 
                                        suggested_var <- c("x","y")
                                        env <- find_build_plotEnv()
@@ -92,8 +91,13 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        if(!is.null(self$midpoint)){
                                          location <- "NA"
                                        }
-                                       midpoint <- self$midpoint %||% case_when(location%in%c("bottom","left") ~ adjust.lb,
-                                                                                location%in%c("top",  "right") ~ adjust.ru)
+                                       if(!is.null(self$midpoint)){
+                                         midpoint <- self$midpoint
+                                       } else if(location %in% c("bottom","left")){
+                                         midpoint <- adjust.lb
+                                       } else {
+                                         midpoint <- adjust.ru
+                                       }
 
 
                                        params <- list(
@@ -117,7 +121,6 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                      },
                                      setup_data = function(data, params){
-                                       #browser()
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
                                        suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")

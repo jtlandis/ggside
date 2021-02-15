@@ -1,10 +1,10 @@
 
-fixed_fun <- function(x){
-  max(x)+1L
+fixed_fun <- function(x, lgl){
+  rep(max(x)+1L,sum(lgl))
 }
 
-free_fun <- function(x){
-  max(x)+(1L:length(x))
+free_fun <- function(x, lgl){
+  max(x)+(seq_len(sum(lgl)))
 }
 
 max_factor <- function(x){
@@ -18,7 +18,7 @@ min_factor <- function(x){
   unique(x[x%in%min_])
 }
 
-#' @importFrom dplyr case_when
+
 sidePanelLayout <- function(layout,
                             ggside){
 
@@ -72,14 +72,12 @@ sidePanelLayout <- function(layout,
                         free = free_fun,
                         fixed_fun)
   layout$PANEL_GROUP <- layout$PANEL
-  layout <- bind_cols(layout[rep(1:nrow(layout), each = nrow(data)),],
+  layout <- cbind.data.frame(layout[rep(1:nrow(layout), each = nrow(data)),],
                       data[rep(1:nrow(data), nrow(layout)),])
-  layout$ROW <- case_when(layout$ROW_trans=="EVEN" ~ layout$ROW*2L,
-                          layout$ROW_trans=="ODD"  ~ layout$ROW*2L-1L,
-                          layout$ROW_trans=="ALL"  ~ layout$ROW)
-  layout$COL <- case_when(layout$COL_trans=="EVEN" ~ layout$COL*2L,
-                          layout$COL_trans=="ODD"  ~ layout$COL*2L-1L,
-                          layout$COL_trans=="ALL"  ~ layout$COL)
+
+  #transform ROW and COL
+  layout[["ROW"]] <- layout[["ROW"]]*ifelse(layout[["ROW_trans"]]=="ALL",1L,2L) - ifelse(layout[["ROW_trans"]]=="ODD",1L,0L)
+  layout[["COL"]] <- layout[["COL"]]*ifelse(layout[["COL_trans"]]=="ALL",1L,2L) - ifelse(layout[["COL_trans"]]=="ODD",1L,0L)
 
   if(!empty(collapsed)){
 
@@ -94,12 +92,11 @@ sidePanelLayout <- function(layout,
       x_collapse$SCALE_Y <- 0
       x_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"x",
                                                            c("ROW_trans","COL_trans")]
-      layout <- bind_rows(layout, x_collapse)
+      layout <- rbind_dfs(list(layout, x_collapse))
       if(x.pos=="bottom"){
-        layout$ROW <- case_when(layout$ROW_trans=="bottom" ~ max(layout$ROW)+1L,
-                                TRUE ~ layout$ROW)
+        layout[["ROW"]] <- layout[["ROW"]] + ifelse(layout[["ROW_trans"]]=="bottom", max(layout[["ROW"]])+1, 0L)
       } else {
-        layout$ROW <- layout$ROW + 1L
+        layout[["ROW"]] <- layout[["ROW"]] + 1L
       }
       #Need to do something with scales on a collapse...
     }
@@ -115,20 +112,19 @@ sidePanelLayout <- function(layout,
       y_collapse$SCALE_X <- 0
       y_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"y",
                                                            c("ROW_trans","COL_trans")]
-      layout <- bind_rows(layout, y_collapse)
+      layout <- rbind_dfs(list(layout, y_collapse))
       if(y.pos=="right"){
-        layout$COL <- case_when(layout$COL_trans=="right" ~ max(layout$COL)+1L,
-                                TRUE ~ layout$COL)
+        layout[["COL"]] <- layout[["COL"]] + ifelse(layout[["COL_trans"]]=="right", max(layout[["COL"]])+1, 0L)
       } else {
-        layout$COL <- layout$COL + 1L
+        layout[["COL"]] <- layout[["COL"]] + 1L
       }
     }
 
   }
-  layout$SCALE_X <- case_when(layout$PANEL_TYPE=="y" ~ x_scale_fun(layout$SCALE_X),
-                              TRUE ~ layout$SCALE_X)
-  layout$SCALE_Y <- case_when(layout$PANEL_TYPE=="x" ~ y_scale_fun(layout$SCALE_Y),
-                              TRUE ~ layout$SCALE_Y)
+  .pty <- layout[["PANEL_TYPE"]]=="y"
+  layout[["SCALE_X"]][.pty] <-  x_scale_fun(layout[["SCALE_X"]],.pty)
+  .ptx <- layout[["PANEL_TYPE"]]=="x"
+  layout[["SCALE_Y"]][.ptx] <-  y_scale_fun(layout[["SCALE_Y"]], .ptx)
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]

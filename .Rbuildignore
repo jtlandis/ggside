@@ -1,8 +1,6 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-<<<<<<< HEAD
-=======
-^doc$
+#^doc$
 ^Meta$
 ggside.Rmd
 README.Rmd
@@ -10,4 +8,6 @@ README.Rmd
 R/test2.R
 R/test\ files.R
 examples/*
->>>>>>> trimming
+^doc$
+examples.r
+Generate_Data.R

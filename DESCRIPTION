@@ -16,11 +16,12 @@ Description: This package allows the user to add graphical
   the user with full expressive control over their plots. ggside is
   particulary useful for metadata for discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
-License: GPL-3
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
+VignetteBuilder: knitr
 Depends: ggplot2 (>= 3.0.0)
 Imports: grid,
     gtable,
@@ -28,6 +29,11 @@ Imports: grid,
     scales,
     utils,
     glue,
-    dplyr
+    stats
 Suggests:
-    tidyr
+    tidyr,
+    dplyr,
+    testthat,
+    knitr,
+    rmarkdown,
+    vdiffr

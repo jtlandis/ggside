@@ -65,6 +65,8 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 \item{position}{Position adjustment, either as a string, or the result of
 a call to a position adjustment function.}
 
+\item{...}{additional arguments to pass to \link[ggplot2]{layer}.}
+
 \item{fun}{Summarising function to use. If no function provided
 it will default to \link[base]{length}.}
 

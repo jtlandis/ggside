@@ -53,7 +53,8 @@ geom_ysidecol(
   width = NULL,
   na.rm = FALSE,
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  orientation = "y"
 )
 }
 \arguments{

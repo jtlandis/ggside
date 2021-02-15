@@ -16,6 +16,7 @@
 #' @param fun Summarising function to use. If no function provided
 #' it will default to \link[base]{length}.
 #' @param args List of additional arguments passed to the function.
+#' @param ... additional arguments to pass to \link[ggplot2]{layer}.
 #' @section Aesthetics:
 #' Using stat_summarise requires that you use `domain` as an aesthetic
 #' mapping. This allows you to summarise other data instead of assuming

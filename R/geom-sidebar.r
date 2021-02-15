@@ -58,7 +58,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(l, class="ggside_layer")
+  structure(l, class=c("ggside_layer", class(l)))
 }
 
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",

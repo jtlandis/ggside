@@ -4,6 +4,7 @@
 #' @import gtable
 #' @import rlang
 #' @importFrom glue glue glue_collapse
+#' @importFrom stats setNames
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)
@@ -34,7 +35,7 @@ grab_Main_Mapping <- function(env = NULL){
   evaled <- lapply(p$mapping, eval_tidy, data = p$data)
   evaled <- compact(evaled)
   evaled <- as_gg_data_frame(evaled)
-  evaled <- lapply(evaled, FUN = function(x){
+  evaled[,names(evaled)] <- lapply(evaled, FUN = function(x){
     if(!(is.numeric(x)|is.integer(x))) return(as.numeric(as.factor(x)))
     return(x)
   })
@@ -330,4 +331,24 @@ semi_join <- function(x, y, by) {
   x[keys$x%in%keys$y,]
 }
 
-index <- do.call(order, lapply(c("Sepal.Width","Sepal.Length"), function(x){iris[[x]]}))
+simplify <- function (x)
+{
+  if (length(x) == 2 && is_symbol(x[[1]], "~")) {
+    return(simplify(x[[2]]))
+  }
+  if (length(x) < 3) {
+    return(list(x))
+  }
+  op <- x[[1]]
+  a <- x[[2]]
+  b <- x[[3]]
+  if (is_symbol(op, c("+", "*", "~"))) {
+    c(simplify(a), simplify(b))
+  }
+  else if (is_symbol(op, "-")) {
+    c(simplify(a), expr(-!!simplify(b)))
+  }
+  else {
+    list(x)
+  }
+}

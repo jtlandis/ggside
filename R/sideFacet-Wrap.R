@@ -74,7 +74,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     # Add a dummy label
     labels_df <- new_data_frame(list("(all)" = "(all)"), n = 1)
   } else {
-    labels_df <- unique(layout[layout[["PANEL_TYPE"]]=="main",names(params$facets)])
+    labels_df <- unique(layout[layout[["PANEL_TYPE"]]=="main",names(params$facets), drop = FALSE])
   }
   attr(labels_df, "facet") <- "wrap"
   strips <- render_strips(

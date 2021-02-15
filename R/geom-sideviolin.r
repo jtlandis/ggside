@@ -1,7 +1,18 @@
 #' @title Side Violin plots
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_violin}
-#' @inheritParams ggplot2::geom_violin
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_bar
+#' @param draw_quantiles If `not(NULL)` (default), draw horizontal lines
+#'   at the given quantiles of the density estimate.
+#' @param trim If `TRUE` (default), trim the tails of the violins
+#'   to the range of the data. If `FALSE`, don't trim the tails.
+#' @param scale if "area" (default), all violins have the same area
+#' (before trimming the tails). If "count", areas are scaled proportionally
+#'  to the number of observations. If "width", all violins have the same
+#'  maximum width.
+#' @param stat Use to override the default connection between
+#'   `geom_violin()` and `stat_ydensity()`.
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
 #' @export

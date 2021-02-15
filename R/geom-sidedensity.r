@@ -4,8 +4,11 @@
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_density} is
 #' [geom_xsidedensity] and [geom_ysidedensity].
 #'
-#' @inheritParams ggplot2::geom_density
-#'
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_bar
+#' @inheritParams ggplot2::geom_ribbon
+#' @param stat Use to override the default connection between
+#'   `geom_density()` and `stat_density()`.
 #' @aliases geom_*sidedensity
 #' @export
 geom_xsidedensity <- function(mapping = NULL, data = NULL,

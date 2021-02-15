@@ -12,7 +12,7 @@ geom_xsidecol <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = "identity",
-    geom = GeomXCol,
+    geom = GeomXsidecol,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -53,19 +53,22 @@ geom_ysidecol <- function(mapping = NULL, data = NULL,
                           width = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
-                          inherit.aes = TRUE) {
+                          inherit.aes = TRUE,
+                          orientation = "y") {
+
 
   l <- layer(
     data = data,
     mapping = mapping,
     stat = "identity",
-    geom = GeomYCol,
+    geom = GeomYsidecol,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
       width = width,
       na.rm = na.rm,
+      orientation = orientation,
       ...
     ),
     layer_class = YLayer
