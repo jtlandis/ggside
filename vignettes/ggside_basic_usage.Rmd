@@ -1,8 +1,8 @@
 ---
-title: "ggside"
+title: "ggside walkthrough"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{ggside}
+  %\VignetteIndexEntry{ggside walkthrough}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -10,16 +10,14 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>",
-  fig.width = 7,
-  fig.height = 4
+  comment = "#>"
 )
 ```
 
 ```{r setup}
 library(dplyr)
-library(ggside)
 library(ggplot2)
+library(ggside)
 ```
 
 
@@ -233,25 +231,7 @@ You may also change the size of the side panels with the theme elements `ggside.
 ```{r}
 p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing X Side Panels and \nAdjusted Side Panel Relative Size") +
-  ggside(collapse = "x") +
+  ggside(collapse = "x", x.pos = "bottom", scales = "free_x") +
   theme(ggside.panel.scale.x = .4,
         ggside.panel.scale.y = .25)
 ```
-
-```{r}
-# profvis::profvis({
-#  .p <-  p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
-#   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels and \nAdjusted Side Panel Relative Size") +
-#   ggside(collapse = "all") +
-#   theme_dark() +
-#   theme(ggside.panel.scale.x = .4,
-#         ggside.panel.scale.y = .25,
-#         ggside.panel.spacing.x = unit(8, "pt"))
-#  
-#  print(.p)
-# })
-
-```
-
-
-
