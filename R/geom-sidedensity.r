@@ -1,3 +1,15 @@
+#' @title Side density distributions
+#'
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_density} is
+#' [geom_xsidedensity] and [geom_ysidedensity].
+#'
+#' @inheritParams ggplot2::layer
+#' @inheritParams ggplot2::geom_bar
+#' @inheritParams ggplot2::geom_ribbon
+#' @param stat Use to override the default connection between
+#'   `geom_density()` and `stat_density()`.
+#' @aliases geom_*sidedensity
 #' @export
 geom_xsidedensity <- function(mapping = NULL, data = NULL,
          stat = "density", position = "identity",
@@ -21,9 +33,10 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
@@ -45,7 +58,7 @@ GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                        ggplot2::GeomDensity$draw_key(data, params, size)
                                        })
 
-
+#' @rdname geom_xsidedensity
 #' @export
 geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               stat = "density", position = "identity",
@@ -69,9 +82,10 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",

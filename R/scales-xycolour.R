@@ -44,6 +44,8 @@ scale_xcolour_manual <- function(..., values, aesthetics = "xcolour", breaks = w
   manual_scale(aesthetics, values, breaks, ...)
 }
 
+#' @rdname scale_xcolour
+#' @usage NULL
 #' @export
 scale_xcolor_manual <- function(..., values, aesthetics = "xcolour", breaks = waiver()) {
   manual_scale(aesthetics, values, breaks, ...)
@@ -63,9 +65,27 @@ scale_xcolour_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                    na.value = na.value, guide = guide, ...)
 }
 
-scale_xcolour_gradientn <- function (..., colours, values = NULL,
+#' @rdname scale_xcolour
+#' @usage NULL
+#' @export
+scale_xcolor_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "xcolour"), aesthetics = "xcolour", colors)
+{
+  colours <- if (missing(colours))
+    colors
+  else colours
+  continuous_scale(aesthetics, "gradientn",
+                   scales::gradient_n_pal(colours,values, space),
+                   na.value = na.value, guide = guide, ...)
+}
+
+#' @rdname scale_xcolour
+#' @usage NULL
+#' @export
+scale_xcolour_gradientn <- function (..., colours, values = NULL,
+                                     space = "Lab", na.value = "grey50",
+                                     guide = guide_colorbar(available_aes = "xcolour"), aesthetics = "xcolour", colors)
 {
   colours <- if (missing(colours))
     colors
@@ -119,6 +139,8 @@ scale_ycolour_manual <- function(..., values, aesthetics = "ycolour", breaks = w
   manual_scale(aesthetics, values, breaks, ...)
 }
 
+#' @rdname scale_ycolour
+#' @usage NULL
 #' @export
 scale_ycolor_manual <- function(..., values, aesthetics = "ycolour", breaks = waiver()) {
   manual_scale(aesthetics, values, breaks, ...)
@@ -138,9 +160,27 @@ scale_ycolour_gradient <- function (..., low = "#132B43", high = "#56B1F7",
                    na.value = na.value, guide = guide, ...)
 }
 
+#' @rdname scale_ycolour
+#' @usage NULL
+#' @export
 scale_ycolour_gradientn <- function (..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "ycolour"), aesthetics = "ycolour", colors)
+{
+  colours <- if (missing(colours))
+    colors
+  else colours
+  continuous_scale(aesthetics, "gradientn",
+                   scales::gradient_n_pal(colours,values, space),
+                   na.value = na.value, guide = guide, ...)
+}
+
+#' @rdname scale_ycolour
+#' @usage NULL
+#' @export
+scale_ycolor_gradientn <- function (..., colours, values = NULL,
+                                     space = "Lab", na.value = "grey50",
+                                     guide = guide_colorbar(available_aes = "ycolour"), aesthetics = "ycolour", colors)
 {
   colours <- if (missing(colours))
     colors

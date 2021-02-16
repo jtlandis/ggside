@@ -327,31 +327,12 @@ find_args <- function(...) {
 # global data
 dummy_data <- function() new_data_frame(list(x = NA), n = 1)
 
-with_seed_null <- function(seed, code) {
-  if (is.null(seed)) {
-    code
-  } else {
-    withr::with_seed(seed, code)
-  }
-}
-
-seq_asc <- function(to, from) {
-  if (to > from) {
-    integer()
-  } else {
-    to:from
-  }
-}
-
-# Needed to trigger package loading
-#' @importFrom tibble tibble
-NULL
-
 # Check inputs with tibble but allow column vectors (see #2609 and #2374)
 as_gg_data_frame <- function(x) {
   x <- lapply(x, validate_column_vec)
   new_data_frame(x)
 }
+
 validate_column_vec <- function(x) {
   if (is_column_vec(x)) {
     dim(x) <- NULL

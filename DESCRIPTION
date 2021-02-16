@@ -1,55 +1,39 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.1.0
-Authors@R: c(person("Justin T.","Landis", rol = c("aut", "cre"), email = "<jtlandis314@gmail.com>"))
+Version: 0.0.0.9000
+Authors@R: 
+    person(given = "Justin",
+           family = "Landis",
+           role = c("aut", "cre"),
+           email = "first.last@example.com",
+           comment = c(ORCID = "YOUR-ORCID-ID"))
 Maintainer: Justin Landis <jtlandis314@gmail.com>
-Description: This package allows the user to add graphical information 
-            about one of the main panel's axis. This is particulary useful for
-            metadata for discrete axis, or summary graphics on a continuous axis such
-            as a boxplot or a density distribution.
-License: GPL (>= 2)
+Description: This package allows the user to add graphical 
+  information about one of the main panel's axis using a familar 
+  ggplot2 style API with tidy data. ggside extends ggplot2 and 
+  should be loaded after ggplot2. Like ggplot2, ggside provides
+  the user with full expressive control over their plots. ggside is
+  particulary useful for metadata for discrete axis, or summary
+  graphics on a continuous axis such as a boxplot or a density distribution.
+License: GPL-3 + file LICENSE
 Encoding: UTF-8
 LazyData: true
-Imports:
-  ggplot2,
-  grid,
-  rlang,
-  dplyr
+Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
-Suggests: 
+Depends: ggplot2 (>= 3.0.0)
+Imports: grid,
+    gtable,
+    rlang,
+    scales,
+    utils,
+    glue,
+    stats
+Suggests:
+    tidyr,
+    dplyr,
+    testthat,
     knitr,
-    rmarkdown
-Collate: 
-    'compat-plyr.R'
-    'utilities.r'
-    'geom-sidebar.r'
-    'geom-sideboxplot.r'
-    'geom-sidedensity.r'
-    'geom-sidefreqpoly.r'
-    'geom-sideline.r'
-    'geom-sidepath.r'
-    'geom-sidepoint.r'
-    'geom-sidetext.r'
-    'geom-sidetile.r'
-    'geom-sideviolin.r'
-    'ggplot-global.R'
-    'ggplot2_Extras.R'
-    'ggside.R'
-    'other_utils.r'
-    'performance.R'
-    'plot-build.R'
-    'plot-construction.R'
-    'position_rescale.r'
-    'scale-type.R'
-    'scales-.R'
-    'scales-*colour.R'
-    'scales-*fill.R'
-    'sideFacets.R'
-    'sideFacet-Grid.R'
-    'sideFacet-Null.R'
-    'sideFacet-Wrap.R'
-    'stat-.r'
-    'stats.r'
-    'zzz.R'
+    rmarkdown,
+    vdiffr

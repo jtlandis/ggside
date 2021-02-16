@@ -1,10 +1,10 @@
 #' @import ggplot2
+#' @import scales
 #' @import grid
+#' @import gtable
 #' @import rlang
 #' @importFrom glue glue glue_collapse
-#' @import gtable
-#' @import dplyr
-#' @import tidyr
+#' @importFrom stats setNames
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)
@@ -35,12 +35,14 @@ grab_Main_Mapping <- function(env = NULL){
   evaled <- lapply(p$mapping, eval_tidy, data = p$data)
   evaled <- compact(evaled)
   evaled <- as_gg_data_frame(evaled)
-  evaled <- mutate_if(evaled,
-                      function(x){!(is.numeric(x)|is.integer(x))},
-                      function(x){as.numeric(as.factor(x))})
+  evaled[,names(evaled)] <- lapply(evaled, FUN = function(x){
+    if(!(is.numeric(x)|is.integer(x))) return(as.numeric(as.factor(x)))
+    return(x)
+  })
   return(evaled)
 }
 
+#' @rdname ggside-ggproto
 #' @export
 use_xside_aes <- function(data){
   data$fill <- data$xfill %NA% data$fill
@@ -48,6 +50,7 @@ use_xside_aes <- function(data){
   data
 }
 
+#' @rdname ggside-ggproto
 #' @export
 use_yside_aes <- function(data){
   data$fill <- data$yfill %NA% data$fill
@@ -55,6 +58,7 @@ use_yside_aes <- function(data){
   data
 }
 
+#' @rdname ggside-ggproto
 #' @export
 parse_side_aes <- function(data, params){
   #determine if fill, xfill, or yfill should be used
@@ -70,7 +74,7 @@ parse_side_aes <- function(data, params){
     data[[fill_prec]] <- data[[fill_prec]] %||% params[[fill_prec]]
     exclude <- fill_opts[!fill_opts %in% fill_prec]
     if(length(exclude)!=0){
-      data <- select(data, -all_of(exclude))
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
     }
   }
 
@@ -85,7 +89,7 @@ parse_side_aes <- function(data, params){
     data[[colour_prec]] <- data[[colour_prec]] %||% params[[colour_prec]]
     exclude <- colour_opts[!colour_opts %in% colour_prec]
     if(length(exclude)!=0){
-      data <- select(data, -all_of(exclude))
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
     }
   }
 
@@ -103,7 +107,7 @@ ggname <- function(prefix, grob) {
 manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
   # check for missing `values` parameter, in lieu of providing
   # a default to all the different scale_*_manual() functions
-  if (is_missing(values)) {
+  if (rlang::is_missing(values)) {
     values <- NULL
   } else {
     force(values)
@@ -287,3 +291,64 @@ new_data_frame <- function(x = list(), n = NULL) {
   x
 }
 
+guess_layer_mapping <- function(layer) {
+  geom_class <- str_extr(class(layer$geom), "(X|Y)side")
+  val <- if(all(is.na(geom_class))){
+    "main"
+  } else {
+    geom_class <- geom_class[!is.na(geom_class)]
+    to_lower_ascii(substr(geom_class,1,1))
+  }
+  return(val)
+}
+
+
+str_extr <- function(string, pattern){
+  matches <- regexec(pattern, text = string)
+  unlist(Map(function(x,y){
+    start <- y[1]
+    end <- start + attr(y, "match.length")[1] - 1L
+    if(start==-1L) return(NA_character_)
+    substr(x, start, end)}, x = string, y = matches))
+}
+
+do_by <- function(data, by, fun, ...){
+  order_cache <- do.call('order', lapply(by, function(x){data[[x]]}))
+  data <- data[order_cache,]
+  split_by <- interaction(data[,by, drop = F], drop = T, lex.order = T)
+  data <- rbind_dfs(lapply(split(data, split_by), FUN = fun, ...))
+  data <- data[order(order_cache),]
+  rownames(data) <- seq_len(nrow(data))
+  data
+}
+
+anti_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[!keys$x%in%keys$y,]
+}
+semi_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[keys$x%in%keys$y,]
+}
+
+simplify <- function (x)
+{
+  if (length(x) == 2 && is_symbol(x[[1]], "~")) {
+    return(simplify(x[[2]]))
+  }
+  if (length(x) < 3) {
+    return(list(x))
+  }
+  op <- x[[1]]
+  a <- x[[2]]
+  b <- x[[3]]
+  if (is_symbol(op, c("+", "*", "~"))) {
+    c(simplify(a), simplify(b))
+  }
+  else if (is_symbol(op, "-")) {
+    c(simplify(a), expr(-!!simplify(b)))
+  }
+  else {
+    list(x)
+  }
+}

@@ -1,4 +1,4 @@
-
+#' @rdname geom_xsideline
 #' @export
 geom_xsidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -25,9 +25,10 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
@@ -52,7 +53,7 @@ GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
 
 
 
-
+#' @rdname geom_xsideline
 #' @export
 geom_ysidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -79,9 +80,10 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",

@@ -21,7 +21,6 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                      range = NULL, #range about midpoint that y/x is scaled onto.
                                      instance = NULL, #if instance is used then previous
                                      setup_params = function(self, data){
-                                       #browser()
 
                                        suggested_var <- c("x","y")
                                        env <- find_build_plotEnv()
@@ -92,8 +91,13 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        if(!is.null(self$midpoint)){
                                          location <- "NA"
                                        }
-                                       midpoint <- self$midpoint %||% case_when(location%in%c("bottom","left") ~ adjust.lb,
-                                                                                location%in%c("top",  "right") ~ adjust.ru)
+                                       if(!is.null(self$midpoint)){
+                                         midpoint <- self$midpoint
+                                       } else if(location %in% c("bottom","left")){
+                                         midpoint <- adjust.lb
+                                       } else {
+                                         midpoint <- adjust.ru
+                                       }
 
 
                                        params <- list(
@@ -117,26 +121,14 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 
                                      },
                                      setup_data = function(data, params){
-                                       #browser()
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
                                        suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")
-                                       # if(!all(suggested_var%in%colnames(data))){
-                                       #   missing_var <- suggested_var[!suggested_var%in%colnames(data)]
-                                       #   if(missing_var==cvar){
-                                       #     warn(glue("rescale variable \"{missing_var}\" is missing from layer data.",
-                                       #               " Coercing value to 0"))
-                                       #     data[[missing_var]] <- 0
-                                       #   } else {
-                                       #     warn(glue("Collapsing \"{cvar}\" onto \"{missing_var}\" is not well defined ",
-                                       #               "because \"{missing_var}\" is missing in layer data.\n Setting \"{missing_var}\" to 1."))
-                                       #     data[[missing_var]] <- 1
-                                       #   }
-                                       # }
-                                       cdata <- data %>% select(tidyselect::any_of(c(paste0(cvar,suffix)))) %>% gather() %>% unnest(cols = value)
-                                       from_range <- range(cdata$value)
+                                       .cols <- base::intersect(colnames(data), c(paste0(cvar,suffix),suffix))
+                                       cdata <- data[,.cols, drop = FALSE]
+                                       from_range <- range(unlist(lapply(cdata, range)))
                                        rerange <- params$midpoint + (c(-1,1)*c(params$range/2))
-                                       data <- mutate_at(data, vars(tidyselect::any_of(c(paste0(cvar,suffix),suffix))), function(x){
+                                       data[,.cols] <- lapply(data[,.cols, drop = FALSE],function(x){
                                          if(is.list(x)){
                                            x <- lapply(x, scales::rescale, to = rerange, from = from_range)
                                          } else {
@@ -150,7 +142,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                        data
                                      },
                                      compute_panel = function(data, params, scales){
-                                       suppressWarnings({distinct_all(data)})
+                                       suppressWarnings({unique(data)})
                                      })
 
 
@@ -175,8 +167,16 @@ position_rescale <- function(rescale = "y", midpoint = NULL, range = NULL, locat
 
 #' @rdname position_rescale
 #' @export
-position_rescaley <- function(rescale = "y", ...) position_rescale(rescale = rescale, ...)
+position_yrescale <- function(rescale = "y", midpoint = NULL,
+                              range = NULL, location = NULL,
+                              instance = NULL) {
+  position_rescale(rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
+  }
 
 #' @rdname position_rescale
 #' @export
-position_rescalex <- function(rescale = "x", ...) position_rescale(rescale = rescale, ...)
+position_xrescale <- function(rescale = "x", midpoint = NULL,
+                              range = NULL, location = NULL,
+                              instance = NULL) {
+  position_rescale(rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)
+  }

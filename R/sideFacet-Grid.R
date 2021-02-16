@@ -1,6 +1,7 @@
 
 
 sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -32,9 +33,9 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   y.pos <- params$ggside$y.pos
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
-  layout <- layout %>% unnest(cols = c(names(params$cols),names(params$rows)))
-  col_vars <- unique(as.data.frame(layout[names(params$cols)]))
-  row_vars <- unique(as.data.frame(layout[names(params$rows)]))
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+  col_vars <- unique(layout[names(params$cols)])
+  row_vars <- unique(layout[names(params$rows)])
   # Adding labels metadata, useful for labellers
   attr(col_vars, "type") <- "cols"
   attr(col_vars, "facet") <- "grid"
@@ -57,9 +58,8 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   #theme side panel scale
   side.panel.scale.x <- theme$ggside.panel.scale.x %||% theme$ggside.panel.scale %||% .1
   side.panel.scale.y <- theme$ggside.panel.scale.y %||% theme$ggside.panel.scale %||% .1
-
   if (params$space_free$x) {
-    ps <- layout %>% filter(PANEL_TYPE %in% "main") %>% filter(ROW%in%min(ROW)) %>% pull(PANEL)
+    ps <- layout[layout$ROW ==min(layout$ROW[layout$PANEL_TYPE == "main"])&layout$PANEL_TYPE == "main",]$PANEL
     widths <- vapply(ps, function(i) diff(ranges[[i]]$x.range), numeric(1))
   } else if(collapse_y){
     widths <- rep(1, ncol-1)
@@ -89,7 +89,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_widths <- unit(widths, "null")
 
   if (params$space_free$y) {
-    ps <- layout %>% filter(PANEL_TYPE %in% "main") %>% filter(COL%in%min(COL)) %>% pull(PANEL)
+    ps <- layout[layout$COL == min(layout$COL[layout$PANEL_TYPE == "main"])&layout$PANEL_TYPE =="main",]$PANEL
     heights <- vapply(ps, function(i) diff(ranges[[i]]$y.range), numeric(1))
   } else if(collapse_x){
     heights <- rep(1*aspect_ratio, nrow-1)
@@ -178,45 +178,33 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   .xgroupby <- "COL"
   .ygroupby <- "ROW"
 
-  bottom <- layout %>% group_by(.dots = .xgroupby) %>%
-    mutate(ROW2 = max(ROW))
-  top <- layout %>% group_by(COL) %>%
-    mutate(ROW2 = min(ROW))
-  right <- layout %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = max(COL))
-  left <- layout %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = min(COL))
+  bottom <- do_by(layout, "COL", function(x){x[["ROW2"]] <- max(x[["ROW"]]); x})
+  top <- do_by(layout, "COL", function(x){x[["ROW2"]] <- min(x[["ROW"]]); x})
+  right <- do_by(layout, "ROW", function(x){x[["COL2"]] <- max(x[["COL"]]); x})
+  left <- do_by(layout, "ROW", function(x){x[["COL2"]] <- min(x[["COL"]]); x})
 
   if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
-    right <- filter(right, COL==COL2|PANEL_TYPE%in%"x")
-    left <- filter(left, COL==COL2|PANEL_TYPE%in%"x")
+    right <- right[right[["COL"]]==right[["COL2"]]|right[["PANEL_TYPE"]]=="x",]
+    left <- left[left[["COL"]]==left[["COL2"]]|left[["PANEL_TYPE"]]=="x",]
   } else {
-    right <- filter(right, COL==COL2)
-    left <- filter(left, COL==COL2)
+    right <- right[right[["COL"]]==right[["COL2"]],]
+    left <- left[left[["COL"]]==left[["COL2"]],]
   }
   if(params$ggside$scales%in%c("free","free_x")){ #if x is free, include y PANELS_TYPES
-    top <- filter(top, ROW==ROW2|PANEL_TYPE%in%"y")
-    bottom <- filter(bottom, ROW==ROW2|PANEL_TYPE%in%"y")
+    top <- top[top[["ROW"]]==top[["ROW2"]]|top[["PANEL_TYPE"]]=="y",]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]]|bottom[["PANEL_TYPE"]]=="y",]
   } else {
-    top <- filter(top, ROW==ROW2)
-    bottom <- filter(bottom, ROW==ROW2)
+    top <- top[top[["ROW"]]==top[["ROW2"]],]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]],]
   }
 
   #top, left, bottom, right, variables includes panels that would have axis shown
   #for their relavent positions.
   #Do an anti_join against layout to find panels that should get a zeroGrobe
-  bottom <- bottom %>% select(-ROW2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  top <- top %>% select(-ROW2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  right <- right %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  left <- left %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
+  bottom <- anti_join(layout, bottom, by = c("ROW","COL"))[["panel_pos"]]
+  top <- anti_join(layout, top, by = c("ROW","COL"))[["panel_pos"]]
+  right <- anti_join(layout, right, by = c("ROW","COL"))[["panel_pos"]]
+  left <- anti_join(layout, left, by = c("ROW","COL"))[["panel_pos"]]
   #pulled panel positions
   #Place ZeroGrobs
   axis_mat_x_top[top]<- list(zeroGrob())
@@ -225,7 +213,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right[right] <- list(zeroGrob())
 
   if(all(c("x","y") %in% side_panels_present)){
-    x_pos <- layout %>% filter(PANEL_TYPE %in%"x") %>% pull(panel_pos)
+    x_pos <- layout[layout[["PANEL_TYPE"]]=="x",][["panel_pos"]]
     if(y.pos=="left"){
       for(i in x_pos){
         axis_mat_y_left[i][[1]]$width <- NULL
@@ -235,8 +223,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
         axis_mat_y_right[i][[1]]$width <- NULL
       }
     }
-
-    y_pos <- layout %>% filter(PANEL_TYPE %in%"y") %>% pull(panel_pos)
+    y_pos <- layout[layout[["PANEL_TYPE"]]=="y",][["panel_pos"]]
     if(x.pos=="top"){
       for(i in y_pos){
         axis_mat_x_top[i][[1]]$height <- NULL
@@ -276,17 +263,30 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
                            x = c("bottom","right"), y = c("top", "left"))
   vertical.strip <- c("top","bottom")[c("top","bottom")%in% strip.position]
   horizont.strip <- c("left","right")[c("left","right")%in% strip.position]
-  Vstrip_panel_pos <- layout %>% group_by(COL) %>%
-    summarise(ROW = case_when(vertical.strip=="top" ~ min(ROW),
-                              TRUE ~ max(ROW))) %>%
-    semi_join(x = layout, y = ., by = c("COL","ROW")) %>%
-    filter(!PANEL_TYPE %in% "y") %>% distinct(PANEL, panel_pos)
+  Vstrip_panel_pos <- unique(do_by(layout, "COL",
+                            function(x, vstrip){
+                              if(vstrip=="top"){
+                                x[["ROW"]] <- min(x[["ROW"]])
+                              } else {
+                                x[["ROW"]] <- max(x[["ROW"]])
+                              }
+                              x
+                            }, vstrip = vertical.strip))
+  Vstrip_panel_pos <- semi_join(layout, Vstrip_panel_pos, by = c("COL","ROW"))
+  Vstrip_panel_pos <- unique(Vstrip_panel_pos[!Vstrip_panel_pos[["PANEL_TYPE"]]=="y",c("PANEL","panel_pos")])
 
-  Hstrip_panel_pos <- layout %>% group_by(ROW) %>%
-    summarise(COL = case_when(horizont.strip=="left" ~ min(COL),
-                              TRUE ~ max(COL))) %>%
-    semi_join(x = layout, y = ., by = c("ROW","COL")) %>%
-    filter(!PANEL_TYPE %in% "x") %>% distinct(PANEL, panel_pos)
+  Hstrip_panel_pos <- unique(
+    do_by(layout, "ROW",
+          function(x, hstrip){
+            if(hstrip=="left"){
+              x[["COL"]] <- min(x[["COL"]])
+            } else {
+              x[["COL"]] <- max(x[["COL"]])
+            }
+            x
+          }, hstrip = horizont.strip))
+  Hstrip_panel_pos <- semi_join(layout, Hstrip_panel_pos, by = c("ROW","COL"))
+  Hstrip_panel_pos <- unique(Hstrip_panel_pos[!Hstrip_panel_pos[["PANEL_TYPE"]]=="x",c("PANEL","panel_pos")])
 
   strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
 

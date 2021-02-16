@@ -2,18 +2,36 @@
 
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
-  plot <- make_ggside(plot, object)
-  if("layer"%in%names(object)){
-    plot + object$layer
-  } else {
-    plot
-  }
+  plot <- NextMethod("ggplot_add")
+  # if("layer"%in%names(object)){
+  #   plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
+  # }
+  as_ggside(plot)
 }
 
+ggplot_add.ggside_options <- function(object, plot, object_name){
+  as_ggside(plot, object)
+}
+
+as_ggside <- function(plot, ggside = NULL){
+  plot <- make_ggside(plot, ggside)
+  if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
+    abort("ggside is not currently compatable with CoordFlip or CoordPolar")
+  }
+  plot[["facet"]] <- make_sideFacets(plot[["facet"]], plot[["ggside"]])
+  plot
+}
+
+get_sides <- function(layers){
+  layer_mappings <- lapply(layers, guess_layer_mapping)
+  sides_used <- unlist(layer_mappings)
+  sides_used <- unique(sides_used[!sides_used %in% "main"])
+  return(sides_used)
+}
 
 make_ggside <- function(object, ggside){
-  if(!is.ggside_layer(object)){
-    class(object) <- c("ggside",class(object))
+  if(!is.ggside(object)){
+    class(object) <- c("ggside", class(object))
   }
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   if(!object$ggside$x.pos%in%c("top","bottom")) {
@@ -27,10 +45,26 @@ make_ggside <- function(object, ggside){
   if(!object$ggside$scales%in%c("fixed","free","free_x","free_y")){
     abort("scales may only be \"fixed\", \"free\", \"free_x\" or \"free_y\".")
   }
+  object$ggside$sides_used <- get_sides(object[["layers"]])
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
+  object$ggside$collapse <- check_collapse(object$ggside$collapse, object$ggside$sides_used)
   return(object)
 }
 
-is.ggside <- function(x) inherits(x, "ggside")
+check_collapse <- function(collapse, sides){
+  if(!is.null(collapse)){
+    if(collapse=="all"&!all(c("x","y") %in% sides)){
+      warn(as.character(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}.")))
+      return(sides)
+    } else if(collapse=="x"&!"x"%in% sides){
+      warn(glue("collapse set to \"x\", but no xside geometry used. Setting collapse to NULL."))
+      return(sides)
+    } else if(collapse=="y"&!"y"%in% sides){
+      warn(glue("collapse set to \"y\", but no yside geometry used. Setting collapse to NULL."))
+      return(sides)
+    }
+  }
+  return(collapse)
+}
 
-is.ggside_layer <- function(x) inherits(x, "ggside_layer")
+
