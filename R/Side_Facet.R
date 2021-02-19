@@ -19,9 +19,125 @@ min_factor <- function(x){
 }
 
 
+
+wrapup <- function(df, by, ...){
+  if(...length()==0) return(df)
+  indx <- interaction(df[,by], drop = T)
+  indx <- match(indx, unique(indx))
+  dots_ <- list(...)
+  if(!all(unlist(lapply(dots_, function(x,y){all(x%in%y)}, y = colnames(df))))) abort("all RHS must exist in column names of `df`.")
+  wrap_columns <- unlist(dots_)
+  l_ <- split(df, indx)
+  l_ <- lapply(l_, function(x, d){
+    wrap <- lapply(d, function(y) list(x[,y, drop = FALSE]))
+    x <- unique(x[,setdiff(colnames(x), wrap_columns), drop = FALSE])
+    x[,names(d)] <- wrap
+    x
+  }, d = dots_)
+  data <- rbind_dfs(l_)
+  data
+}
+
+unwrap <- function(df, by, cols = NULL){
+  if(is.null(cols)) return(df)
+  if(!all(cols%in%colnames(df))) abort("all `cols` must exist in column names of `df`")
+  indx <- interaction(df[,by], drop = T)
+  indx <- match(indx, unique(indx))
+  l_ <- split(df, indx)
+  l_ <- lapply(l_, function(x){
+    nest <- do.call('cbind',unlist(Map(function(d, y) {d[,y,drop=T]}, d = list(x), y = cols),recursive = F))
+    x <- x[, setdiff(colnames(x), cols), drop = FALSE]
+    if(nrow(x)!=1) stop("by must uniquely index df")
+    cbind(x[rep(1, nrow(nest)),], nest)
+  })
+  data <- rbind_dfs(l_)
+  data
+}
+
+#'@rdname ggside-ggproto-facets
+#'@description
+#' S3 class that converts old Facet into one that
+#' is compatible with ggside. Can also update
+#' ggside on the object. Typically, the new ggproto
+#' will inherit from the object being replaced.
+#' @param facet Facet ggproto Object to replace
+#' @param ggside ggside object to update
+#'@export
+as_ggsideFacet <- function(facet, ggside) UseMethod("as_ggsideFacet")
+as_ggsideFacet.default <- function(facet, ggside){
+  abort(glue("No known method to make {class(facet)[1]} ggside friendly"))
+}
+as_ggsideFacet.FacetNull <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideNull,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
+as_ggsideFacet.FacetGrid <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideGrid,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
+as_ggsideFacet.FacetWrap <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideWrap,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
+
+#'@rdname ggside-ggproto-facets
+#'@description
+#' `check_scales_collapse` is a helper function that
+#' is meant to be called after the inherited Facet's
+#' compute_layout method
+#' @param data data passed through ggproto object
+#' @param params parameters passed through ggproto object
+#' @export
+check_scales_collapse <- function(data, params) {
+  collapse <- params$ggside$collapse %||% "default"
+  if(collapse %in%c("all","x")){
+    checkX <- unlist(
+      lapply(
+        split(data[["SCALE_X"]],
+              data[["COL"]]),
+        function(x) length(unique(x))
+        )
+      )
+    if(!all(checkX==1)){
+      warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales."))
+      data[["SCALE_X"]] <- data[["COL"]]
+    }
+  }
+  if(collapse %in%c("all","y")){
+    checkY <- unlist(
+      lapply(
+        split(data[["SCALE_Y"]],
+              data[["ROW"]]),
+        function(x) length(unique(x))
+      )
+    )
+    if(!all(checkY==1)){
+      warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales."))
+      data[["SCALE_Y"]] <- data[["ROW"]]
+    }
+  }
+  data
+}
+
+#'@rdname ggside-ggproto-facets
+#'@description
+#' `sidePanelLayout` is a helper function that
+#' is meant to be called after the inherited Facet's
+#' compute_layout method and after `check_scales_collapse`
+#' @param layout layout computed by inherited ggproto Facet compute_layout method
+#' @export
 sidePanelLayout <- function(layout,
                             ggside){
-
+  ggside$collapse <- check_collapse(ggside$collapse, ggside$sides_used)
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
   y.pos = ggside$y.pos
@@ -73,7 +189,7 @@ sidePanelLayout <- function(layout,
                         fixed_fun)
   layout$PANEL_GROUP <- layout$PANEL
   layout <- cbind.data.frame(layout[rep(1:nrow(layout), each = nrow(data)),],
-                      data[rep(1:nrow(data), nrow(layout)),])
+                             data[rep(1:nrow(data), nrow(layout)),])
 
   #transform ROW and COL
   layout[["ROW"]] <- layout[["ROW"]]*ifelse(layout[["ROW_trans"]]=="ALL",1L,2L) - ifelse(layout[["ROW_trans"]]=="ODD",1L,0L)
@@ -133,145 +249,26 @@ sidePanelLayout <- function(layout,
   return(layout)
 }
 
-wrapup <- function(df, by, ...){
-  if(...length()==0) return(df)
-  indx <- interaction(df[,by], drop = T)
-  indx <- match(indx, unique(indx))
-  dots_ <- list(...)
-  if(!all(unlist(lapply(dots_, function(x,y){all(x%in%y)}, y = colnames(df))))) abort("all RHS must exist in column names of `df`.")
-  wrap_columns <- unlist(dots_)
-  l_ <- split(df, indx)
-  l_ <- lapply(l_, function(x, d){
-    wrap <- lapply(d, function(y) list(x[,y, drop = FALSE]))
-    x <- unique(x[,setdiff(colnames(x), wrap_columns), drop = FALSE])
-    x[,names(d)] <- wrap
-    x
-  }, d = dots_)
-  data <- rbind_dfs(l_)
-  data
-}
+#'@rdname ggside-ggproto-facets
+#'@description
+#' `map_data_ggside` is the mapping function
+#' used to replace all map_data method on [FacetSideNull],
+#' [FacetSideGrid], and [FacetSideWrap]. It is exported
+#' for conviences of extensibility.
+#'@export
+map_data_ggside <- function(data, layout, params){
+  if (is.waive(data))
+    return(new_data_frame(list(PANEL = factor())))
 
-unwrap <- function(df, by, cols = NULL){
-  if(is.null(cols)) return(df)
-  if(!all(cols%in%colnames(df))) abort("all `cols` must exist in column names of `df`")
-  indx <- interaction(df[,by], drop = T)
-  indx <- match(indx, unique(indx))
-  l_ <- split(df, indx)
-  l_ <- lapply(l_, function(x){
-    nest <- do.call('cbind',unlist(Map(function(d, y) {d[,y,drop=T]}, d = list(x), y = cols),recursive = F))
-    x <- x[, setdiff(colnames(x), cols), drop = FALSE]
-    if(nrow(x)!=1) stop("by must uniquely index df")
-    cbind(x[rep(1, nrow(nest)),], nest)
-  })
-  data <- rbind_dfs(l_)
-  data
-}
+  if (empty(data))
+    return(new_data_frame(c(data, list(PANEL = factor()))))
 
-sideFacetDraw <- function(facet){
-  UseMethod("sideFacetDraw")
-}
-
-sideFacetDraw.FacetWrap <- function(facet){
-  sideFacetWrap_draw_panels
-}
-
-sideFacetDraw.FacetGrid <- function(facet){
-  sideFacetGrid_draw_panels
-}
-
-sideFacetDraw.FacetNull <- function(facet){
-  sideFacetNull_draw_panels
-}
-
-get_Facet <- function(facet){
-  UseMethod("get_Facet")
-}
-
-get_Facet.default <- function(facet){
-  abort(glue("No method implimented for facet of class {class(facet)[1]}"))
-}
-
-get_Facet.FacetNull <- function(facet) ggplot2::FacetNull
-
-get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
-
-get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
-
-
-make_sideFacets <- function(facet, ggside) UseMethod("make_sideFacets")
-
-
-make_sideFacets.default <- function(facet, ggside){
-
-  base_facet <- get_Facet(facet)
-  sideFacet_draw_panels <- sideFacetDraw(base_facet)
-
-  ggproto(NULL,
-          base_facet,
-          params = facet$params,
-          setup_params = function(data, params){
-            params$.possible_columns <- unique(unlist(lapply(data, names)))
-            params$ggside <- ggside
-            params
-          },
-          compute_layout = function(data, params,
-                                    facet_compute = base_facet$compute_layout){
-            layout <- facet_compute(data, params)
-            layout <- check_scales_collapse(layout, params)
-            layout <- sidePanelLayout(layout, ggside = params$ggside)
-            layout },
-          map_data = function(data, layout,
-                              params, facet_mapping = facet$map_data){
-            if (ggplot2:::is.waive(data))
-              return(new_data_frame(list(PANEL = factor())))
-
-            if (ggplot2:::empty(data))
-              return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
-
-            facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-            if(!"PANEL_TYPE"%in%colnames(data)){
-              data$PANEL_TYPE <- "main"
-            }
-            layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
-            .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
-            .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
-            data <- cbind.data.frame(data, layout[match(.x,.y),"PANEL", drop = FALSE])
-
-            data
-          },
-          draw_panels = sideFacet_draw_panels
-
-  )
-}
-
-check_scales_collapse <- function(data, params) {
-  collapse <- params$ggside$collapse %||% "default"
-  if(collapse %in%c("all","x")){
-    checkX <- unlist(
-      lapply(
-        split(data[["SCALE_X"]],
-              data[["COL"]]),
-        function(x) length(unique(x))
-        )
-      )
-    if(!all(checkX==1)){
-      warn(glue("free x scales is not compatible with collapse {collapse}. Assigning new x scales."))
-      data[["SCALE_X"]] <- data[["COL"]]
-    }
+  facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
   }
-  if(collapse %in%c("all","y")){
-    checkY <- unlist(
-      lapply(
-        split(data[["SCALE_Y"]],
-              data[["ROW"]]),
-        function(x) length(unique(x))
-      )
-    )
-    if(!all(checkY==1)){
-      warn(glue("free y scales is not compatible with collapse {collapse}. Assigning new y scales."))
-      data[["SCALE_Y"]] <- data[["ROW"]]
-    }
-  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+  keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
+  data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
   data
 }
-

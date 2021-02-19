@@ -1,5 +1,4 @@
 
-
 sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
 
   if ((params$free$x || params$free$y) && !coord$is_free()) {
@@ -333,6 +332,20 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     }
   }
 
-
   panel_table
 }
+
+#' @rdname ggside-ggproto-facets
+#' @usage NULL
+#' @format NULL
+#' @export
+FacetSideGrid <- ggplot2::ggproto("FacetSideGrid",
+                                  ggplot2::FacetGrid,
+                                  compute_layout = function(data, params){
+                                    layout <- ggplot2::FacetGrid$compute_layout(data, params)
+                                    layout <- check_scales_collapse(layout, params)
+                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
+                                    layout },
+                                  map_data = map_data_ggside,
+                                  draw_panels = sideFacetGrid_draw_panels
+)

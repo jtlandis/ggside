@@ -8,9 +8,9 @@
 \alias{StatSummarize}
 \title{Summarise by grouping variable}
 \format{
-An object of class \code{Summarise} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
+An object of class \code{StatSummarise} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
 
-An object of class \code{Summarize} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
+An object of class \code{StatSummarize} (inherits from \code{Stat}, \code{ggproto}, \code{gg}) of length 5.
 }
 \usage{
 stat_summarise(
@@ -36,8 +36,6 @@ stat_summarize(
   show.legend = NA,
   inherit.aes = TRUE
 )
-
-NULLzz
 }
 \arguments{
 \item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or

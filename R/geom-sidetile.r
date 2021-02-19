@@ -29,6 +29,10 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
                                   ggplot2::GeomTile,
                                   default_aes = aes(fill = "grey20", xfill = NA,
@@ -75,6 +79,10 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",
                                   ggplot2::GeomTile,
                                   default_aes = aes(fill = "grey20", yfill = NA,

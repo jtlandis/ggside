@@ -3,9 +3,6 @@
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
   plot <- NextMethod("ggplot_add")
-  # if("layer"%in%names(object)){
-  #   plot <- ggplot2:::add_ggplot(plot, object$layer, object_name)
-  # }
   as_ggside(plot)
 }
 
@@ -18,7 +15,7 @@ as_ggside <- function(plot, ggside = NULL){
   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
   }
-  plot[["facet"]] <- make_sideFacets(plot[["facet"]], plot[["ggside"]])
+  plot[["facet"]] <- as_ggsideFacet(plot[["facet"]], plot[["ggside"]])
   plot
 }
 
@@ -47,14 +44,13 @@ make_ggside <- function(object, ggside){
   }
   object$ggside$sides_used <- get_sides(object[["layers"]])
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
-  object$ggside$collapse <- check_collapse(object$ggside$collapse, object$ggside$sides_used)
   return(object)
 }
 
 check_collapse <- function(collapse, sides){
   if(!is.null(collapse)){
     if(collapse=="all"&!all(c("x","y") %in% sides)){
-      warn(as.character(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}.")))
+      warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
       return(sides)
     } else if(collapse=="x"&!"x"%in% sides){
       warn(glue("collapse set to \"x\", but no xside geometry used. Setting collapse to NULL."))

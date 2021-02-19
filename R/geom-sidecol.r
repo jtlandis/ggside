@@ -26,6 +26,10 @@ geom_xsidecol <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidecol <- ggplot2::ggproto("GeomXsidecol",
                                  ggplot2::GeomCol,
                                  default_aes = aes(colour = NA, xcolour = NA,
@@ -76,6 +80,10 @@ geom_ysidecol <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidecol <- ggplot2::ggproto("GeomYsidecol",
                                  ggplot2::GeomCol,
                                  default_aes = aes(colour = NA, ycolour = NA,

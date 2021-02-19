@@ -27,7 +27,10 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
   structure(l, class = c("ggside_layer",class(l)))
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   ggplot2::GeomLine,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
@@ -74,6 +77,10 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
 }
 
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsideline <- ggplot2::ggproto("GeomYsideline",
                                   ggplot2::GeomLine,
                                   default_aes = aes(colour = "black", ycolour = NA, size = 0.5,

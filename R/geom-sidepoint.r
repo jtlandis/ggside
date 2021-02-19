@@ -35,6 +35,10 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidepoint <- ggplot2::ggproto("GeomXsidepoint",
                                    ggplot2::GeomPoint,
                                    default_aes = aes(shape = 19, colour = "black", xcolour = NA,
@@ -80,6 +84,10 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidepoint <- ggplot2::ggproto("GeomYsidepoint",
                                    ggplot2::GeomPoint,
                                    default_aes = aes(shape = 19, colour = "black", ycolour = NA,

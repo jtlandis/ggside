@@ -31,6 +31,10 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
                                   ggplot2::GeomPath,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
@@ -86,6 +90,10 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
                                   ggplot2::GeomPath,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,

@@ -65,7 +65,10 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      ggplot2::GeomBoxplot,
                                      default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
@@ -142,6 +145,10 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                      ggplot2::GeomBoxplot,
                                      default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,

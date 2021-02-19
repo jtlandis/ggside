@@ -68,7 +68,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(x=0, fill = `sd of means`))
 ```
 
-Using **ggsidebar** allows for aesthetics to be mapped to a separate scale, which can also be controlled with `scale_*fill_gradient` functions (more on this later).  
+Using **ggside** allows for aesthetics to be mapped to a separate scale, which can also be controlled with `scale_*fill_gradient` functions (more on this later).  
 
 ```{r}
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
@@ -120,7 +120,7 @@ error = function(err){
 
 
 # How to Use
-### Geom
+## Geom
 
 `geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precidence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
 
@@ -140,13 +140,20 @@ The following geoms are currently available to use right away from the `ggside` 
 * GeomTile
 * GeomViolin
 
-### Facets
+## Facets
 
-Techniquely speaking `ggside`'s main workhorse is the `Facet` framework. In `ggplot_build.ggside`, each layer's geom class is inspected to see if they match the pattern **"(X|Y)side"**, in which case, `ggplot_build.ggside` will return a `PANEL_TYPE` indicating either `"main"`,`"x"`, or `"y"`. The values in `PANEL_TYPE` help predict which extra panels needed to be drawn per main panel produced by the original `Facet` class the ggplot holds.
+Techniquely speaking `ggside`'s main workhorse is *hacking* `Facet` framework. Whenever a standard `ggplot` object is converted to a `ggside` object, the current `Facet ggproto` class is replaced to one that is compatible with `ggside`. All `geom*side` variants are plotted in a panel adjacent to the axis their name implies. All vinila `ggplot2` geometries are plotted in the main panel.
 
-`ggside` Currently works with `ggplot2`'s three base facet classes, `FacetNull`, `FacetWrap` and `FacetGrid`. If you wish to extend `ggside` to another package's custom facet function, then you must also export a `sideFacetDraw` S3 method, which will be called inplace of the original Facet's `draw_panels` method. Helpful computed variables in the `layout` object are `PANEL_TYPE` which indicates if the `PANEL` expects a side geom or default geom, and `PANEL_GROUP` which helps clarify which `PANEL`'s are grouped together in a facet. These additional computed variables and the `ggside` object passed to `params` will have the information needed to help you draw panels for you custom facet with `ggside`.
+### How its done
 
-#### Examples with Facets
+#### XLayer and YLayer
+Each `geom_*side*` variants function return an `XLayer` or `YLayer` which both extends `ggplot2:::Layer`. Currently, only `Layer$setup_layer` is overwritten to add column `PANEL_TYPE` to the data. This column will contain `"x"`, or `"y"` which will help map data to the correct panel. Data missing the `PANEL_TYPE` column (or containing values other than `"x"` or `"y"`) is assumed to be mapped to the main panel. The values in `PANEL_TYPE` help predict which extra panels needed to be drawn per main panel produced by the original `Facet` class the ggplot holds.
+#### Facet
+Three main methods are overwritten in order to make `ggside` work. `compute_layout`, `map_data`, and `draw_panels`. The `compute_layout` will first call the base Facet's method, and then will will build more panels based on the attached `ggside` object. `map_data` will take extra care to ensure data is mapped to the proper panel using `PANEL_TYPE` as well as any other facet variables passed. `draw_panels` which is responsible for rendering all panels correctly.
+#### Extending
+ Currently, `ggside` works with `ggplot2`'s three base facet classes, `FacetNull`, `FacetWrap` and `FacetGrid`. If you wish to extend `ggside` to another package's custom facet function, then you must also export a `as_ggsideFacet` S3 method, which will be called when an the `ggplot` is converted to `ggside` or whenever a new facet is added to the plot. This method should return a ggproto object that inherits from the `Facet` group. Helpful computed variables in the `layout` object are `PANEL_TYPE` which indicates if the `PANEL` expects a side geom or default geom, and `PANEL_GROUP` which helps clarify which `PANEL`'s are grouped together in a facet. These additional computed variables and the `ggside` object passed to `params` will have the information needed to help you draw panels for you custom facet with `ggside`.
+
+### Examples with Facets
 
 ```{r}
 i2 <- iris %>%

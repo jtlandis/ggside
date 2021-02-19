@@ -31,8 +31,6 @@ weave_tables_row <- function(table, table2, row_shift, row_height, name, z = 1, 
   table
 }
 
-
-
 sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
@@ -347,3 +345,18 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   }
   panel_table
 }
+
+#' @rdname ggside-ggproto-facets
+#' @usage NULL
+#' @format NULL
+#' @export
+FacetSideWrap <- ggplot2::ggproto("FacetSideWrap",
+                                  ggplot2::FacetWrap,
+                                  compute_layout = function(data, params){
+                                    layout <- ggplot2::FacetWrap$compute_layout(data, params)
+                                    layout <- check_scales_collapse(layout, params)
+                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
+                                    layout },
+                                  map_data = map_data_ggside,
+                                  draw_panels = sideFacetWrap_draw_panels
+)

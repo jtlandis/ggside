@@ -43,9 +43,9 @@ stat_summarise <- function(mapping = NULL, data = NULL, geom = "bar", position =
 stat_summarize <- stat_summarise
 
 #' @rdname stat_summarise
-#' @usage NULLzz
+#' @usage NULL
 #' @export
-StatSummarise <- ggplot2::ggproto("Summarise",
+StatSummarise <- ggplot2::ggproto("StatSummarise",
                                 Stat,
                                 required_aes = c("domain"),
                                 compute_panel = function(self, data, scales, domain = NULL,
@@ -113,7 +113,7 @@ StatSummarise <- ggplot2::ggproto("Summarise",
 #' @rdname stat_summarise
 #' @usage NULL
 #' @export
-StatSummarize <- ggplot2::ggproto("Summarize",
+StatSummarize <- ggplot2::ggproto("StatSummarize",
                                   Stat,
                                   required_aes = c("domain"),
                                   compute_panel = function(self, data, scales, domain = NULL,

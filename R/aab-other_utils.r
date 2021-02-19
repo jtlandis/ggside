@@ -42,7 +42,7 @@ grab_Main_Mapping <- function(env = NULL){
   return(evaled)
 }
 
-#' @rdname ggside-ggproto
+#' @rdname ggside-ggproto-geoms
 #' @export
 use_xside_aes <- function(data){
   data$fill <- data$xfill %NA% data$fill
@@ -50,7 +50,7 @@ use_xside_aes <- function(data){
   data
 }
 
-#' @rdname ggside-ggproto
+#' @rdname ggside-ggproto-geoms
 #' @export
 use_yside_aes <- function(data){
   data$fill <- data$yfill %NA% data$fill
@@ -58,7 +58,7 @@ use_yside_aes <- function(data){
   data
 }
 
-#' @rdname ggside-ggproto
+#' @rdname ggside-ggproto-geoms
 #' @export
 parse_side_aes <- function(data, params){
   #determine if fill, xfill, or yfill should be used
@@ -330,6 +330,8 @@ semi_join <- function(x, y, by) {
   keys <- join_keys(x, y, by)
   x[keys$x%in%keys$y,]
 }
+
+
 
 simplify <- function (x)
 {
