@@ -187,15 +187,9 @@ get_Facet <- function(facet){
   UseMethod("get_Facet")
 }
 
-get_Facet.default <- function(facet){
-  abort(glue("No method implimented for facet of class {class(facet)[1]}"))
-}
 
-get_Facet.FacetNull <- function(facet) ggplot2::FacetNull
 
-get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
 
-get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
 
 #'@title Covert to ggside Friendly Facets
 #'@description
@@ -204,22 +198,25 @@ get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
 #' ggside on the object.
 #' @return ggproto object
 #'@export
-make_FacetSides <- function(facet, ggside) UseMethod("make_FacetSides")
-make_FacetSides.FacetNull <- function(facet, ggside){
+as_ggsideFacet <- function(facet, ggside) UseMethod("as_ggsideFacet")
+as_ggsideFacet.default <- function(facet, ggside){
+  abort(glue("No known method to make {class(facet)[1]} ggside friendly"))
+}
+as_ggsideFacet.FacetNull <- function(facet, ggside){
   facet$params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideNull,
                    params = facet$params,
                    shrink = facet$shrink)
 }
-make_FacetSides.FacetGrid <- function(facet, ggside){
+as_ggsideFacet.FacetGrid <- function(facet, ggside){
   facet$params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideGrid,
                    params = facet$params,
                    shrink = facet$shrink)
 }
-make_FacetSides.FacetWrap <- function(facet, ggside){
+as_ggsideFacet.FacetWrap <- function(facet, ggside){
   facet$params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideWrap,
@@ -227,50 +224,6 @@ make_FacetSides.FacetWrap <- function(facet, ggside){
                    shrink = facet$shrink)
 }
 
-
-make_sideFacets.default <- function(facet, ggside){
-
-  base_facet <- get_Facet(facet)
-  sideFacet_draw_panels <- sideFacetDraw(base_facet)
-
-  ggproto(NULL,
-          base_facet,
-          params = facet$params,
-          setup_params = function(data, params){
-            params$.possible_columns <- unique(unlist(lapply(data, names)))
-            params$ggside <- ggside
-            params
-          },
-          compute_layout = function(data, params,
-                                    facet_compute = base_facet$compute_layout){
-            layout <- facet_compute(data, params)
-            layout <- check_scales_collapse(layout, params)
-            layout <- sidePanelLayout(layout, ggside = params$ggside)
-            layout },
-          map_data = function(data, layout,
-                              params, facet_mapping = facet$map_data){
-            if (ggplot2:::is.waive(data))
-              return(new_data_frame(list(PANEL = factor())))
-
-            if (ggplot2:::empty(data))
-              return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
-
-            facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-            if(!"PANEL_TYPE"%in%colnames(data)){
-              data$PANEL_TYPE <- "main"
-            }
-            layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
-            data <- left_join(data,
-                              layout[,c("PANEL_TYPE", facet_vars, "PANEL")],
-                              by = c("PANEL_TYPE", facet_vars))
-            keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
-            data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
-            data
-          },
-          draw_panels = sideFacet_draw_panels
-
-  )
-}
 
 check_scales_collapse <- function(data, params) {
   collapse <- params$ggside$collapse %||% "default"
