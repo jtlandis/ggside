@@ -18,7 +18,7 @@ as_ggside <- function(plot, ggside = NULL){
   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
   }
-  plot[["facet"]] <- make_sideFacets(plot[["facet"]], plot[["ggside"]])
+  plot[["facet"]] <- make_FacetSides(plot[["facet"]], plot[["ggside"]])
   plot
 }
 

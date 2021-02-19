@@ -197,8 +197,35 @@ get_Facet.FacetGrid <- function(facet) ggplot2::FacetGrid
 
 get_Facet.FacetWrap <- function(facet) ggplot2::FacetWrap
 
-
-make_sideFacets <- function(facet, ggside) UseMethod("make_sideFacets")
+#'@title Covert to ggside Friendly Facets
+#'@description
+#' S3 class that converts old Facet into one that
+#' is compatible with ggside. Can also update
+#' ggside on the object.
+#' @return ggproto object
+#'@export
+make_FacetSides <- function(facet, ggside) UseMethod("make_FacetSides")
+make_FacetSides.FacetNull <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideNull,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
+make_FacetSides.FacetGrid <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideGrid,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
+make_FacetSides.FacetWrap <- function(facet, ggside){
+  facet$params[["ggside"]] <- ggside
+  ggplot2::ggproto(NULL,
+                   FacetSideWrap,
+                   params = facet$params,
+                   shrink = facet$shrink)
+}
 
 
 make_sideFacets.default <- function(facet, ggside){
@@ -233,10 +260,11 @@ make_sideFacets.default <- function(facet, ggside){
               data$PANEL_TYPE <- "main"
             }
             layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
-            .x <- interaction(data[,c("PANEL_TYPE",facet_vars)])
-            .y <- interaction(layout[,c("PANEL_TYPE",facet_vars)])
-            data <- cbind.data.frame(data, layout[match(.x,.y),"PANEL", drop = FALSE])
-
+            data <- left_join(data,
+                              layout[,c("PANEL_TYPE", facet_vars, "PANEL")],
+                              by = c("PANEL_TYPE", facet_vars))
+            keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
+            data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
             data
           },
           draw_panels = sideFacet_draw_panels

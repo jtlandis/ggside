@@ -1,6 +1,6 @@
 
-
-sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
+                                     ranges, coord, data, theme, params) {
 
   # if (inherits(coord, "CoordFlip")) {
   #   if (params$free$x) {
@@ -164,3 +164,33 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   panel_table
 }
+
+
+FacetSideNull <- ggplot2::ggproto("FacetSideNull",
+                                  FacetNull,
+                                  compute_layout = function(data, params){
+                                    layout <- ggplot2::FacetNull$compute_layout(data, params)
+                                    layout <- check_scales_collapse(layout, params)
+                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
+                                    layout },
+                                  map_data = function(data, layout,
+                                                      params){
+                                    if (ggplot2:::is.waive(data))
+                                      return(new_data_frame(list(PANEL = factor())))
+
+                                    if (ggplot2:::empty(data))
+                                      return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
+
+                                    facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
+                                    if(!"PANEL_TYPE"%in%colnames(data)){
+                                      data$PANEL_TYPE <- "main"
+                                    }
+                                    layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+                                    data <- left_join(data,
+                                                      layout[,c("PANEL_TYPE", facet_vars, "PANEL")],
+                                                      by = c("PANEL_TYPE", facet_vars))
+                                    keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
+                                    data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
+                                    data
+                                  },
+                                  draw_panels = sideFacetNull_draw_panels)

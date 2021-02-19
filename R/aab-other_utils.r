@@ -331,6 +331,8 @@ semi_join <- function(x, y, by) {
   x[keys$x%in%keys$y,]
 }
 
+
+
 simplify <- function (x)
 {
   if (length(x) == 2 && is_symbol(x[[1]], "~")) {
