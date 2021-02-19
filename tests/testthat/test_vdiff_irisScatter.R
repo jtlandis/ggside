@@ -26,19 +26,19 @@ test_that("sidehistograms plot correctly", {
   p1 <- p +
     geom_xsidehistogram(aes(y = after_stat(count))) +
     geom_ysidehistogram(aes(x = after_stat(count)))
-  expect_doppelganger("Basic Side histogram", p1)
+  expect_doppelganger("Basic Side histo", p1)
   p2 <- p +
-    geom_xsidehistogram(aes(xfill = Species, y = after_stat(count))) +
-    scale_xfill_manual(values = c("tan2","gold","grey")) +
     geom_ysidehistogram(aes(x = after_stat(count), yfill = Species2))
-  expect_doppelganger("Side histogram xcolor changed - legend static", p2)
+  expect_doppelganger("yside histo", p2)
   p3 <- p2 +
+    geom_xsidehistogram(aes(xfill = Species, y = after_stat(count))) +
     facet_grid(cols = vars(Species), rows = vars(Species2)) +
     scale_yfill_manual(values = c("darkred","darkblue")) +
     guides(fill = F)
-  expect_doppelganger("FacetGrid Side histogram - xyside legends visible", p3)
-  p4 <- p3 + ggside(collapse = "all")
-  expect_doppelganger("FacetGrid Collapsed histogram", p4)
+  expect_doppelganger("FacetGrid histo", p3)
+  p4 <- p3 + ggside(collapse = "all") +
+    scale_xfill_manual(values = c("tan2","gold","grey"))
+  expect_doppelganger("Collapsed histo", p4)
 })
 
 
