@@ -44,14 +44,13 @@ make_ggside <- function(object, ggside){
   }
   object$ggside$sides_used <- get_sides(object[["layers"]])
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
-  object$ggside$collapse <- check_collapse(object$ggside$collapse, object$ggside$sides_used)
   return(object)
 }
 
 check_collapse <- function(collapse, sides){
   if(!is.null(collapse)){
     if(collapse=="all"&!all(c("x","y") %in% sides)){
-      warn(as.character(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}.")))
+      warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
       return(sides)
     } else if(collapse=="x"&!"x"%in% sides){
       warn(glue("collapse set to \"x\", but no xside geometry used. Setting collapse to NULL."))
