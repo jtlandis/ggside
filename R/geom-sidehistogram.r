@@ -19,7 +19,7 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 binwidth = NULL,
                                 bins = NULL,
                                 na.rm = FALSE,
-                                orientation = NA,
+                                orientation = "x",
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
 
@@ -41,7 +41,7 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
-  structure(list(layer=l), class = c("ggside_layer",class(l)))
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname geom_xsidehistogram
@@ -53,7 +53,7 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
                                 binwidth = NULL,
                                 bins = NULL,
                                 na.rm = FALSE,
-                                orientation = NA,
+                                orientation = "y",
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
 

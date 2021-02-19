@@ -8,7 +8,7 @@
 #' @aliases geom_*freqpoly
 #' @export
 geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
-                               stat = "bin", position = "identity",
+                               stat = "xsidebin", position = "identity",
                                ...,
                                na.rm = FALSE,
                                show.legend = NA,
@@ -19,7 +19,7 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  layer(
+  l <- layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -30,13 +30,14 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
     params = params,
     layer_class = XLayer
   )
+  structure(l, class = c("ggside_layer",class(l)))
 
 }
 
 #' @rdname geom_xsidefreqpoly
 #' @export
 geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
-                               stat = "bin", position = "identity",
+                               stat = "ysidebin", position = "identity",
                                ...,
                                na.rm = FALSE,
                                show.legend = NA,
@@ -47,7 +48,7 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  layer(
+  l <- layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -58,4 +59,5 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
     params = params,
     layer_class = YLayer
   )
+  structure(l, class=c("ggside_layer", class(l)))
 }

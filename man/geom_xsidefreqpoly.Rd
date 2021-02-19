@@ -9,7 +9,7 @@
 geom_xsidefreqpoly(
   mapping = NULL,
   data = NULL,
-  stat = "bin",
+  stat = "xsidebin",
   position = "identity",
   ...,
   na.rm = FALSE,
@@ -20,7 +20,7 @@ geom_xsidefreqpoly(
 geom_ysidefreqpoly(
   mapping = NULL,
   data = NULL,
-  stat = "bin",
+  stat = "ysidebin",
   position = "identity",
   ...,
   na.rm = FALSE,

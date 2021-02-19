@@ -123,7 +123,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
                                      setup_data = function(data, params){
                                        suggested_var <- c("x","y")
                                        cvar <- params$rescale_var
-                                       suffix <- c("min","lower","middle","upper","max","min_final","max_final", "")
+                                       suffix <- c("min","lower","middle","upper","max","min_final","max_final", "end", "")
                                        .cols <- base::intersect(colnames(data), c(paste0(cvar,suffix),suffix))
                                        cdata <- data[,.cols, drop = FALSE]
                                        from_range <- range(unlist(lapply(cdata, range)))
