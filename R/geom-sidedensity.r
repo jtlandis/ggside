@@ -39,6 +39,10 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                      ggplot2::GeomDensity,
                                      default_aes = aes(fill = NA, xfill = NA, weight = 1,
@@ -88,6 +92,10 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
                                      ggplot2::GeomDensity,
                                      default_aes = aes(fill = NA, yfill = NA, weight = 1,

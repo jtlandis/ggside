@@ -42,6 +42,10 @@ geom_xsidetext <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidetext <- ggplot2::ggproto("GeomXsidetext",
                                   ggplot2::GeomText,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 3.88,
@@ -103,7 +107,10 @@ geom_ysidetext <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidetext <- ggplot2::ggproto("GeomYsidetext",
                                   ggplot2::GeomText,
                                   default_aes = aes(colour = "black", ycolour = NA, size = 3.88,

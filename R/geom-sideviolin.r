@@ -46,7 +46,10 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
   )
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
                                     ggplot2::GeomViolin,
                                     default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
@@ -98,7 +101,10 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
   )
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
                                     ggplot2::GeomViolin,
                                     default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,

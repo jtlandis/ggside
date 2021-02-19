@@ -23,6 +23,10 @@ geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidesegment <- ggplot2::ggproto("GeomXsidesegment",
                                   ggplot2::GeomSegment,
                                   default_aes = aes(colour = "black",
@@ -64,6 +68,10 @@ geom_ysidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
   structure(l, class=c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidesegment <- ggplot2::ggproto("GeomYsidesegment",
                                      ggplot2::GeomSegment,
                                      default_aes = aes(colour = "black",

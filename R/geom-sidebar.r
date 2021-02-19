@@ -61,6 +61,10 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   structure(l, class=c("ggside_layer", class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                         ggplot2::GeomBar,
                         default_aes = aes(colour = NA, xcolour = NA,
@@ -110,7 +114,10 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                  ggplot2::GeomBar,
                                  default_aes = aes(colour = NA, ycolour = NA,
