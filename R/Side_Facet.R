@@ -54,13 +54,14 @@ unwrap <- function(df, by, cols = NULL){
   data
 }
 
-#'@title Covert to ggside Friendly Facets
+#'@rdname ggside-ggproto-facets
 #'@description
 #' S3 class that converts old Facet into one that
 #' is compatible with ggside. Can also update
 #' ggside on the object. Typically, the new ggproto
 #' will inherit from the object being replaced.
-#' @return ggproto object
+#' @param facet Facet ggproto Object to replace
+#' @param ggside ggside object to update
 #'@export
 as_ggsideFacet <- function(facet, ggside) UseMethod("as_ggsideFacet")
 as_ggsideFacet.default <- function(facet, ggside){
@@ -88,7 +89,7 @@ as_ggsideFacet.FacetWrap <- function(facet, ggside){
                    shrink = facet$shrink)
 }
 
-#'@rdname as_ggsideFacet
+#'@rdname ggside-ggproto-facets
 #'@description
 #' `check_scales_collapse` is a helper function that
 #' is meant to be called after the inherited Facet's
@@ -125,7 +126,7 @@ check_scales_collapse <- function(data, params) {
   data
 }
 
-#'@rdname as_ggsideFacet
+#'@rdname ggside-ggproto-facets
 #'@description
 #' `sidePanelLayout` is a helper function that
 #' is meant to be called after the inherited Facet's
@@ -245,7 +246,7 @@ sidePanelLayout <- function(layout,
   return(layout)
 }
 
-#'@rdname as_ggsideFacet
+#'@rdname ggside-ggproto-facets
 #'@description
 #' `map_data_ggside` is the mapping function
 #' used to replace all map_data method on [FacetSideNull],
@@ -253,11 +254,11 @@ sidePanelLayout <- function(layout,
 #' for conviences of extensibility.
 #'@export
 map_data_ggside <- function(data, layout, params){
-  if (ggplot2:::is.waive(data))
+  if (is.waive(data))
     return(new_data_frame(list(PANEL = factor())))
 
-  if (ggplot2:::empty(data))
-    return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
+  if (empty(data))
+    return(new_data_frame(c(data, list(PANEL = factor()))))
 
   facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
   if(!"PANEL_TYPE"%in%colnames(data)){
