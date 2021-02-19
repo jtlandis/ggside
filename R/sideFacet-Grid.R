@@ -332,10 +332,13 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     }
   }
 
-
   panel_table
 }
 
+#' @rdname ggside-ggproto-facets
+#' @usage NULL
+#' @format NULL
+#' @export
 FacetSideGrid <- ggplot2::ggproto("FacetSideGrid",
                                   ggplot2::FacetGrid,
                                   compute_layout = function(data, params){
@@ -343,25 +346,6 @@ FacetSideGrid <- ggplot2::ggproto("FacetSideGrid",
                                     layout <- check_scales_collapse(layout, params)
                                     layout <- sidePanelLayout(layout, ggside = params$ggside)
                                     layout },
-                                  map_data = function(data, layout,
-                                                      params){
-                                    if (ggplot2:::is.waive(data))
-                                      return(new_data_frame(list(PANEL = factor())))
-
-                                    if (ggplot2:::empty(data))
-                                      return(ggplot2:::new_data_frame(c(data, list(PANEL = factor()))))
-
-                                    facet_vars <- c(names(params$facets),names(params$rows),names(params$cols))
-                                    if(!"PANEL_TYPE"%in%colnames(data)){
-                                      data$PANEL_TYPE <- "main"
-                                    }
-                                    layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
-                                    data <- left_join(data,
-                                                      layout[,c("PANEL_TYPE", facet_vars, "PANEL")],
-                                                      by = c("PANEL_TYPE", facet_vars))
-                                    keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
-                                    data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
-                                    data
-                                  },
+                                  map_data = map_data_ggside,
                                   draw_panels = sideFacetGrid_draw_panels
 )

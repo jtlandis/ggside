@@ -94,6 +94,8 @@ as_ggsideFacet.FacetWrap <- function(facet, ggside){
 #' `check_scales_collapse` is a helper function that
 #' is meant to be called after the inherited Facet's
 #' compute_layout method
+#' @param data data passed through ggproto object
+#' @param params parameters passed through ggproto object
 #' @export
 check_scales_collapse <- function(data, params) {
   collapse <- params$ggside$collapse %||% "default"
@@ -131,6 +133,7 @@ check_scales_collapse <- function(data, params) {
 #' `sidePanelLayout` is a helper function that
 #' is meant to be called after the inherited Facet's
 #' compute_layout method and after `check_scales_collapse`
+#' @param layout layout computed by inherited ggproto Facet compute_layout method
 #' @export
 sidePanelLayout <- function(layout,
                             ggside){
@@ -265,9 +268,6 @@ map_data_ggside <- function(data, layout, params){
     data$PANEL_TYPE <- "main"
   }
   layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
-  data <- left_join(data,
-                    layout[,c("PANEL_TYPE", facet_vars, "PANEL")],
-                    by = c("PANEL_TYPE", facet_vars))
   keys <- join_keys(data, layout, by = c("PANEL_TYPE",facet_vars))
   data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
   data
