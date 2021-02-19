@@ -36,4 +36,6 @@ Suggests:
     testthat,
     knitr,
     rmarkdown,
-    vdiffr
+    vdiffr,
+    ggdendro,
+    viridis
