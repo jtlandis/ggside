@@ -4,7 +4,7 @@
 \alias{use_xside_aes}
 \alias{use_yside_aes}
 \alias{parse_side_aes}
-\alias{ggside-ggproto}
+\alias{ggside-ggproto-geoms}
 \title{Extending base ggproto classes for ggside}
 \usage{
 use_xside_aes(data)
