@@ -6,8 +6,7 @@ Authors@R:
     person(given = "Justin",
            family = "Landis",
            role = c("aut", "cre"),
-           email = "first.last@example.com",
-           comment = c(ORCID = "YOUR-ORCID-ID"))
+           email = "jtlandis314@gmail.com")
 Maintainer: Justin Landis <jtlandis314@gmail.com>
 Description: This package allows the user to add graphical 
   information about one of the main panel's axis using a familar 
