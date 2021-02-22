@@ -10,7 +10,11 @@ vignette: >
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>",
+  fig.width = 8,
+  fig.height = 6,
+  out.width = '100%',
+  dpi = 300
 )
 ```
 
@@ -19,7 +23,6 @@ library(dplyr)
 library(ggplot2)
 library(ggside)
 ```
-
 
 # ggside
 
@@ -44,13 +47,13 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 
 
 ```{r, error=T}
-p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
+p <-ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_tile(aes(x=0, fill = cut))
 tryCatch({
   p
   },
-  error = function(p) p
+  error = function(e) e
 )
 ```
 
@@ -62,7 +65,7 @@ However, you could map another continuous variable, but this will place these to
 summariseDiamond <- summariseDiamond %>%
   group_by(`Cut Clarity`) %>%
   mutate(`sd of means` = sd(`mean Price`))
-#distinct(summariseDiamond, `Summarise Colors`, `Total Summarised`)
+
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_tile(aes(x=0, fill = `sd of means`))
@@ -73,7 +76,7 @@ Using **ggside** allows for aesthetics to be mapped to a separate scale, which c
 ```{r}
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
-  geom_ysidetile(aes(x = "sd of means", yfill = `sd of means`)) +
+  geom_ysidetile(aes(x = "sd of means", yfill = `sd of means`))  +
   scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
 ```
 

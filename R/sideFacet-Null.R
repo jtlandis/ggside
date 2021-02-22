@@ -102,14 +102,36 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   axis_mat_y_right <- empty_table
   axis_mat_y_right[panel_pos] <- axes$y$right
 
-  #with FacetNull there should be at most 3 panels
+  .xgroupby <- "COL"
+  .ygroupby <- "ROW"
 
-  bottom <- layout[layout[["ROW"]]==1L,][["panel_pos"]]
-  top <- layout[layout[["ROW"]]==2L,][["panel_pos"]]
-  left <- layout[layout[["COL"]]==2L,][["panel_pos"]]
-  right <- layout[layout[["COL"]]==1L,][["panel_pos"]]
+  bottom <- do_by(layout, "COL", function(x){x[["ROW2"]] <- max(x[["ROW"]]); x})
+  top <- do_by(layout, "COL", function(x){x[["ROW2"]] <- min(x[["ROW"]]); x})
+  right <- do_by(layout, "ROW", function(x){x[["COL2"]] <- max(x[["COL"]]); x})
+  left <- do_by(layout, "ROW", function(x){x[["COL2"]] <- min(x[["COL"]]); x})
 
+  if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
+    right <- right[right[["COL"]]==right[["COL2"]]|right[["PANEL_TYPE"]]=="x",]
+    left <- left[left[["COL"]]==left[["COL2"]]|left[["PANEL_TYPE"]]=="x",]
+  } else {
+    right <- right[right[["COL"]]==right[["COL2"]],]
+    left <- left[left[["COL"]]==left[["COL2"]],]
+  }
+  if(params$ggside$scales%in%c("free","free_x")){ #if x is free, include y PANELS_TYPES
+    top <- top[top[["ROW"]]==top[["ROW2"]]|top[["PANEL_TYPE"]]=="y",]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]]|bottom[["PANEL_TYPE"]]=="y",]
+  } else {
+    top <- top[top[["ROW"]]==top[["ROW2"]],]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]],]
+  }
 
+  #top, left, bottom, right, variables includes panels that would have axis shown
+  #for their relavent positions.
+  #Do an anti_join against layout to find panels that should get a zeroGrobe
+  bottom <- anti_join(layout, bottom, by = c("ROW","COL"))[["panel_pos"]]
+  top <- anti_join(layout, top, by = c("ROW","COL"))[["panel_pos"]]
+  right <- anti_join(layout, right, by = c("ROW","COL"))[["panel_pos"]]
+  left <- anti_join(layout, left, by = c("ROW","COL"))[["panel_pos"]]
   #pulled panel positions
   #Place ZeroGrobs
   axis_mat_x_top[top]<- list(zeroGrob())
