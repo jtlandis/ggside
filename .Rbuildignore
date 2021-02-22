@@ -11,3 +11,4 @@ examples/*
 ^doc$
 examples.r
 Generate_Data.R
+^\.travis\.yml$

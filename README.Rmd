@@ -15,22 +15,30 @@ knitr::opts_chunk$set(
 
 # ggside
 
-
+`<!-- badges: start -->`
+  [![Travis build status](https://travis-ci.org/jtlandis/ggside.svg?branch=master)](https://travis-ci.org/jtlandis/ggside)
+  
+`<!-- badges: end -->`
 
 
 ## Overview
 
-The R package ggside expands on the ggplot2 package. This package allows the user to add graphical information about one of the main panel's axis. This is particulary useful for metadata for discrete axis, or summary graphics on a continuous axis such as a boxplot or a density distribution.
+The R package ggside expands on the ggplot2 package. This package allows the user to add graphical information about one of the main panel's axis. This is particularly useful for metadata for discrete axis, or summary graphics on a continuous axis such as a boxplot or a density distribution.
 
 ## Installation
 
+Please install from CRAN for the latest stable version of `ggside`. You can also install from the Github as seen below.
+
 ```{r, eval = FALSE}
+#CRAN
+utils::install.packages("ggside")
+#Github
 devtools::install_github("jtlandis/ggside")
 ```
 
 ## Usage
 
-Using this package is similar to adding any additional layer to a ggplot. All geometries supported by ggside follow a pattern like `geom_xside*` or `geom_yside*` which will add that geometery to either the x side panel or the y side panel respecitively. If you add `geom_xsidedensity` to a plot, then this places a density geometry in its own panel that is positioned by default above the main panel. This panel will share the same x axis of the main panel but will have an independent y axis. Take the following example from the ggplot2 readme.
+Using this package is similar to adding any additional layer to a ggplot. All geometries supported by ggside follow a pattern like `geom_xside*` or `geom_yside*` which will add that geometry to either the x side panel or the y side panel respectively. If you add `geom_xsidedensity` to a plot, then this places a density geometry in its own panel that is positioned by default above the main panel. This panel will share the same x axis of the main panel but will have an independent y axis. Take the following example from the ggplot2 readme.
 
 ```{r example}
 library(ggplot2)
@@ -39,12 +47,16 @@ library(ggside)
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
   geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
-  geom_ysidedensity(aes(x = after_stat(density)), position = "stack", orientation = "y") +
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
   theme(axis.text.x = element_text(angle = 90, vjust = .5))
   
 ```
 
-There is currently a vignette in development that goes into further details on the package.
+For a more detailed guide please see `vignette('ggside_basic_usage')` for more information.
+
+## Issues and Bug Reporting
+
+If you find any issues or want to suggest an enhancement, please make a post at [jtlandis/ggside](https://github.com/jtlandis/ggside/issues).
 
 
 
