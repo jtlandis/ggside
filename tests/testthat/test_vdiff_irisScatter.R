@@ -1,3 +1,4 @@
+library(dplyr)
 
 context("Iris scatterplot density type plots")
 i2 <- mutate(iris, Species2 = rep(c("A","B"), 75))
