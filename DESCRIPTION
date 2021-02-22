@@ -1,7 +1,7 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.0.0.9000
+Version: 0.0.1.0
 Authors@R: 
     person(given = "Justin",
            family = "Landis",
@@ -9,13 +9,13 @@ Authors@R:
            email = "jtlandis314@gmail.com")
 Maintainer: Justin Landis <jtlandis314@gmail.com>
 Description: This package allows the user to add graphical 
-  information about one of the main panel's axis using a familar 
-  ggplot2 style API with tidy data. ggside extends ggplot2 and 
+  information about one of the main panel's axis using a familiar 
+  ggplot2 style API with tidy data. This package extends ggplot2 and 
   should be loaded after ggplot2. Like ggplot2, ggside provides
-  the user with full expressive control over their plots. ggside is
-  particulary useful for metadata for discrete axis, or summary
+  the user with full expressive control over their plots. This package is
+  particularly useful for metadata for discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
-License: GPL-3 + file LICENSE
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
 Roxygen: list(markdown = TRUE)
