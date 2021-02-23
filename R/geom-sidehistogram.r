@@ -12,6 +12,7 @@
 #' @inheritParams ggplot2::geom_histogram
 #'
 #' @aliases geom_*sidehistogram
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 stat = "bin", position = "stack",

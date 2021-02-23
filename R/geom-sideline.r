@@ -5,6 +5,7 @@
 #' @inheritParams ggplot2::geom_line
 #'
 #' @aliases geom_*sideline
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,

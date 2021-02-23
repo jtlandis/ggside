@@ -11,6 +11,7 @@
 #' @inheritParams ggplot2::geom_point
 #'
 #' @aliases geom_*sidepoint
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidepoint <- function(mapping = NULL, data = NULL,
                             stat = "identity", position = "identity",

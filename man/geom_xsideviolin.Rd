@@ -98,6 +98,9 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
+\value{
+XLayer or YLayer object to be added to a ggplot object
+}
 \description{
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_violin}
 }

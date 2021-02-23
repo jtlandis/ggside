@@ -15,6 +15,7 @@
 #'   `geom_violin()` and `stat_ydensity()`.
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               stat = "ydensity", position = "dodge",

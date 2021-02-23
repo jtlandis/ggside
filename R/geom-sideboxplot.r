@@ -8,7 +8,7 @@
 #'
 #' @seealso [geom_*sideviolin]
 #' @aliases geom_*sideboxplot
-#'
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsideboxplot <- function(mapping = NULL, data = NULL,
                               stat = "boxplot", position = "dodge2",

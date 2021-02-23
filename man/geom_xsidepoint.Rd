@@ -74,6 +74,9 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
+\value{
+XLayer or YLayer object to be added to a ggplot object
+}
 \description{
 The ggside variants of \link[ggplot2]{geom_point} is \code{\link[=geom_xsidepoint]{geom_xsidepoint()}} and
 \code{\link[=geom_ysidepoint]{geom_ysidepoint()}}. Both variants inherit from \link[ggplot2]{geom_point},

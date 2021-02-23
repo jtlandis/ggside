@@ -6,6 +6,7 @@
 #' @inheritParams ggplot2::geom_freqpoly
 #'
 #' @aliases geom_*freqpoly
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
                                stat = "xsidebin", position = "identity",

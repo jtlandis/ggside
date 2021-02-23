@@ -1,10 +1,15 @@
 #' @title Extending base ggproto classes for ggside
 #' @name ggside-ggproto-geoms
 #' @description
-#' TBD
+#' These ggproto classes are slightly modified from their
+#' respective inherited \link[ggplot2]{ggproto} class. The
+#' biggest difference is exposing 'x/yfill', 'x/ycolour', and
+#' 'x/ycolor' as viable aesthetic mappings.
+#'
 #'
 #' @param data data passed internally
 #' @param params params available to ggproto object
+#' @return ggproto object that is usually passed to \link[ggplot2]{layer}
 NULL
 
 
@@ -20,5 +25,5 @@ NULL
 #' \item \link[ggplot2]{FacetGrid} -> FacetSideGrid
 #' \item \link[ggplot2]{FacetWrap} -> FacetSideWrap
 #' }
-#'
+#' @return ggproto object that can be added to a ggplot object
 NULL

@@ -3,6 +3,7 @@
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_tile}
 #' @inheritParams ggplot2::geom_tile
 #' @aliases geom_*sidetile
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidetile <- function(mapping = NULL, data = NULL,
                           stat = "identity", position = "identity",

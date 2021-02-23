@@ -121,6 +121,9 @@ to the paired geom/stat.}
 
 \item{arrow}{Arrow specification, as created by \code{\link[grid:arrow]{grid::arrow()}}.}
 }
+\value{
+XLayer or YLayer object to be added to a ggplot object
+}
 \description{
 The \link{xside} and \link{yside} of \link[ggplot2]{geom_line}.
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_path}

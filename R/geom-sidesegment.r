@@ -4,6 +4,7 @@
 #' @inheritParams ggplot2::geom_segment
 #'
 #' @aliases geom_*sidesegment
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",

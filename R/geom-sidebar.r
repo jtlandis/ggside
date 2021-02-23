@@ -31,7 +31,7 @@
 #' }
 #'
 #' @seealso [geom_xsidehistogram], [geom_ysidehistogram]
-#'
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @aliases geom_*sidebar
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,

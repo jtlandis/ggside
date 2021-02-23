@@ -87,6 +87,9 @@ the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 upper and lower lines, \code{"upper"}/\code{"lower"} draws the respective lines only.
 \code{"full"} draws a closed polygon around the area.}
 }
+\value{
+XLayer or YLayer object to be added to a ggplot object
+}
 \description{
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_density} is
 \link{geom_xsidedensity} and \link{geom_ysidedensity}.

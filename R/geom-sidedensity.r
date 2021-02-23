@@ -10,6 +10,7 @@
 #' @param stat Use to override the default connection between
 #'   `geom_density()` and `stat_density()`.
 #' @aliases geom_*sidedensity
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsidedensity <- function(mapping = NULL, data = NULL,
          stat = "density", position = "identity",

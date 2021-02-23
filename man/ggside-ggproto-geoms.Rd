@@ -45,7 +45,13 @@ parse_side_aes(data, params)
 
 \item{params}{params available to ggproto object}
 }
+\value{
+ggproto object that is usually passed to \link[ggplot2]{layer}
+}
 \description{
-TBD
+These ggproto classes are slightly modified from their
+respective inherited \link[ggplot2]{ggproto} class. The
+biggest difference is exposing 'x/yfill', 'x/ycolour', and
+'x/ycolor' as viable aesthetic mappings.
 }
 \keyword{datasets}

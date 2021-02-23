@@ -32,6 +32,9 @@ map_data_ggside(data, layout, params)
 
 \item{layout}{layout computed by inherited ggproto Facet compute_layout method}
 }
+\value{
+ggproto object that can be added to a ggplot object
+}
 \description{
 S3 class that converts old Facet into one that
 is compatible with ggside. Can also update
