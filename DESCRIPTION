@@ -8,12 +8,11 @@ Authors@R:
            role = c("aut", "cre"),
            email = "jtlandis314@gmail.com")
 Maintainer: Justin Landis <jtlandis314@gmail.com>
-Description: This package allows the user to add graphical 
-  information about one of the main panel's axis using a familiar 
-  ggplot2 style API with tidy data. This package extends ggplot2 and 
-  should be loaded after ggplot2. Like ggplot2, ggside provides
-  the user with full expressive control over their plots. This package is
-  particularly useful for metadata for discrete axis, or summary
+Description: The grammar of graphics as shown in 'ggplot2' has provided
+  an expressive API for users to build plots. 'ggside' extends 'ggplot2' 
+  by allowing users to add graphical information about one of the main panel's
+  axis using a familiar 'ggplot2' style API with tidy data. This package is
+  particularly useful for visualising metadata on a discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
 License: MIT + file LICENSE
 Encoding: UTF-8
