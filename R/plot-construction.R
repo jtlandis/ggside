@@ -1,6 +1,7 @@
 
 
 #' @export
+#' @return A modified ggplot object
 ggplot_add.ggside_layer <- function(object, plot, object_name){
   plot <- NextMethod("ggplot_add")
   as_ggside(plot)

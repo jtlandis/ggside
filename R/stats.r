@@ -29,6 +29,7 @@
 #'    stat_summarise(aes(y = after_stat(summarise),
 #'                   label = after_stat(summarise)),
 #'                   position = position_stack(vjust = .5), geom = "text", fun = mean)
+#' @return A Layer object to be added to a ggplot
 #' @export
 stat_summarise <- function(mapping = NULL, data = NULL, geom = "bar", position = "identity",
                           ..., fun = NULL, args = list(), show.legend = NA,

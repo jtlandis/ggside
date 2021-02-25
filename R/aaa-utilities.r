@@ -1,11 +1,3 @@
-#' @export
-#' @examples
-#' ggplot(mpg, aes(displ, hwy)) +
-#'   geom_point(alpha = 0.5, colour = "blue")
-#'
-#' ggplot(mpg, aes(displ, hwy)) +
-#'   geom_point(colour = alpha("blue", 0.5))
-scales::alpha
 
 "%||%" <- function(a, b) {
   if (!is.null(a)) a else b
@@ -15,14 +7,7 @@ scales::alpha
   if (!is.waive(a)) a else b
 }
 
-# Check required aesthetics are present
-# This is used by geoms and stats to give a more helpful error message
-# when required aesthetics are missing.
-#
-# @param character vector of required aesthetics
-# @param character vector of present aesthetics
-# @param name of object for error message
-# @keyword internal
+
 check_required_aesthetics <- function(required, present, name) {
   if (is.null(required)) return()
 
@@ -82,20 +67,6 @@ uniquecols <- function(df) {
   df
 }
 
-#' Convenience function to remove missing values from a data.frame
-#'
-#' Remove all non-complete rows, with a warning if `na.rm = FALSE`.
-#' ggplot is somewhat more accommodating of missing values than R generally.
-#' For those stats which require complete data, missing values will be
-#' automatically removed with a warning. If `na.rm = TRUE` is supplied
-#' to the statistic, the warning will be suppressed.
-#'
-#' @param df data.frame
-#' @param na.rm If true, will suppress warning message.
-#' @param vars Character vector of variables to check for missings in
-#' @param name Optional function name to improve error message.
-#' @param finite If `TRUE`, will also remove non-finite values.
-#' @keywords internal
 remove_missing <- function(df, na.rm = FALSE, vars = names(df), name = "",
                            finite = FALSE) {
   if (!is.logical(na.rm)) {
@@ -156,13 +127,6 @@ is_complete <- function(x) {
 }
 
 
-#' Used in examples to illustrate when errors should occur.
-#'
-#' @param expr code to evaluate.
-#' @keywords internal
-#' @examples
-#' should_stop(stop("Hi!"))
-#' should_stop(should_stop("Hi!"))
 should_stop <- function(expr) {
   res <- try(print(force(expr)), TRUE)
   if (!inherits(res, "try-error")) {
@@ -180,6 +144,7 @@ should_stop <- function(expr) {
 #' displaying a default value calculated elsewhere (`waiver()`)
 #'
 #' @keywords internal
+#' @return simple 'waiver' class as a placeholder
 waiver <- function() structure(list(), class = "waiver")
 
 is.waive <- function(x) inherits(x, "waiver")

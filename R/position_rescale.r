@@ -160,6 +160,7 @@ PositionRescale <- ggplot2::ggproto("PositionRescale",
 #' @param instance integer that indexes rescaled axis calls. instance may be specified and if a previous
 #' layer with the same instance exists, then the same midpoint and range are used for rescalling. x and y are
 #' indexed independently.
+#' @return a ggproto object inheriting from 'Position' and can be added to a ggplot
 #' @export
 position_rescale <- function(rescale = "y", midpoint = NULL, range = NULL, location = NULL, instance = NULL){
   ggproto(NULL, PositionRescale, rescale = rescale, midpoint = midpoint, range = range, location = location, instance = instance)

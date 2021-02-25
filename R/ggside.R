@@ -17,17 +17,18 @@
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
-#'
+#' @return a object of class 'ggside_options' or to be added to a ggpot
 #' @export
 ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL){
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
-                 collapse = collapse), class = "ggside_options")
+                 collapse = collapse), class = c("ggside_options","gg"))
 }
 
 #' @title Check ggside objects
 #' @param x Object to test
+#' @return A logical value
 #' @export
 is.ggside <- function(x) inherits(x, "ggside")
 
@@ -78,7 +79,7 @@ is.ggside_options <- function(x) inherits(x, "ggside_options")
 #' \item [geom_xsidetile]
 #' \item [geom_xsideviolin]
 #' }
-#'
+#' @return geom_xside* return a XLayer object to be added to a ggplot
 #' @seealso [yside]
 NULL
 
@@ -121,7 +122,7 @@ NULL
 #' \item [geom_ysidetile]
 #' \item [geom_ysideviolin]
 #' }
-#'
+#' @return geom_yside* return a YLayer object to be added to a ggplot
 #' @seealso [xside]
 NULL
 

@@ -23,6 +23,7 @@
 #' \item scale_xcolour_gradientn
 #' \item scale_ycolour_gradientn
 #' }
+#' @return returns a ggroto object to be added to a ggplot
 NULL
 
 #' scale_xcolour_hue
