@@ -49,6 +49,9 @@ is ignored and placed at the specified location.}
 layer with the same instance exists, then the same midpoint and range are used for rescalling. x and y are
 indexed independently.}
 }
+\value{
+a ggproto object inheriting from 'Position' and can be added to a ggplot
+}
 \description{
 Take the range of the specified axsis and rescale it to a new range about a midpoint. By default
 the range will be calculated from the associated main plot axis mapping. The range will either be the resolution

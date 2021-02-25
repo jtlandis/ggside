@@ -11,6 +11,9 @@
 \alias{scale_xfill_continuous}
 \alias{scale_yfill_gradientn}
 \title{Scales for the *fill aesthetics}
+\value{
+returns a ggroto object to be added to a ggplot
+}
 \description{
 These are the various scales that can be applied to the xsidebar or ysidebar
 fill aesthetics, such as xfill and yfill. They have the same usage as

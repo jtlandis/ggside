@@ -15,6 +15,9 @@ is.ggside_options(x)
 \arguments{
 \item{x}{Object to test}
 }
+\value{
+A logical value
+}
 \description{
 Check ggside objects
 }

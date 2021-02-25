@@ -6,6 +6,9 @@
 \usage{
 waiver()
 }
+\value{
+simple 'waiver' class as a placeholder
+}
 \description{
 A waiver is a "flag" object, similar to \code{NULL}, that indicates the
 calling function should just use the default value.  It is used in certain

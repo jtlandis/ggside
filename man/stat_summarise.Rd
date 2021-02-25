@@ -81,6 +81,9 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
 }
+\value{
+A Layer object to be added to a ggplot
+}
 \description{
 Applies a function to a specified grouping variable
 }

@@ -3,6 +3,9 @@
 \name{xside}
 \alias{xside}
 \title{The xside geometries}
+\value{
+geom_xside* return a XLayer object to be added to a ggplot
+}
 \description{
 \code{xside} refers to the api of ggside. Any \code{geom_} with
 \code{xside} will plot its respective geometry along the x-axis

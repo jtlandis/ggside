@@ -3,6 +3,9 @@
 \name{yside}
 \alias{yside}
 \title{The yside geometries}
+\value{
+geom_yside* return a YLayer object to be added to a ggplot
+}
 \description{
 \code{yside} refers to the api of ggside. Any \code{geom_} with
 \code{yside} will plot its respective geometry along the y-axis per

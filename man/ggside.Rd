@@ -24,6 +24,9 @@ a single panel. Set "x" to collapse all x side panels, set "y" to
 collapse all y side panels, set "all" to collapse both x and y
 side panels.}
 }
+\value{
+a object of class 'ggside_options' or to be added to a ggpot
+}
 \description{
 Set characteristics of side panels
 }
