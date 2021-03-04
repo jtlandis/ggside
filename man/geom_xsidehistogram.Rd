@@ -114,3 +114,13 @@ data relative to main panels.
 \code{geom_*sidehistogram} uses the same aesthetics as \code{\link[=geom_*sidebar]{geom_*sidebar()}}
 }
 
+\examples{
+
+p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
+geom_point()
+
+#sidehistogram
+p +
+geom_xsidehistogram(aes(y = after_stat(count)), binwidth = 0.1) +
+geom_ysidehistogram(aes(x = after_stat(count)), binwidth = 0.1)
+}

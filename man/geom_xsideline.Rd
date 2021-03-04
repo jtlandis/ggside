@@ -128,3 +128,9 @@ XLayer or YLayer object to be added to a ggplot object
 The \link{xside} and \link{yside} of \link[ggplot2]{geom_line}.
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_path}
 }
+\examples{
+#sideline
+ggplot(economics, aes(date, pop)) +
+  geom_xsideline(aes(y = unemploy)) +
+  geom_col()
+}

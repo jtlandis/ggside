@@ -104,6 +104,34 @@ XLayer or YLayer object to be added to a ggplot object
 \description{
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_violin}
 }
+\examples{
+df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
+df$Combo_Index <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
+
+p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
+geom_tile(aes(fill = Combo_Index))
+
+#sideviolins
+#Note - Mixing discrete and continuous axis scales
+#using xsideviolins when the y aesthetic was previously
+#mapped with a continuous varialbe will prevent
+#any labels from being plotted. This is a feature that
+#will hopefully be added to ggside in the future.
+
+p1 + geom_xsideviolin(aes(y = Combo_Index)) +
+   geom_ysideviolin(aes(x = Combo_Index))
+
+#sideviolins with swapped orientation
+#Note - Discrete before Continuous
+#If you are to mix Discrete and Continuous variables on
+#one axis, ggplot2 prefers the discrete variable to be mapped
+#BEFORE the continuous.
+ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+    geom_xsideviolin(aes(y = Species), orientation = "y") +
+    geom_ysideviolin(aes(x = Species), orientation = "x") +
+    geom_point()
+
+}
 \seealso{
 \link{geom_*sideboxplot}
 }

@@ -84,3 +84,12 @@ thus the only difference is where the data is plotted. The \code{xside} variant 
 plot data along the x-axis, while the \code{yside} variant will plot data along the
 y-axis.
 }
+\examples{
+ggplot(diamonds, aes(depth, table, alpha = .2)) +
+  geom_point() +
+  geom_ysidepoint(aes(x = price)) +
+  geom_xsidepoint(aes(y = price)) +
+  theme(
+        ggside.panel.scale = .3
+    )
+}

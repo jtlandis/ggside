@@ -9,7 +9,7 @@
 geom_xsidefreqpoly(
   mapping = NULL,
   data = NULL,
-  stat = "xsidebin",
+  stat = "bin",
   position = "identity",
   ...,
   na.rm = FALSE,
@@ -20,7 +20,7 @@ geom_xsidefreqpoly(
 geom_ysidefreqpoly(
   mapping = NULL,
   data = NULL,
-  stat = "ysidebin",
+  stat = "bin",
   position = "identity",
   ...,
   na.rm = FALSE,
@@ -80,4 +80,10 @@ XLayer or YLayer object to be added to a ggplot object
 \description{
 The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_freqpoly} is
 \link{geom_xsidefreqpoly} and \link{geom_ysidefreqpoly}.
+}
+\examples{
+ ggplot(diamonds, aes(price, carat, colour = cut)) +
+   geom_point() +
+   geom_xsidefreqpoly(aes(y=after_stat(count)),binwidth = 500) +
+   geom_ysidefreqpoly(aes(x=after_stat(count)),binwidth = .2)
 }
