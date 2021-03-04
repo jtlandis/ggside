@@ -13,6 +13,15 @@
 #'
 #' @aliases geom_*sidehistogram
 #' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#'
+#' p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
+#' geom_point()
+#'
+#' #sidehistogram
+#' p +
+#' geom_xsidehistogram(aes(y = after_stat(count)), binwidth = 0.1) +
+#' geom_ysidehistogram(aes(x = after_stat(count)), binwidth = 0.1)
 #' @export
 geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 stat = "bin", position = "stack",
