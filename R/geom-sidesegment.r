@@ -5,6 +5,37 @@
 #'
 #' @aliases geom_*sidesegment
 #' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#' library(dplyr)
+#' library(tidyr)
+#' library(ggdendro)
+#' #dendrogram with geom_*sidesegment
+#' df0 <- mutate(diamonds,
+#' colclar = interaction(color, clarity,
+#'                       sep = "_", drop = T))
+#' df1 <- df0 %>%
+#'   group_by(color, clarity, colclar, cut) %>%
+#'   summarise(m_price = mean(price))
+#' df <- df1 %>%
+#'   pivot_wider(id_cols = colclar,
+#'               names_from = cut,
+#'               values_from = m_price,
+#'               values_fill = 0L)
+#'
+#' mat <- as.matrix(df[,2:6])
+#' rownames(mat) <- df[["colclar"]]
+#' dst <- dist(mat)
+#' hc_x <- hclust(dst)
+#' lvls <- rownames(mat)[hc_x$order]
+#' df1[["colclar"]] <- factor(df1[["colclar"]], levels = lvls)
+#' dendrox <- dendro_data(hc_x)
+#'
+#' p <- ggplot(df1, aes(x = colclar, cut)) +
+#'   geom_tile(aes(fill = m_price)) +
+#'   viridis::scale_fill_viridis(option = "magma") +
+#'   theme(axis.text.x = element_text(angle = 90, vjust = .5))
+#' p +
+#'   geom_xsidesegment(data = dendrox$segments,aes(x = x, y = y, xend = xend, yend = yend))
 #' @export
 geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",

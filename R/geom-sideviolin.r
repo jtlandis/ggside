@@ -16,9 +16,8 @@
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
 #' @examples
-#'
 #' df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
-#' df[['Combo_Index']] <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
+#' df$Combo_Index <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
 #'
 #' p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
 #' geom_tile(aes(fill = Combo_Index))
@@ -39,11 +38,10 @@
 #' #one axis, ggplot2 prefers the discrete variable to be mapped
 #' #BEFORE the continuous.
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
-#'     geom_xsideviolin(aes(y = Species), orientation = "y) +
+#'     geom_xsideviolin(aes(y = Species), orientation = "y") +
 #'     geom_ysideviolin(aes(x = Species), orientation = "x") +
 #'     geom_point()
 #'
-#' p2 + geom_xsideviolin(aes(y = Species))
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsideviolin <- function(mapping = NULL, data = NULL,

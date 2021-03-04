@@ -43,6 +43,11 @@
 #' geom_xsidebar(aes(y = after_stat(count))) +
 #' geom_ysidebar(aes(x = after_stat(count)))
 #'
+#' #sidecol
+#' p +
+#'   geom_xsidecol() +
+#'   geom_ysidecol()
+#'
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,
                           stat = "count", position = "stack",

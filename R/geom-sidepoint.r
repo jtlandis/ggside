@@ -12,6 +12,14 @@
 #'
 #' @aliases geom_*sidepoint
 #' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#' ggplot(diamonds, aes(depth, table, alpha = .2)) +
+#'   geom_point() +
+#'   geom_ysidepoint(aes(x = price)) +
+#'   geom_xsidepoint(aes(y = price)) +
+#'   theme(
+#'         ggside.panel.scale = .3
+#'     )
 #' @export
 geom_xsidepoint <- function(mapping = NULL, data = NULL,
                             stat = "identity", position = "identity",

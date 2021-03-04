@@ -11,6 +11,14 @@
 #'   `geom_density()` and `stat_density()`.
 #' @aliases geom_*sidedensity
 #' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#'
+#' ggplot(mpg, aes(displ, hwy, colour = class)) +
+#'  geom_point(size = 2) +
+#'  geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
+#'  geom_ysidedensity(aes(x = after_stat(scaled))) +
+#'  theme(axis.text.x = element_text(angle = 90, vjust = .5))
+#'
 #' @export
 geom_xsidedensity <- function(mapping = NULL, data = NULL,
          stat = "density", position = "identity",
@@ -112,7 +120,7 @@ GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
                                                                        flipped_aes = flipped_aes, outline.type = outline.type)
                                      },
                                      draw_key = function(data, params, size) {
-                                       #browser()
+                                       browser()
                                        data <- use_yside_aes(data)
                                        ggplot2::GeomDensity$draw_key(data, params, size)
                                      })

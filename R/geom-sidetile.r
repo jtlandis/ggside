@@ -4,6 +4,28 @@
 #' @inheritParams ggplot2::geom_tile
 #' @aliases geom_*sidetile
 #' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#' library(dplyr)
+#' library(tidyr)
+#' df <- mutate(diamonds,
+#'              colclar = interaction(color, clarity, sep = "_", drop = T)) %>%
+#'       group_by(color, clarity, colclar, cut) %>%
+#'       summarise(m_price = mean(price))
+#'
+#' xside_data <- df %>%
+#'   ungroup() %>%
+#'   select(colclar, clarity, color) %>%
+#'   mutate_all(~factor(as.character(.x), levels = levels(.x))) %>%
+#'   pivot_longer(cols = c(clarity, color)) %>% distinct()
+#'
+#'
+#' p <- ggplot(df1, aes(x = colclar, cut)) +
+#'   geom_tile(aes(fill = m_price)) +
+#'   viridis::scale_fill_viridis(option = "magma") +
+#'   theme(axis.text.x = element_blank())
+#'
+#' p + geom_xsidetile(aes(y = name, xfill = value)) +
+#'    guides(xfill = guide_legend(nrow = 8))
 #' @export
 geom_xsidetile <- function(mapping = NULL, data = NULL,
                           stat = "identity", position = "identity",
