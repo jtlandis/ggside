@@ -1,6 +1,7 @@
 
-
+#' @title Adding ggside layers to ggplot
 #' @export
+#' @seealso \link[ggplot]{ggplot_add}
 #' @return A modified ggplot object
 ggplot_add.ggside_layer <- function(object, plot, object_name){
   plot <- NextMethod("ggplot_add")
