@@ -15,6 +15,35 @@
 #'   `geom_violin()` and `stat_ydensity()`.
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
+#' @examples
+#'
+#' df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
+#' df[['Combo_Index']] <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
+#'
+#' p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
+#' geom_tile(aes(fill = Combo_Index))
+#'
+#' #sideviolins
+#' #Note - Mixing discrete and continuous axis scales
+#' #using xsideviolins when the y aesthetic was previously
+#' #mapped with a continuous varialbe will prevent
+#' #any labels from being plotted. This is a feature that
+#' #will hopefully be added to ggside in the future.
+#'
+#' p1 + geom_xsideviolin(aes(y = Combo_Index)) +
+#'    geom_ysideviolin(aes(x = Combo_Index))
+#'
+#' #sideviolins with swapped orientation
+#' #Note - Discrete before Continuous
+#' #If you are to mix Discrete and Continuous variables on
+#' #one axis, ggplot2 prefers the discrete variable to be mapped
+#' #BEFORE the continuous.
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+#'     geom_xsideviolin(aes(y = Species), orientation = "y) +
+#'     geom_ysideviolin(aes(x = Species), orientation = "x") +
+#'     geom_point()
+#'
+#' p2 + geom_xsideviolin(aes(y = Species))
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
 geom_xsideviolin <- function(mapping = NULL, data = NULL,
@@ -27,7 +56,7 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               orientation = NA,
                               show.legend = NA,
                               inherit.aes = TRUE) {
-  layer(
+  l <- layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -45,6 +74,7 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
     ),
     layer_class = XLayer
   )
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
@@ -55,7 +85,7 @@ GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
                                     ggplot2::GeomViolin,
                                     default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
                                                       fill = "white", xfill = NA, size = 0.5,
-                                                      alhpa = NA, linetype = "solid"),
+                                                      alpha = NA, linetype = "solid"),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)
                                       ggplot2::GeomViolin$setup_data(data, params)
@@ -82,7 +112,7 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
                              orientation = "y",
                              show.legend = NA,
                              inherit.aes = TRUE) {
-  layer(
+  l <- layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -100,6 +130,7 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
     ),
     layer_class = YLayer
   )
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
@@ -110,7 +141,7 @@ GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
                                     ggplot2::GeomViolin,
                                     default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,
                                                       fill = "white", yfill = NA, size = 0.5,
-                                                      alhpa = NA, linetype = "solid"),
+                                                      alpha = NA, linetype = "solid"),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)
                                       ggplot2::GeomViolin$setup_data(data, params)
