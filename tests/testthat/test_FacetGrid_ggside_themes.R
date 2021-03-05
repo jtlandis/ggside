@@ -1,3 +1,5 @@
+library(vdiffr)
+
 context("testing FacetGrid and ggside themes")
 
 df <- data.frame(x = 1:10, y = 21:30,

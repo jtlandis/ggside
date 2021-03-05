@@ -88,7 +88,7 @@ The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_tile}
 library(dplyr)
 library(tidyr)
 df <- mutate(diamonds,
-             colclar = interaction(color, clarity, sep = "_", drop = T)) \%>\%
+             colclar = interaction(color, clarity, sep = "_", drop = TRUE)) \%>\%
       group_by(color, clarity, colclar, cut) \%>\%
       summarise(m_price = mean(price))
 
@@ -99,11 +99,11 @@ xside_data <- df \%>\%
   pivot_longer(cols = c(clarity, color)) \%>\% distinct()
 
 
-p <- ggplot(df1, aes(x = colclar, cut)) +
+p <- ggplot(df, aes(x = colclar, cut)) +
   geom_tile(aes(fill = m_price)) +
   viridis::scale_fill_viridis(option = "magma") +
   theme(axis.text.x = element_blank())
 
-p + geom_xsidetile(aes(y = name, xfill = value)) +
+p + geom_xsidetile(data = xside_data, aes(y = name, xfill = value)) +
    guides(xfill = guide_legend(nrow = 8))
 }

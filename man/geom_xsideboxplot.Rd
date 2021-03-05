@@ -230,9 +230,14 @@ p1 + geom_xsideboxplot(aes(y = Combo_Index)) +
 #BEFORE the continuous.
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
     geom_xsideboxplot(aes(y = Species), orientation = "y") +
-    geom_ysideboxplot(aes(x = Species), orientation = "x") +
     geom_point()
 
+#Alternatively, you can recast discrete as a factor and then
+#a numeric
+ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
+  geom_point() +
+  geom_xsideboxplot(aes(y = as.numeric(Species)), orientation = "y") +
+  geom_ysideboxplot(aes(x = as.numeric(Species)), orientation = "x")
 
 }
 \seealso{

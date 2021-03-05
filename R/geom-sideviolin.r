@@ -39,8 +39,15 @@
 #' #BEFORE the continuous.
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
 #'     geom_xsideviolin(aes(y = Species), orientation = "y") +
-#'     geom_ysideviolin(aes(x = Species), orientation = "x") +
 #'     geom_point()
+#'
+#' #Alternatively, you can recast the value as a factor and then
+#' # a numeric
+#'
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
+#'     geom_point() +
+#'     geom_xsideviolin(aes(y = as.numeric(Species)), orientation = "y") +
+#'     geom_ysideviolin(aes(x = as.numeric(Species)), orientation = "x")
 #'
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export

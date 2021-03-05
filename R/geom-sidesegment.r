@@ -12,7 +12,7 @@
 #' #dendrogram with geom_*sidesegment
 #' df0 <- mutate(diamonds,
 #' colclar = interaction(color, clarity,
-#'                       sep = "_", drop = T))
+#'                       sep = "_", drop = TRUE))
 #' df1 <- df0 %>%
 #'   group_by(color, clarity, colclar, cut) %>%
 #'   summarise(m_price = mean(price))

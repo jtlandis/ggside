@@ -120,7 +120,6 @@ GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
                                                                        flipped_aes = flipped_aes, outline.type = outline.type)
                                      },
                                      draw_key = function(data, params, size) {
-                                       browser()
                                        data <- use_yside_aes(data)
                                        ggplot2::GeomDensity$draw_key(data, params, size)
                                      })

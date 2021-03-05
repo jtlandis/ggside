@@ -1,3 +1,4 @@
+library(vdiffr)
 
 context("testing FacetWrap and ggside themes")
 
