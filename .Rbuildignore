@@ -3,6 +3,8 @@
 #^doc$
 ^Meta$
 ggside.Rmd
+cran-comments.md
+NEWS.md
 README.Rmd
 ^LICENSE\.md$
 R/test2.R
