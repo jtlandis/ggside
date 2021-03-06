@@ -121,9 +121,9 @@ The following `geom_*side*` geometries have been updated such that the default e
 
 * `geom_*sidedensity`
 * `geom_*sidebar`
-* `geom_*sidefreqpoly`
+* `geom_*sidefreqpoly` 
 * `geom_*sidehistogram`
 
-This can only be applied to geometries that have the following characteristics, they have a `stat` other than `"identity"`, and have some sense of direction dictated by the `orientation` parameter. `geom_*sideboxplot` and `geom_*sideviolin` are *not* included in this update because the `orientation` largly depends the aesthetic mapping of the layer, and these two geometries could go either way depending on position scales of `x` and `y`.
+This can only be applied to geometries that have a `stat` other than `"identity"` with a `default_aes`. If the geometries have an `orientation` parameter, this can control which aesthetic is inherited. `geom_*sideboxplot` and `geom_*sideviolin` are *not* included in this update because the `orientation` largly depends the aesthetic mapping of the layer, and these two geometries could go either way depending on position scales of `x` and `y`.
 
 All other `geom_*side*` geometries will need their mappings to be explicitly assigned or they will try to inherit from the global mapping (so long as `inherit.aes = TRUE`).
