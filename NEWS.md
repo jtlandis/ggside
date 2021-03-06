@@ -1,5 +1,5 @@
 
-# ggside 0.1.0
+# ggside 0.0.2.9001
 
 * Various `geom_*side*` have better default calling behavior. See `vignettes("ggside_aes_mapping")` for more details.
 
