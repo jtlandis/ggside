@@ -25,7 +25,6 @@ Imports: grid,
     gtable,
     rlang,
     scales,
-    utils,
     glue,
     stats
 Suggests:
