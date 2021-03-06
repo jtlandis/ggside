@@ -20,8 +20,11 @@
 #'
 #' #sidehistogram
 #' p +
-#' geom_xsidehistogram(aes(y = after_stat(count)), binwidth = 0.1) +
-#' geom_ysidehistogram(aes(x = after_stat(count)), binwidth = 0.1)
+#' geom_xsidehistogram(binwidth = 0.1) +
+#' geom_ysidehistogram(binwidth = 0.1)
+#' p +
+#' geom_xsidehistogram(aes(y = after_stat(density)), binwidth = 0.1) +
+#' geom_ysidehistogram(aes(x = after_stat(density)), binwidth = 0.1)
 #' @export
 geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 stat = "bin", position = "stack",
@@ -32,7 +35,7 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 orientation = "x",
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
-
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,
@@ -66,7 +69,7 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
                                 orientation = "y",
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
-
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,

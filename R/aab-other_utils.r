@@ -354,3 +354,19 @@ simplify <- function (x)
     list(x)
   }
 }
+
+
+default_stat_aes <- function(mapping, stat, orientation = "x"){
+  if(is.null(mapping)){
+    mapping <- aes()
+  }
+  stat <- check_subclass(stat, "Stat", env = parent.frame())
+  computed_var <- setdiff(c("x","y"), orientation)
+  #if value assigned to computed_var isn't defined by user,
+  #grab the default used by stat$default_aes if named aes exists.
+  defaults <- stat$default_aes
+  if(!computed_var%in%names(mapping)&&computed_var%in%names(defaults)) {
+    mapping[[computed_var]] <- stat$default_aes[[computed_var]]
+  }
+  return(mapping)
+}

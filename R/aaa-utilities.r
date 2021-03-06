@@ -355,3 +355,24 @@ split_with_index <- function(x, f, n = max(f)) {
   attributes(f) <- list(levels = as.character(seq_len(n)), class = "factor")
   unname(split(x, f))
 }
+
+check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env = parent.frame())
+{
+  if (inherits(x, subclass)) {
+    x
+  }
+  else if (is.character(x) && length(x) == 1) {
+    name <- paste0(subclass, camelize(x, first = TRUE))
+    obj <- find_global(name, env = env)
+    if (is.null(obj) || !inherits(obj, subclass)) {
+      abort(glue("Can't find `{argname}` called '{x}'"))
+    }
+    else {
+      obj
+    }
+  }
+  else {
+    abort(glue("`{argname}` must be either a string or a {subclass} object, not {obj_desc(x)}"))
+  }
+}
+
