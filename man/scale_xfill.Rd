@@ -12,7 +12,7 @@
 \alias{scale_yfill_gradientn}
 \title{Scales for the *fill aesthetics}
 \value{
-returns a ggroto object to be added to a ggplot
+returns a ggproto object to be added to a ggplot
 }
 \description{
 These are the various scales that can be applied to the xsidebar or ysidebar

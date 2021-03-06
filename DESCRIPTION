@@ -12,7 +12,7 @@ Description: The grammar of graphics as shown in 'ggplot2' has provided
   an expressive API for users to build plots. 'ggside' extends 'ggplot2' 
   by allowing users to add graphical information about one of the main panel's
   axis using a familiar 'ggplot2' style API with tidy data. This package is
-  particularly useful for visualising metadata on a discrete axis, or summary
+  particularly useful for visualizing metadata on a discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
 License: MIT + file LICENSE
 Encoding: UTF-8
@@ -25,7 +25,6 @@ Imports: grid,
     gtable,
     rlang,
     scales,
-    utils,
     glue,
     stats
 Suggests:

@@ -23,7 +23,7 @@
 #' \item scale_xfill_gradientn
 #' \item scale_yfill_gradientn
 #' }
-#' @return returns a ggroto object to be added to a ggplot
+#' @return returns a ggproto object to be added to a ggplot
 NULL
 
 #' scale_xfill_hue

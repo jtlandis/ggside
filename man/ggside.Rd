@@ -19,13 +19,13 @@ acceptable inputs. For example, xside panels are aligned to
 the x axis of the main panel. Setting "free" or "free_y" will
 cause all y scales of the x side Panels to be independent.}
 
-\item{collapse}{Determins if side panels should be collapsed into
+\item{collapse}{Determines if side panels should be collapsed into
 a single panel. Set "x" to collapse all x side panels, set "y" to
 collapse all y side panels, set "all" to collapse both x and y
 side panels.}
 }
 \value{
-a object of class 'ggside_options' or to be added to a ggpot
+a object of class 'ggside_options' or to be added to a ggplot
 }
 \description{
 Set characteristics of side panels
