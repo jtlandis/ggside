@@ -21,8 +21,8 @@ aesthetic mappings. These mappings behave exactly like the default
 counterparts except that they are considered separate scales. All
 \code{xside} geometries will use \code{xfill} over \code{fill}, but will default
 to \code{fill} if \code{xfill} is not provided. The same goes for \code{xcolour} in
-respects to \code{colour}. Thiscomes in handy if you wish to map both \code{fill}
-to one geometery as continuous, you can still map \code{xfill} for a separate
+respects to \code{colour}. This comes in handy if you wish to map both \code{fill}
+to one geometry as continuous, you can still map \code{xfill} for a separate
 \code{xside} geometry without conflicts. See more information in
 \code{vignette("ggside")}.
 }

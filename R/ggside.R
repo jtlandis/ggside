@@ -10,14 +10,14 @@
 #' acceptable inputs. For example, xside panels are aligned to
 #' the x axis of the main panel. Setting "free" or "free_y" will
 #' cause all y scales of the x side Panels to be independent.
-#' @param collapse Determins if side panels should be collapsed into
+#' @param collapse Determines if side panels should be collapsed into
 #' a single panel. Set "x" to collapse all x side panels, set "y" to
 #' collapse all y side panels, set "all" to collapse both x and y
 #' side panels.
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
-#' @return a object of class 'ggside_options' or to be added to a ggpot
+#' @return a object of class 'ggside_options' or to be added to a ggplot
 #' @export
 ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL){
   structure(list(x.pos = x.pos,
@@ -56,8 +56,8 @@ is.ggside_options <- function(x) inherits(x, "ggside_options")
 #' counterparts except that they are considered separate scales. All
 #' `xside` geometries will use `xfill` over `fill`, but will default
 #' to `fill` if `xfill` is not provided. The same goes for `xcolour` in
-#' respects to `colour`. Thiscomes in handy if you wish to map both `fill`
-#' to one geometery as continuous, you can still map `xfill` for a separate
+#' respects to `colour`. This comes in handy if you wish to map both `fill`
+#' to one geometry as continuous, you can still map `xfill` for a separate
 #' `xside` geometry without conflicts. See more information in
 #' `vignette("ggside")`.
 #'
@@ -99,8 +99,8 @@ NULL
 #' counterparts except that they are considered separate scales. All
 #' `yside` geometries will use `yfill` over `fill`, but will default
 #' to `fill` if `yfill` is not provided. The same goes for `ycolour` in
-#' respects to `colour`. Thiscomes in handy if you wish to map both `fill`
-#' to one geometery as continuous, you can still map `yfill` for a separate
+#' respects to `colour`. This comes in handy if you wish to map both `fill`
+#' to one geometry as continuous, you can still map `yfill` for a separate
 #' `yside` geometry without conflicts. See more information in
 #' `vignette("ggside")`.
 #'

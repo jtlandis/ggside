@@ -254,7 +254,7 @@ sidePanelLayout <- function(layout,
 #' `map_data_ggside` is the mapping function
 #' used to replace all map_data method on [FacetSideNull],
 #' [FacetSideGrid], and [FacetSideWrap]. It is exported
-#' for conviences of extensibility.
+#' for conveniences of extensibility.
 #'@export
 map_data_ggside <- function(data, layout, params){
   if (is.waive(data))

@@ -104,7 +104,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   scale_yfill_gradient(low ="#FFFFFF", high = "#0000FF") 
 ```
 
-Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respecitively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggside** can give some ease to plotting information to the sides of the main figure.
+Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respectively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggside** can give some ease to plotting information to the sides of the main figure.
 
 ```{r, error=T}
 p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
@@ -124,7 +124,7 @@ error = function(err){
 # How to Use
 ## Geom
 
-`geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precidence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
+`geom_xside*` and `geom_yside*` both extend the `ggplot2::Geom*` environments. As you may expect, `geom_xside*` allows you to place geometries along the x-axis and `geom_yside*` allows placement along the y-axis. All of the `geom_*side*` functions provide a variation on the color aesthetics `colour`/`fill`. The variants are named `xcolour` and `xfill` or `ycolour` and `yfill` for their respective `xside` or `yside` geoms. These aesthetics will take precedence over their more general counterpart if assigned. This allows for certain geoms to be plotted on different color scales - particularly useful when one requires a discrete scale and another requires a discrete scale.
 
 ### Available Geoms
 
@@ -144,7 +144,7 @@ The following geoms are currently available to use right away from the `ggside` 
 
 ## Facets
 
-Techniquely speaking `ggside`'s main workhorse is *hacking* `Facet` framework. Whenever a standard `ggplot` object is converted to a `ggside` object, the current `Facet ggproto` class is replaced to one that is compatible with `ggside`. All `geom*side` variants are plotted in a panel adjacent to the axis their name implies. All vinila `ggplot2` geometries are plotted in the main panel.
+Technically speaking `ggside`'s main workhorse is *hacking* `Facet` framework. Whenever a standard `ggplot` object is converted to a `ggside` object, the current `Facet ggproto` class is replaced to one that is compatible with `ggside`. All `geom*side` variants are plotted in a panel adjacent to the axis their name implies. All vanilla `ggplot2` geometries are plotted in the main panel.
 
 ### How its done
 
@@ -229,9 +229,9 @@ p + geom_xsidedensity(aes(y=stat(density), xfill = Species), position = "stack")
 ```
 
 
-Note that when collapsing panels on `FacetGrid`, the panels apear under the strips whereas on `FacetWrap` they appear above the strips. This is because `FacetWrap`, collapsing panels in the same column or row may not share the same facet variable, which would be confusing since the strip would not represent the data entirely. This is not the case with `FacetGrid` since each row or column is dictated by the facet variable.
+Note that when collapsing panels on `FacetGrid`, the panels appear under the strips whereas on `FacetWrap` they appear above the strips. This is because `FacetWrap`, collapsing panels in the same column or row may not share the same facet variable, which would be confusing since the strip would not represent the data entirely. This is not the case with `FacetGrid` since each row or column is dictated by the facet variable.
 
-Collaping on an x or y coerces all panels in that column or row to the same scale, thus `scales = "free_x"` is uncompatible with `collapse = "x"`.
+Collapsing on an x or y coerces all panels in that column or row to the same scale, thus `scales = "free_x"` is incompatible with `collapse = "x"`.
 
 ```{r}
 p2 + facet_wrap(Species~Species2, scales = "free") +

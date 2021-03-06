@@ -52,7 +52,7 @@ compute_layout method and after \code{check_scales_collapse}
 \code{map_data_ggside} is the mapping function
 used to replace all map_data method on \link{FacetSideNull},
 \link{FacetSideGrid}, and \link{FacetSideWrap}. It is exported
-for conviences of extensibility.
+for conveniences of extensibility.
 }
 \section{Extended Facets}{
 

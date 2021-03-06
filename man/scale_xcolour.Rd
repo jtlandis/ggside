@@ -17,7 +17,7 @@
 \alias{scale_xcolor_continuous}
 \title{Scales for the *colour aesthetics}
 \value{
-returns a ggroto object to be added to a ggplot
+returns a ggproto object to be added to a ggplot
 }
 \description{
 These are the various scales that can be applied to the xsidebar or ysidebar
