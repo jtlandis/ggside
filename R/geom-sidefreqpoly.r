@@ -19,7 +19,7 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
                                na.rm = FALSE,
                                show.legend = NA,
                                inherit.aes = TRUE) {
-
+  mapping <- default_stat_aes(mapping, stat, orientation)
   params <- list(na.rm = na.rm, ...)
   if (identical(stat, "bin")) {
     params$pad <- TRUE
@@ -48,7 +48,7 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
                                na.rm = FALSE,
                                show.legend = NA,
                                inherit.aes = TRUE) {
-
+  mapping <- default_stat_aes(mapping, stat, orientation)
   params <- list(na.rm = na.rm, ...)
   if (identical(stat, "bin")) {
     params$pad <- TRUE

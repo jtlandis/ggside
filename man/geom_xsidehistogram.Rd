@@ -121,6 +121,9 @@ geom_point()
 
 #sidehistogram
 p +
-geom_xsidehistogram(aes(y = after_stat(count)), binwidth = 0.1) +
-geom_ysidehistogram(aes(x = after_stat(count)), binwidth = 0.1)
+geom_xsidehistogram(binwidth = 0.1) +
+geom_ysidehistogram(binwidth = 0.1)
+p +
+geom_xsidehistogram(aes(y = after_stat(density)), binwidth = 0.1) +
+geom_ysidehistogram(aes(x = after_stat(density)), binwidth = 0.1)
 }

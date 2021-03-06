@@ -38,12 +38,12 @@
 #' p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
 #' geom_point()
 #'
-#' #sidebar
+#' #sidebar - uses StatCount
 #' p +
-#' geom_xsidebar(aes(y = after_stat(count))) +
-#' geom_ysidebar(aes(x = after_stat(count)))
+#' geom_xsidebar() +
+#' geom_ysidebar()
 #'
-#' #sidecol
+#' #sidecol - uses Global mapping
 #' p +
 #'   geom_xsidecol() +
 #'   geom_ysidecol()
@@ -57,6 +57,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
                           orientation = "x",
                           show.legend = NA,
                           inherit.aes = TRUE) {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,
@@ -110,6 +111,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
                           orientation = "y",
                           show.legend = NA,
                           inherit.aes = TRUE) {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,
