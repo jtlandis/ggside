@@ -1,9 +1,9 @@
 README
 ================
 Justin Landis
-7/21/2020
+2/22/2021
 
-# ggside
+# ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
 <!-- badges: start -->
 

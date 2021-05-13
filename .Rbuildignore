@@ -6,8 +6,7 @@ ggside.Rmd
 cran-comments.md
 README.Rmd
 ^LICENSE\.md$
-R/test2.R
-R/test\ files.R
+generate_ggside_hexsticker.R
 examples/*
 ^doc$
 examples.r
