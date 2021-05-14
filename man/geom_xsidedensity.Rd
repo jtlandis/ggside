@@ -104,7 +104,7 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 
 ggplot(mpg, aes(displ, hwy, colour = class)) +
  geom_point(size = 2) +
- geom_xsidedensity(aes(x = after_stat(count)),position = "stack") +
+ geom_xsidedensity(aes(y = after_stat(count)),position = "stack") +
  geom_ysidedensity(aes(x = after_stat(scaled))) +
  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 
