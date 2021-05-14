@@ -53,6 +53,20 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
   
 ```
 
+Mix discrete and continuous axis with `scale_xsidey_*`/`scale_ysidex_*`.
+
+```{r}
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point(size = 2) +
+  geom_xsideboxplot(aes(y =class), orientation = "y") +
+  scale_xsidey_discrete() + #In order to use xsideboxplot with a main panel that uses
+                            #continuous data, force y axis in xside panel to be discrete
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+  scale_ysidex_continuous(breaks = NULL, # dont print labels on yside panel - x axis
+                          labels = "")
+```
+
+
 For a more detailed guide please see `vignette('ggside_basic_usage')` for more information.
 
 ## Issues and Bug Reporting
