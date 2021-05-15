@@ -23,7 +23,6 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
   x.pos <- params$ggside$x.pos
   y.pos <- params$ggside$y.pos
-
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
   # If user hasn't set aspect ratio, and we have fixed scales, then

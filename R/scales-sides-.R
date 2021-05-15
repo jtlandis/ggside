@@ -40,7 +40,7 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
-                                    position = "left", sec.axis = waiver()){
+                                    position = "bottom", sec.axis = waiver()){
 
   sc <- continuous_scale(c("x", "xmin", "xmax", "xend", "xintercept",
                            "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
@@ -70,7 +70,8 @@ NULL
 #' @rdname ggside-scales-discrete
 #' @usage NULL
 #' @export
-scale_xsidey_discrete <- function(..., expand = waiver(), guide = waiver(), position = "left") {
+scale_xsidey_discrete <- function(..., expand = waiver(),
+                                  guide = waiver(), position = "left") {
 
   sc <- discrete_scale(c("y", "ymin", "ymax", "yend", "xsidey"), "position_d",
                        identity, ..., expand = expand, guide = guide, position = position,
@@ -84,7 +85,8 @@ scale_xsidey_discrete <- function(..., expand = waiver(), guide = waiver(), posi
 #' @rdname ggside-scales-discrete
 #' @usage NULL
 #' @export
-scale_ysidex_discrete <- function(..., expand = waiver(), guide = waiver(), position = "left") {
+scale_ysidex_discrete <- function(..., expand = waiver(),
+                                  guide = waiver(), position = "bottom") {
 
   sc <- discrete_scale(c("x", "xmin", "xmax", "xend", "ysidex"), "position_d",
                        identity, ..., expand = expand, guide = guide, position = position,
