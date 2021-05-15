@@ -42,6 +42,10 @@ is.ggside_layer <- function(x) inherits(x, "ggside_layer")
 #' @export
 is.ggside_options <- function(x) inherits(x, "ggside_options")
 
+#' @rdname is.ggside
+#' @export
+is.ggside_scale <- function(x) inherits(x, "ggside_scale")
+
 #' @name xside
 #' @title The xside geometries
 #' @rdname xside
