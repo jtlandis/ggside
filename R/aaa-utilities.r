@@ -407,6 +407,6 @@ RangeContinuous <- ggproto("RangeContinuous", Range,
 )
 
 continuous_range <- function(){
-  ggproto(NULL, ggplot2:::RangeContinuous)
+  ggproto(NULL, RangeContinuous)
 }
 
