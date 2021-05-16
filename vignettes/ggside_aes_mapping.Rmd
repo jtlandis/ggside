@@ -23,7 +23,7 @@ library(ggside)
 
 The purpose of this vignette is to document a _slight_ change in API expectation with certain `geom_*side*` when there are global aesthetic mappings for both `x` and `y`.
 
-In `ggside (<0.1.0)`, the user was expected to explicitly map all computed aesthetics, especially in the case when `x` and `y` are mapped globally for the main panel. The nature of `ggside` is generally to plot supplimental data, and the user will likely want to inherit the `x` global mapping if they use a `geom_xside*` geometry, but map something different to `y`.
+In `ggside (<0.1.0)`, the user was expected to explicitly map all computed aesthetics, especially in the case when `x` and `y` are mapped globally for the main panel. The nature of `ggside` is generally to plot supplemental data, and the user will likely want to inherit the `x` global mapping if they use a `geom_xside*` geometry, but map something different to `y`.
 
 For example take the following example `ggplot`
 
@@ -124,6 +124,6 @@ The following `geom_*side*` geometries have been updated such that the default e
 * `geom_*sidefreqpoly` 
 * `geom_*sidehistogram`
 
-This can only be applied to geometries that have a `stat` other than `"identity"` with a `default_aes`. If the geometries have an `orientation` parameter, this can control which aesthetic is inherited. `geom_*sideboxplot` and `geom_*sideviolin` are *not* included in this update because the `orientation` largly depends the aesthetic mapping of the layer, and these two geometries could go either way depending on position scales of `x` and `y`.
+This can only be applied to geometries that have a `stat` other than `"identity"` with a `default_aes`. If the geometries have an `orientation` parameter, this can control which aesthetic is inherited. `geom_*sideboxplot` and `geom_*sideviolin` are *not* included in this update because the `orientation` largely depends the aesthetic mapping of the layer, and these two geometries could go either way depending on position scales of `x` and `y`.
 
 All other `geom_*side*` geometries will need their mappings to be explicitly assigned or they will try to inherit from the global mapping (so long as `inherit.aes = TRUE`).
