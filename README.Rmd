@@ -62,7 +62,8 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
   scale_xsidey_discrete() + #In order to use xsideboxplot with a main panel that uses
   #continuous data, force y axis in xside panel to be discrete
   geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
-  scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL)
+  scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL) +
+  theme(ggside.panel.scale = .3)
 ```
 
 

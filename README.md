@@ -60,6 +60,21 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
 
 ![](man/figures/README-example-1.png)<!-- -->
 
+Mix discrete and continuous axis with `scale_xsidey_*`/`scale_ysidex_*`.
+
+``` r
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point(size = 2) +
+  geom_xsideboxplot(aes(y =class), orientation = "y") +
+  scale_xsidey_discrete() + #In order to use xsideboxplot with a main panel that uses
+  #continuous data, force y axis in xside panel to be discrete
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+  scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL) +
+  theme(ggside.panel.scale = .3)
+```
+
+![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
+
 For a more detailed guide please see `vignette('ggside_basic_usage')`
 for more information.
 
