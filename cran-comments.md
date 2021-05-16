@@ -1,4 +1,4 @@
-This is an update from improper semantic versioning of 0.0.1.3 to 0.0.2. With this new version a few more examples are included in the documentation. Furthermore a minor bug was fixed.
+This is an update from improper semantic versioning of 0.0.1.3 to 0.1.0. With this new version a few minor functions were added to provide control over how side axes are rendered. More examples are included in the documentation. Furthermore a minor bug was fixed.
 
 ## Test environments
 * local macOS Big Sur install, R 3.6.2
