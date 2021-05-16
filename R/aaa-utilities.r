@@ -376,6 +376,8 @@ check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env
   }
 }
 
+is.sec_axis <- function(x) inherits(x, "AxisSecondary")
+
 set_sec_axis <- function (sec.axis, scale) {
   if (!is.waive(sec.axis)) {
     if (is.formula(sec.axis))
@@ -387,6 +389,24 @@ set_sec_axis <- function (sec.axis, scale) {
   return(scale)
 }
 
+
+
+
+Range <- ggproto("Range", NULL,
+                 range = NULL,
+                 reset = function(self) {
+                   self$range <- NULL
+                 }
+)
+
+
+RangeContinuous <- ggproto("RangeContinuous", Range,
+                           train = function(self, x) {
+                             self$range <- scales::train_continuous(x, self$range)
+                           }
+)
+
 continuous_range <- function(){
   ggproto(NULL, ggplot2:::RangeContinuous)
 }
+
