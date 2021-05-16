@@ -355,3 +355,58 @@ split_with_index <- function(x, f, n = max(f)) {
   attributes(f) <- list(levels = as.character(seq_len(n)), class = "factor")
   unname(split(x, f))
 }
+
+check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env = parent.frame())
+{
+  if (inherits(x, subclass)) {
+    x
+  }
+  else if (is.character(x) && length(x) == 1) {
+    name <- paste0(subclass, camelize(x, first = TRUE))
+    obj <- find_global(name, env = env)
+    if (is.null(obj) || !inherits(obj, subclass)) {
+      abort(glue("Can't find `{argname}` called '{x}'"))
+    }
+    else {
+      obj
+    }
+  }
+  else {
+    abort(glue("`{argname}` must be either a string or a {subclass} object, not {obj_desc(x)}"))
+  }
+}
+
+is.sec_axis <- function(x) inherits(x, "AxisSecondary")
+
+set_sec_axis <- function (sec.axis, scale) {
+  if (!is.waive(sec.axis)) {
+    if (is.formula(sec.axis))
+      sec.axis <- sec_axis(sec.axis)
+    if (!is.sec_axis(sec.axis))
+      abort("Secondary axes must be specified using 'sec_axis()'")
+    scale$secondary.axis <- sec.axis
+  }
+  return(scale)
+}
+
+
+
+
+Range <- ggproto("Range", NULL,
+                 range = NULL,
+                 reset = function(self) {
+                   self$range <- NULL
+                 }
+)
+
+
+RangeContinuous <- ggproto("RangeContinuous", Range,
+                           train = function(self, x) {
+                             self$range <- scales::train_continuous(x, self$range)
+                           }
+)
+
+continuous_range <- function(){
+  ggproto(NULL, RangeContinuous)
+}
+

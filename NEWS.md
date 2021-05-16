@@ -1,7 +1,12 @@
 
+# ggside 0.1.0
 
-# ggside 0.0.2
-
+* Various `geom_*side*` have better default calling behavior. See `vignettes("ggside_aes_mapping")` for more details.
+* Added various functions to help customize side panels. `xsidey` will affect the y-axis of the xside panel, and `ysidex` will affect the x-axis of the yside panel.
+  * `scale_xsidey_continuous`
+  * `scale_xsidey_discrete`
+  * `scale_ysidex_continuous`
+  * `scale_ysidex_discrete`
 * Using proper semantic versioning
 * Added documentation examples for the following side geometries:
   * `geom_*sidebar`

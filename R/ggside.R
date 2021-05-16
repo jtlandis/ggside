@@ -23,7 +23,9 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
-                 collapse = collapse), class = c("ggside_options","gg"))
+                 collapse = collapse,
+                 xsidey = NULL,
+                 ysidex = NULL), class = c("ggside_options","gg"))
 }
 
 #' @title Check ggside objects
@@ -39,6 +41,10 @@ is.ggside_layer <- function(x) inherits(x, "ggside_layer")
 #' @rdname is.ggside
 #' @export
 is.ggside_options <- function(x) inherits(x, "ggside_options")
+
+#' @rdname is.ggside
+#' @export
+is.ggside_scale <- function(x) inherits(x, "ggside_scale")
 
 #' @name xside
 #' @title The xside geometries

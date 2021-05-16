@@ -15,7 +15,13 @@
 #'
 #' ggplot(mpg, aes(displ, hwy, colour = class)) +
 #'  geom_point(size = 2) +
-#'  geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
+#'  geom_xsidedensity() +
+#'  geom_ysidedensity() +
+#'  theme(axis.text.x = element_text(angle = 90, vjust = .5))
+#'
+#' ggplot(mpg, aes(displ, hwy, colour = class)) +
+#'  geom_point(size = 2) +
+#'  geom_xsidedensity(aes(y = after_stat(count)),position = "stack") +
 #'  geom_ysidedensity(aes(x = after_stat(scaled))) +
 #'  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 #'
@@ -28,6 +34,7 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
          show.legend = NA,
          inherit.aes = TRUE,
          outline.type = "upper") {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
   l <- layer(
     data = data,
@@ -81,6 +88,7 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               show.legend = NA,
                               inherit.aes = TRUE,
                               outline.type = "upper") {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
   l <- layer(
     data = data,

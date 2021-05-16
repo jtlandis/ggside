@@ -146,12 +146,12 @@ Required aesthetics are in bold.
 p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
 geom_point()
 
-#sidebar
+#sidebar - uses StatCount
 p +
-geom_xsidebar(aes(y = after_stat(count))) +
-geom_ysidebar(aes(x = after_stat(count)))
+geom_xsidebar() +
+geom_ysidebar()
 
-#sidecol
+#sidecol - uses Global mapping
 p +
   geom_xsidecol() +
   geom_ysidecol()
