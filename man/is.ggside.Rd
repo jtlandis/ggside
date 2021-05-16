@@ -4,6 +4,7 @@
 \alias{is.ggside}
 \alias{is.ggside_layer}
 \alias{is.ggside_options}
+\alias{is.ggside_scale}
 \title{Check ggside objects}
 \usage{
 is.ggside(x)
@@ -11,6 +12,8 @@ is.ggside(x)
 is.ggside_layer(x)
 
 is.ggside_options(x)
+
+is.ggside_scale(x)
 }
 \arguments{
 \item{x}{Object to test}
