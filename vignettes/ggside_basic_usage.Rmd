@@ -248,3 +248,34 @@ p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   theme(ggside.panel.scale.x = .4,
         ggside.panel.scale.y = .25)
 ```
+
+
+# Specifying ggside Axes
+
+As of `ggside (>= 0.1.0)` you can now have further control over how a side axis will render. For example, when making a `xside` geometry, the x-axis was shared with the main panel so you can specify how the x-axis is rendered via the `scale_x_*` functions. Prior to `ggside (>= 0.1.0)` you had no control over the y-axis of the xside panel. Now, you can use `scale_xsidey_(continuous|discrete)` functions to further specify this scale. Similarly, you can do this for the x-axis of a `yside` panel with `scale_ysidex_(continuous|discrete)` functions. For all intents and purposes, these are identical to the `scale_(x|y)_*` functions but they only affect their `xside` or `yside` panel's non-shared axis. 
+
+Additionally, this allows you to mix continuous and discrete scales on the same y or x axis. For example the main panel y axis may be continuous and the side panel y axis may be discrete. Take the following example that was not possible prior to this version:
+
+```{r error=TRUE}
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point(size = 2) +
+  geom_xsideboxplot(aes(y =class), orientation = "y") +
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+  theme(ggside.panel.scale = .3)
+```
+
+Now we can provide the plot with the proper scale the panel will expect. You can use the `guide` argument of these new scale functions to further customize how the text is rendered, the `breaks` argument to control the location or visibility of the tick marks.
+
+```{r}
+ggplot(mpg, aes(displ, hwy, colour = class)) + 
+  geom_point(size = 2) +
+  geom_xsideboxplot(aes(y =class), orientation = "y") +
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+  theme(ggside.panel.scale = .3) +
+  scale_xsidey_discrete() +
+  scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL) 
+```
+
+
+
+
