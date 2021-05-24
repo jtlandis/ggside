@@ -1,0 +1,36 @@
+
+context("add_gg Methods")
+
+test_that("Overwritten `+.gg` still adds layers as expected",{
+  p <- ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))
+  expect_equal(length(p$layers), 0L)
+  p1 <- p + geom_point()
+  expect_is(p1, "ggplot")
+  expect_is(p1, "gg")
+  expect_equal(length(p1$layers), 1L)
+  p2 <- p1 + geom_rug()
+  expect_equal(length(p2$layers), 2L)
+  expect_identical({p2+theme_bw()}$theme, theme_bw())
+  p3 <- p2+facet_wrap(~Species)
+  expect_is(p3$facet, "FacetWrap")
+  p4 <- p2+facet_wrap(~Species, scales = "free_y")
+  expect_is(p4$facet, "FacetWrap")
+  expect_false(identical(p3$facet, p4$facet))
+  expect_false(identical(p3$scales,p4$scales))
+})
+
+test_that("New ggside layers are added correctly",{
+  p <- ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+    geom_point()
+  expect_s3_class(p, "ggplot")
+  expect_s3_class(ggside(), "ggside_options")
+  p1 <- p + geom_xsidedensity(aes(y=after_stat(density)))
+  expect_s3_class(p1, "ggside")
+  expect_s3_class(p1, "ggplot")
+  expect_is(p1$layers[[2]], "ggside_layer")
+  expect_is(p1$layers[[2]]$geom, "GeomXsidedensity")
+  p2 <- p + facet_wrap(~Species, ncol = 1)
+  expect_s3_class(p1, "ggside")
+  expect_is(p2$facet, "FacetWrap")
+ # expect_warning({print(p2+ggside(collapse = "all"))}, "only x used")
+})

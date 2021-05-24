@@ -1,2 +1,15 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
+#^doc$
+^Meta$
+ggside.Rmd
+cran-comments.md
+README.Rmd
+^LICENSE\.md$
+generate_ggside_hexsticker.R
+examples/*
+^doc$
+examples.r
+Generate_Data.R
+^\.travis\.yml$
+^CRAN-RELEASE$

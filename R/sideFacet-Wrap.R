@@ -31,13 +31,11 @@ weave_tables_row <- function(table, table2, row_shift, row_height, name, z = 1, 
   table
 }
 
-
-
 sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
-  #browser()
+
   if (inherits(coord, "CoordFlip")) {
     if (params$free$x) {
       layout$SCALE_X <- seq_len(nrow(layout))
@@ -68,13 +66,13 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
-  layout <- layout %>% unnest(cols = names(params$facets))
+  layout <- unwrap(layout, by = c("ROW","COL"),cols = "FACET_VARS")
 
   if (length(params$facets) == 0) {
     # Add a dummy label
     labels_df <- new_data_frame(list("(all)" = "(all)"), n = 1)
   } else {
-    labels_df <- layout %>% filter(PANEL_TYPE%in%"main") %>% select(all_of(names(params$facets))) %>% distinct()
+    labels_df <- unique(layout[layout[["PANEL_TYPE"]]=="main",names(params$facets), drop = FALSE])
   }
   attr(labels_df, "facet") <- "wrap"
   strips <- render_strips(
@@ -197,45 +195,37 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   .ygroupby <- if(!params$free$y|collapse_y) "ROW" else c("ROW","PANEL_GROUP")
   .x <- if("PANEL_GROUP" %in% .ygroupby) "x" else NULL
 
-  bottom <- filter(layout, !PANEL_TYPE%in%.y) %>% group_by(.dots = .xgroupby) %>%
-    mutate(ROW2 = max(ROW))
-  top <- filter(layout, !PANEL_TYPE%in%.y) %>% group_by(.dots = .xgroupby) %>%
-    mutate(ROW2 = min(ROW))
-  right <- filter(layout, !PANEL_TYPE%in%.x) %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = max(COL))
-  left <- filter(layout, !PANEL_TYPE%in%.x) %>% group_by(.dots = .ygroupby) %>%
-    mutate(COL2 = min(COL))
+  bottom <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
+                  function(x){x[["ROW2"]] <- max(x[["ROW"]]);x})
+  top <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
+               function(x){x[["ROW2"]] <- min(x[["ROW"]]);x})
+  right <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
+                 function(x){x[["COL2"]] <- max(x[["COL"]]);x})
+  left <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
+                function(x){x[["COL2"]] <- min(x[["COL"]]);x})
 
   if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
-    right <- filter(right, COL==COL2|PANEL_TYPE%in%"x")
-    left <- filter(left, COL==COL2|PANEL_TYPE%in%"x")
+    right <- right[right[["COL"]]==right[["COL2"]]|right[["PANEL_TYPE"]]=="x",]
+    left <- left[left[["COL"]]==left[["COL2"]]|left[["PANEL_TYPE"]]=="x",]
   } else {
-    right <- filter(right, COL==COL2)
-    left <- filter(left, COL==COL2)
+    right <- right[right[["COL"]]==right[["COL2"]],]
+    left <- left[left[["COL"]]==left[["COL2"]],]
   }
   if(params$ggside$scales%in%c("free","free_x")){ #if x is free, include y PANELS_TYPES
-    top <- filter(top, ROW==ROW2|PANEL_TYPE%in%"y")
-    bottom <- filter(bottom, ROW==ROW2|PANEL_TYPE%in%"y")
+    top <- top[top[["ROW"]]==top[["ROW2"]]|top[["PANEL_TYPE"]]=="y",]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]]|bottom[["PANEL_TYPE"]]=="y",]
   } else {
-    top <- filter(top, ROW==ROW2)
-    bottom <- filter(bottom, ROW==ROW2)
+    top <- top[top[["ROW"]]==top[["ROW2"]],]
+    bottom <- bottom[bottom[["ROW"]]==bottom[["ROW2"]],]
   }
 
   #top, left, bottom, right, variables includes panels that would have axis shown
   #for their relavent positions.
   #Do an anti_join against layout to find panels that should get a zeroGrobe
-  bottom <- bottom %>% select(-ROW2) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  top <- top %>% select(-ROW2) %>% {
-      suppressMessages(anti_join(x = layout, y = .))
-    } %>% pull(panel_pos)
-  right <- right %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
-  left <- left %>% select(-COL2) %>% {
-    suppressMessages(anti_join(x = layout, y = .))
-  } %>% pull(panel_pos)
+  bottom <- anti_join(layout, bottom, by = c("ROW","COL"))[["panel_pos"]]
+  top <- anti_join(layout, top, by = c("ROW","COL"))[["panel_pos"]]
+  right <- anti_join(layout, right, by = c("ROW","COL"))[["panel_pos"]]
+  left <- anti_join(layout, left, by = c("ROW","COL"))[["panel_pos"]]
   #pulled panel positions
   #Place ZeroGrobs
   axis_mat_x_top[top]<- list(zeroGrob())
@@ -244,7 +234,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right[right] <- list(zeroGrob())
 
   if(all(c("x","y") %in% side_panels_present)){
-    x_pos <- layout %>% filter(PANEL_TYPE %in%"x") %>% pull(panel_pos)
+    x_pos <- layout[layout[["PANEL_TYPE"]]=="x",][["panel_pos"]]
     if(y.pos=="left"){
       for(i in x_pos){
         axis_mat_y_left[i][[1]]$width <- NULL
@@ -255,7 +245,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       }
     }
 
-    y_pos <- layout %>% filter(PANEL_TYPE %in%"y") %>% pull(panel_pos)
+    y_pos <- layout[layout[["PANEL_TYPE"]]=="y",][["panel_pos"]]
     if(x.pos=="top"){
       for(i in y_pos){
         axis_mat_x_top[i][[1]]$height <- NULL
@@ -290,19 +280,30 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   params$strip.position <- params$strip.position %||% "top"
   if(any(c("top","bottom")%in%params$strip.position)){
-    strip_panel_pos <- layout %>% filter_at(vars(PANEL_GROUP), function(x){!is.na(x)}) %>%
-      group_by(PANEL_GROUP) %>%
-      summarise(ROW = case_when(params$strip.position=="top" ~ min(ROW),
-                                TRUE ~ max(ROW))) %>%
-      semi_join(x = layout, y = ., by = c("PANEL_GROUP","ROW")) %>%
-      filter(!PANEL_TYPE %in% "y") %>% distinct(PANEL, panel_pos)
+
+    strip_panel_pos <- do_by(layout[!is.na(layout[["PANEL_GROUP"]]),], "PANEL_GROUP",
+                             function(x, strip){
+                               if("top"%in%strip){
+                                 x[["ROW"]] <- min(x[["ROW"]])
+                               } else {
+                                 x[["ROW"]] <- max(x[["ROW"]])
+                               }
+                               x
+                             }, strip = params$strip.position)
+    strip_panel_pos <- semi_join(layout, strip_panel_pos, by = c("PANEL_GROUP","ROW"))
+    strip_panel_pos <- unique(strip_panel_pos[!strip_panel_pos[["PANEL_TYPE"]]=="y",c("PANEL","panel_pos")])
   } else if(any(c("left","right")%in%params$strip.position)){
-    strip_panel_pos <- layout %>% filter_at(vars(PANEL_GROUP), function(x){!is.na(x)}) %>%
-      group_by(PANEL_GROUP) %>%
-      summarise(COL = case_when(params$strip.position=="left" ~ min(COL),
-                                TRUE ~ max(COL))) %>%
-      semi_join(x = layout, y = ., by = c("PANEL_GROUP","COL")) %>%
-      filter(!PANEL_TYPE %in% "x") %>% distinct(PANEL, panel_pos)
+    strip_panel_pos <- do_by(layout[!is.na(layout[["PANEL_GROUP"]]),], "PANEL_GROUP",
+                             function(x, strip){
+                               if("left"%in%strip){
+                                 x[["COL"]] <- min(x[["COL"]])
+                               } else {
+                                 x[["COL"]] <- max(x[["COL"]])
+                               }
+                               x
+                             }, strip = params$strip.position)
+    strip_panel_pos <- semi_join(layout, strip_panel_pos, by = c("PANEL_GROUP","COL"))
+    strip_panel_pos <- unique(strip_panel_pos[!strip_panel_pos[["PANEL_TYPE"]]=="x",c("PANEL","panel_pos")])
   }
 
 
@@ -344,3 +345,32 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   }
   panel_table
 }
+
+#' @rdname ggside-ggproto-facets
+#' @usage NULL
+#' @format NULL
+#' @export
+FacetSideWrap <- ggplot2::ggproto("FacetSideWrap",
+                                  ggplot2::FacetWrap,
+                                  compute_layout = function(data, params){
+                                    layout <- ggplot2::FacetWrap$compute_layout(data, params)
+                                    layout <- check_scales_collapse(layout, params)
+                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
+                                    layout },
+                                  init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
+                                    scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
+                                    if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
+                                      side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
+                                      scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
+
+                                    }
+                                    if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
+                                      side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
+                                      scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
+
+                                    }
+                                    scales
+                                  },
+                                  map_data = map_data_ggside,
+                                  draw_panels = sideFacetWrap_draw_panels
+)

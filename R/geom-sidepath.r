@@ -1,4 +1,4 @@
-
+#' @rdname geom_xsideline
 #' @export
 geom_xsidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -25,11 +25,16 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
                                   ggplot2::GeomPath,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
@@ -52,7 +57,7 @@ GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
 
 
 
-
+#' @rdname geom_xsideline
 #' @export
 geom_ysidepath <- function(mapping = NULL, data = NULL,
                            stat = "identity", position = "identity",
@@ -79,11 +84,16 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
       arrow = arrow,
       na.rm = na.rm,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
                                   ggplot2::GeomPath,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,

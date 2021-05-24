@@ -1,4 +1,16 @@
-
+#' @title Side line plot
+#' @description
+#' The [xside] and [yside] of \link[ggplot2]{geom_line}.
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_path}
+#' @inheritParams ggplot2::geom_line
+#'
+#' @aliases geom_*sideline
+#' @return XLayer or YLayer object to be added to a ggplot object
+#' @examples
+#' #sideline
+#' ggplot(economics, aes(date, pop)) +
+#'   geom_xsideline(aes(y = unemploy)) +
+#'   geom_col()
 #' @export
 geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
@@ -15,12 +27,16 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
-
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   ggplot2::GeomLine,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
@@ -43,7 +59,7 @@ GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   })
 
 
-
+#' @rdname geom_xsideline
 #' @export
 geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
@@ -60,12 +76,17 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class = "ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
 GeomYsideline <- ggplot2::ggproto("GeomYsideline",
                                   ggplot2::GeomLine,
                                   default_aes = aes(colour = "black", ycolour = NA, size = 0.5,

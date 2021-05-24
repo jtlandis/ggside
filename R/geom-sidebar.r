@@ -1,50 +1,53 @@
 
-#' geom_*sidebar: Plot a sidebar along an axis
+#' @title Side bar Charts
 #'
-#' @param mapping Set of aesthetic mappings reated by [`aes()`] or
-#' [`aes_()`]. If specified and `inherit.aes = TRUE`, it will be
-#' combined with the default mapping at the top level of the plot.
-#' `mapping` must be supplied in this layer if ther is no plot mapping.
-#' @param data The data to be displayed in this layer. If `NULL`, the default,
-#' then the data is inherited from the plot data as specified i nthe call to [`ggplot()`].
-#' @param stat The statistical transformation to use on the data for this layer, as a string.
-#' @param position Position adjustment, either as a string, or the result of
-#'  a call to a position adjustment function.
-#' @param inherit.aes If `FALSE`, overrides the default aesthetics,
-#'   rather than combining with them.
-#' @param na.rm If `FALSE`, the default, missing values are removed with
-#'   a warning. If `TRUE`, missing values are silently removed.
-#' @param ... other arguments passed on to [`layer()`]. These are
-#'   often aesthetics, used to set an aesthetic to a fixed value, like
-#'   `color = "red"` or `size = 3`. They may also be parameters
-#'   to the paired geom/stat.
+#' @description
 #'
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_bar} is
+#' [geom_xsidebar] and [geom_ysidebar]. These variants both inherit
+#' from \link[ggplot2]{geom_bar} and only differ on where they plot
+#' data relative to main panels.
+#'
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_col} is
+#' [geom_xsidecol] and [geom_ysidecol]. These variants both inherit
+#' from \link[ggplot2]{geom_col} and only differ on where they plot
+#' data relative to main panels.
+#'
+#' @inheritParams ggplot2::geom_bar
 #'
 #' @section Aesthetics:
 #'
 #' Required aesthetics are in bold.
 #'
 #' \itemize{
-#' \item \strong{x}
-#' \item \strong{y}
-#' \item \emph{xfill} Fill color of the xsidebar
-#' \item \emph{yfill} Fill color of the ysidebar
-#' \item \emph{width} specifies the width of each bar
-#' \item \emph{height} specifies the height of each bar
-#' \item \emph{alpha} Transparency level of `xfill` or `yfill` depending on which [`geom_*sidbar`]
-#' \item \emph{size} size of the border line. --uneeded??
-#' \item \emph{location} Specifies where the sidebar should be placed.
-#' geom_xsidebar may specify either "bottom" or "top" and
-#' geom_ysidebar may specify either "left" or "right.
-#' "bottom" and "left" are defaults of geom_xsidebar and
-#' geom_ysidebar respecitively.
-#'
+#' \item \strong{`x`}
+#' \item \strong{`y`}
+#' \item \emph{`fill` or `xfill`} Fill color of the xsidebar
+#' \item \emph{`fill` or `yfill`} Fill color of the ysidebar
+#' \item \emph{`width`} specifies the width of each bar
+#' \item \emph{`height`} specifies the height of each bar
+#' \item \emph{`alpha`} Transparency level of `xfill` or `yfill`
+#' \item \emph{`size`} size of the border line.
 #' }
 #'
+#' @seealso [geom_xsidehistogram], [geom_ysidehistogram]
+#' @return XLayer or YLayer object to be added to a ggplot object
+#' @aliases geom_*sidebar
+#' @examples
 #'
+#' p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
+#' geom_point()
 #'
+#' #sidebar - uses StatCount
+#' p +
+#' geom_xsidebar() +
+#' geom_ysidebar()
 #'
-#' @import ggplot2
+#' #sidecol - uses Global mapping
+#' p +
+#'   geom_xsidecol() +
+#'   geom_ysidecol()
+#'
 #' @export
 geom_xsidebar <- function(mapping = NULL, data = NULL,
                           stat = "count", position = "stack",
@@ -54,6 +57,7 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
                           orientation = "x",
                           show.legend = NA,
                           inherit.aes = TRUE) {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,
@@ -67,42 +71,16 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = XLayer
   )
-  structure(list(layer = l), class="ggside_layer")
+  structure(l, class=c("ggside_layer", class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
 #' @export
-geom_xsidehistogram <- function(mapping = NULL, data = NULL,
-         stat = "bin", position = "stack",
-         ...,
-         binwidth = NULL,
-         bins = NULL,
-         na.rm = FALSE,
-         orientation = NA,
-         show.legend = NA,
-         inherit.aes = TRUE) {
-
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      binwidth = binwidth,
-      bins = bins,
-      na.rm = na.rm,
-      orientation = orientation,
-      pad = FALSE,
-      ...
-    )
-  )
-  structure(list(layer=l), class = "ggside_layer")
-}
-
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                         ggplot2::GeomBar,
                         default_aes = aes(colour = NA, xcolour = NA,
@@ -124,7 +102,6 @@ GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
 
 
 #' @rdname geom_xsidebar
-#' @aliases geom_ysidebar
 #' @export
 geom_ysidebar <- function(mapping = NULL, data = NULL,
                           stat = "count", position = "stack",
@@ -134,6 +111,7 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
                           orientation = "y",
                           show.legend = NA,
                           inherit.aes = TRUE) {
+  mapping <- default_stat_aes(mapping, stat, orientation)
   l <- layer(
     data = data,
     mapping = mapping,
@@ -147,42 +125,16 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    )
+    ),
+    layer_class = YLayer
   )
-  structure(list(layer = l), class="ggside_layer")
+  structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
 #' @export
-geom_ysidehistogram <- function(mapping = NULL, data = NULL,
-                                stat = "bin", position = "stack",
-                                ...,
-                                binwidth = NULL,
-                                bins = NULL,
-                                na.rm = FALSE,
-                                orientation = NA,
-                                show.legend = NA,
-                                inherit.aes = TRUE) {
-
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      binwidth = binwidth,
-      bins = bins,
-      na.rm = na.rm,
-      orientation = orientation,
-      pad = FALSE,
-      ...
-    )
-  )
-  structure(list(layer = l), class = "ggside_layer")
-}
-
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                  ggplot2::GeomBar,
                                  default_aes = aes(colour = NA, ycolour = NA,
