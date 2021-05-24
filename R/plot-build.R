@@ -38,7 +38,6 @@ ggplot_build.ggside <- function(plot){
   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
   }
-  #browser()
   #plot$layers <- clone_layers(plot$layers)
   layers <- plot$layers
   layer_mappings <- lapply(layers, guess_layer_mapping)
@@ -46,7 +45,7 @@ ggplot_build.ggside <- function(plot){
   sides_used <- unlist(layer_mappings)
   sides_used <- sides_used[!sides_used %in% "main"]
   for(i in seq_along(layer_data)){
-    layer_data[[i]] <- mutate(layer_data[[i]], PANEL_TYPE = list(unique(layer_mappings[[i]])))
+    layer_data[[i]] <- mutate(layer_data[[i]], PANEL_TYPE = list(unique(!!layer_mappings[[i]])))
   }
   scales <- plot$scales
   # Apply function to layer and matching data
