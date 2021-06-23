@@ -12,7 +12,7 @@ plot_clone <- function(plot) {
     abort("Cannot use `+.gg()` with a single argument. Did you accidentally put + on a new line?")
   }
   e2name <- deparse(substitute(e2))
-  add_gg(e1, e2, e2name)
+  add_gg(e1 = e1, e2 = e2, e2name = e2name)
 }
 
 add_gg <- function(e1, e2, e2name) {
@@ -27,7 +27,7 @@ add_gg.ggplot <- function(e1, e2, e2name){
   if (is.null(e2)) return(e1)
 
   p <- plot_clone(e1)
-  p <- ggplot_add(e2, p, e2name)
+  p <- ggplot_add(object = e2, plot = p, object_name = e2name)
   set_last_plot(p)
   p
 }
@@ -68,10 +68,7 @@ add_gg.ggproto <- function(e1, e2, e2name) {
 
 add_gg.ggside <- function(e1, e2, e2name) {
   p <- NextMethod("add_gg")
-  if(!(is.ggside_layer(e2)|is.ggside_options(e2)|is.ggside_scale(e2))){
-    p <- as_ggside(p, e2)
-  }
-  p
+  validate_ggside(e2, p)
 }
 
 is_theme_complete <- function(x) isTRUE(attr(x, "complete", exact = TRUE))
