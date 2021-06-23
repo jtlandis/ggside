@@ -1,6 +1,7 @@
 
 # ggside 0.1.0.9000
 
+* `ggside` should now work better with the `patchwork` package. Addreseses issue #13.
 * Fixed 'bug' in which computed aesthetics did not mix well with main panels of class `ContinuousScaleDate`. Extended better control to `XLayer` and `YLayer` to pull scales from the proper panels instead of using the prototype scales on `plot$scales`. Addresses issue #11.
 
 # ggside 0.1.0
