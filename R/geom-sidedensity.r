@@ -69,7 +69,6 @@ GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                        ggplot2::GeomDensity$setup_data(data, params)
                                      },
                                      draw_group = function(data, panel_params, coord, na.rm = FALSE, flipped_aes = FALSE, outline.type = "both") {
-                                       #browser()
                                        data <- use_xside_aes(data)
                                        ggplot2::GeomDensity$draw_group(data = data, panel_params = panel_params, coord = coord, na.rm = na.rm,
                                                                        flipped_aes = flipped_aes, outline.type = outline.type)},
