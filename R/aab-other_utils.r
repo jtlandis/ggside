@@ -62,7 +62,7 @@ use_yside_aes <- function(data){
 #' @export
 parse_side_aes <- function(data, params){
   #determine if fill, xfill, or yfill should be used
-  all_names <- c(colnames(data),names(params))
+  all_names <- c(colnames(data))
   if(any(c("fill", "xfill", "yfill")%in% all_names)) {
     fill_opts <- all_names[all_names %in% c("fill", "xfill", "yfill")]
     side_fill <- c("xfill","yfill")%in%fill_opts
@@ -71,7 +71,7 @@ parse_side_aes <- function(data, params){
     } else {
       fill_prec <- "fill"
     }
-    data[[fill_prec]] <- data[[fill_prec]] %||% params[[fill_prec]]
+    data[[fill_prec]] <- data[[fill_prec]]
     exclude <- fill_opts[!fill_opts %in% fill_prec]
     if(length(exclude)!=0){
       data <- data[, setdiff(colnames(data), exclude), drop = F]
@@ -86,7 +86,7 @@ parse_side_aes <- function(data, params){
     } else {
       colour_prec <- "colour"
     }
-    data[[colour_prec]] <- data[[colour_prec]] %||% params[[colour_prec]]
+    data[[colour_prec]] <- data[[colour_prec]]
     exclude <- colour_opts[!colour_opts %in% colour_prec]
     if(length(exclude)!=0){
       data <- data[, setdiff(colnames(data), exclude), drop = F]
