@@ -68,24 +68,27 @@ as_ggsideFacet.default <- function(facet, ggside){
   abort(glue("No known method to make {class(facet)[1]} ggside friendly"))
 }
 as_ggsideFacet.FacetNull <- function(facet, ggside){
-  facet$params[["ggside"]] <- ggside
+  params <- facet$params
+  params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideNull,
-                   params = facet$params,
+                   params = params,
                    shrink = facet$shrink)
 }
 as_ggsideFacet.FacetGrid <- function(facet, ggside){
-  facet$params[["ggside"]] <- ggside
+  params <- facet$params
+  params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideGrid,
-                   params = facet$params,
+                   params = params,
                    shrink = facet$shrink)
 }
 as_ggsideFacet.FacetWrap <- function(facet, ggside){
-  facet$params[["ggside"]] <- ggside
+  params <- facet$params
+  params[["ggside"]] <- ggside
   ggplot2::ggproto(NULL,
                    FacetSideWrap,
-                   params = facet$params,
+                   params = params,
                    shrink = facet$shrink)
 }
 

@@ -1,4 +1,10 @@
 
+# ggside 0.1.0.9000
+
+* fixed bug in which `colour/color`/`fill` appear in guides when used as `params` instead of an `aes()` mapping. Now these aesthetics, and their `x/y` variants should behave like `ggplot2` API. Addresses issue #12.
+* `ggside` should now work better with the `patchwork` package. Addreseses issue #13.
+* Fixed 'bug' in which computed aesthetics did not mix well with main panels of class `ContinuousScaleDate`. Extended better control to `XLayer` and `YLayer` to pull scales from the proper panels instead of using the prototype scales on `plot$scales`. Addresses issue #11.
+
 # ggside 0.1.0
 
 * Various `geom_*side*` have better default calling behavior. See `vignettes("ggside_aes_mapping")` for more details.

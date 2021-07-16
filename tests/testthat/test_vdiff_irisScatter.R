@@ -35,7 +35,7 @@ test_that("sidehistograms plot correctly", {
     geom_xsidehistogram(aes(xfill = Species, y = after_stat(count))) +
     facet_grid(cols = vars(Species), rows = vars(Species2)) +
     scale_yfill_manual(values = c("darkred","darkblue")) +
-    guides(fill = F)
+    guides(fill = "none")
   expect_doppelganger("FacetGrid histo", p3)
   p4 <- p3 + ggside(collapse = "all") +
     scale_xfill_manual(values = c("tan2","gold","grey"))
