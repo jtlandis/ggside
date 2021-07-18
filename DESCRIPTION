@@ -29,9 +29,9 @@ Imports: grid,
 Suggests:
     tidyr,
     dplyr,
-    testthat,
+    testthat (>= 3.0.3),
     knitr,
     rmarkdown,
-    vdiffr,
+    vdiffr (>= 1.0.0),
     ggdendro,
     viridis
