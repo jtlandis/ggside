@@ -18,7 +18,8 @@ omitted.}
 \link[scales:trans_new]{transformation object}
 \item A numeric vector of positions
 \item A function that takes the limits as input and returns breaks
-as output (e.g., a function returned by \code{\link[scales:breaks_extended]{scales::extended_breaks()}})
+as output (e.g., a function returned by \code{\link[scales:breaks_extended]{scales::extended_breaks()}}).
+Also accepts rlang \link[rlang:as_function]{lambda} function notation.
 }}
 
 \item{minor_breaks}{One of:
@@ -27,7 +28,8 @@ as output (e.g., a function returned by \code{\link[scales:breaks_extended]{scal
 \item \code{waiver()} for the default breaks (one minor break between
 each major break)
 \item A numeric vector of positions
-\item A function that given the limits returns a vector of minor breaks.
+\item A function that given the limits returns a vector of minor breaks. Also
+accepts rlang \link[rlang:as_function]{lambda} function notation.
 }}
 
 \item{n.breaks}{An integer guiding the number of major breaks. The algorithm
@@ -42,7 +44,8 @@ number of breaks given by the transformation.}
 transformation object
 \item A character vector giving labels (must be same length as \code{breaks})
 \item A function that takes the breaks as input and returns labels
-as output
+as output. Also accepts rlang \link[rlang:as_function]{lambda} function
+notation.
 }}
 
 \item{limits}{One of:
@@ -51,7 +54,8 @@ as output
 \item A numeric vector of length two providing limits of the scale.
 Use \code{NA} to refer to the existing minimum or maximum
 \item A function that accepts the existing (automatic) limits and returns
-new limits
+new limits. Also accepts rlang \link[rlang:as_function]{lambda} function
+notation.
 Note that setting limits on positional scales will \strong{remove} data outside of the limits.
 If the purpose is to zoom, use the limit argument in the coordinate system
 (see \code{\link[ggplot2:coord_cartesian]{coord_cartesian()}}).
@@ -67,7 +71,8 @@ expand the scale by 5\% on each side for continuous variables, and by
 \item{oob}{One of:
 \itemize{
 \item Function that handles limits outside of the scale limits
-(out of bounds).
+(out of bounds). Also accepts rlang \link[rlang:as_function]{lambda}
+function notation.
 \item The default (\code{\link[scales:oob]{scales::censor()}}) replaces out of
 bounds values with \code{NA}.
 \item \code{\link[scales:oob]{scales::squish()}} for squishing out of bounds values into range.
@@ -101,4 +106,27 @@ ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
 The \link{xside} and \link{yside} variants of \link[ggplot2]{scale_x_continuous}/\link[ggplot2]{scale_y_continuous}.
 \link{scale_xsidey_continuous} enables better control on how the y-axis is rendered on the xside panel and
 \link{scale_ysidex_continuous} enables better control on how the x-axis is rendered on the yside panel.
+}
+\examples{
+
+library(ggside)
+library(ggplot2)
+# adding continuous y-scale to the x-side panel, when main panel mapped to discrete data
+ggplot(mpg, aes(hwy, class, colour = class)) +
+  geom_boxplot() +
+  geom_xsidedensity(position = "stack") +
+  theme(ggside.panel.scale = .3) +
+  scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA,1))
+
+#If you need to specify the main scale, but need to prevent this from
+#affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+ggplot(mtcars, aes(wt, mpg)) +
+  geom_point() +
+  geom_xsidehistogram() +
+  geom_ysidehistogram()  +
+  scale_x_continuous(
+      breaks = seq(1, 6, 1),
+      limits = (c(1, 6)) #would otherwise remove the histogram - as they will have a lower value of 0.
+      ) +
+  scale_ysidex_continuous() #ensures the x-axis of the y-side panel has its own scale.
 }
