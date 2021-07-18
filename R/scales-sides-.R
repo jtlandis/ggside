@@ -10,7 +10,28 @@
 #'
 #' @inheritParams ggplot2::continuous_scale
 #' @return ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
+#' @examples
 #'
+#' library(ggside)
+#' library(ggplot2)
+#' # adding continuous y-scale to the x-side panel, when main panel mapped to discrete data
+#' ggplot(mpg, aes(hwy, class, colour = class)) +
+#'   geom_boxplot() +
+#'   geom_xsidedensity(position = "stack") +
+#'   theme(ggside.panel.scale = .3) +
+#'   scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA,1))
+#'
+#' #If you need to specify the main scale, but need to prevent this from
+#' #affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+#' ggplot(mtcars, aes(wt, mpg)) +
+#'   geom_point() +
+#'   geom_xsidehistogram() +
+#'   geom_ysidehistogram()  +
+#'   scale_x_continuous(
+#'       breaks = seq(1, 6, 1),
+#'       limits = (c(1, 6)) #would otherwise remove the histogram - as they will have a lower value of 0.
+#'       ) +
+#'   scale_ysidex_continuous() #ensures the x-axis of the y-side panel has its own scale.
 NULL
 
 #' @rdname ggside-scales-continuous
@@ -64,7 +85,24 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 #'
 #' @inheritParams ggplot2::discrete_scale
 #' @return ggside_scale object inheriting from ggplot2::ScaleDiscretePosition
+#' @examples
 #'
+#' library(ggside)
+#' library(ggplot2)
+#' # adding discrete y-scale to the x-side panel, when main panel mapped to continuous data
+#' ggplot(mpg, aes(displ, hwy, colour = class)) +
+#'   geom_point() +
+#'   geom_xsideboxplot(aes(y=class), orientation = "y") +
+#'   theme(ggside.panel.scale = .3) +
+#'   scale_xsidey_discrete(guide = guide_axis(angle = 45))
+#'
+#' #If you need to specify the main scale, but need to prevent this from
+#' #affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+#' ggplot(mpg, aes(class, displ)) +
+#'   geom_boxplot() +
+#'   geom_ysideboxplot(aes(x = "all"), orientation = "x") +
+#'   scale_x_discrete(guide = guide_axis(angle = 90)) + #rotate the main panel text
+#'   scale_ysidex_discrete() #leave side panel as default
 NULL
 
 #' @rdname ggside-scales-discrete
