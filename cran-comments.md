@@ -1,4 +1,4 @@
-This is an update from improper semantic versioning of 0.0.1.3 to 0.1.0. With this new version a few minor functions were added to provide control over how side axes are rendered. More examples are included in the documentation. Furthermore a minor bug was fixed.
+This is a minor patch to the `ggside` package. Fixes various issues that have been presented since the release of v0.1.0. This update should make `ggside` more compatible with other packages extending `ggplot2`.
 
 ## Test environments
 * local macOS Big Sur install, R 3.6.2

@@ -29,7 +29,9 @@
 #'   geom_ysidehistogram()  +
 #'   scale_x_continuous(
 #'       breaks = seq(1, 6, 1),
-#'       limits = (c(1, 6)) #would otherwise remove the histogram - as they will have a lower value of 0.
+#'       #would otherwise remove the histogram
+#'       #as they have a lower value of 0.
+#'       limits = (c(1, 6))
 #'       ) +
 #'   scale_ysidex_continuous() #ensures the x-axis of the y-side panel has its own scale.
 NULL
