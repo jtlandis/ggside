@@ -1,7 +1,7 @@
 README
 ================
 Justin Landis
-5/25/2021
+7/17/2021
 
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
@@ -11,6 +11,7 @@ Justin Landis
 status](https://travis-ci.org/jtlandis/ggside.svg?branch=master)](https://travis-ci.org/jtlandis/ggside)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/ggside)](https://cran.r-project.org/package=ggside)
+[![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside)](https://cran.r-project.org/package=ggside)
 <!-- badges: end -->
 
 ## Overview
