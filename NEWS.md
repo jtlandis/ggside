@@ -1,5 +1,5 @@
 
-# ggside 0.1.1.9001
+# ggside 0.1.2
 
 * Fixed bug where additional messages were printed to the console when using `ggplot2::facet_wrap()` or `ggplot2::facet_grid()`. Addresses issue #20.
 * Fixed bug where `geom_xsidetext()` was using the incorrect `Geom` parameter. Addresses issue #19.
