@@ -10,16 +10,22 @@ find_parent <- function(find){
 
 get_proper_scales <- function(data, scales){
   new_scale_list <- scales$clone()
-  new_scale_list$scales <- NULL
   use_panels <- unique(data[['PANEL']])
   proto_layout <- find_parent('layout')
   layout_df <- proto_layout$layout
   layout_df <- layout_df[layout_df$PANEL %in% use_panels,]
-  scales_x <- proto_layout$panel_scales_x[layout_df$SCALE_X]
-  scales_y <- proto_layout$panel_scales_y[layout_df$SCALE_Y]
-  scales <- c(scales_x, scales_y)
-  if(length(scales)==0L) return(NULL)
-  lapply(scales, function(scale, scales_list) scales_list$add(scale$clone()), scales_list = new_scale_list)
+  panel_type <- as.character(unique(layout_df[["PANEL_TYPE"]]))
+  aesthetic <-switch(panel_type,
+                     x = 'y',
+                     y = 'x')
+  scale_ref <- switch(aesthetic,
+                      #if aesthetic is "x" we only need to replace y
+                      x = proto_layout$panel_scales_x[layout_df$SCALE_X][[1]],
+                      y = proto_layout$panel_scales_y[layout_df$SCALE_Y][[1]],
+                      NULL)
+  if(is.null(scale_ref)) return(NULL)
+  new_scale_list$scales[new_scale_list$find(aesthetic)] <- NULL
+  new_scale_list$add(scale_ref$clone())
   return(new_scale_list)
 }
 
