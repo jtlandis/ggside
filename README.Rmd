@@ -76,9 +76,8 @@ If you find any issues or want to suggest an enhancement, please make a post at 
 
 ## Known Issues
 
-The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the master branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.1.1.
+The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the master branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.1.2.
 
-* [#19 ![](https://img.shields.io/badge/fixed-master-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/19) `geom_xsidetext()` is using the incorrect `ggproto` Geometry in its layer. 
-* [#20 ![](https://img.shields.io/badge/fixed-master-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/20) `ggplot2::facet_wrap()` and `ggplot2::facet_grid()` will cause messages to be print to the screen (#20). While this doesn't break code, it is annoying and was a bug that went undetected until switching to the latest version of `testthat`.
+* There are no none issues yet.
 
 
