@@ -1,4 +1,4 @@
-This is a minor patch to the `ggside` package. Fixes various issues that have been presented since the release of v0.1.0. This update should make `ggside` more compatible with other packages extending `ggplot2`.
+This is a minor patch to the `ggside` package. Fixed outstanding bug where `geom_xsidetext()` did not use the proper `geom` parameter, causing an error. Fixed bug introduced in v0.1.1 where many messages were printed to the console when using `ggside` with `facet_wrap()` or `facet_grid()`.
 
 ## Test environments
 * local macOS Big Sur install, R 4.1.0
