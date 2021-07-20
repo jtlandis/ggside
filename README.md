@@ -99,3 +99,5 @@ v0.1.1.
     messages to be print to the screen (\#20). While this doesn’t break
     code, it is annoying and was a bug that went undetected until
     switching to the latest version of `testthat`.
+    ![\#20](https://img.shields.io/badge/fixed-master-green.svg?style=flat-square)
+    \#20
