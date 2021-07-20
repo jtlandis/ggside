@@ -1,4 +1,8 @@
 
+# ggside 0.1.1.9001
+
+* Fixed bug where additional messages were printed to the console when using `ggplot2::facet_wrap()` or `ggplot2::facet_grid()`. Addresses issue #20.
+* Fixed bug where `geom_xsidetext()` was using the incorrect `Geom` parameter. Addresses issue #19.
 # ggside 0.1.1
 
 * fixed bug in which `colour/color`/`fill` appear in guides when used as `params` instead of an `aes()` mapping. Now these aesthetics, and their `x/y` variants should behave like `ggplot2` API. Addresses issue #12.
