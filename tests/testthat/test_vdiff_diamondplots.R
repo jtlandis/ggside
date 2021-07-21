@@ -1,9 +1,9 @@
-library(vdiffr)
-library(dplyr)
-library(tidyr)
-library(ggdendro)
-
-context("diamond heatmap")
+suppressMessages({
+  library(dplyr, quietly = T)
+  library(tidyr, quietly = T)
+  library(vdiffr)
+  library(ggdendro, quietly = T)
+})
 
 df0 <- mutate(diamonds,
               colclar = interaction(color, clarity,

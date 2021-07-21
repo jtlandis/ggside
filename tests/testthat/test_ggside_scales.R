@@ -1,8 +1,4 @@
-library(testthat)
-library(ggside)
 library(vdiffr)
-
-context("ggside custom side scales")
 
 test_that("xsidey and ysidex appear",{
   p <- ggplot(mpg, aes(displ, hwy, colour = class)) +

@@ -1,7 +1,5 @@
 library(vdiffr)
 
-context("ggside axis")
-
 df <- data.frame(x = 1:10, y = 21:30,
                  a = rep(c("g1","g2"), 5),
                  b = rep(c("t1","t2"), each = 5))

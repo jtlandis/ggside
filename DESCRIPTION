@@ -35,3 +35,4 @@ Suggests:
     vdiffr (>= 1.0.0),
     ggdendro,
     viridis
+Config/testthat/edition: 3

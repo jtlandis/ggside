@@ -108,18 +108,22 @@ get_sides <- function(layers){
 
 check_collapse <- function(collapse, sides){
   if(!is.null(collapse)){
-    if(collapse=="all"&!all(c("x","y") %in% sides)){
+    if(length(sides)==0) {
+      warn(glue('collapse set to "{collapse}" but no side geometry used. Setting collapse to NULL.'))
+      return(NULL)
+    } else if(collapse=="all"&!all(c("x","y") %in% sides)){
       warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
       return(sides)
-    } else if(collapse=="x"&!"x"%in% sides){
-      warn(glue("collapse set to \"x\", but no xside geometry used. Setting collapse to NULL."))
-      return(sides)
-    } else if(collapse=="y"&!"y"%in% sides){
-      warn(glue("collapse set to \"y\", but no yside geometry used. Setting collapse to NULL."))
-      return(sides)
+    } else if(collapse %in% c("x","y") && !collapse %in% sides){
+      warn(glue('collapse set to "{collapse}", but no {collapse}side geometry used. Setting collapse to NULL.'))
+      return(NULL)
     }
   }
   return(collapse)
 }
 
-
+# used   all , x , y
+# none   N     N   N
+# x      x     +   N
+# y      y     N   +
+# x, y   +     +   +
