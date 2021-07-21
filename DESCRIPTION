@@ -1,7 +1,7 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.1.1.9001
+Version: 0.1.2
 Authors@R: 
     person(given = "Justin",
            family = "Landis",
@@ -35,3 +35,4 @@ Suggests:
     vdiffr (>= 1.0.0),
     ggdendro,
     viridis
+Config/testthat/edition: 3

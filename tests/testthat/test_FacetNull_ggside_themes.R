@@ -1,6 +1,3 @@
-library(vdiffr)
-
-context("testing FacetNull and ggside themes")
 
 df <- data.frame(x = 1:10, y = 21:30,
                  a = rep(c("g1","g2"), 5),

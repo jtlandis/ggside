@@ -1,7 +1,5 @@
-library(dplyr)
-
-context("Iris scatterplot density type plots")
-i2 <- mutate(iris, Species2 = rep(c("A","B"), 75))
+library(vdiffr)
+i2 <- within(iris, {Species2 <- rep(c("A","B"), 75)})
 p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, fill = Species)) +
   geom_point(aes(color = Species))
 
@@ -25,14 +23,14 @@ test_that("sidedensities plot correctly", {
 
 test_that("sidehistograms plot correctly", {
   p1 <- p +
-    geom_xsidehistogram(aes(y = after_stat(count))) +
-    geom_ysidehistogram(aes(x = after_stat(count)))
+    geom_xsidehistogram(aes(y = after_stat(count)), bins = 30) +
+    geom_ysidehistogram(aes(x = after_stat(count)), bins = 30)
   expect_doppelganger("Basic Side histo", p1)
   p2 <- p +
-    geom_ysidehistogram(aes(x = after_stat(count), yfill = Species2))
+    geom_ysidehistogram(aes(x = after_stat(count), yfill = Species2), bins = 30)
   expect_doppelganger("yside histo", p2)
   p3 <- p2 +
-    geom_xsidehistogram(aes(xfill = Species, y = after_stat(count))) +
+    geom_xsidehistogram(aes(xfill = Species, y = after_stat(count)), bins = 30) +
     facet_grid(cols = vars(Species), rows = vars(Species2)) +
     scale_yfill_manual(values = c("darkred","darkblue")) +
     guides(fill = "none")
