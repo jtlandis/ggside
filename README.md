@@ -92,4 +92,4 @@ this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
 v0.1.2.
 
--   There are no none issues yet.
+-   There are no known issues yet.
