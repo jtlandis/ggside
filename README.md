@@ -101,6 +101,6 @@ v0.1.2.
     [\#11](https://github.com/jtlandis/ggside/issues/11). Solution is
     TBD.
   - [\#24
-    ![](https://img.shields.io/badge/bug-master-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/24)
+    ![](https://img.shields.io/badge/fixed-master-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/24)
     `ggside` functions were not added correctly as a list. Adding `#'
     @importFrom ggplot2 ggplot_add` explicitly fixed this issue.
