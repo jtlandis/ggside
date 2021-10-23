@@ -1,4 +1,9 @@
 
+# ggside 0.1.2.9999
+
+* Properly imported `ggplot2::ggplot_add()` into `ggside` such that `ggside` methods were available to `ggplot2` calls. Addresses issue #24.
+* Refactored `XLayer` and `YLayer` to rely less on `ggplot2` internal `Layer` class. Hopefully fixing issue users may experience between `ggplot2 (3.3.2)` and `ggplot2 (3.3.5)`. Addresses issue #23.
+
 # ggside 0.1.2
 
 * Fixed bug where additional messages were printed to the console when using `ggplot2::facet_wrap()` or `ggplot2::facet_grid()`. Addresses issue #20.
