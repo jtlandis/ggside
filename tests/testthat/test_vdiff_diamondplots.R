@@ -51,7 +51,8 @@ test_that("geom_sidesegment",{
                       aes(y = x, yend = xend, x = y, xend = yend)) +
     theme_minimal() +
     theme(axis.text.x=element_blank(), panel.grid = element_blank()) +
-    scale_y_discrete(expand = expansion())
+    scale_y_discrete(expand = expansion()) +
+    guides(xfill = "none")
   expect_doppelganger(title = "xySideSegments & xSideTile", p0)
 })
 
