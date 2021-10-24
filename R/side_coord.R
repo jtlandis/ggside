@@ -1,4 +1,84 @@
 
+#'@rdname ggside-ggproto-coord
+#'@description
+#' S3 class that converts old Coord into one that
+#' is compatible with ggside. Can also update
+#' ggside on the object. Typically, the new ggproto
+#' will inherit from the object being replaced.
+#' @param coord coord ggproto Object to replace
+#'@export
+as_ggsideCoord <- function(coord) UseMethod("as_ggsideCoord")
+as_ggsideCoord.default <- function(coord){
+  abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
+}
+as_ggsideCoord.CoordCartesian <- function(coord){
+  ggplot2::ggproto(NULL,
+                   CoordSideCartesian,
+                   limits = coord$limits,
+                   expand = coord$expand,
+                   default = coord$default,
+                   clip = coord$clip)
+}
+
+CoordSideCartesian <- ggplot2::ggproto(
+  "CoordSideCartesian",
+  CoordCartesian,
+  render_bg = function(panel_params, theme) {
+    panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
+    if (is.element(panel_type, c("x", "y"))) {
+      ggside_guide_grid(
+        theme,
+        panel_params$x$break_positions_minor(),
+        panel_params$x$break_positions(),
+        panel_params$y$break_positions_minor(),
+        panel_params$y$break_positions()
+      )
+    } else {
+      guide_grid(
+        theme,
+        panel_params$x$break_positions_minor(),
+        panel_params$x$break_positions(),
+        panel_params$y$break_positions_minor(),
+        panel_params$y$break_positions()
+      )
+    }
+  },
+  render_fg = function(panel_params, theme) {
+    panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
+    if (is.element(panel_type, c("x", "y"))) {
+      theme[["ggside.panel.border"]] <- theme[["ggside.panel.border"]] %||% theme[["panel.border"]]
+      element_render(theme, "ggside.panel.border")
+    } else {
+      element_render(theme, "panel.border")
+    }
+  }
+)
+
+combine_elements <- function (e1, e2) {
+  if (is.null(e2) || inherits(e1, "element_blank")) {
+    return(e1)
+  }
+  if (is.null(e1)) {
+    return(e2)
+  }
+  if (!inherits(e1, "element") && !inherits(e2, "element")) {
+    return(e1)
+  }
+  if (inherits(e2, "element_blank")) {
+    if (e1$inherit.blank) {
+      return(e2)
+    }
+    else {
+      return(e1)
+    }
+  }
+  n <- names(e1)[vapply(e1, is.null, logical(1))]
+  e1[n] <- e2[n]
+  if (inherits(e1$size, "rel")) {
+    e1$size <- e2$size * unclass(e1$size)
+  }
+  e1
+}
 guide_grid <- function (theme, x.minor, x.major, y.minor, y.major) {
   x.minor <- setdiff(x.minor, x.major)
   y.minor <- setdiff(y.minor, y.major)
@@ -28,9 +108,9 @@ setup_ggside_panel_theme <- function(theme) {
   theme[["ggside.panel.grid.major"]] <- theme[["ggside.panel.grid.major"]] %||% theme[["panel.grid.major"]] %||% theme[["ggside.panel.grid"]]
   theme[["ggside.panel.grid.major.x"]] <- theme[["ggside.panel.grid.major.x"]] %||% theme[["panel.grid.major.x"]] %||% theme[["ggside.panel.grid"]]
   theme[["ggside.panel.grid.major.y"]] <- theme[["ggside.panel.grid.major.y"]] %||% theme[["panel.grid.major.y"]] %||% theme[["ggside.panel.grid"]]
-  theme[["ggside.panel.grid.minor"]] <- theme[["ggside.panel.grid.minor"]] %||% theme[["panel.grid.minor"]] %||% theme[["ggside.panel.grid"]]
-  theme[["ggside.panel.grid.minor.x"]] <- theme[["ggside.panel.grid.minor.x"]] %||% theme[["ggside.panel.grid.minor"]]%||% theme[["panel.grid.minor.x"]]  %||% theme[["ggside.panel.grid"]]
-  theme[["ggside.panel.grid.minor.y"]] <- theme[["ggside.panel.grid.minor.y"]] %||% theme[["ggside.panel.grid.minor"]]%||% theme[["panel.grid.minor.y"]]  %||% theme[["ggside.panel.grid"]]
+  theme[["ggside.panel.grid.minor"]] <- theme[["ggside.panel.grid.minor"]] %||% combine_elements(theme[["ggside.panel.grid"]], theme[["panel.grid.minor"]])
+  theme[["ggside.panel.grid.minor.x"]] <- theme[["ggside.panel.grid.minor.x"]] %||% theme[["panel.grid.minor.x"]] %||% theme[["ggside.panel.grid.minor"]]
+  theme[["ggside.panel.grid.minor.y"]] <- theme[["ggside.panel.grid.minor.y"]] %||% theme[["panel.grid.minor.y"]] %||% theme[["ggside.panel.grid.minor"]]
   theme
 }
 
@@ -59,44 +139,8 @@ ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
 
 }
 
-#' @export
-side_coord <- function(xlim = NULL, ylim = NULL, expand = TRUE,
-                       default = FALSE, clip = "on"){
-  ggplot2::ggproto(
-    NULL,
-    CoordCartesian,
-    limits = list(x = xlim, y = ylim),
-    expand = expand,
-    default = default,
-    clip = clip,
-    render_bg = function(panel_params, theme) {
-      panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
-      if (panel_type == "main") {
-        guide_grid(
-          theme,
-          panel_params$x$break_positions_minor(),
-          panel_params$x$break_positions(),
-          panel_params$y$break_positions_minor(),
-          panel_params$y$break_positions()
-        )
-      } else if (is.element(panel_type, c("x", "y"))) {
-        ggside_guide_grid(
-          theme,
-          panel_params$x$break_positions_minor(),
-          panel_params$x$break_positions(),
-          panel_params$y$break_positions_minor(),
-          panel_params$y$break_positions()
-        )
-      } else {
-        abort(glue("unexpected value in `ggside` PANEL_TYPE: {panel_type}"))
-      }
-    }
-  )
-}
 
-# ggplot(iris, aes(Sepal.Width, Sepal.Length, fill = Species)) +
-#   geom_point(aes(color = Species)) +
-#   geom_xsidedensity(alpha = .3) +
-#   side_coord()
+
+
 
 
