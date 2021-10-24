@@ -8,7 +8,7 @@ Justin Landis
 <!-- badges: start -->
 
 [![Travis build
-status](https://travis-ci.org/jtlandis/ggside.svg?branch=master)](https://travis-ci.org/jtlandis/ggside)
+status](https://travis-ci.org/jtlandis/ggside.svg?branch=main)](https://travis-ci.org/jtlandis/ggside)
 [![CRAN\_Status\_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN\_Download\_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside)](https://cran.r-project.org/package=ggside)
@@ -74,7 +74,7 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
   theme(ggside.panel.scale = .3)
 ```
 
-![](man/figures/README-unnamed-chunk-2-1.png)<!-- -->
+![](man/figures/README-example-mix-scales-1.png)<!-- -->
 
 For a more detailed guide please see `vignette('ggside_basic_usage')`
 for more information.
@@ -87,20 +87,20 @@ post at [jtlandis/ggside](https://github.com/jtlandis/ggside/issues).
 ## Known Issues
 
 The following section will summarize issues that are present on the
-current CRAN release. These will either be fixed on the master branch of
+current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
 v0.1.2.
 
-  - [\#23
-    ![](https://img.shields.io/badge/bug-master-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/23)
+-   [\#23
+    ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/23)
     side geometry guides do not work for users with `ggplot2 (> 3.3.3)`.
     `ggside` relied on an implimentation of `ggplot2:::Layer` which has
     proved to be unstable and will probably move away from in a future
     release. This will unfortunately break the fix created for
     [\#11](https://github.com/jtlandis/ggside/issues/11). Solution is
     TBD.
-  - [\#24
-    ![](https://img.shields.io/badge/fixed-master-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/24)
-    `ggside` functions were not added correctly as a list. Adding `#'
-    @importFrom ggplot2 ggplot_add` explicitly fixed this issue.
+-   [\#24
+    ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/24)
+    `ggside` functions were not added correctly as a list. Adding
+    `#' @importFrom ggplot2 ggplot_add` explicitly fixed this issue.
