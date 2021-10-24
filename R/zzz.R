@@ -33,12 +33,28 @@ NULL
     ggside.panel.spacing = unit(2,"pt"),
     ggside.panel.spacing.x = NULL,
     ggside.panel.spacing.y = NULL,
+    ggside.panel.background = NULL,
+    ggside.panel.grid = NULL,
+    ggside.panel.grid.major = NULL,
+    ggside.panel.grid.major.x = NULL,
+    ggside.panel.grid.major.y = NULL,
+    ggside.panel.grid.minor = NULL,
+    ggside.panel.grid.minor.x = NULL,
+    ggside.panel.grid.minor.y = NULL,
     element_tree = list(ggside.panel.scale = el_def("numeric", "numeric"),
                         ggside.panel.scale.x = el_def("numeric", "numeric"),
                         ggside.panel.scale.y = el_def("numeric", "numeric"),
                         ggside.panel.spacing = el_def("unit", "unit"),
                         ggside.panel.spacing.x = el_def("unit", "unit"),
-                        ggside.panel.spacing.y = el_def("unit", "unit")
+                        ggside.panel.spacing.y = el_def("unit", "unit"),
+                        ggside.panel.background = el_def("element_rect", "rect"),
+                        ggside.panel.grid = el_def("element_line", "line"),
+                        ggside.panel.grid.major = el_def("element_line", "line"),
+                        ggside.panel.grid.major.x = el_def("element_line", "line"),
+                        ggside.panel.grid.major.y = el_def("element_line", "line"),
+                        ggside.panel.grid.minor = el_def("element_line", "line"),
+                        ggside.panel.grid.minor.x = el_def("element_line", "line"),
+                        ggside.panel.grid.minor.y = el_def("element_line", "line")
                         )
     )
 }
