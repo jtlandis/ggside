@@ -1,4 +1,4 @@
-This is a minor patch to the `ggside` package. Fixed outstanding bug where `geom_xsidetext()` did not use the proper `geom` parameter, causing an error. Fixed bug introduced in v0.1.1 where many messages were printed to the console when using `ggside` with `facet_wrap()` or `facet_grid()`.
+This is a minor patch to the `ggside` package. Fixed an exporting issue of `ggplot2::ggplot_add()`, allowing `ggside` S3 methods to be visible to `ggplot2` calls.
 
 ## Test environments
 * local macOS Big Sur install, R 4.1.0
@@ -12,4 +12,4 @@ This is a minor patch to the `ggside` package. Fixed outstanding bug where `geom
 
 ## Downstream dependencies
 
-There are no reverse dependencies for package `ggside` yet.
+All reverse dependencies checked with R CMD - No issues detected.
