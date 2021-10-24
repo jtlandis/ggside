@@ -90,17 +90,6 @@ The following section will summarize issues that are present on the
 current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
-v0.1.2.
+v0.1.3.
 
--   [\#23
-    ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/23)
-    side geometry guides do not work for users with `ggplot2 (> 3.3.3)`.
-    `ggside` relied on an implimentation of `ggplot2:::Layer` which has
-    proved to be unstable and will probably move away from in a future
-    release. This will unfortunately break the fix created for
-    [\#11](https://github.com/jtlandis/ggside/issues/11). Solution is
-    TBD.
--   [\#24
-    ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/24)
-    `ggside` functions were not added correctly as a list. Adding
-    `#' @importFrom ggplot2 ggplot_add` explicitly fixed this issue.
+No Known Issues

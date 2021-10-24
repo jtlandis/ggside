@@ -13,3 +13,5 @@ examples.r
 Generate_Data.R
 ^\.travis\.yml$
 ^CRAN-RELEASE$
+revdep
+revdep/*
