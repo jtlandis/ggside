@@ -1,4 +1,4 @@
-anel_guides_grob <- function (guides, position, theme)
+panel_guides_grob <- function (guides, position, theme)
 {
   guide <- guide_for_position(guides, position) %||% guide_none()
   guide_gengrob(guide, theme)
