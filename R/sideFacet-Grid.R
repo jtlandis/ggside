@@ -47,7 +47,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   # ask the coordinate system if it wants to specify one
   aspect_ratio <- theme$aspect.ratio
   if (is.null(aspect_ratio) && !params$free$x && !params$free$y) {
-    aspect_ratio <- coord$aspect(ranges[[1]])
+    aspect_ratio <- coord$aspect(ranges[[layout[layout$PANEL_TYPE=="main",]$PANEL[1L]]])
   }
   if (is.null(aspect_ratio)) {
     aspect_ratio <- 1

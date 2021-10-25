@@ -134,7 +134,6 @@ CoordSideTrans <- ggplot2::ggproto(
 as_ggsideCoord.CoordFixed<- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
-  if (class(coord)[1L]!="CoordCartesian") abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
   ggplot2::ggproto(NULL,
                    CoordSideFixed,
                    limits = coord$limits,
