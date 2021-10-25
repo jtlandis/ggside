@@ -162,41 +162,7 @@ axis_label_element_overrides <- function (axis_position, angle = NULL) {
     abort(glue("Unrecognized position: '{axis_position}'"))
   }
 }
-# setup_ggside_axis_theme <- function(theme) {
-#   # text
-#   theme[["ggside.axis.text"]] <- theme[["ggside.axis.text"]] %||% theme[["axis.text"]]
-#   theme[["ggside.axis.text.x"]] <- theme[["ggside.axis.text.x"]] %||% combine_elements(theme[["ggside.axis.text"]], theme[["axis.text.x"]])
-#   theme[["ggside.axis.text.x.top"]] <- theme[["ggside.axis.text.x.top"]] %||% theme[["ggside.axis.text.x"]]
-#   theme[["ggside.axis.text.x.bottom"]] <- theme[["ggside.axis.text.x.bottom"]] %||% theme[["ggside.axis.text.x"]]
-#   theme[["ggside.axis.text.y"]] <- theme[["ggside.axis.text.y"]] %||% combine_elements(theme[["ggside.axis.text"]], theme[["axis.text.y"]])
-#   theme[["ggside.axis.text.y.left"]] <- theme[["ggside.axis.text.y.left"]] %||% theme[["ggside.axis.text.y"]]
-#   theme[["ggside.axis.text.y.right"]] <- theme[["ggside.axis.text.y.right"]] %||% theme[["ggside.axis.text.y"]]
-#   # line
-#   theme[["ggside.axis.line"]] <- theme[["ggside.axis.line"]] %||% theme[["axis.line"]]
-#   theme[["ggside.axis.line.x"]] <- theme[["ggside.axis.line.x"]] %||% combine_elements(theme[["ggside.axis.line"]], theme[["axis.line.x"]])
-#   theme[["ggside.axis.line.x.top"]] <- theme[["ggside.axis.line.x.top"]] %||% theme[["ggside.axis.line.x"]]
-#   theme[["ggside.axis.line.x.bottom"]] <- theme[["ggside.axis.line.x.bottom"]] %||% theme[["ggside.axis.line.x"]]
-#   theme[["ggside.axis.line.y"]] <- theme[["ggside.axis.line.y"]] %||% combine_elements(theme[["ggside.axis.line"]], theme[["axis.line.y"]])
-#   theme[["ggside.axis.line.y.left"]] <- theme[["ggside.axis.line.y.left"]] %||% theme[["ggside.axis.line.y"]]
-#   theme[["ggside.axis.line.y.right"]] <- theme[["ggside.axis.line.y.right"]] %||% theme[["ggside.axis.line.y"]]
-#   # ticks
-#   theme[["ggside.axis.ticks"]] <- theme[["ggside.axis.ticks"]] %||% theme[["axis.ticks"]]
-#   theme[["ggside.axis.ticks.x"]] <- theme[["ggside.axis.ticks.x"]] %||% combine_elements(theme[["ggside.axis.ticks"]], theme[["axis.ticks.x"]])
-#   theme[["ggside.axis.ticks.x.top"]] <- theme[["ggside.axis.ticks.x.top"]] %||% theme[["ggside.axis.ticks.x"]]
-#   theme[["ggside.axis.ticks.x.bottom"]] <- theme[["ggside.axis.ticks.x.bottom"]] %||% theme[["ggside.axis.ticks.x"]]
-#   theme[["ggside.axis.ticks.y"]] <- theme[["ggside.axis.ticks.y"]] %||% combine_elements(theme[["ggside.axis.ticks"]], theme[["axis.ticks.y"]])
-#   theme[["ggside.axis.ticks.y.left"]] <- theme[["ggside.axis.ticks.y.left"]] %||% theme[["ggside.axis.ticks.y"]]
-#   theme[["ggside.axis.ticks.y.right"]] <- theme[["ggside.axis.ticks.y.right"]] %||% theme[["ggside.axis.ticks.y"]]
-#   # ticks.length
-#   theme[["ggside.axis.ticks.length"]] <- theme[["ggside.axis.ticks.length"]] %||% theme[["axis.ticks.length"]]
-#   theme[["ggside.axis.ticks.length.x"]] <- theme[["ggside.axis.ticks.length.x"]] %||% combine_elements(theme[["ggside.axis.ticks.length"]], theme[["axis.ticks.length.x"]])
-#   theme[["ggside.axis.ticks.length.x.top"]] <- theme[["ggside.axis.ticks.length.x.top"]] %||% theme[["ggside.axis.ticks.length.x"]]
-#   theme[["ggside.axis.ticks.length.x.bottom"]] <- theme[["ggside.axis.ticks.length.x.bottom"]] %||% theme[["ggside.axis.ticks.length.x"]]
-#   theme[["ggside.axis.ticks.length.y"]] <- theme[["ggside.axis.ticks.length.y"]] %||% combine_elements(theme[["ggside.axis.ticks.length"]], theme[["axis.ticks.length.y"]])
-#   theme[["ggside.axis.ticks.length.y.left"]] <- theme[["ggside.axis.ticks.length.y.left"]] %||% theme[["ggside.axis.ticks.length.y"]]
-#   theme[["ggside.axis.ticks.length.y.right"]] <- theme[["ggside.axis.ticks.length.y.right"]] %||% theme[["ggside.axis.ticks.length.y"]]
-#   theme
-# }
+
 
 draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
           check.overlap = FALSE, angle = NULL, n.dodge = 1)
@@ -386,17 +352,6 @@ guide_grid <- function (theme, x.minor, x.major, y.minor, y.major) {
                                    id.lengths = rep(2, length(x.major)))))
 }
 
-# setup_ggside_panel_theme <- function(theme) {
-#   theme[["ggside.panel.background"]] <- theme[["ggside.panel.background"]] %||% theme[["panel.background"]]
-#   theme[["ggside.panel.grid"]] <- theme[["ggside.panel.grid"]] %||% theme[["panel.grid"]]
-#   theme[["ggside.panel.grid.major"]] <- theme[["ggside.panel.grid.major"]] %||% theme[["panel.grid.major"]] %||% theme[["ggside.panel.grid"]]
-#   theme[["ggside.panel.grid.major.x"]] <- theme[["ggside.panel.grid.major.x"]] %||% theme[["panel.grid.major.x"]] %||% theme[["ggside.panel.grid"]]
-#   theme[["ggside.panel.grid.major.y"]] <- theme[["ggside.panel.grid.major.y"]] %||% theme[["panel.grid.major.y"]] %||% theme[["ggside.panel.grid"]]
-#   theme[["ggside.panel.grid.minor"]] <- theme[["ggside.panel.grid.minor"]] %||% combine_elements(theme[["ggside.panel.grid"]], theme[["panel.grid.minor"]])
-#   theme[["ggside.panel.grid.minor.x"]] <- theme[["ggside.panel.grid.minor.x"]] %||% theme[["panel.grid.minor.x"]] %||% theme[["ggside.panel.grid.minor"]]
-#   theme[["ggside.panel.grid.minor.y"]] <- theme[["ggside.panel.grid.minor.y"]] %||% theme[["panel.grid.minor.y"]] %||% theme[["ggside.panel.grid.minor"]]
-#   theme
-# }
 
 ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
     x.minor <- setdiff(x.minor, x.major)
