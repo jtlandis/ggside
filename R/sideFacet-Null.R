@@ -39,8 +39,8 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
     respect <- TRUE
   }
   #theme side panel scale
-  side.panel.scale.x <- theme$ggside.panel.scale.x %||% theme$ggside.panel.scale %||% .1
-  side.panel.scale.y <- theme$ggside.panel.scale.y %||% theme$ggside.panel.scale %||% .1
+  side.panel.scale.x <- calc_element("ggside.panel.scale.x", theme)
+  side.panel.scale.y <- calc_element("ggside.panel.scale.y", theme)
 
   empty_table <- matrix(list(zeroGrob()), nrow = nrow, ncol = ncol)
   panel_table <- empty_table
@@ -73,11 +73,10 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   panel_table$layout$name <- paste0('panel-', rep(seq_len(ncol), nrow), '-', rep(seq_len(nrow), each = ncol))
 
   #need to register theme element
-  sidepanel.spacing <- theme$ggside.panel.spacing %||% theme$panel.spacing
-  sidepanel.spacing.x <- theme$ggside.panel.spacing.x %||% sidepanel.spacing
-  xpanel_spacing <- theme$panel.spacing.x %||% theme$panel.spacing
-  sidepanel.spacing.y <- theme$ggside.panel.spacing.y %||% sidepanel.spacing
-  ypanel_spacing <- theme$panel.spacing.y %||% theme$panel.spacing
+  sidepanel.spacing.x <- calc_element("ggside.panel.spacing.x", theme)
+  xpanel_spacing <- calc_element("panel.spacing.x", theme)
+  sidepanel.spacing.y <- calc_element("ggside.panel.spacing.y", theme)
+  ypanel_spacing <- calc_element("panel.spacing.y", theme)
   col.widths <- if("y"%in%side_panels_present){
     unit(rep(c(sidepanel.spacing.x, xpanel_spacing), length.out = length(panel_table$widths)-1), "pt")
   } else {

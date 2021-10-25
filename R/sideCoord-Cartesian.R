@@ -15,12 +15,16 @@ as_ggsideCoord.CoordCartesian <- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
   if (class(coord)[1L]!="CoordCartesian") abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
-  ggplot2::ggproto(NULL,
+  ggplot2::ggproto("CoordSide",
                    CoordSideCartesian,
                    limits = coord$limits,
                    expand = coord$expand,
                    default = coord$default,
                    clip = coord$clip)
+}
+
+as_ggsideCoord.CoordSide <- function(coord) {
+  coord
 }
 
 CoordSideCartesian <- ggplot2::ggproto(
@@ -73,7 +77,7 @@ CoordSideCartesian <- ggplot2::ggproto(
 
 
 as_ggsideCoord.CoordTrans <- function(coord) {
-  ggplot2::ggproto(NULL,
+  ggplot2::ggproto("CoordSide",
                    CoordSideTrans,
                    trans = coord$trans,
                    limits = coord$limits,
@@ -134,7 +138,7 @@ CoordSideTrans <- ggplot2::ggproto(
 as_ggsideCoord.CoordFixed<- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
-  ggplot2::ggproto(NULL,
+  ggplot2::ggproto("CoordSide",
                    CoordSideFixed,
                    limits = coord$limits,
                    ratio = coord$ratio,
