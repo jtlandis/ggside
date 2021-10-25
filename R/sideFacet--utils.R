@@ -275,3 +275,7 @@ map_data_ggside <- function(data, layout, params){
   data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
   data
 }
+
+map_panel_type <- function(panel_params, panel_types) {
+  mapply(function(x, y) {x$ggside_panel_type <- y; x}, x = panel_params, y = panel_types, SIMPLIFY = F)
+}

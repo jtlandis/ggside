@@ -63,6 +63,7 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   side_panels_present <- c("x","y")[c("x","y")%in%layout$PANEL_TYPE]
   x.pos <- params$ggside$x.pos
   y.pos <- params$ggside$y.pos
+  ranges <- map_panel_type(ranges, layout$PANEL_TYPE)
 
   axes <- render_axes(ranges, ranges, coord, theme, transpose = TRUE)
 
