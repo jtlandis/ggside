@@ -1,39 +1,4 @@
 
-calc_element2 <- function (element, theme, verbose = FALSE, skip_blank = FALSE) {
-  if (verbose)
-    message(element, " --> ", appendLF = FALSE)
-  el_out <- theme[[element]]
-  if (inherits(el_out, "element_blank")) {
-    if (isTRUE(skip_blank)) {
-      el_out <- NULL
-    }
-    else {
-      if (verbose)
-        message("element_blank (no inheritance)")
-      return(el_out)
-    }
-  }
-  element_tree <- get_element_tree()
-  if (!is.null(el_out) && !inherits(el_out, element_tree[[element]]$class)) {
-    abort(glue("{element} should have class {ggplot_global$element_tree[[element]]$class}"))
-  }
-  pnames <- element_tree[[element]]$inherit
-  if (is.null(pnames)) {
-    if (verbose)
-      message("nothing (top level)")
-    nullprops <- vapply(el_out, is.null, logical(1))
-    if (!any(nullprops)) {
-      return(el_out)
-    }
-    return(combine_elements(el_out, ggplot2:::ggplot_global$theme_default[[element]]))
-
-  }
-  if (verbose)
-    message(paste(pnames, collapse = ", "))
-  parents <- lapply(pnames, calc_element2, theme, verbose = verbose,
-                    skip_blank = skip_blank || (!is.null(el_out) && !isTRUE(el_out$inherit.blank)))
-  Reduce(combine_elements, parents, el_out)
-}
 
 panel_guides_grob <- function (guides, position, theme)
 {
@@ -235,6 +200,22 @@ draw_axis <- function (break_positions, break_labels, axis_position, theme,
                height = gtable_height(gt), vp = justvp)
 }
 
+theme_ele_exists <- function(ele, ns, family = NULL, theme) {
+  .lgl <- grepl(paste0("^",ns,".",ele), names(theme)) |
+    if (!is.null(family))
+      grepl(paste0("^",ns,".",family), names(theme))
+  else
+    FALSE
+  any(.lgl) && all(vapply(theme[.lgl], function(x) !is.null(x), logical(1)))
+}
+
+use_ggside_ele <- function(ele, family = NULL, theme) {
+  if (theme_ele_exists(ele, "ggside", family, theme))
+    paste0("ggside.",ele)
+  else
+    ele
+}
+
 draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
                               check.overlap = FALSE, angle = NULL, n.dodge = 1)
 {
@@ -243,14 +224,13 @@ draw_ggside_axis <- function (break_positions, break_labels, axis_position, them
                                               "right", "left"))
   aesthetic <- if (axis_position %in% c("top", "bottom"))  "x" else "y"
 
-  line_element_name <- paste0("ggside.axis.line.", aesthetic, ".",
-                              axis_position)
-  tick_element_name <- paste0("ggside.axis.ticks.", aesthetic, ".",
-                              axis_position)
-  tick_length_element_name <- paste0("ggside.axis.ticks.length.",
-                                     aesthetic, ".", axis_position)
-  label_element_name <- paste0("ggside.axis.text.", aesthetic, ".",
-                               axis_position)
+  aes_axis_pos <- paste0(aesthetic, ".", axis_position)
+
+  line_element_name <- paste0(use_ggside_ele("axis.line", "line", theme), ".", aes_axis_pos)
+  tick_element_name <- paste0(use_ggside_ele("axis.ticks", "line", theme), ".", aes_axis_pos)
+  tick_length_element_name <- paste0(use_ggside_ele("axis.ticks.length", theme = theme), ".", aes_axis_pos)
+  label_element_name <- paste0(use_ggside_ele("axis.text", "text", theme), ".", aes_axis_pos)
+
   line_element <- calc_element(line_element_name, theme)
   tick_element <- calc_element(tick_element_name, theme)
   tick_length <- calc_element(tick_length_element_name, theme)
@@ -427,22 +407,23 @@ guide_grid <- function (theme, x.minor, x.major, y.minor, y.major) {
 ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
   x.minor <- setdiff(x.minor, x.major)
   y.minor <- setdiff(y.minor, y.major)
+  ele <- use_ggside_ele("panel.grid", "line", theme)
   ggname("grill",
-         grobTree(element_render(theme, "ggside.panel.background"),
+         grobTree(element_render(theme, use_ggside_ele("panel.background", "rect", theme)),
                   if (length(y.minor) > 0)
-                    element_render(theme, "ggside.panel.grid.minor.y",
+                    element_render(theme, paste0(ele, ".minor.y"),
                                    x = rep(0:1,length(y.minor)), y = rep(y.minor, each = 2),
                                    id.lengths = rep(2, length(y.minor))),
                   if (length(x.minor) > 0)
-                    element_render(theme, "ggside.panel.grid.minor.x",
+                    element_render(theme, paste0(ele, ".minor.x"),
                                    x = rep(x.minor, each = 2), y = rep(0:1, length(x.minor)),
                                    id.lengths = rep(2,length(x.minor))),
                   if (length(y.major) > 0)
-                    element_render(theme, "ggside.panel.grid.major.y",
+                    element_render(theme, paste0(ele, ".major.y"),
                                    x = rep(0:1, length(y.major)), y = rep(y.major, each = 2),
                                    id.lengths = rep(2, length(y.major))),
                   if (length(x.major) >  0)
-                    element_render(theme, "ggside.panel.grid.major.x",
+                    element_render(theme, paste0(ele, ".major.x"),
                                    x = rep(x.major,  each = 2), y = rep(0:1, length(x.major)),
                                    id.lengths = rep(2, length(x.major)))))
 
@@ -453,7 +434,7 @@ ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
 ggside_render_fg <- function(panel_params, theme) {
   panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
   if (is.element(panel_type, c("x", "y"))) {
-    element_render(theme, "ggside.panel.border")
+    element_render(theme, use_ggside_ele("panel.border", "rect", theme))
   } else {
     element_render(theme, "panel.border")
   }

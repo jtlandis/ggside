@@ -27,20 +27,13 @@ as_ggsideCoord.CoordSide <- function(coord) {
   coord
 }
 
-ggside_theme_used_coord <- function(theme) {
-  any(c(
-    any(vapply(theme[grepl("^ggside.panel.grid", names(theme))],)),
-    !is.null(theme$ggside.axis)
-  ))
-}
-
 CoordSideCartesian <- ggplot2::ggproto(
   "CoordSideCartesian",
   CoordCartesian,
   render_bg = function(panel_params, theme) {
     browser
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
-    if (is.element(panel_type, c("x", "y")) && ggside_theme_used_coord(theme)) {
+    if (is.element(panel_type, c("x", "y"))) {
       ggside_guide_grid(
         theme,
         panel_params$x$break_positions_minor(),
@@ -61,7 +54,7 @@ CoordSideCartesian <- ggplot2::ggproto(
   render_fg = ggside_render_fg,
   render_axis_h = function (panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
-    if (panel_type=="y" && ggside_theme_used_coord(theme)) {
+    if (panel_type=="y") {
       list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme),
            bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
     } else {
@@ -72,7 +65,7 @@ CoordSideCartesian <- ggplot2::ggproto(
   render_axis_v = function (panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
 
-    if (panel_type=="x" && ggside_theme_used_coord(theme)) {
+    if (panel_type=="x") {
       list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme),
            right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme))
     } else {
