@@ -1,3 +1,40 @@
+
+calc_element2 <- function (element, theme, verbose = FALSE, skip_blank = FALSE) {
+  if (verbose)
+    message(element, " --> ", appendLF = FALSE)
+  el_out <- theme[[element]]
+  if (inherits(el_out, "element_blank")) {
+    if (isTRUE(skip_blank)) {
+      el_out <- NULL
+    }
+    else {
+      if (verbose)
+        message("element_blank (no inheritance)")
+      return(el_out)
+    }
+  }
+  element_tree <- get_element_tree()
+  if (!is.null(el_out) && !inherits(el_out, element_tree[[element]]$class)) {
+    abort(glue("{element} should have class {ggplot_global$element_tree[[element]]$class}"))
+  }
+  pnames <- element_tree[[element]]$inherit
+  if (is.null(pnames)) {
+    if (verbose)
+      message("nothing (top level)")
+    nullprops <- vapply(el_out, is.null, logical(1))
+    if (!any(nullprops)) {
+      return(el_out)
+    }
+    return(combine_elements(el_out, ggplot2:::ggplot_global$theme_default[[element]]))
+
+  }
+  if (verbose)
+    message(paste(pnames, collapse = ", "))
+  parents <- lapply(pnames, calc_element2, theme, verbose = verbose,
+                    skip_blank = skip_blank || (!is.null(el_out) && !isTRUE(el_out$inherit.blank)))
+  Reduce(combine_elements, parents, el_out)
+}
+
 panel_guides_grob <- function (guides, position, theme)
 {
   guide <- guide_for_position(guides, position) %||% guide_none()
