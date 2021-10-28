@@ -202,16 +202,19 @@ draw_axis <- function (break_positions, break_labels, axis_position, theme,
 
 theme_ele_exists <- function(ele, ns, family = NULL, theme) {
   .lgl <- grepl(paste0("^",ns,".",ele), names(theme)) |
-    if (!is.null(family))
-      grepl(paste0("^",ns,".",family), names(theme))
+    if (length(family)!=0)
+      if (length(family) == 1L)
+        grepl(paste0("^",ns,".",family), names(theme))
+      else
+        Reduce(`|`, lapply(paste0("^",ns,".",family), grepl, x = names(theme)))
   else
     FALSE
   any(.lgl) && all(vapply(theme[.lgl], function(x) !is.null(x), logical(1)))
 }
 
-use_ggside_ele <- function(ele, family = NULL, theme) {
-  if (theme_ele_exists(ele, "ggside", family, theme))
-    paste0("ggside.",ele)
+use_ggside_ele <- function(ele, theme, side = NULL, family = NULL) {
+  if (theme_ele_exists(ele, "ggside", c(family, side), theme))
+    paste0("ggside.",ifelse(is.null(side), "", side),".",ele)
   else
     ele
 }
@@ -226,10 +229,10 @@ draw_ggside_axis <- function (break_positions, break_labels, axis_position, them
 
   aes_axis_pos <- paste0(aesthetic, ".", axis_position)
 
-  line_element_name <- paste0(use_ggside_ele("axis.line", "line", theme), ".", aes_axis_pos)
-  tick_element_name <- paste0(use_ggside_ele("axis.ticks", "line", theme), ".", aes_axis_pos)
+  line_element_name <- paste0(use_ggside_ele("axis.line", family = "line", theme = theme), ".", aes_axis_pos)
+  tick_element_name <- paste0(use_ggside_ele("axis.ticks", family = "line", theme = theme), ".", aes_axis_pos)
   tick_length_element_name <- paste0(use_ggside_ele("axis.ticks.length", theme = theme), ".", aes_axis_pos)
-  label_element_name <- paste0(use_ggside_ele("axis.text", "text", theme), ".", aes_axis_pos)
+  label_element_name <- paste0(use_ggside_ele("axis.text", family = "text", theme = theme), ".", aes_axis_pos)
 
   line_element <- calc_element(line_element_name, theme)
   tick_element <- calc_element(tick_element_name, theme)
@@ -403,13 +406,125 @@ guide_grid <- function (theme, x.minor, x.major, y.minor, y.major) {
                                    id.lengths = rep(2, length(x.major)))))
 }
 
+# calc_ggside_element <- function (element, theme, verbose = FALSE, skip_blank = FALSE, ggside_tree = FALSE, ggside_used = FALSE) {
+#   browser()
+#   if (verbose)
+#     message(element, " --> ", appendLF = FALSE)
+#   el_out <- theme[[element]]
+#   if (inherits(el_out, "element_blank")) {
+#     if (isTRUE(skip_blank)) {
+#       el_out <- NULL
+#     }
+#     else {
+#       if (verbose)
+#         message("element_blank (no inheritance)")
+#       return(el_out)
+#     }
+#   }
+#   if (!ggside_used && grepl("^ggside", element) && !is.null(el_out)) {
+#     ggside_used <- TRUE
+#   }
+#   element_tree <- get_element_tree()
+#   if (!is.null(el_out) && !inherits(el_out, element_tree[[element]]$class)) {
+#     abort(glue("{element} should have class {ggplot_global$element_tree[[element]]$class}"))
+#   }
+#   pnames <- element_tree[[element]]$inherit
+#   if (is.null(pnames)) {
+#     if (!ggside_used && ggside_tree) {
+#       if (verbose)
+#         message("No specified ggside theme (no inheritance)")
+#       return(NULL)
+#     }
+#     if (verbose)
+#       message("nothing (top level)")
+#     nullprops <- vapply(el_out, is.null, logical(1))
+#     if (!any(nullprops)) {
+#       return(el_out)
+#     }
+#     el_out <- combine_elements(el_out, ggplot_global$theme_default[[element]])
+#     nullprops <- vapply(el_out, is.null, logical(1))
+#     if (!any(nullprops)) {
+#       return(el_out)
+#     }
+#     abort(glue("Theme element `{element}` has NULL property without default: ",
+#                glue_collapse(names(nullprops)[nullprops], ", ",
+#                              last = " and ")))
+#   }
+#   if (!ggside_tree) {
+#     ggside_tree <- grepl("^ggside", pnames)
+#   }
+#   if (verbose)
+#     message(paste(pnames, collapse = ", "))
+#   parents <- mapply(calc_ggside_element2, element = pnames, ggside_tree = ggside_tree,
+#                     MoreArgs = list(theme = theme, verbose = verbose,
+#                     skip_blank = skip_blank || (!is.null(el_out) && !isTRUE(el_out$inherit.blank)),
+#                     ggside_used = ggside_used), SIMPLIFY = F)
+#
+#   Reduce(combine_elements, parents, el_out)
+# }
+#
+# calc_ggside_element2 <- function (element, theme, verbose = FALSE, skip_blank = FALSE, ggside_tree = FALSE, ggside_used = FALSE) {
+#   #browser()
+#   if (verbose)
+#     message(element, " --> ", appendLF = FALSE)
+#   el_out <- theme[[element]]
+#   if (inherits(el_out, "element_blank")) {
+#     if (isTRUE(skip_blank)) {
+#       el_out <- NULL
+#     }
+#     else {
+#       if (verbose)
+#         message("element_blank (no inheritance)")
+#       return(el_out)
+#     }
+#   }
+#   if (!ggside_used && grepl("^ggside", element) && !is.null(el_out)) {
+#     ggside_used <- TRUE
+#   }
+#   element_tree <- get_element_tree()
+#   if (!is.null(el_out) && !inherits(el_out, element_tree[[element]]$class)) {
+#     abort(glue("{element} should have class {ggplot_global$element_tree[[element]]$class}"))
+#   }
+#   pnames <- element_tree[[element]]$inherit
+#   if (is.null(pnames)) {
+#     if (!ggside_used && ggside_tree) {
+#       if (verbose)
+#         message("No specified ggside theme (no inheritance)")
+#       return(NULL)
+#     }
+#     if (verbose)
+#       message("nothing (top level)")
+#     nullprops <- vapply(el_out, is.null, logical(1))
+#     if (!any(nullprops)) {
+#       return(el_out)
+#     }
+#     el_out <- combine_elements(el_out, ggplot_global$theme_default[[element]])
+#     nullprops <- vapply(el_out, is.null, logical(1))
+#     if (!any(nullprops)) {
+#       return(el_out)
+#     }
+#     abort(glue("Theme element `{element}` has NULL property without default: ",
+#                glue_collapse(names(nullprops)[nullprops], ", ",
+#                              last = " and ")))
+#   }
+#   if (verbose)
+#     message(paste(pnames, collapse = ", "))
+#   parents <- lapply(pnames, calc_ggside_element2, ggside_tree = ggside_tree,
+#                     theme = theme, verbose = verbose,
+#                     skip_blank = skip_blank || (!is.null(el_out) && !isTRUE(el_out$inherit.blank)),
+#                     ggside_used = ggside_used)
+#
+#   Reduce(combine_elements, parents, el_out)
+# }
 
-ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
+
+ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major, side = NULL) {
   x.minor <- setdiff(x.minor, x.major)
   y.minor <- setdiff(y.minor, y.major)
-  ele <- use_ggside_ele("panel.grid", "line", theme)
+  side <- switch(x = "xside", y = "yside", NULL)
+  ele <- use_ggside_ele("panel.grid", side = side, family = "line", theme = theme)
   ggname("grill",
-         grobTree(element_render(theme, use_ggside_ele("panel.background", "rect", theme)),
+         grobTree(element_render(theme, use_ggside_ele("panel.background", side = side, family = "rect", theme = theme)),
                   if (length(y.minor) > 0)
                     element_render(theme, paste0(ele, ".minor.y"),
                                    x = rep(0:1,length(y.minor)), y = rep(y.minor, each = 2),
@@ -434,7 +549,7 @@ ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major) {
 ggside_render_fg <- function(panel_params, theme) {
   panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
   if (is.element(panel_type, c("x", "y"))) {
-    element_render(theme, use_ggside_ele("panel.border", "rect", theme))
+    element_render(theme, use_ggside_ele("panel.border", family = "rect", theme = theme))
   } else {
     element_render(theme, "panel.border")
   }

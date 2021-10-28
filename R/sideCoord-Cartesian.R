@@ -31,7 +31,6 @@ CoordSideCartesian <- ggplot2::ggproto(
   "CoordSideCartesian",
   CoordCartesian,
   render_bg = function(panel_params, theme) {
-    browser
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
     if (is.element(panel_type, c("x", "y"))) {
       ggside_guide_grid(
@@ -39,7 +38,8 @@ CoordSideCartesian <- ggplot2::ggproto(
         panel_params$x$break_positions_minor(),
         panel_params$x$break_positions(),
         panel_params$y$break_positions_minor(),
-        panel_params$y$break_positions()
+        panel_params$y$break_positions(),
+        side = panel_type
       )
     } else {
       guide_grid(
@@ -97,7 +97,8 @@ CoordSideTrans <- ggplot2::ggproto(
         panel_params$x.minor,
         panel_params$x.major,
         panel_params$y.minor,
-        panel_params$y.major
+        panel_params$y.major,
+        side = panel_type
       )
     } else {
       guide_grid(
@@ -159,7 +160,8 @@ CoordSideFixed <- ggplot2::ggproto(
         panel_params$x.minor,
         panel_params$x.major,
         panel_params$y.minor,
-        panel_params$y.major
+        panel_params$y.major,
+        side = panel_type
       )
     } else {
       guide_grid(
