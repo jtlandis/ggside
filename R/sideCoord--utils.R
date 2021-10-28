@@ -214,7 +214,7 @@ theme_ele_exists <- function(ele, ns, family = NULL, theme) {
 
 use_ggside_ele <- function(ele, theme, side = NULL, family = NULL) {
   if (theme_ele_exists(ele, "ggside", c(family, side), theme))
-    paste0("ggside.",ifelse(is.null(side), "", side),".",ele)
+    paste0("ggside",ifelse(is.null(side), "", paste0(".",side)),".",ele)
   else
     ele
 }
@@ -521,7 +521,7 @@ guide_grid <- function (theme, x.minor, x.major, y.minor, y.major) {
 ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major, side = NULL) {
   x.minor <- setdiff(x.minor, x.major)
   y.minor <- setdiff(y.minor, y.major)
-  side <- switch(x = "xside", y = "yside", NULL)
+  side <- paste0(side, "side")
   ele <- use_ggside_ele("panel.grid", side = side, family = "line", theme = theme)
   ggname("grill",
          grobTree(element_render(theme, use_ggside_ele("panel.background", side = side, family = "rect", theme = theme)),
@@ -549,7 +549,7 @@ ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major, side = 
 ggside_render_fg <- function(panel_params, theme) {
   panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
   if (is.element(panel_type, c("x", "y"))) {
-    element_render(theme, use_ggside_ele("panel.border", family = "rect", theme = theme))
+    element_render(theme, use_ggside_ele("panel.border", side = paste0(panel_type, "side"), family = "rect", theme = theme))
   } else {
     element_render(theme, "panel.border")
   }
