@@ -109,7 +109,7 @@ NULL
     ggside.panel.spacing.y = NULL,
     # 0.2.0 - panel.*
     ggside.panel.background = NULL,
-    ggside.panel.border = NULL,
+    ggside.panel.border = NULL, #ensure we dont inherit a white background from element_rect default
     ggside.panel.grid = NULL,
     ggside.panel.grid.major = NULL,
     ggside.panel.grid.major.x = NULL,

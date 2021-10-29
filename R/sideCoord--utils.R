@@ -200,23 +200,42 @@ draw_axis <- function (break_positions, break_labels, axis_position, theme,
                height = gtable_height(gt), vp = justvp)
 }
 
-theme_ele_exists <- function(ele, ns, family = NULL, theme) {
-  .lgl <- grepl(paste0("^",ns,".",ele), names(theme)) |
-    if (length(family)!=0)
-      if (length(family) == 1L)
-        grepl(paste0("^",ns,".",family), names(theme))
-      else
-        Reduce(`|`, lapply(paste0("^",ns,".",family), grepl, x = names(theme)))
-  else
-    FALSE
-  any(.lgl) && all(vapply(theme[.lgl], function(x) !is.null(x), logical(1)))
-}
+# theme_ele_exists <- function(ele, ns, family = NULL, theme) {
+#   .lgl <- grepl(paste0("^",ns,".",ele), names(theme)) |
+#     if (length(family)!=0)
+#       if (length(family) == 1L)
+#         grepl(paste0("^",ns,".",family), names(theme))
+#       else
+#         Reduce(`|`, lapply(paste0("^",ns,".",family), grepl, x = names(theme)))
+#   else
+#     FALSE
+#   any(.lgl) && all(vapply(theme[.lgl], function(x) !is.null(x), logical(1)))
+# }
+#
+# use_ggside_ele <- function(ele, theme, side = NULL, family = NULL) {
+#   if (theme_ele_exists(ele, "ggside", c(family, side), theme))
+#     paste0("ggside",ifelse(is.null(side), "", paste0(".",side)),".",ele)
+#   else
+#     ele
+# }
 
-use_ggside_ele <- function(ele, theme, side = NULL, family = NULL) {
-  if (theme_ele_exists(ele, "ggside", c(family, side), theme))
-    paste0("ggside",ifelse(is.null(side), "", paste0(".",side)),".",ele)
+use_ggside_ele <- function(ele, side = NULL, family = NULL, theme) {
+  theme_nms <- names(theme)
+
+  #most specific
+  if (!is.null(side)) {
+    .lgl <- grepl(paste("^ggside",side, ele, sep = "\\."), theme_nms)
+
+    if (any(.lgl)) return(paste("ggside", side, ele, sep = "."))
+  }
+
+
+  .lgl <- Reduce(`|`, lapply(paste("^ggside", c(ele, family), sep = "\\."), grepl, x = theme_nms))
+
+  if (any(.lgl))
+    return(paste("ggside",ele, sep = "."))
   else
-    ele
+    return(ele)
 }
 
 draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
