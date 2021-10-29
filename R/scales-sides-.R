@@ -25,8 +25,8 @@
 #' #affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
 #' ggplot(mtcars, aes(wt, mpg)) +
 #'   geom_point() +
-#'   geom_xsidehistogram() +
-#'   geom_ysidehistogram()  +
+#'   geom_xsidehistogram(bins = 30) +
+#'   geom_ysidehistogram(bins = 30)  +
 #'   scale_x_continuous(
 #'       breaks = seq(1, 6, 1),
 #'       #would otherwise remove the histogram
