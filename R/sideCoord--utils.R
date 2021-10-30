@@ -372,10 +372,29 @@ draw_axis_labels <- function (break_positions, break_labels, label_element, is_v
     break_labels <- break_labels[priority]
     break_positions <- break_positions[priority]
   }
-  labels_grob <- exec(element_grob, label_element, `:=`(!!position_dim,
-                                                        break_positions), `:=`(!!label_margin_name, TRUE), label = break_labels,
+  labels_grob <- exec(element_grob, label_element,
+                      `:=`(!!position_dim, break_positions),
+                      `:=`(!!label_margin_name, TRUE),
+                      label = break_labels,
                       check.overlap = check.overlap)
 }
+
+axis_label_priority <- function (n) {
+   if (n <= 0) {
+     return(numeric(0))
+   }
+   c(1, n, axis_label_priority_between(1, n))
+ }
+
+ axis_label_priority_between <- function (x, y) {
+   n <- y - x + 1
+   if (n <= 2) {
+     return(numeric(0))
+   }
+   mid <- x - 1 + (n + 1)%/%2
+   c(mid, axis_label_priority_between(x, mid),
+     axis_label_priority_between(mid, y))
+ }
 
 combine_elements <- function (e1, e2) {
   if (is.null(e2) || inherits(e1, "element_blank")) {

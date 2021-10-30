@@ -1,16 +1,23 @@
 
 #'@rdname ggside-ggproto-coord
+#'@title Coord Compatible with ggside
 #'@description
 #' S3 class that converts old Coord into one that
 #' is compatible with ggside. Can also update
 #' ggside on the object. Typically, the new ggproto
 #' will inherit from the object being replaced.
 #' @param coord coord ggproto Object to replace
-#'@export
+#' @export
 as_ggsideCoord <- function(coord) UseMethod("as_ggsideCoord")
+
+#' @rdname ggside-ggproto-coord
+#' @export
 as_ggsideCoord.default <- function(coord){
   abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
 }
+
+#' @rdname ggside-ggproto-coord
+#' @export
 as_ggsideCoord.CoordCartesian <- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
@@ -23,6 +30,8 @@ as_ggsideCoord.CoordCartesian <- function(coord){
                    clip = coord$clip)
 }
 
+#' @rdname ggside-ggproto-coord
+#' @export
 as_ggsideCoord.CoordSide <- function(coord) {
   coord
 }
@@ -76,7 +85,8 @@ CoordSideCartesian <- ggplot2::ggproto(
 )
 
 
-
+#' @rdname ggside-ggproto-coord
+#' @export
 as_ggsideCoord.CoordTrans <- function(coord) {
   ggplot2::ggproto("CoordSide",
                    CoordSideTrans,
@@ -136,7 +146,8 @@ CoordSideTrans <- ggplot2::ggproto(
   }
 )
 
-
+#' @rdname ggside-ggproto-coord
+#' @export
 as_ggsideCoord.CoordFixed<- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
