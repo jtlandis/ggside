@@ -3,6 +3,7 @@
 
 * A set of new theme elements have been added to give users more control over how side panels are rendered. Please see `?ggside-theme` for more details. Addresses Feature request #10.
 * To make way for this change, `ggside` now also modifies the `Coord` object. Currently only `CoordCartesian`, `CoordFixed` and `CoordTrans` are supported for `ggside`.
+* new arguments added to `ggside`: `draw_x_on` and `draw_y_on` which will allow the user to specify if the respective axis should be rendered on the main panel or the side panel.
 
 # ggside 0.1.3
 

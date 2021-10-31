@@ -1,4 +1,4 @@
-This is a minor patch to the `ggside` package. Fixed an exporting issue of `ggplot2::ggplot_add()`, allowing `ggside` S3 methods to be visible to `ggplot2` calls.
+This is a minor content update to the `ggside` package. The package is receiving more exported functions that let users specify the theme elements of the side panels separately from main panels. Additional functionality allows the user to render the axis in relation to the main or side panels.
 
 ## Test environments
 * local macOS Big Sur install, R 4.1.0
