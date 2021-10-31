@@ -14,18 +14,31 @@
 #' a single panel. Set "x" to collapse all x side panels, set "y" to
 #' collapse all y side panels, set "all" to collapse both x and y
 #' side panels.
+#' @param draw_x_on,draw_y_on Determines where the axis is rendered.
+#' For example:
+#' By default, the bottom x-axis is rendered on the bottom most panel
+#' per column. If set to "main", then the axis is rendered on the bottom
+#' of the bottom most main panel. If set to "side", then the x-axis is rendered
+#' on the bottom of the bottom most side panel(s). You may apply this logic
+#' to all axis positions.
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
 #' @return a object of class 'ggside_options' or to be added to a ggplot
 #' @export
-ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL){
+ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
+                   draw_x_on = c("default","main","side"),
+                   draw_y_on = c("default","main","side")){
+  draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
+  draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
                  collapse = collapse,
                  xsidey = NULL,
-                 ysidex = NULL), class = c("ggside_options","gg"))
+                 ysidex = NULL,
+                 draw_x_on = draw_x_on,
+                 draw_y_on = draw_y_on), class = c("ggside_options","gg"))
 }
 
 #' @title Check ggside objects

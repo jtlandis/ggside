@@ -5,7 +5,14 @@
 \alias{ggside}
 \title{ggside options}
 \usage{
-ggside(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL)
+ggside(
+  x.pos = "top",
+  y.pos = "right",
+  scales = "fixed",
+  collapse = NULL,
+  draw_x_on = c("default", "main", "side"),
+  draw_y_on = c("default", "main", "side")
+)
 }
 \arguments{
 \item{x.pos}{x side panel can either take "top" or "bottom"}
@@ -23,6 +30,14 @@ cause all y scales of the x side Panels to be independent.}
 a single panel. Set "x" to collapse all x side panels, set "y" to
 collapse all y side panels, set "all" to collapse both x and y
 side panels.}
+
+\item{draw_x_on, draw_y_on}{Determines where the axis is rendered.
+For example:
+By default, the bottom x-axis is rendered on the bottom most panel
+per column. If set to "main", then the axis is rendered on the bottom
+of the bottom most main panel. If set to "side", then the x-axis is rendered
+on the bottom of the bottom most side panel(s). You may apply this logic
+to all axis positions.}
 }
 \value{
 a object of class 'ggside_options' or to be added to a ggplot

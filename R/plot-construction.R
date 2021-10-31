@@ -47,6 +47,8 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
   object$ggside$xsidey <- ggside$xsidey %||% object$ggside$xsidey %||% NULL
   object$ggside$ysidex <- ggside$ysidex %||% object$ggside$ysidex %||% NULL
+  object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
+  object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
   object[['coordinates']] <- as_ggsideCoord(object[['coordinates']])
   return(object)

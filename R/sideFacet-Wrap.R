@@ -196,13 +196,33 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   .x <- if("PANEL_GROUP" %in% .ygroupby) "x" else NULL
 
   bottom <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
-                  function(x){x[["ROW2"]] <- max(x[["ROW"]]);x})
+                  function(x, on){
+    x[["ROW2"]] <- switch(on,
+                          default = max(x[["ROW"]]),
+                          main = max(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
+                          side = max(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
+    x}, on = params$ggside$draw_x_on)
   top <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
-               function(x){x[["ROW2"]] <- min(x[["ROW"]]);x})
+               function(x, on){
+    x[["ROW2"]] <- switch(on,
+                          default = min(x[["ROW"]]),
+                          main = min(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
+                          side = min(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
+    x}, on = params$ggside$draw_x_on)
   right <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
-                 function(x){x[["COL2"]] <- max(x[["COL"]]);x})
+                 function(x, on){
+    x[["COL2"]] <- switch(on,
+                          default = max(x[["COL"]]),
+                          main = max(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
+                          side = max(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
+    x}, on = params$ggside$draw_y_on)
   left <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
-                function(x){x[["COL2"]] <- min(x[["COL"]]);x})
+                function(x, on){
+    x[["COL2"]] <- switch(on,
+                          default = min(x[["COL"]]),
+                          main = min(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
+                          side = min(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
+    x}, on = params$ggside$draw_y_on)
 
   if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
     right <- right[right[["COL"]]==right[["COL2"]]|right[["PANEL_TYPE"]]=="x",]
