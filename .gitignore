@@ -6,3 +6,5 @@ doc
 Meta
 inst/doc
 revdep/*
+/doc/
+/Meta/
