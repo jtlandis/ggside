@@ -45,15 +45,12 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 
 
 
-```{r error_plot, error=T}
+```{r error_plot, error=T, include=F}
 p <-ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_tile(aes(x=0, fill = cut))
-tryCatch({
-  p
-  },
-  error = function(e) e
-)
+
+p
 ```
 
 As you can see, trying to place a colorbar causes an error because the previous `geom_tile` call has already mapped `mean Price` to `fill` and has deemed the scale as continuous. Thus a categorical variable is unable to map to the `fill` aesthetic anymore.
@@ -106,17 +103,13 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 
 Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respectively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggside** can give some ease to plotting information to the sides of the main figure.
 
-```{r error_plot2, error=T}
+```{r error_plot2, error=T, include = F}
 p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_ysidetile(aes(yfill = `sd of means`)) + #sets yfill to a continuous scale
   geom_ysidetile(aes(yfill = cut)) #attempting to add discrete color values
-tryCatch({
-  p
-},
-error = function(err){
-  print(paste(err))
-})
+
+p
 
 ```
 
@@ -256,7 +249,7 @@ As of `ggside (>= 0.1.0)` you can now have further control over how a side axis 
 
 Additionally, this allows you to mix continuous and discrete scales on the same y or x axis. For example the main panel y axis may be continuous and the side panel y axis may be discrete. Take the following example that was not possible prior to this version:
 
-```{r ggside_error, error=TRUE}
+```{r ggside_error, error=TRUE, include = F}
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
   geom_xsideboxplot(aes(y =class), orientation = "y") +
