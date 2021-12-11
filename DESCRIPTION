@@ -15,6 +15,8 @@ Description: The grammar of graphics as shown in 'ggplot2' has provided
   particularly useful for visualizing metadata on a discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
 License: MIT + file LICENSE
+URL: https://github.com/jtlandis/ggside
+BugReports: https://github.com/jtlandis/ggside/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
