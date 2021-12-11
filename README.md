@@ -1,7 +1,7 @@
 README
 ================
 Justin Landis
-7/17/2021
+12/11/2021
 
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
@@ -109,6 +109,6 @@ The following section will summarize issues that are present on the
 current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
-v0.1.3.
+v0.2.0.
 
 No Known Issues

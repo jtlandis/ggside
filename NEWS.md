@@ -1,5 +1,5 @@
 
-# ggside 0.2.0.9991
+# ggside 0.2.0
 
 * A set of new theme elements have been added to give users more control over how side panels are rendered. Please see `?ggside-theme` for more details. Addresses Feature request #10.
 * To make way for this change, `ggside` now also modifies the `Coord` object. Currently only `CoordCartesian`, `CoordFixed` and `CoordTrans` are supported for `ggside`.
