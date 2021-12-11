@@ -4,6 +4,8 @@ behaviour
 boxcox
 colorbar
 colour
+coord
+Coord
 extensibility
 FacetSideGrid
 FacetSideNull
@@ -11,6 +13,11 @@ FacetSideWrap
 ggplot
 ggplots
 ggproto
+ggside's
+grey
+pts
+rect
+th
 Github
 gradientn
 hms

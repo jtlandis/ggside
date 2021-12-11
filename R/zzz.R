@@ -50,7 +50,7 @@
 #' Lines along the side panel's axis.Due to the layout of side panels, `ggside.axis.line.x`
 #' will only affect the yside panel's x-axis text and `ggside.axis.line.y` will
 #' only affect the xside panel's y-axis text. Theme elements inherit from `axis.line`
-#' and will default to the current theme's `axis.line` inheritance shceme unless
+#' and will default to the current theme's `axis.line` inheritance scheme unless
 #' specifically set. \cr
 #' \tab \cr
 #' \code{ggside.axis.ticks, ggside.axis.ticks.x, ggside.axis.ticks.y,
