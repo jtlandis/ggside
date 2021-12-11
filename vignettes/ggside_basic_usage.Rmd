@@ -7,7 +7,7 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+```{r knitr_setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -45,7 +45,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 
 
 
-```{r, error=T}
+```{r error_plot, error=T}
 p <-ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_tile(aes(x=0, fill = cut))
@@ -106,7 +106,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 
 Unfortunately using `xfill` or `yfill` with `geom_xsidetile` or `geom_ysidetile` respectively will lock its associated scale with the first layer. So you cannot first assign `yfill` to a discrete scale and then add a layer with `yfill` maps to a continuous variable or vise a versa. For example, the following code still produces an error. This is largely due to the original motivation for making this package, but at least **ggside** can give some ease to plotting information to the sides of the main figure.
 
-```{r, error=T}
+```{r error_plot2, error=T}
 p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_ysidetile(aes(yfill = `sd of means`)) + #sets yfill to a continuous scale
