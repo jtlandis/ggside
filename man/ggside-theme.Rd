@@ -135,7 +135,7 @@ ggside.axis.line.x.top, ggside.axis.line.x.bottom, ggside.axis.line.y.left, ggsi
 Lines along the side panel's axis.Due to the layout of side panels, \code{ggside.axis.line.x}
 will only affect the yside panel's x-axis text and \code{ggside.axis.line.y} will
 only affect the xside panel's y-axis text. Theme elements inherit from \code{axis.line}
-and will default to the current theme's \code{axis.line} inheritance shceme unless
+and will default to the current theme's \code{axis.line} inheritance scheme unless
 specifically set. \cr
 \tab \cr
 \code{ggside.axis.ticks, ggside.axis.ticks.x, ggside.axis.ticks.y,
