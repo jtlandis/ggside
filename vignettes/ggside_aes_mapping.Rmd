@@ -27,7 +27,7 @@ In `ggside (<0.1.0)`, the user was expected to explicitly map all computed aesth
 
 For example take the following example `ggplot`
 
-```{r}
+```{r ggplot_readme_example}
 p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point(size = 2) +
   theme_bw()
@@ -78,7 +78,7 @@ tryCatch({
 
 ```
 
-```{r}
+```{r ggside_legacy_example}
 p + geom_xsidedensity_legacy(aes(y = after_stat(density)))
 ```
 
@@ -90,7 +90,7 @@ For example, `geom_xsidedensity` will ignore the `y` global mapping and assign `
 
 This should be much less typing.
 
-```{r}
+```{r ggside_updated_aes_usage}
 p + 
   geom_xsidedensity() +
   geom_ysidedensity()
@@ -99,7 +99,7 @@ p +
 
 Of course, if you would like to use a different computed variables, you will need to specify it like normal.
 
-```{r}
+```{r ggside_aes_stats}
 p + 
   geom_xsidedensity(aes(y = after_stat(count))) +
   geom_ysidedensity(aes(x = after_stat(scaled)))
@@ -108,7 +108,7 @@ p +
 
 You can even use `geom_xsidedensity(orientation = "y")` to force it to inherit the `y` global mapping and map `x = after_stat(density)`. I don't expect many users will do this, but the option is available nonetheless. 
 
-```{r}
+```{r ggside_off_usage_example}
 #
 p + 
   geom_xsidedensity(orientation = "y") #just use geom_ysidedensity()  ¯\_(ツ)_/¯
