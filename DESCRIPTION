@@ -6,7 +6,8 @@ Authors@R:
     person(given = "Justin",
            family = "Landis",
            role = c("aut", "cre"),
-           email = "jtlandis314@gmail.com")
+           email = "jtlandis314@gmail.com",
+           comment = c(ORCID = "0000-0001-5501-4934"))
 Maintainer: Justin Landis <jtlandis314@gmail.com>
 Description: The grammar of graphics as shown in 'ggplot2' has provided
   an expressive API for users to build plots. 'ggside' extends 'ggplot2' 
