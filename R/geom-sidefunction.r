@@ -1,7 +1,7 @@
-#' @rdname geom_xsideline
+#' @rdname geom_xsidefunction
 #' @export
-geom_xsidepath <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
+geom_xsidefunction <- function(mapping = NULL, data = NULL,
+                           stat = "function", position = "identity",
                            ...,
                            lineend = "butt",
                            linejoin = "round",
@@ -14,11 +14,12 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomXsidepath,
+    geom = GeomXsidefunction,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
+      fun = fun,
       lineend = lineend,
       linejoin = linejoin,
       linemitre = linemitre,
@@ -31,12 +32,25 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @export
+stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunction", position = "identity",
+                               ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
+                               show.legend = NA, inherit.aes = TRUE) {
+
+  l <- layer(data = data, mapping = mapping, stat = StatFunction,
+        geom = geom, position = position, show.legend = show.legend,
+        inherit.aes = inherit.aes, params = list(fun = fun, n = n,
+                                                 args = args, na.rm = na.rm, xlim = xlim, ...),
+        layer_class = XLayer)
+  structure(l, class = c("ggside_layer", class(l)))
+}
+
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
-                                  ggplot2::GeomPath,
+GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
+                                  ggplot2::GeomFunction,
                                   default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
                                                     linetype = 1, alpha = NA),
                                   setup_data = function(data, params){
@@ -59,8 +73,8 @@ GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
 
 #' @rdname geom_xsideline
 #' @export
-geom_ysidepath <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
+geom_ysidefunction <- function(mapping = NULL, data = NULL,
+                           stat = "function", position = "identity",
                            ...,
                            lineend = "butt",
                            linejoin = "round",
@@ -73,7 +87,7 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
     data = data,
     mapping = mapping,
     stat = stat,
-    geom = GeomYsidepath,
+    geom = GeomYsidefunction,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
@@ -90,12 +104,25 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @export
+stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunction", position = "identity",
+                               ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
+                               show.legend = NA, inherit.aes = TRUE) {
+
+  l <- layer(data = data, mapping = mapping, stat = StatYsidefunction,
+             geom = geom, position = position, show.legend = show.legend,
+             inherit.aes = inherit.aes, params = list(fun = fun, n = n,
+                                                      args = args, na.rm = na.rm, ylim = ylim, ...),
+             layer_class = YLayer)
+  structure(l, class = c("ggside_layer", class(l)))
+}
+
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
-                                  ggplot2::GeomPath,
+GeomYsidefunction <- ggplot2::ggproto("GeomYsidefunction",
+                                  ggplot2::GeomFunction,
                                   default_aes = aes(colour = "black", ycolour = NA, size = 0.5,
                                                     linetype = 1, alpha = NA),
                                   setup_data = function(data, params){
@@ -115,5 +142,31 @@ GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
                                   })
 
 
-
+#' @export
+StatYsidefunction <- ggplot2::ggproto("StatYsidefunction",
+                                      ggplot2::StatFunction,
+                                      compute_group = function (data, scales, fun, ylim = NULL, n = 101, args = list()) {
+                                        if (is.null(scales$y)) {
+                                          range <- ylim %||% c(0, 1)
+                                          yseq <- seq(range[1], range[2], length.out = n)
+                                          y_trans <- yseq
+                                        }
+                                        else {
+                                          range <- ylim %||% scales$y$dimension()
+                                          yseq <- seq(range[1], range[2], length.out = n)
+                                          if (scales$y$is_discrete()) {
+                                            y_trans <- yseq
+                                          }
+                                          else {
+                                            y_trans <- scales$y$trans$inverse(yseq)
+                                          }
+                                        }
+                                        if (is.formula(fun))
+                                          fun <- as_function(fun)
+                                        x_out <- do.call(fun, c(list(quote(y_trans)), args))
+                                        if (!is.null(scales$y) && !scales$y$is_discrete()) {
+                                          x_out <- scales$y$trans$transform(x_out)
+                                        }
+                                        new_data_frame(list(x = x_out, y = yseq))
+                                      })
 
