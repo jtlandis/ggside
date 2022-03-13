@@ -6,7 +6,8 @@ Authors@R:
     person(given = "Justin",
            family = "Landis",
            role = c("aut", "cre"),
-           email = "jtlandis314@gmail.com")
+           email = "jtlandis314@gmail.com",
+           comment = c(ORCID = "0000-0001-5501-4934"))
 Maintainer: Justin Landis <jtlandis314@gmail.com>
 Description: The grammar of graphics as shown in 'ggplot2' has provided
   an expressive API for users to build plots. 'ggside' extends 'ggplot2' 
@@ -15,10 +16,12 @@ Description: The grammar of graphics as shown in 'ggplot2' has provided
   particularly useful for visualizing metadata on a discrete axis, or summary
   graphics on a continuous axis such as a boxplot or a density distribution.
 License: MIT + file LICENSE
+URL: https://github.com/jtlandis/ggside
+BugReports: https://github.com/jtlandis/ggside/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
-VignetteBuilder: knitr, rmarkdown
+VignetteBuilder: knitr
 Depends: ggplot2 (>= 3.0.0)
 Imports: grid,
     gtable,
