@@ -3,6 +3,7 @@
 %   R/geom-sidepath.r
 \name{geom_ysidefunction}
 \alias{geom_ysidefunction}
+\alias{stat_ysidefunction}
 \alias{geom_xsideline}
 \alias{geom_*sideline}
 \alias{geom_ysideline}
@@ -13,13 +14,28 @@
 geom_ysidefunction(
   mapping = NULL,
   data = NULL,
-  stat = "function",
+  stat = "ysidefunction",
   position = "identity",
   ...,
   lineend = "butt",
   linejoin = "round",
   linemitre = 10,
   arrow = NULL,
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+stat_ysidefunction(
+  mapping = NULL,
+  data = NULL,
+  geom = "ysidefunction",
+  position = "identity",
+  ...,
+  fun,
+  ylim = NULL,
+  n = 101,
+  args = list(),
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE

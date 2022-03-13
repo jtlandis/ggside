@@ -239,8 +239,7 @@ use_ggside_ele <- function(ele, side = NULL, family = NULL, theme) {
 }
 
 draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
-                              check.overlap = FALSE, angle = NULL, n.dodge = 1)
-{
+                              check.overlap = FALSE, angle = NULL, n.dodge = 1){
 
   axis_position <- match.arg(axis_position, c("top", "bottom",
                                               "right", "left"))

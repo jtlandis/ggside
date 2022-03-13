@@ -297,7 +297,12 @@ eval_facets <- function (facets, data, possible_columns = NULL) {
   vars <- compact(lapply(facets, eval_facet, data, possible_columns = possible_columns))
   new_data_frame(tibble::as_tibble(vars))
 }
-
+downto <- function (a, b) {
+  rev(upto(a, rev(b)))
+}
+upto <- function (a, b) {
+  b[seq_len(match(a, b, nomatch = 0))]
+}
 reshape_margins <- function (vars, margins = NULL) {
   if (is.null(margins) || identical(margins, FALSE))
     return(NULL)
