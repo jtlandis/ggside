@@ -32,6 +32,20 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @examples
+#'
+#' x<- rweibull(100, 2.6, 3)
+#' y<- rweibull(100, 1.8, 3)
+#' xy.df<- data.frame(cbind(x,y))
+#' p <- ggplot(xy.df, aes(x, y)) +
+#'   geom_point(colour = "blue", size = 0.25) +
+#'   geom_density2d() +
+#'   geom_xsidedensity(fill = "blue", alpha = .3) +
+#'   geom_ysidedensity(fill = "blue", alpha = .3) +
+#'   stat_xsidefunction(fun = dweibull, args = list(shape = 1.8, scale = 3), colour = "red") +
+#'   stat_ysidefunction(fun = dweibull, args = list(shape = 2.6, scale = 3), colour = "red") +
+#'   theme_classic()
+#' p
 #' @export
 stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunction", position = "identity",
                                ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
