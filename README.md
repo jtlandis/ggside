@@ -113,13 +113,13 @@ the development branches. The current CRAN version of `ggside` is
 v0.2.0.
 
 -   [\#3
-    ![](https://img.shields.io/badge/bug-master-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/3)
+    ![](https://img.shields.io/badge/bug-main-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/3)
     Bug involving `geom_abline()`, `geom_hline()` or `geom_vline()` in
     combination with a `facet_(wrap|grid)` and any `ggside` geometry.
     Solution is TBD.
 
 -   [\#28
-    ![](https://img.shields.io/badge/bug-master-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/3)
+    ![](https://img.shields.io/badge/bug-main-orange.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/3)
     Bug when a new data frame is passed to a `ggside` geometry layer and
     makes use of the `(x|y)color` or `(x|y)fill` aesthetic while a
     `color` or `fill` aesthetic is specified globally. If the new data
