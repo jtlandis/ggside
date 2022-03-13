@@ -1,4 +1,11 @@
 
+# ggside 0.2.0.9990
+
+* added the following `geom_(x|y)side*` variants
+  * `geom_xsidefunction()`, `geom_ysidefunction()`
+  * `geom_xsideline()`, `geom_ysideline()` 
+* `stat_xsidefunction()` and `stat_ysidefunction()` were added to accompany `geom_(x|y)sidefunction`. This seemed to be a special case in which a stat variant was also needed.
+
 # ggside 0.2.0
 
 * A set of new theme elements have been added to give users more control over how side panels are rendered. Please see `?ggside-theme` for more details. Addresses Feature request #10.
