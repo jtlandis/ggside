@@ -23,12 +23,14 @@ Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.1.2
 VignetteBuilder: knitr
 Depends: ggplot2 (>= 3.0.0)
-Imports: grid,
+Imports: 
+    grid,
     gtable,
     rlang,
     scales,
     glue,
-    stats
+    stats,
+    tibble
 Suggests:
     tidyr,
     dplyr,
