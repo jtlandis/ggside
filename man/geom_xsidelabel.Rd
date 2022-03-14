@@ -15,7 +15,9 @@ geom_xsidelabel(
   parse = FALSE,
   nudge_x = 0,
   nudge_y = 0,
-  check_overlap = FALSE,
+  label.padding = unit(0.25, "lines"),
+  label.r = unit(0.15, "lines"),
+  label.size = 0.25,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -30,7 +32,9 @@ geom_ysidelabel(
   parse = FALSE,
   nudge_x = 0,
   nudge_y = 0,
-  check_overlap = FALSE,
+  label.padding = unit(0.25, "lines"),
+  label.r = unit(0.15, "lines"),
+  label.size = 0.25,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -80,11 +84,11 @@ Cannot be jointly specified with \code{position}.}
 Useful for offsetting text from points, particularly on discrete scales.
 Cannot be jointly specified with \code{position}.}
 
-\item{check_overlap}{If \code{TRUE}, text that overlaps previous text in the
-same layer will not be plotted. \code{check_overlap} happens at draw time and in
-the order of the data. Therefore data should be arranged by the label
-column before calling \code{geom_text()}. Note that this argument is not
-supported by \code{geom_label()}.}
+\item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
+
+\item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
+
+\item{label.size}{Size of label border, in mm.}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}

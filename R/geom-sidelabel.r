@@ -11,7 +11,9 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
                             parse = FALSE,
                             nudge_x = 0,
                             nudge_y = 0,
-                            check_overlap = FALSE,
+                            label.padding = unit(0.25, "lines"),
+                            label.r = unit(0.15, "lines"),
+                            label.size = 0.25,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE)
@@ -34,10 +36,12 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
     inherit.aes = inherit.aes,
     params = list(
       parse = parse,
+      label.padding = label.padding,
+      label.r = label.r,
+      label.size = label.size,
       na.rm = na.rm,
-      ...
-    ),
-    layer_class = ggside:::XLayer
+      ...),
+    layer_class = XLayer
   )
   structure(l, class = c("ggside_layer",class(l)))
 }
@@ -75,7 +79,9 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
                             parse = FALSE,
                             nudge_x = 0,
                             nudge_y = 0,
-                            check_overlap = FALSE,
+                            label.padding = unit(0.25, "lines"),
+                            label.r = unit(0.15, "lines"),
+                            label.size = 0.25,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE)
@@ -98,10 +104,12 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
     inherit.aes = inherit.aes,
     params = list(
       parse = parse,
+      label.padding = label.padding,
+      label.r = label.r,
+      label.size = label.size,
       na.rm = na.rm,
-      ...
-    ),
-    layer_class = ggside:::YLayer
+      ...),
+    layer_class = YLayer
   )
   structure(l, class = c("ggside_layer",class(l)))
 }
