@@ -14,3 +14,4 @@ Generate_Data.R
 ^\.travis\.yml$
 revdep
 revdep/*
+^\.github$

@@ -96,7 +96,7 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
                                   ggplot2::GeomPath,
-                                  default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
+                                  default_aes = aes(colour = "black", ycolour = NA, size = 0.5,
                                                     linetype = 1, alpha = NA),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)

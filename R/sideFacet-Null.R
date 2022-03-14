@@ -230,5 +230,15 @@ FacetSideNull <- ggplot2::ggproto("FacetSideNull",
                                     }
                                     scales
                                   },
-                                  map_data = map_data_ggside,
+                                  map_data = function (data, layout, params) {
+                                    if (is.waive(data))
+                                      return(new_data_frame(list(PANEL = factor())))
+                                    if (empty(data))
+                                      return(new_data_frame(c(data, list(PANEL = factor()))))
+
+                                    prep_map_data(layout, data)
+                                    keys <- join_keys(data, layout, by = "PANEL_TYPE")
+                                    data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
+                                    data
+                                  },
                                   draw_panels = sideFacetNull_draw_panels)

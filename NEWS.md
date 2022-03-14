@@ -1,4 +1,25 @@
 
+# ggside 0.2.0.9990
+
+### Breaking change
+
+Certain `ggside` geometries have the capabilities to use `xfill/yfill` or `xcolour/ycolour` in place of the normal `fill` and `colour` aesthetics. This was always meant to provide a separate aesthetic scale to color by. The earlier version of `ggside` failed to consider the case when `fill`/`colour` was specified in the global mapping, and the user passes a new data frame to the `ggside` layer that excludes the quoted column. This has been addressed with #28 where if `xfill/yfill` are specified, then the global `fill` aesthetic is ignored (as well for `xcolour/ycolour` and `colour`). This fix, however, has exposed a potential breaking change, meaning plots with the following requirements may not be exactly the same as compared to earlier versions of `ggside` (< 0.2.1) :
+
+* `fill` or `colour` is used in global mapping
+* `xfill/yfill` or `xcolour/ycolour` (respectively) is used in a `ggside` layer
+* both quoted columns for these aesthetics were available in whatever data given to the layer
+
+How this would have worked in the past is that the computed mapping groups would be made on both aesthetics, but only filling or coloring by the `ggside` aesthetic. Now, the layer will only fill or color by the `ggside` aesthetic - potentially reducing the number of groups made by the plot.
+
+### Updates
+
+* added the following `geom_(x|y)side*` variants
+  * `geom_xsidefunction()`, `geom_ysidefunction()`
+  * `geom_xsideline()`, `geom_ysideline()` 
+* `stat_xsidefunction()` and `stat_ysidefunction()` were added to accompany `geom_(x|y)sidefunction`. This seemed to be a special case in which a stat variant was also needed.
+* `geom_abline()`, `geom_hline()`, and `geom_vline()` will no longer cause errors when used on a `ggside` object that has `facet_wrap()/facet_grid()` in place. Addresses issue #3
+
+
 # ggside 0.2.0
 
 * A set of new theme elements have been added to give users more control over how side panels are rendered. Please see `?ggside-theme` for more details. Addresses Feature request #10.
