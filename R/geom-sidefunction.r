@@ -81,7 +81,7 @@ GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
 
 
 
-#' @rdname geom_xsideline
+#' @rdname geom_xsidefunction
 #' @export
 geom_ysidefunction <- function(mapping = NULL, data = NULL,
                            stat = "ysidefunction", position = "identity",
@@ -114,7 +114,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
-#' @rdname geom_xsideline
+#' @rdname geom_xsidefunction
 #' @export
 stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunction", position = "identity",
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
