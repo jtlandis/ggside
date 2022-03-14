@@ -380,6 +380,42 @@ FacetSideGrid <- ggplot2::ggproto("FacetSideGrid",
                                     }
                                     scales
                                   },
-                                  map_data = map_data_ggside,
+                                  map_data = function (data, layout, params)
+                                  {
+                                    if (empty(data)) {
+                                      return(cbind(data, PANEL = integer(0)))
+                                    }
+                                    rows <- params$rows
+                                    cols <- params$cols
+                                    vars <- c(names(rows), names(cols), "PANEL_TYPE")
+                                    prep_map_data(layout, data)
+                                    if (length(vars) == 0) {
+                                      data$PANEL <- layout$PANEL
+                                      return(data)
+                                    }
+                                    margin_vars <- list(intersect(names(rows), names(data)),
+                                                        intersect(names(cols), names(data)))
+                                    data <- reshape_add_margins(data, margin_vars, params$margins)
+                                    facet_vals <- eval_facets(c(rows, cols, PANEL_TYPE = quo(PANEL_TYPE)), data, params$.possible_columns)
+                                    missing_facets <- setdiff(vars, names(facet_vals))
+                                    if (length(missing_facets) > 0) {
+                                      to_add <- unique(layout[missing_facets])
+                                      data_rep <- rep.int(1:nrow(data), nrow(to_add))
+                                      facet_rep <- rep(1:nrow(to_add), each = nrow(data))
+                                      data <- unrowname(data[data_rep, , drop = FALSE])
+                                      facet_vals <- unrowname(cbind(facet_vals[data_rep, ,
+                                                                               drop = FALSE], to_add[facet_rep, , drop = FALSE]))
+                                    }
+                                    if (nrow(facet_vals) == 0) {
+                                      data$PANEL <- NO_PANEL
+                                    }
+                                    else {
+                                      facet_vals[] <- lapply(facet_vals[], as.factor)
+                                      facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
+                                      keys <- join_keys(facet_vals, layout, by = vars)
+                                      data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
+                                    }
+                                    data
+                                  },
                                   draw_panels = sideFacetGrid_draw_panels
 )

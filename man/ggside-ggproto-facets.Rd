@@ -7,7 +7,7 @@
 \alias{as_ggsideFacet}
 \alias{check_scales_collapse}
 \alias{sidePanelLayout}
-\alias{map_data_ggside}
+\alias{prep_map_data}
 \alias{FacetSideGrid}
 \alias{FacetSideNull}
 \alias{FacetSideWrap}
@@ -19,7 +19,7 @@ check_scales_collapse(data, params)
 
 sidePanelLayout(layout, ggside)
 
-map_data_ggside(data, layout, params)
+prep_map_data(layout, data)
 }
 \arguments{
 \item{facet}{Facet ggproto Object to replace}
@@ -49,10 +49,11 @@ compute_layout method
 is meant to be called after the inherited Facet's
 compute_layout method and after \code{check_scales_collapse}
 
-\code{map_data_ggside} is the mapping function
-used to replace all map_data method on \link{FacetSideNull},
-\link{FacetSideGrid}, and \link{FacetSideWrap}. It is exported
-for conveniences of extensibility.
+\code{prep_map_data} is a utility function to help modify
+the \code{data} and \code{layout} variables of the Facet's
+\verb{$map_data} method. This will be sure to include the
+column \code{PANEL_TYPE} that will assist where data should
+map to. Please be sure to join against this column as well.
 }
 \section{Extended Facets}{
 

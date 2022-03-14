@@ -1,39 +1,11 @@
-#' @rdname geom_xsidefunction
-#' @export
-geom_xsidefunction <- function(mapping = NULL, data = NULL,
-                           stat = "function", position = "identity",
-                           ...,
-                           lineend = "butt",
-                           linejoin = "round",
-                           linemitre = 10,
-                           arrow = NULL,
-                           na.rm = FALSE,
-                           show.legend = NA,
-                           inherit.aes = TRUE) {
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidefunction,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      fun = fun,
-      lineend = lineend,
-      linejoin = linejoin,
-      linemitre = linemitre,
-      arrow = arrow,
-      na.rm = na.rm,
-      ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
-
+#' @title Side function plot
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{geom_function}
+#' @inheritParams ggplot2::geom_function
+#' @param ylim Optionally, reestrict the range of the function to this range (y-axis)
+#' @aliases geom_*sidefunction
+#' @return XLayer or YLayer object to be added to a ggplot object
 #' @examples
-#'
 #' x<- rweibull(100, 2.6, 3)
 #' y<- rweibull(100, 1.8, 3)
 #' xy.df<- data.frame(cbind(x,y))
@@ -46,6 +18,31 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
 #'   stat_ysidefunction(fun = dweibull, args = list(shape = 2.6, scale = 3), colour = "red") +
 #'   theme_classic()
 #' p
+#' @export
+geom_xsidefunction <- function(mapping = NULL, data = NULL,
+                           stat = "function", position = "identity",
+                           ...,
+                           na.rm = FALSE,
+                           show.legend = NA,
+                           inherit.aes = TRUE) {
+  l <- layer(
+    data = data,
+    mapping = mapping,
+    stat = stat,
+    geom = GeomXsidefunction,
+    position = position,
+    show.legend = show.legend,
+    inherit.aes = inherit.aes,
+    params = list(
+      na.rm = na.rm,
+      ...
+    ),
+    layer_class = XLayer
+  )
+  structure(l, class = c("ggside_layer",class(l)))
+}
+
+#' @rdname geom_xsidefunction
 #' @export
 stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunction", position = "identity",
                                ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
@@ -85,15 +82,11 @@ GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
 
 
 
-#' @rdname geom_xsideline
+#' @rdname geom_xsidefunction
 #' @export
 geom_ysidefunction <- function(mapping = NULL, data = NULL,
-                           stat = "function", position = "identity",
+                           stat = "ysidefunction", position = "identity",
                            ...,
-                           lineend = "butt",
-                           linejoin = "round",
-                           linemitre = 10,
-                           arrow = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
@@ -106,10 +99,6 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
     params = list(
-      lineend = lineend,
-      linejoin = linejoin,
-      linemitre = linemitre,
-      arrow = arrow,
       na.rm = na.rm,
       ...
     ),
@@ -118,6 +107,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
   structure(l, class = c("ggside_layer",class(l)))
 }
 
+#' @rdname geom_xsidefunction
 #' @export
 stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunction", position = "identity",
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
@@ -156,7 +146,7 @@ GeomYsidefunction <- ggplot2::ggproto("GeomYsidefunction",
                                   })
 
 
-#' @export
+
 StatYsidefunction <- ggplot2::ggproto("StatYsidefunction",
                                       ggplot2::StatFunction,
                                       compute_group = function (data, scales, fun, ylim = NULL, n = 101, args = list()) {
