@@ -105,6 +105,8 @@ be vectorised.}
 \item{n}{Number of points to interpolate along the x axis.}
 
 \item{args}{List of additional arguments passed on to the function defined by \code{fun}.}
+
+\item{ylim}{Optionally, reestrict the range of the function to this range (y-axis)}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object
