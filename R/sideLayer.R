@@ -35,7 +35,7 @@ get_proper_scales <- function(data, scales){
 
 exclude_plot_aes_ggside <- function(plot, layer) {
   priority_aes <- c("xfill","yfill","xcolour","ycolour")
-  side_aes_used <- names(layer$mapping) %in% priority_aes
+  side_aes_used <- priority_aes %in% names(layer$mapping)
   if (any(side_aes_used)) {
     side_aes_used <- priority_aes[side_aes_used]
     plot_aes <- unique(gsub("^(x|y)", "", side_aes_used))
