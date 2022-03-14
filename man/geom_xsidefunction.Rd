@@ -40,10 +40,6 @@ geom_ysidefunction(
   stat = "ysidefunction",
   position = "identity",
   ...,
-  lineend = "butt",
-  linejoin = "round",
-  linemitre = 10,
-  arrow = NULL,
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
