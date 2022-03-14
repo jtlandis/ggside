@@ -107,6 +107,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
 }
 
 #' @rdname geom_xsidefunction
+#' @param ylim Optionally, reestrict the range of the function to this range (y-axis)
 #' @export
 stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunction", position = "identity",
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
