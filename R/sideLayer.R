@@ -33,14 +33,22 @@ get_proper_scales <- function(data, scales){
   return(new_scale_list)
 }
 
-prefer_xside_aes <- function(self) {
-  aes <- self$computed_aese
+exclude_plot_aes_ggside <- function(plot, layer) {
+  priority_aes <- c("xfill","yfill","xcolour","ycolour")
+  side_aes_used <- names(layer$mapping) %in% priority_aes
+  if (any(side_aes_used)) {
+    side_aes_used <- priority_aes[side_aes_used]
+    plot_aes <- unique(gsub("^(x|y)", "", side_aes_used))
+    plot_aes_used <- names(plot$mapping) %in% plot_aes
+    plot$mapping <- plot$mapping[!plot_aes_used]
+  }
+  plot
 }
 
 XLayer <- ggplot2::ggproto("XLayer",
                            Layer,
                            setup_layer = function(self, data, plot){
-                             browser()
+                             plot <- exclude_plot_aes_ggside(plot, self)
                              data <- ggproto_parent(Layer, self)$setup_layer(data = data, plot = plot)
                              data$PANEL_TYPE <- "x"
                              data
@@ -54,6 +62,7 @@ XLayer <- ggplot2::ggproto("XLayer",
 YLayer <- ggplot2::ggproto("YLayer",
                            Layer,
                            setup_layer = function(self, data, plot){
+                             plot <- exclude_plot_aes_ggside(plot, self)
                              data <- ggproto_parent(Layer, self)$setup_layer(data = data, plot = plot)
                              data$PANEL_TYPE <- "y"
                              data
