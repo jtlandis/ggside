@@ -33,10 +33,14 @@ get_proper_scales <- function(data, scales){
   return(new_scale_list)
 }
 
+prefer_xside_aes <- function(self) {
+  aes <- self$computed_aese
+}
 
 XLayer <- ggplot2::ggproto("XLayer",
                            Layer,
                            setup_layer = function(self, data, plot){
+                             browser()
                              data <- ggproto_parent(Layer, self)$setup_layer(data = data, plot = plot)
                              data$PANEL_TYPE <- "x"
                              data
