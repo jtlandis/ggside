@@ -16,6 +16,7 @@ How this would have worked in the past is that the computed mapping groups would
 * added the following `geom_(x|y)side*` variants
   * `geom_xsidefunction()`, `geom_ysidefunction()`
   * `geom_xsideline()`, `geom_ysideline()` 
+  * `geom_xsidelabel()`, `geom_ysidelabel()`
 * `stat_xsidefunction()` and `stat_ysidefunction()` were added to accompany `geom_(x|y)sidefunction`. This seemed to be a special case in which a stat variant was also needed.
 * `geom_abline()`, `geom_hline()`, and `geom_vline()` will no longer cause errors when used on a `ggside` object that has `facet_wrap()/facet_grid()` in place. Addresses issue #3
 
