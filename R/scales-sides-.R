@@ -44,11 +44,25 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "left", sec.axis = waiver()){
 
+  new_oob <- function(f) {
+    function(...) {
+      withCallingHandlers(
+        warning = function(cnd) {
+          msg <- conditionMessage(cnd)
+          if (grepl("‘(<|>)’ not meaningful for factors", msg)) {
+            rlang::cnd_muffle(cnd)
+          }
+        },
+        f(...)
+      )
+    }
+  }
+
   sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept",
                            "ymin_final", "ymax_final", "lower", "middle", "upper",
                            "y0","xsidey"), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = oob, na.value = na.value,
+                         limits = limits, expand = expand, oob = new_oob(oob), na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
   sc <- set_sec_axis(sec.axis, sc)
   structure(sc,
@@ -64,12 +78,25 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "bottom", sec.axis = waiver()){
+  new_oob <- function(f) {
+    function(...) {
+      withCallingHandlers(
+        warning = function(cnd) {
+          msg <- conditionMessage(cnd)
+          if (grepl("‘(<|>)’ not meaningful for factors", msg)) {
+            rlang::cnd_muffle(cnd)
+          }
+        },
+        f(...)
+      )
+    }
+  }
 
   sc <- continuous_scale(c("x", "xmin", "xmax", "xend", "xintercept",
                            "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
                            "x0", "ysidex"), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = oob, na.value = na.value,
+                         limits = limits, expand = expand, oob = new_oob(oob), na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
   sc <- set_sec_axis(sec.axis, sc)
   structure(sc,
