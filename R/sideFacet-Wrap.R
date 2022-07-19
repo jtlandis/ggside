@@ -49,6 +49,11 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     }
   }
   #browser()
+  if (params$ggside$strip!="default") {
+    warn("`ggside(strip = 'main', ...)` is only compatible with `facet_grid(...)`, not `facet_wrap(...)`",
+         .frequency = "regularly",
+         .frequency_id = "ggside_strip_misuse_wrap")
+  }
   collapse <- params$ggside$collapse %||% "default"
   collapse_y <- collapse %in% c("all","y")
   collapse_x <- collapse %in% c("all","x")

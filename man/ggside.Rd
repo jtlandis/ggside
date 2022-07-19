@@ -11,7 +11,8 @@ ggside(
   scales = "fixed",
   collapse = NULL,
   draw_x_on = c("default", "main", "side"),
-  draw_y_on = c("default", "main", "side")
+  draw_y_on = c("default", "main", "side"),
+  strip = c("default", "main")
 )
 }
 \arguments{
@@ -38,6 +39,9 @@ per column. If set to "main", then the axis is rendered on the bottom
 of the bottom most main panel. If set to "side", then the x-axis is rendered
 on the bottom of the bottom most side panel(s). You may apply this logic
 to all axis positions.}
+
+\item{strip}{Determines if the strip should be rendered on the main plot or
+on their default locations. Only has an effect on \code{facet_grid}.}
 }
 \value{
 a object of class 'ggside_options' or to be added to a ggplot

@@ -21,6 +21,8 @@
 #' of the bottom most main panel. If set to "side", then the x-axis is rendered
 #' on the bottom of the bottom most side panel(s). You may apply this logic
 #' to all axis positions.
+#' @param strip Determines if the strip should be rendered on the main plot or
+#' on their default locations. Only has an effect on `facet_grid`.
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
@@ -28,9 +30,11 @@
 #' @export
 ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
                    draw_x_on = c("default","main","side"),
-                   draw_y_on = c("default","main","side")){
+                   draw_y_on = c("default","main","side"),
+                   strip = c("default", "main")){
   draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
   draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
+  strip <- match.arg(strip, c("default", "main"))
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
@@ -38,7 +42,8 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
                  xsidey = NULL,
                  ysidex = NULL,
                  draw_x_on = draw_x_on,
-                 draw_y_on = draw_y_on), class = c("ggside_options","gg"))
+                 draw_y_on = draw_y_on,
+                 strip = strip), class = c("ggside_options","gg"))
 }
 
 #' @title Check ggside objects

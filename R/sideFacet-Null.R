@@ -11,6 +11,11 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   #     layout$SCALE_Y <- 1L
   #   }
   # }
+  if (params$ggside$strip!="default") {
+    warn("`ggside(strip = 'main', ...)` is only compatible with `facet_grid(...)`",
+         .frequency = "regularly",
+         .frequency_id = "ggside_strip_misuse_null")
+  }
   ncol <- max(layout$COL)
   nrow <- max(layout$ROW)
   n <- nrow(layout)

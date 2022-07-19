@@ -13,6 +13,7 @@ How this would have worked in the past is that the computed mapping groups would
 
 ### Updates
 
+* fixed annoying warnings from plot scales when mixing discrete and continuous scales. Addresses issue #33
 * added the following `geom_(x|y)side*` variants
   * `geom_xsidefunction()`, `geom_ysidefunction()`
   * `geom_xsideline()`, `geom_ysideline()` 

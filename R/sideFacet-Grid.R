@@ -274,7 +274,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, axis_height_bottom, "axis-b", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, axis_width_left, "axis-l", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_right, 0, axis_width_right, "axis-r", 3)
-  #browser()
+
   #By default strip.positions are top and right. if switch == "both" set to bottom and left
   strip.position <- params$switch %||% "default"
   strip.position <- switch(strip.position,
@@ -282,7 +282,12 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
                            x = c("bottom","right"), y = c("top", "left"))
   vertical.strip <- c("top","bottom")[c("top","bottom")%in% strip.position]
   horizont.strip <- c("left","right")[c("left","right")%in% strip.position]
-  Vstrip_panel_pos <- unique(do_by(layout, "COL",
+  Vstrip_panel_pos <- if (params$ggside$strip!="default") {
+    subset(layout, PANEL_TYPE=="main")
+  } else {
+    layout
+  }
+  Vstrip_panel_pos <- unique(do_by(Vstrip_panel_pos, "COL",
                             function(x, vstrip){
                               if(vstrip=="top"){
                                 x[["ROW"]] <- min(x[["ROW"]])
@@ -294,8 +299,13 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   Vstrip_panel_pos <- semi_join(layout, Vstrip_panel_pos, by = c("COL","ROW"))
   Vstrip_panel_pos <- unique(Vstrip_panel_pos[!Vstrip_panel_pos[["PANEL_TYPE"]]=="y",c("PANEL","panel_pos")])
 
+  Hstrip_panel_pos <- if (params$ggside$strip!="default") {
+    subset(layout, PANEL_TYPE=="main")
+  } else {
+    layout
+  }
   Hstrip_panel_pos <- unique(
-    do_by(layout, "ROW",
+    do_by(Hstrip_panel_pos, "ROW",
           function(x, hstrip){
             if(hstrip=="left"){
               x[["COL"]] <- min(x[["COL"]])
