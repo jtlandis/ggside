@@ -11,8 +11,8 @@ find_build_plotEnv <- function(){
   expected_items <- c("by_layer","data","layer_data",
                       "layers","layout","plot","scale_x",
                       "scale_y","scales")
-  EnvIndex <- unlist(lapply(items, function(x,y){all(y%in%x)}, y = expected_items))
-  Env <- sys.frames()[EnvIndex]
+  EnvIndex <- unlist(lapply(items, function(x,y){sum(y%in%x)}, y = expected_items))
+  Env <- sys.frames()[which(EnvIndex==max(EnvIndex))]
   return(Env[[1]])
 }
 
