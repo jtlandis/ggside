@@ -44,19 +44,7 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "left", sec.axis = waiver()){
 
-  new_oob <- function(f) {
-    function(...) {
-      withCallingHandlers(
-        warning = function(cnd) {
-          msg <- conditionMessage(cnd)
-          if (grepl("‘(<|>)’ not meaningful for factors", msg)) {
-            rlang::cnd_muffle(cnd)
-          }
-        },
-        f(...)
-      )
-    }
-  }
+  new_oob <- muffle_opts_warn(oob)
 
   sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept",
                            "ymin_final", "ymax_final", "lower", "middle", "upper",
@@ -78,19 +66,7 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "bottom", sec.axis = waiver()){
-  new_oob <- function(f) {
-    function(...) {
-      withCallingHandlers(
-        warning = function(cnd) {
-          msg <- conditionMessage(cnd)
-          if (grepl(".(<|>). not meaningful for factors", msg)) {
-            rlang::cnd_muffle(cnd)
-          }
-        },
-        f(...)
-      )
-    }
-  }
+  new_oob <- muffle_opts_warn(oob)
 
   sc <- continuous_scale(c("x", "xmin", "xmax", "xend", "xintercept",
                            "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
