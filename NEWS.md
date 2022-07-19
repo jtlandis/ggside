@@ -1,5 +1,5 @@
 
-# ggside 0.2.0.9990
+# ggside 0.2.1
 
 ### Breaking change
 
@@ -13,6 +13,7 @@ How this would have worked in the past is that the computed mapping groups would
 
 ### Updates
 
+* `ggside()` gains a `strip` argument, allowing for `facet_grid` to plot strips on the main panels as opposed to the default of the side panels. Addresses issue #26
 * fixed annoying warnings from plot scales when mixing discrete and continuous scales. Addresses issue #33
 * added the following `geom_(x|y)side*` variants
   * `geom_xsidefunction()`, `geom_ysidefunction()`

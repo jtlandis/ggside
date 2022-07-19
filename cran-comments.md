@@ -1,4 +1,4 @@
-This is a minor content update to the `ggside` package. The package is receiving more exported functions that let users specify the theme elements of the side panels separately from main panels. Additional functionality allows the user to render the axis in relation to the main or side panels. This update also fixes issues the `ggside` package was having in building vignettes on development versions of R on some Linux distributions.
+This is a minor content update to the `ggside` package. This version introduces a few breaking changes, reinforcing the original intention behind `ggside` highlighted in the NEWS.md file. There were some minor bugs patched as well as a few extra functions exported to the NAMESPACE.
 
 ## Test environments
 * local macOS Big Sur install, R 4.1.0
