@@ -50,7 +50,7 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                            "ymin_final", "ymax_final", "lower", "middle", "upper",
                            "y0","xsidey"), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = new_oob(oob), na.value = na.value,
+                         limits = limits, expand = expand, oob = new_oob, na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
   sc <- set_sec_axis(sec.axis, sc)
   structure(sc,
@@ -72,7 +72,7 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                            "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
                            "x0", "ysidex"), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = new_oob(oob), na.value = na.value,
+                         limits = limits, expand = expand, oob = new_oob, na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
   sc <- set_sec_axis(sec.axis, sc)
   structure(sc,

@@ -66,7 +66,7 @@ geom_xsidedensity_legacy <- function(mapping = NULL, data = NULL,
 }
 ```
 
-``` {r error_plot, eval = F}
+``` {r error_plot, error = T}
 #geom_xsidedensity_legacy is not exported with new versions of `ggside`
 p_error <- p + geom_xsidedensity_legacy()
 
