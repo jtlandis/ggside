@@ -3,7 +3,7 @@
 
 ### Breaking change
 
-Certain `ggside` geometries have the capabilities to use `xfill/yfill` or `xcolour/ycolour` in place of the normal `fill` and `colour` aesthetics. This was always meant to provide a separate aesthetic scale to color by. The earlier version of `ggside` failed to consider the case when `fill`/`colour` was specified in the global mapping, and the user passes a new data frame to the `ggside` layer that excludes the quoted column. This has been addressed with #28 where if `xfill/yfill` are specified, then the global `fill` aesthetic is ignored (as well for `xcolour/ycolour` and `colour`). This fix, however, has exposed a potential breaking change, meaning plots with the following requirements may not be exactly the same as compared to earlier versions of `ggside` (< 0.2.1) :
+Certain `ggside` geometries have the capabilities to use `xfill/yfill` or `xcolour/ycolour` in place of the normal `fill` and `colour` aesthetics. This was always meant to provide a separate aesthetic scale to color by. The earlier version of `ggside` failed to consider the case when `fill`/`colour` was specified in the global mapping, and the user passes a new data frame to the `ggside` layer that excludes the quoted column. This has been addressed with #28 where if `xfill/yfill` are specified, then the global `fill` aesthetic is ignored (as well for `xcolour/ycolour` and `colour`). This fix, however, has exposed a potential breaking change, meaning plots with the following characteristics may not be exactly the same as compared to earlier versions of `ggside` (< 0.2.1) :
 
 * `fill` or `colour` is used in global mapping
 * `xfill/yfill` or `xcolour/ycolour` (respectively) is used in a `ggside` layer

@@ -83,7 +83,7 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
       withCallingHandlers(
         warning = function(cnd) {
           msg <- conditionMessage(cnd)
-          if (grepl("‘(<|>)’ not meaningful for factors", msg)) {
+          if (grepl(".(<|>). not meaningful for factors", msg)) {
             rlang::cnd_muffle(cnd)
           }
         },
