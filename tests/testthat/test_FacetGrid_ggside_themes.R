@@ -30,3 +30,4 @@ test_that("ggside.panel.spacing facetGrid",{
   expect_doppelganger("grid xyside ggside.panel.spacing.y 10pt", pxy + theme(ggside.panel.spacing.y = unit(10, "pt")))
   expect_doppelganger("grid xyside ggside.panel.spacing 10pt", pxy + theme(ggside.panel.spacing = unit(10, "pt")))
 })
+

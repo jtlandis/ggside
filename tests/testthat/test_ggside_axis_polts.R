@@ -51,3 +51,9 @@ test_that("ggside xy-axis plotting", {
   expect_doppelganger("xyside no-y-text", pxy + theme(axis.text.y = element_blank()))
   expect_doppelganger("xyside facet-Grid", pxy + facet_grid(vars(a), vars(b)))
 })
+
+
+test_that("ggside FacetGrid strip option works", {
+
+  expect_doppelganger("xyside strip main", pxy + facet_grid(vars(a), vars(b)) + ggside(strip = "main"))
+})
