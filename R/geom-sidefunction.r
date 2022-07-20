@@ -2,7 +2,7 @@
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_function}
 #' @inheritParams ggplot2::geom_function
-#' @param ylim Optionally, reestrict the range of the function to this range (y-axis)
+#' @param ylim Optionally, restrict the range of the function to this range (y-axis)
 #' @aliases geom_*sidefunction
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @examples

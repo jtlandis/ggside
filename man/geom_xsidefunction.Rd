@@ -106,7 +106,7 @@ be vectorised.}
 
 \item{args}{List of additional arguments passed on to the function defined by \code{fun}.}
 
-\item{ylim}{Optionally, reestrict the range of the function to this range (y-axis)}
+\item{ylim}{Optionally, restrict the range of the function to this range (y-axis)}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object
