@@ -283,7 +283,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   vertical.strip <- c("top","bottom")[c("top","bottom")%in% strip.position]
   horizont.strip <- c("left","right")[c("left","right")%in% strip.position]
   Vstrip_panel_pos <- if (params$ggside$strip!="default") {
-    subset(layout, PANEL_TYPE=="main")
+    layout[layout$PANEL_TYPE=="main",]
   } else {
     layout
   }
@@ -300,7 +300,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   Vstrip_panel_pos <- unique(Vstrip_panel_pos[!Vstrip_panel_pos[["PANEL_TYPE"]]=="y",c("PANEL","panel_pos")])
 
   Hstrip_panel_pos <- if (params$ggside$strip!="default") {
-    subset(layout, PANEL_TYPE=="main")
+    layout[layout$PANEL_TYPE=="main",]
   } else {
     layout
   }
