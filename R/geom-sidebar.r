@@ -13,6 +13,7 @@
 #' from \link[ggplot2]{geom_col} and only differ on where they plot
 #' data relative to main panels.
 #'
+#' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_bar
 #'
 #' @section Aesthetics:

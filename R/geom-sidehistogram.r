@@ -9,6 +9,7 @@
 #' @section Aesthetics:
 #' `geom_*sidehistogram` uses the same aesthetics as [geom_*sidebar()]
 #'
+#' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_histogram
 #'
 #' @aliases geom_*sidehistogram

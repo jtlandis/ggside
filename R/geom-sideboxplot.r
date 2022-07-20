@@ -4,6 +4,7 @@
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_boxplot}
 #' is [geom_xsideboxplot] and [geom_ysideboxplot].
 #'
+#' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_boxplot
 #'
 #' @seealso [geom_*sideviolin]

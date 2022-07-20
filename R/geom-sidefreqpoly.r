@@ -3,6 +3,7 @@
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_freqpoly} is
 #' [geom_xsidefreqpoly] and [geom_ysidefreqpoly].
 #'
+#' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_freqpoly
 #'
 #' @aliases geom_*freqpoly
