@@ -15,3 +15,4 @@ Generate_Data.R
 revdep
 revdep/*
 ^\.github$
+^revdep$
