@@ -1,4 +1,11 @@
 
+# ggside 0.2.1.9990
+
+### Updates
+
+* fixed issue where `facet_wrap(..., scales = "free/free_x/free_y")` prevented the associated `scale_ysidex_*()`/`scale_xsidey_*()` functions from plotting the guides. Addresses issue #35
+* `ggside` now provides an informative warning if the user provides free scales to facets but an incompatible argument to `ggside(collapse = ...)`. This warning will force the collapse parameter to something that will comply with the facet scales specification.
+
 # ggside 0.2.1
 
 ### Breaking change
