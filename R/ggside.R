@@ -35,6 +35,9 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
   draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
   draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
   strip <- match.arg(strip, c("default", "main"))
+  if (!is.null(collapse)) {
+    collapse <- match.arg(collapse, c("all", "x","y"))
+  }
   structure(list(x.pos = x.pos,
                  y.pos = y.pos,
                  scales = scales,
