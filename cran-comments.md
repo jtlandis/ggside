@@ -17,4 +17,4 @@ This is a minor content update to the `ggside` package. This version introduces 
 
 ## Downstream dependencies
 
-All reverse dependencies checked with `devtools::revdep_check()` using R CMD - No issues detected.
+All reverse dependencies checked with `revdepcheck::revdep_check()` using R CMD - No issues detected.

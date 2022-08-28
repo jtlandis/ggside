@@ -1,14 +1,12 @@
 README
 ================
 Justin Landis
-12/11/2021
+07/20/2022
 
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
 <!-- badges: start -->
 
-[![Travis build
-status](https://travis-ci.org/jtlandis/ggside.svg?branch=main)](https://travis-ci.org/jtlandis/ggside)
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside)](https://cran.r-project.org/package=ggside)
