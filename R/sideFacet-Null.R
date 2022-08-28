@@ -215,7 +215,7 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
 #' @format NULL
 #' @export
 FacetSideNull <- ggplot2::ggproto("FacetSideNull",
-                                  FacetNull,
+                                  ggplot2::FacetNull,
                                   compute_layout = function(data, params){
                                     layout <- ggplot2::FacetNull$compute_layout(data, params)
                                     layout <- check_scales_collapse(layout, params)
