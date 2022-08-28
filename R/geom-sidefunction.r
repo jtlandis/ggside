@@ -62,8 +62,10 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
 #' @export
 GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
                                   ggplot2::GeomFunction,
-                                  default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(xcolour = NA, xfill = NA),
+                                    ggplot2::GeomFunction$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomPath$setup_data(data, params)
@@ -127,8 +129,10 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
 #' @export
 GeomYsidefunction <- ggplot2::ggproto("GeomYsidefunction",
                                   ggplot2::GeomFunction,
-                                  default_aes = aes(colour = "black", ycolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(ycolour = NA, yfill = NA),
+                                    ggplot2::GeomFunction$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomPath$setup_data(data, params)

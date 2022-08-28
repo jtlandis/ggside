@@ -52,10 +52,10 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidelabel <- ggplot2::ggproto("GeomXsidelabel",
                                    ggplot2::GeomLabel,
-                                   default_aes = aes(colour = "black", fill = "white",
-                                                     xcolour = NA, size = 3.88,
-                                                     angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
-                                                     family = "", fontface = 1, lineheight = 1.2),
+                                   default_aes = new_default_aes(
+                                     aes(xcolour = NA, xfill = NA),
+                                     ggplot2::GeomLabel$default_aes
+                                   ),
                                    setup_data = function(data, params){
                                      parse_side_aes(data, params)
                                    },
@@ -120,10 +120,10 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidelabel <- ggplot2::ggproto("GeomYsidelabel",
                                    ggplot2::GeomLabel,
-                                   default_aes = aes(colour = "black", fill = "white",
-                                                     ycolour = NA, size = 3.88,
-                                                     angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
-                                                     family = "", fontface = 1, lineheight = 1.2),
+                                   default_aes = new_default_aes(
+                                     aes(ycolour = NA, yfill = NA),
+                                     ggplot2::GeomLabel$default_aes
+                                   ),
                                    setup_data = function(data, params){
                                      parse_side_aes(data, params)
                                    },

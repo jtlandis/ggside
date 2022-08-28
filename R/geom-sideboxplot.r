@@ -106,9 +106,10 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
-                                                       fill = "white", xfill = NA, size = 0.5,
-                                                       alpha = NA, shape = 19, linetype = "solid"),
+                                     default_aes = new_default_aes(
+                                       aes(xcolour = NA, xfill = NA),
+                                       ggplot2::GeomBoxplot$default_aes
+                                     ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomBoxplot$setup_data(data, params)
@@ -186,9 +187,10 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,
-                                                       fill = "white", yfill = NA, size = 0.5,
-                                                       alpha = NA, shape = 19, linetype = "solid"),
+                                     default_aes = new_default_aes(
+                                       aes(ycolour = NA, yfill = NA),
+                                       ggplot2::GeomBoxplot$default_aes
+                                     ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomBoxplot$setup_data(data, params)
@@ -201,8 +203,4 @@ GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                        data <- use_yside_aes(data)
                                        ggplot2::GeomBoxplot$draw_key(data, params, size)
                                      })
-
-
-
-
 
