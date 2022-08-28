@@ -146,8 +146,8 @@ new_mapped_discrete <- function(x=double()){
   obj
 }
 
-#' @export
-vec_ptype2.logical.ggplot2_mapped_discrete <- function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
-#' @export
-vec_ptype2.ggplot2_mapped_discrete.logical <- function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
+# #' @export
+# vec_ptype2.logical.ggplot2_mapped_discrete <- function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
+# #' @export
+# vec_ptype2.ggplot2_mapped_discrete.logical <- function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
 
