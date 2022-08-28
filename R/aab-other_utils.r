@@ -3,8 +3,13 @@
 #' @import grid
 #' @import gtable
 #' @import rlang
+#' @importFrom vctrs vec_ptype2
 #' @importFrom glue glue glue_collapse
-#' @importFrom stats setNames
+#' @importFrom stats setNames quantile
+NULL
+
+#' @export
+quantile.ggplot2_mapped_discrete <- getS3method("quantile", class = "default", envir = asNamespace("stats"))
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)

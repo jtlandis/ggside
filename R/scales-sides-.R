@@ -139,3 +139,15 @@ scale_ysidex_discrete <- function(..., expand = waiver(),
             class = c("ggside_scale", class(sc)))
 
 }
+new_mapped_discrete <- function(x=double()){
+  vctrs::vec_assert(x, double())
+  obj <- vctrs::new_vctr(x, class = "ggplot2_mapped_discrete")
+  class(obj) <- c(class(obj), "numeric")
+  obj
+}
+
+#' @export
+vec_ptype2.logical.ggplot2_mapped_discrete <- function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
+#' @export
+vec_ptype2.ggplot2_mapped_discrete.logical <- function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
+
