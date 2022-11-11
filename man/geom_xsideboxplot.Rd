@@ -146,26 +146,25 @@ p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
 geom_tile(aes(fill = Combo_Index))
 
 #sideboxplots
-#Note - Mixing discrete and continuous axis scales
-#using xsideboxplots when the y aesthetic was previously
-#mapped with a continuous varialbe will prevent
-#any labels from being plotted. This is a feature that
-#will hopefully be added to ggside in the future.
 
 p1 + geom_xsideboxplot(aes(y = Combo_Index)) +
-   geom_ysideboxplot(aes(x = Combo_Index))
+   geom_ysideboxplot(aes(x = Combo_Index)) +
+   #when mixing continuous/discrete scales
+   #use the following helper functions
+   scale_xsidey_continuous() +
+   scale_ysidex_continuous()
 
 #sideboxplots with swapped orientation
-#Note - Discrete before Continuous
-#If you are to mix Discrete and Continuous variables on
-#one axis, ggplot2 prefers the discrete variable to be mapped
-#BEFORE the continuous.
+#Note: They order of the layers are affects the default
+# scale type. If you were to omit the last two scales, the
+# data labels may be affected
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
     geom_xsideboxplot(aes(y = Species), orientation = "y") +
-    geom_point()
+    geom_point() +
+    scale_y_continuous() + scale_xsidey_discrete()
 
-#Alternatively, you can recast discrete as a factor and then
-#a numeric
+#If using the scale_(xsidey|ysidex)_* functions are a bit cumbersome,
+# Take extra care to recast your data types.
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
   geom_point() +
   geom_xsideboxplot(aes(y = as.numeric(Species)), orientation = "y") +
