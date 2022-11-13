@@ -19,6 +19,7 @@ get_proper_scales <- function(data, scales){
   layout_df <- proto_layout$layout
   layout_df <- layout_df[layout_df$PANEL %in% use_panels,]
   panel_type <- as.character(unique(layout_df[["PANEL_TYPE"]]))
+  if (length(panel_type)==0) return(NULL)
   aesthetic <-switch(panel_type,
                      x = 'y',
                      y = 'x')

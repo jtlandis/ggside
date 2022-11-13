@@ -383,15 +383,15 @@ FacetSideWrap <- ggplot2::ggproto("FacetSideWrap",
                                     layout <- sidePanelLayout(layout, ggside = params$ggside)
                                     layout },
                                   init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
-                                    scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
+                                    scales <- ggplot2::FacetWrap$init_scales(layout, x_scale, y_scale, params)
                                     if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
                                       side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
-                                      scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
+                                      scales$x[side_indx] <- as_ggside_scale(scales$x, "ysidex", side_indx, params)
 
                                     }
                                     if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
                                       side_indx <-  unique(layout[layout$PANEL_TYPE=="x",]$SCALE_Y)
-                                      scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
+                                      scales$y[side_indx] <- as_ggside_scale(scales$y, "xsidey", side_indx, params)
 
                                     }
                                     scales
