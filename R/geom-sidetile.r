@@ -58,10 +58,10 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
                                   ggplot2::GeomTile,
-                                  default_aes = aes(fill = "grey20", xfill = NA,
-                                                    colour = NA, xcolour = NA,
-                                                    size = 0.1, linetype = 1, alpha = NA,
-                                                    width = NA, height = NA),
+                                  default_aes = new_default_aes(
+                                    aes(xcolour = NA, xfill = NA),
+                                    ggplot2::GeomTile$default_aes
+                                  ),
                                   setup_data = function(data, params) {
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomTile$setup_data(data, params)
@@ -108,10 +108,10 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",
                                   ggplot2::GeomTile,
-                                  default_aes = aes(fill = "grey20", yfill = NA,
-                                                    colour = NA, ycolour = NA,
-                                                    size = 0.1, linetype = 1, alpha = NA,
-                                                    width = NA, height = NA),
+                                  default_aes = new_default_aes(
+                                    aes(ycolour = NA, yfill = NA),
+                                    ggplot2::GeomTile$default_aes
+                                  ),
                                   setup_data = function(data, params) {
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomTile$setup_data(data, params)

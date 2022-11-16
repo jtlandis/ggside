@@ -37,8 +37,10 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidepath <- ggplot2::ggproto("GeomXsidepath",
                                   ggplot2::GeomPath,
-                                  default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(xcolour = NA, xfill = NA),
+                                    ggplot2::GeomPath$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomPath$setup_data(data, params)
@@ -96,8 +98,10 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidepath <- ggplot2::ggproto("GeomYsidepath",
                                   ggplot2::GeomPath,
-                                  default_aes = aes(colour = "black", ycolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(ycolour = NA, yfill = NA),
+                                    ggplot2::GeomPath$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomPath$setup_data(data, params)

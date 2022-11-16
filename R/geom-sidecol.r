@@ -32,9 +32,10 @@ geom_xsidecol <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidecol <- ggplot2::ggproto("GeomXsidecol",
                                  ggplot2::GeomCol,
-                                 default_aes = aes(colour = NA, xcolour = NA,
-                                                   fill = "grey35", xfill = NA,
-                                                   size = 0.5, linetype = 1, alpha = NA),
+                                 default_aes = new_default_aes(
+                                   aes(xcolour = NA, xfill = NA),
+                                   ggplot2::GeomCol$default_aes
+                                 ),
                                  setup_data = function(data, params){
                                    data <- parse_side_aes(data, params)
                                    ggplot2::GeomCol$setup_data(data, params)
@@ -86,9 +87,10 @@ geom_ysidecol <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidecol <- ggplot2::ggproto("GeomYsidecol",
                                  ggplot2::GeomCol,
-                                 default_aes = aes(colour = NA, ycolour = NA,
-                                                   fill = "grey35", yfill = NA,
-                                                   size = 0.5, linetype = 1, alpha = NA),
+                                 default_aes = new_default_aes(
+                                   aes(ycolour = NA, yfill = NA),
+                                   ggplot2::GeomCol$default_aes
+                                 ),
                                  setup_data = function(data, params){
                                    data <- parse_side_aes(data, params)
                                    ggplot2::GeomCol$setup_data(data, params)

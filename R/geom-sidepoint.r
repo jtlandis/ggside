@@ -50,9 +50,10 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidepoint <- ggplot2::ggproto("GeomXsidepoint",
                                    ggplot2::GeomPoint,
-                                   default_aes = aes(shape = 19, colour = "black", xcolour = NA,
-                                                     size = 1.5, fill = NA, xfill = NA,
-                                                     alpha = NA, stroke = 0.5),
+                                   default_aes = new_default_aes(
+                                     aes(xcolour = NA, xfill = NA),
+                                     ggplot2::GeomPoint$default_aes
+                                   ),
                                    setup_data = function(data, params){
                                      data <- parse_side_aes(data, params)
                                      ggplot2::GeomPoint$setup_data(data, params)
@@ -99,9 +100,10 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidepoint <- ggplot2::ggproto("GeomYsidepoint",
                                    ggplot2::GeomPoint,
-                                   default_aes = aes(shape = 19, colour = "black", ycolour = NA,
-                                                     size = 1.5, fill = NA, yfill = NA,
-                                                     alpha = NA, stroke = 0.5),
+                                   default_aes = new_default_aes(
+                                     aes(ycolour = NA, yfill = NA),
+                                     ggplot2::GeomPoint$default_aes
+                                   ),
                                    setup_data = function(data, params){
                                      data <- parse_side_aes(data, params)
                                      ggplot2::GeomPoint$setup_data(data, params)

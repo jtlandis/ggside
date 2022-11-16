@@ -39,8 +39,10 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   ggplot2::GeomLine,
-                                  default_aes = aes(colour = "black", xcolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(xcolour = NA, xfill = NA),
+                                    ggplot2::GeomLine$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomLine$setup_data(data, params)
@@ -89,8 +91,10 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 GeomYsideline <- ggplot2::ggproto("GeomYsideline",
                                   ggplot2::GeomLine,
-                                  default_aes = aes(colour = "black", ycolour = NA, size = 0.5,
-                                                    linetype = 1, alpha = NA),
+                                  default_aes = new_default_aes(
+                                    aes(ycolour = NA, yfill = NA),
+                                    ggplot2::GeomLine$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
                                     ggplot2::GeomLine$setup_data(data, params)

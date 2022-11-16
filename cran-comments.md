@@ -1,4 +1,4 @@
-This is a minor content update to the `ggside` package. This version introduces a few breaking changes, reinforcing the original intention behind `ggside` highlighted in the NEWS.md file. There were some minor bugs patched as well as a few extra functions exported to the NAMESPACE.
+This is a minor content update to the `ggside` package. The main intention behind this release is to better protect `ggside` from `ggplot2`'s API changes. There were some minor bugs patched as well as a few extra functions exported to the NAMESPACE.
 
 ## Test environments
 * local macOS Big Sur install, R 4.2.0

@@ -61,9 +61,9 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                      ggplot2::GeomDensity,
-                                     default_aes = aes(fill = NA, xfill = NA, weight = 1,
-                                                       colour = "black", xcolour = NA, alpha = NA,
-                                                       size = 0.5, linetype = 1),
+                                     default_aes = new_default_aes(
+                                       aes(xcolour = NA, xfill = NA),
+                                       ggplot2::GeomDensity$default_aes),
                                      setup_data = function(data, params) {
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomDensity$setup_data(data, params)
@@ -114,9 +114,9 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
                                      ggplot2::GeomDensity,
-                                     default_aes = aes(fill = NA, yfill = NA, weight = 1,
-                                                       colour = "black", ycolour = NA, alpha = NA,
-                                                       size = 0.5, linetype = 1),
+                                     default_aes = new_default_aes(
+                                       aes(ycolour = NA, yfill = NA),
+                                       ggplot2::GeomDensity$default_aes),
                                      setup_data = function(data, params) {
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomDensity$setup_data(data, params)

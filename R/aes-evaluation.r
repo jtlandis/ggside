@@ -143,3 +143,12 @@ make_labels <- function(mapping) {
   }
   Map(default_label, names(mapping), mapping)
 }
+
+# utility to merge ggplot2::Geom* defaults with
+# ggside defaults. This was created with dev version
+# ggplot2 3.3.6.9000 (3.3.7), which has added a few new
+# default parameters.
+new_default_aes <- function(x, y) {
+  out <- c(x, y[setdiff(names(y), names(x))])
+  do.call('aes', out)
+}

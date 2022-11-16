@@ -38,7 +38,7 @@ test_that("ggside theme inheritence work", {
                                           ggside.yside.panel.border = element_rect(color = "blue")))
 
   expect_doppelganger("side panel background", p + theme(ggside.panel.scale = 0.3,
-                                                     ggside.panel.background = element_rect(size = 10),
+                                                     ggside.panel.background = element_rect(linewidth = 10),
                                                      ggside.xside.panel.background = element_rect(fill = alpha("red", .1)),
                                                      ggside.yside.panel.background = element_rect(fill = alpha("blue", .1))))
 })

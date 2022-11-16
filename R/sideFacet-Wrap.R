@@ -32,6 +32,7 @@ weave_tables_row <- function(table, table2, row_shift, row_height, name, z = 1, 
 }
 
 sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
+
   if ((params$free$x || params$free$y) && !coord$is_free()) {
     abort(glue("{snake_class(coord)} doesn't support free scales"))
   }
@@ -48,7 +49,6 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
       layout$SCALE_Y <- 1L
     }
   }
-  #browser()
   if (params$ggside$strip!="default") {
     warn("`ggside(strip = 'main', ...)` is only compatible with `facet_grid(...)`, not `facet_wrap(...)`",
          .frequency = "regularly",
@@ -196,17 +196,17 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_right[panel_pos] <- axes$y$right
 
   .xgroupby <- if(!params$free$x|collapse_x) "COL" else c("COL","PANEL_GROUP")
-  .y <- if("PANEL_GROUP" %in% .xgroupby) "y" else NULL
+  .y <- NULL #if("PANEL_GROUP" %in% .xgroupby) "y" else NULL
   .ygroupby <- if(!params$free$y|collapse_y) "ROW" else c("ROW","PANEL_GROUP")
-  .x <- if("PANEL_GROUP" %in% .ygroupby) "x" else NULL
+  .x <- NULL #if("PANEL_GROUP" %in% .ygroupby) "x" else NULL
 
   bottom <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
                   function(x, on){
-    x[["ROW2"]] <- switch(on,
-                          default = max(x[["ROW"]]),
-                          main = max(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
-                          side = max(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
-    x}, on = params$ggside$draw_x_on)
+                    x[["ROW2"]] <- switch(on,
+                                          default = max(x[["ROW"]]),
+                                          main = max(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
+                                          side = max(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
+                    x}, on = params$ggside$draw_x_on)
   top <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
                function(x, on){
     x[["ROW2"]] <- switch(on,
@@ -385,12 +385,12 @@ FacetSideWrap <- ggplot2::ggproto("FacetSideWrap",
                                   init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
                                     scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
                                     if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
-                                      side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
+                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
                                       scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
 
                                     }
                                     if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
-                                      side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
+                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="x",]$SCALE_Y)
                                       scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
 
                                     }

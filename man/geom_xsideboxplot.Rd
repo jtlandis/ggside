@@ -51,10 +51,10 @@ geom_ysideboxplot(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}} or
-\code{\link[ggplot2:aes_]{aes_()}}. If specified and \code{inherit.aes = TRUE} (the
-default), it is combined with the default mapping at the top level of the
-plot. You must supply \code{mapping} if there is no plot mapping.}
+\item{mapping}{Set of aesthetic mappings created by \code{\link[ggplot2:aes]{aes()}}. If specified and
+\code{inherit.aes = TRUE} (the default), it is combined with the default mapping
+at the top level of the plot. You must supply \code{mapping} if there is no plot
+mapping.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:
@@ -72,10 +72,14 @@ will be used as the layer data. A \code{function} can be created
 from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this
-layer, as a string.}
+layer, either as a \code{ggproto} \code{Geom} subclass or as a string naming the
+stat stripped of the \code{stat_} prefix (e.g. \code{"count"} rather than
+\code{"stat_count"})}
 
-\item{position}{Position adjustment, either as a string, or the result of
-a call to a position adjustment function.}
+\item{position}{Position adjustment, either as a string naming the adjustment
+(e.g. \code{"jitter"} to use \code{position_jitter}), or the result of a call to a
+position adjustment function. Use the latter if you need to change the
+settings of the adjustment.}
 
 \item{...}{Other arguments passed on to \code{\link[ggplot2:layer]{layer()}}. These are
 often aesthetics, used to set an aesthetic to a fixed value, like
@@ -142,26 +146,25 @@ p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
 geom_tile(aes(fill = Combo_Index))
 
 #sideboxplots
-#Note - Mixing discrete and continuous axis scales
-#using xsideboxplots when the y aesthetic was previously
-#mapped with a continuous varialbe will prevent
-#any labels from being plotted. This is a feature that
-#will hopefully be added to ggside in the future.
 
 p1 + geom_xsideboxplot(aes(y = Combo_Index)) +
-   geom_ysideboxplot(aes(x = Combo_Index))
+   geom_ysideboxplot(aes(x = Combo_Index)) +
+   #when mixing continuous/discrete scales
+   #use the following helper functions
+   scale_xsidey_continuous() +
+   scale_ysidex_continuous()
 
 #sideboxplots with swapped orientation
-#Note - Discrete before Continuous
-#If you are to mix Discrete and Continuous variables on
-#one axis, ggplot2 prefers the discrete variable to be mapped
-#BEFORE the continuous.
+#Note: They order of the layers are affects the default
+# scale type. If you were to omit the last two scales, the
+# data labels may be affected
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
     geom_xsideboxplot(aes(y = Species), orientation = "y") +
-    geom_point()
+    geom_point() +
+    scale_y_continuous() + scale_xsidey_discrete()
 
-#Alternatively, you can recast discrete as a factor and then
-#a numeric
+#If using the scale_(xsidey|ysidex)_* functions are a bit cumbersome,
+# Take extra care to recast your data types.
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
   geom_point() +
   geom_xsideboxplot(aes(y = as.numeric(Species)), orientation = "y") +

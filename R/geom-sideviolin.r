@@ -88,9 +88,10 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
                                     ggplot2::GeomViolin,
-                                    default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
-                                                      fill = "white", xfill = NA, size = 0.5,
-                                                      alpha = NA, linetype = "solid"),
+                                    default_aes = new_default_aes(
+                                      aes(xcolour = NA, xfill = NA),
+                                      ggplot2::GeomViolin$default_aes
+                                    ),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)
                                       ggplot2::GeomViolin$setup_data(data, params)
@@ -144,9 +145,10 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
                                     ggplot2::GeomViolin,
-                                    default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,
-                                                      fill = "white", yfill = NA, size = 0.5,
-                                                      alpha = NA, linetype = "solid"),
+                                    default_aes = new_default_aes(
+                                      aes(ycolour = NA, yfill = NA),
+                                      ggplot2::GeomViolin$default_aes
+                                    ),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)
                                       ggplot2::GeomViolin$setup_data(data, params)

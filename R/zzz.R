@@ -95,6 +95,10 @@ NULL
 
 #'
 .onLoad <- function(libname, pkgname){
+
+  # vctrs::s3_register("ggplot2::vec_ptype2.logical", "ggplot2_mapped_discrete", function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong"))
+  # vctrs::s3_register("ggplot2::vec_ptype2.ggplot2_mapped_discrete", "logical", function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong"))
+
   register_theme_elements(
     # base elements,
     ggside.line = NULL,

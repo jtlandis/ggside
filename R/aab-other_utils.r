@@ -3,8 +3,11 @@
 #' @import grid
 #' @import gtable
 #' @import rlang
+#' @importFrom vctrs vec_ptype2
 #' @importFrom glue glue glue_collapse
 #' @importFrom stats setNames
+NULL
+
 
 find_build_plotEnv <- function(){
   items <- lapply(sys.frames(), ls)

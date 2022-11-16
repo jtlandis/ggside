@@ -50,6 +50,8 @@ library(ggside)
 #> Registered S3 method overwritten by 'ggside':
 #>   method from   
 #>   +.gg   ggplot2
+#> Warning in register(): Can't find generic `vec_ptype2.ggplot2_mapped_discrete`
+#> in package ggplot2 to register S3 method.
 
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
@@ -109,3 +111,8 @@ current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
 v0.2.1.
+
+-   [\#35
+    ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/35)
+    Side scales were not added properly with
+    `facet_wrap(scales = "free")`.

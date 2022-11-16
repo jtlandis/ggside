@@ -49,9 +49,10 @@ geom_xsidetext <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidetext <- ggplot2::ggproto("GeomXsidetext",
                                   ggplot2::GeomText,
-                                  default_aes = aes(colour = "black", xcolour = NA, size = 3.88,
-                                                    angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
-                                                    family = "", fontface = 1, lineheight = 1.2),
+                                  default_aes = new_default_aes(
+                                    aes(xcolour = NA, xfill = NA),
+                                    ggplot2::GeomText$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     parse_side_aes(data, params)
                                   },
@@ -114,9 +115,10 @@ geom_ysidetext <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidetext <- ggplot2::ggproto("GeomYsidetext",
                                   ggplot2::GeomText,
-                                  default_aes = aes(colour = "black", ycolour = NA, size = 3.88,
-                                                    angle = 0, hjust = 0.5, vjust = 0.5, alpha = NA,
-                                                    family = "", fontface = 1, lineheight = 1.2),
+                                  default_aes = new_default_aes(
+                                    aes(ycolour = NA, yfill = NA),
+                                    ggplot2::GeomText$default_aes
+                                  ),
                                   setup_data = function(data, params){
                                     parse_side_aes(data, params)
                                   },

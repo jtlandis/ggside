@@ -84,9 +84,10 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidebar <- ggplot2::ggproto("GeomXsidebar",
                         ggplot2::GeomBar,
-                        default_aes = aes(colour = NA, xcolour = NA,
-                                          fill = "grey35", xfill = NA,
-                                          size = 0.5, linetype = 1, alpha = NA),
+                        default_aes = new_default_aes(
+                          aes(xcolour = NA, xfill = NA),
+                          ggplot2::GeomBar$default_aes
+                        ),
                         setup_data = function(data, params){
                           data <- parse_side_aes(data, params)
                           ggplot2::GeomBar$setup_data(data, params)
@@ -138,9 +139,10 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidebar <- ggplot2::ggproto("GeomYsidebar",
                                  ggplot2::GeomBar,
-                                 default_aes = aes(colour = NA, ycolour = NA,
-                                                   fill = "grey35", yfill = NA,
-                                                   size = 0.5, linetype = 1, alpha = NA),
+                                 default_aes = new_default_aes(
+                                   aes(ycolour = NA, yfill = NA),
+                                   ggplot2::GeomBar$default_aes
+                                 ),
                                  setup_data = function(data, params){
                                    data <- parse_side_aes(data, params)
                                    ggplot2::GeomBar$setup_data(data, params)

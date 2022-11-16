@@ -38,7 +38,7 @@ as_ggsideCoord.CoordSide <- function(coord) {
 
 CoordSideCartesian <- ggplot2::ggproto(
   "CoordSideCartesian",
-  CoordCartesian,
+  ggplot2::CoordCartesian,
   render_bg = function(panel_params, theme) {
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
     if (is.element(panel_type, c("x", "y"))) {
@@ -98,7 +98,7 @@ as_ggsideCoord.CoordTrans <- function(coord) {
 
 CoordSideTrans <- ggplot2::ggproto(
   "CoordSideTrans",
-  CoordTrans,
+  ggplot2::CoordTrans,
   render_bg = function(panel_params, theme) {
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
     if (is.element(panel_type, c("x", "y"))) {
@@ -162,7 +162,7 @@ as_ggsideCoord.CoordFixed<- function(coord){
 
 CoordSideFixed <- ggplot2::ggproto(
   "CoordSideFixed",
-  CoordFixed,
+  ggplot2::CoordFixed,
   render_bg = function(panel_params, theme) {
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
     if (is.element(panel_type, c("x", "y"))) {

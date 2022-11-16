@@ -19,26 +19,25 @@
 #' geom_tile(aes(fill = Combo_Index))
 #'
 #' #sideboxplots
-#' #Note - Mixing discrete and continuous axis scales
-#' #using xsideboxplots when the y aesthetic was previously
-#' #mapped with a continuous varialbe will prevent
-#' #any labels from being plotted. This is a feature that
-#' #will hopefully be added to ggside in the future.
 #'
 #' p1 + geom_xsideboxplot(aes(y = Combo_Index)) +
-#'    geom_ysideboxplot(aes(x = Combo_Index))
+#'    geom_ysideboxplot(aes(x = Combo_Index)) +
+#'    #when mixing continuous/discrete scales
+#'    #use the following helper functions
+#'    scale_xsidey_continuous() +
+#'    scale_ysidex_continuous()
 #'
 #' #sideboxplots with swapped orientation
-#' #Note - Discrete before Continuous
-#' #If you are to mix Discrete and Continuous variables on
-#' #one axis, ggplot2 prefers the discrete variable to be mapped
-#' #BEFORE the continuous.
+#' #Note: They order of the layers are affects the default
+#' # scale type. If you were to omit the last two scales, the
+#' # data labels may be affected
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
 #'     geom_xsideboxplot(aes(y = Species), orientation = "y") +
-#'     geom_point()
+#'     geom_point() +
+#'     scale_y_continuous() + scale_xsidey_discrete()
 #'
-#' #Alternatively, you can recast discrete as a factor and then
-#' #a numeric
+#' #If using the scale_(xsidey|ysidex)_* functions are a bit cumbersome,
+#' # Take extra care to recast your data types.
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
 #'   geom_point() +
 #'   geom_xsideboxplot(aes(y = as.numeric(Species)), orientation = "y") +
@@ -106,9 +105,10 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = aes(weight = 1, colour = "grey20", xcolour = NA,
-                                                       fill = "white", xfill = NA, size = 0.5,
-                                                       alpha = NA, shape = 19, linetype = "solid"),
+                                     default_aes = new_default_aes(
+                                       aes(xcolour = NA, xfill = NA),
+                                       ggplot2::GeomBoxplot$default_aes
+                                     ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomBoxplot$setup_data(data, params)
@@ -186,9 +186,10 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = aes(weight = 1, colour = "grey20", ycolour = NA,
-                                                       fill = "white", yfill = NA, size = 0.5,
-                                                       alpha = NA, shape = 19, linetype = "solid"),
+                                     default_aes = new_default_aes(
+                                       aes(ycolour = NA, yfill = NA),
+                                       ggplot2::GeomBoxplot$default_aes
+                                     ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomBoxplot$setup_data(data, params)
@@ -201,8 +202,4 @@ GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                        data <- use_yside_aes(data)
                                        ggplot2::GeomBoxplot$draw_key(data, params, size)
                                      })
-
-
-
-
 
