@@ -26,6 +26,7 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -52,9 +53,9 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidelabel <- ggplot2::ggproto("GeomXsidelabel",
                                    ggplot2::GeomLabel,
-                                   default_aes = new_default_aes(
-                                     aes(xcolour = NA, xfill = NA),
-                                     ggplot2::GeomLabel$default_aes
+                                   default_aes = aes(
+                                     !!!ggplot2::GeomLabel$default_aes,
+                                     xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                    ),
                                    setup_data = function(data, params){
                                      parse_side_aes(data, params)
@@ -94,6 +95,7 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -120,9 +122,9 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidelabel <- ggplot2::ggproto("GeomYsidelabel",
                                    ggplot2::GeomLabel,
-                                   default_aes = new_default_aes(
-                                     aes(ycolour = NA, yfill = NA),
-                                     ggplot2::GeomLabel$default_aes
+                                   default_aes = aes(
+                                     !!!ggplot2::GeomLabel$default_aes,
+                                     ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                    ),
                                    setup_data = function(data, params){
                                      parse_side_aes(data, params)

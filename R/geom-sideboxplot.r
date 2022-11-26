@@ -71,7 +71,7 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
       position$preserve <- "single"
     }
   }
-
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -105,9 +105,9 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = new_default_aes(
-                                       aes(xcolour = NA, xfill = NA),
-                                       ggplot2::GeomBoxplot$default_aes
+                                     default_aes = aes(
+                                       !!!ggplot2::GeomBoxplot$default_aes,
+                                       xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                      ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)
@@ -152,7 +152,7 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
       position$preserve <- "single"
     }
   }
-
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -186,9 +186,9 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
                                      ggplot2::GeomBoxplot,
-                                     default_aes = new_default_aes(
-                                       aes(ycolour = NA, yfill = NA),
-                                       ggplot2::GeomBoxplot$default_aes
+                                     default_aes = aes(
+                                       !!!ggplot2::GeomBoxplot$default_aes,
+                                       ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                      ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)

@@ -35,6 +35,7 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
          inherit.aes = TRUE,
          outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
+  mapping <- force_panel_type_mapping(mapping, "x")
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
   l <- layer(
     data = data,
@@ -61,9 +62,10 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
                                      ggplot2::GeomDensity,
-                                     default_aes = new_default_aes(
-                                       aes(xcolour = NA, xfill = NA),
-                                       ggplot2::GeomDensity$default_aes),
+                                     default_aes = aes(
+                                       !!!ggplot2::GeomDensity$default_aes,
+                                       xcolour = NA, xfill = NA, PANEL_TYPE = "x"
+                                     ),
                                      setup_data = function(data, params) {
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomDensity$setup_data(data, params)
@@ -88,6 +90,7 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               inherit.aes = TRUE,
                               outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
+  mapping <- force_panel_type_mapping(mapping, "y")
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
   l <- layer(
     data = data,
@@ -114,9 +117,10 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
                                      ggplot2::GeomDensity,
-                                     default_aes = new_default_aes(
-                                       aes(ycolour = NA, yfill = NA),
-                                       ggplot2::GeomDensity$default_aes),
+                                     default_aes = aes(
+                                       !!!ggplot2::GeomDensity$default_aes,
+                                       ycolour = NA, yfill = NA, PANEL_TYPE = "y"
+                                     ),
                                      setup_data = function(data, params) {
                                        data <- parse_side_aes(data, params)
                                        ggplot2::GeomDensity$setup_data(data, params)

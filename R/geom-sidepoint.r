@@ -27,6 +27,7 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -50,9 +51,9 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidepoint <- ggplot2::ggproto("GeomXsidepoint",
                                    ggplot2::GeomPoint,
-                                   default_aes = new_default_aes(
-                                     aes(xcolour = NA, xfill = NA),
-                                     ggplot2::GeomPoint$default_aes
+                                   default_aes = aes(
+                                     !!!ggplot2::GeomPoint$default_aes,
+                                     xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                    ),
                                    setup_data = function(data, params){
                                      data <- parse_side_aes(data, params)
@@ -77,6 +78,7 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -100,9 +102,9 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidepoint <- ggplot2::ggproto("GeomYsidepoint",
                                    ggplot2::GeomPoint,
-                                   default_aes = new_default_aes(
-                                     aes(ycolour = NA, yfill = NA),
-                                     ggplot2::GeomPoint$default_aes
+                                   default_aes = aes(
+                                     !!!ggplot2::GeomPoint$default_aes,
+                                     ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                    ),
                                    setup_data = function(data, params){
                                      data <- parse_side_aes(data, params)

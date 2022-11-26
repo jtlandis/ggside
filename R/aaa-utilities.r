@@ -7,6 +7,74 @@
   if (!is.waive(a)) a else b
 }
 
+force_panel_type_mapping <- function(mapping, type) {
+  if ("PANEL_TYPE" %in% names(mapping)) return(mapping)
+  switch(type,
+         x = aes(!!!mapping, PANEL_TYPE = "x"),
+         y = aes(!!!mapping, PANEL_TYPE = "y"))
+}
+
+side_pos_scale <- function(scale, side) {
+  child_scale <- side %||% scale
+  new_scale <- ggproto(
+    NULL,
+    scale,
+    side = child_scale,
+    # if `df` contains `PANEL_TYPE` (x/y),
+    # redo the method with the parent being
+    # the associated side scale
+    transform_df = function(self, df) {
+      panel_type <- unique(df[["PANEL_TYPE"]])
+      if (length(panel_type)==0) {
+        ggproto_parent(scale, self)$transform_df(df)
+      } else {
+        self$side$transform_df(df)
+      }
+    }
+  )
+  trans_fun <- new_scale$trans$transform
+  #force this scale to always be checked by `scales_transform_df`
+  new_scale$trans$transform <- function(x) trans_fun(x)
+  new_scale
+}
+
+make_new_scale_list <- function(scales, ggside) {
+
+  new_scales <- ggproto(
+    NULL,
+    scales,
+    .sides = list(xsidey = ggside$xsidey, ysidex = ggside$ysidex),
+    add = function(self, scale) {
+
+      aes <- scale$aesthetics
+      if (any(pos_aes <- aes %in% c("x", "y"))) {
+        side_scale <- switch(aes[pos_aes], x = self$.sides$ysidex, y = self$.sides$xsidey)
+        scale <- side_pos_scale(scale, side_scale)
+      }
+      ggproto_parent(scales, self)$add(scale = scale)
+
+    },
+    get_scales = function(self, output) {
+      s <- ggproto_parent(scales, self)$get_scales(output)
+      if (inherits(s, "ScaleContinuousPosition")) {
+        f <- s$oob
+        s$oob <- muffle_opts_warn(f)
+      }
+      s
+    }
+  )
+
+  x_scale <- new_scales$get_scales("x")
+  if (!is.null(x_scale)) {
+    new_scales$scales[new_scales$find("x")] <- list(side_pos_scale(x_scale, ggside$ysidex))
+  }
+  y_scale <- new_scales$get_scales("y")
+  if (!is.null(y_scale)) {
+    new_scales$scales[new_scales$find("y")] <- list(side_pos_scale(y_scale, ggside$xsidey))
+  }
+  new_scales
+
+}
 
 check_required_aesthetics <- function(required, present, name) {
   if (is.null(required)) return()

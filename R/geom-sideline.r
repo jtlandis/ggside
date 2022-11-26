@@ -15,6 +15,7 @@
 geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -39,9 +40,11 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 GeomXsideline <- ggplot2::ggproto("GeomXsideline",
                                   ggplot2::GeomLine,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomLine$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomLine$default_aes,
+                                    xcolour = NA,
+                                    xfill = NA,
+                                    PANEL_TYPE = "x"
                                   ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
@@ -66,6 +69,7 @@ GeomXsideline <- ggplot2::ggproto("GeomXsideline",
 geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -91,9 +95,9 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @export
 GeomYsideline <- ggplot2::ggproto("GeomYsideline",
                                   ggplot2::GeomLine,
-                                  default_aes = new_default_aes(
-                                    aes(ycolour = NA, yfill = NA),
-                                    ggplot2::GeomLine$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomLine$default_aes,
+                                    ycolour = NA, yfill = NA, PANEL_TYPE = "y",
                                   ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)

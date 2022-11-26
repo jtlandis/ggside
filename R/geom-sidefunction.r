@@ -25,6 +25,7 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -48,6 +49,7 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
                                ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE) {
 
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(data = data, mapping = mapping, stat = StatFunction,
         geom = geom, position = position, show.legend = show.legend,
         inherit.aes = inherit.aes, params = list(fun = fun, n = n,
@@ -62,9 +64,9 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
 #' @export
 GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
                                   ggplot2::GeomFunction,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomFunction$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomFunction$default_aes,
+                                    xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                   ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
@@ -92,6 +94,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -115,6 +118,7 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE) {
 
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(data = data, mapping = mapping, stat = StatYsidefunction,
              geom = geom, position = position, show.legend = show.legend,
              inherit.aes = inherit.aes, params = list(fun = fun, n = n,
@@ -129,9 +133,9 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
 #' @export
 GeomYsidefunction <- ggplot2::ggproto("GeomYsidefunction",
                                   ggplot2::GeomFunction,
-                                  default_aes = new_default_aes(
-                                    aes(ycolour = NA, yfill = NA),
-                                    ggplot2::GeomFunction$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomFunction$default_aes,
+                                    ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                   ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)

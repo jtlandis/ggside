@@ -6,7 +6,7 @@ plot_clone <- function(plot) {
   p
 }
 
-#' @export
+
 `+.gg` <- function(e1, e2) {
   if (missing(e2)) {
     abort("Cannot use `+.gg()` with a single argument. Did you accidentally put + on a new line?")

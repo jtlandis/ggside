@@ -61,6 +61,7 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               orientation = NA,
                               show.legend = NA,
                               inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -88,9 +89,9 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
                                     ggplot2::GeomViolin,
-                                    default_aes = new_default_aes(
-                                      aes(xcolour = NA, xfill = NA),
-                                      ggplot2::GeomViolin$default_aes
+                                    default_aes = aes(
+                                      !!!ggplot2::GeomViolin$default_aes,
+                                      xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                     ),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)
@@ -118,6 +119,7 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
                              orientation = "y",
                              show.legend = NA,
                              inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -145,9 +147,9 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
                                     ggplot2::GeomViolin,
-                                    default_aes = new_default_aes(
-                                      aes(ycolour = NA, yfill = NA),
-                                      ggplot2::GeomViolin$default_aes
+                                    default_aes = aes(
+                                      !!!ggplot2::GeomViolin$default_aes,
+                                      ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                     ),
                                     setup_data = function(data, params){
                                       data <- parse_side_aes(data, params)

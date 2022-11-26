@@ -41,6 +41,7 @@ geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
                                na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(data = data, mapping = mapping,
              stat = stat, geom = GeomXsidesegment,
              position = position, show.legend = show.legend,
@@ -61,9 +62,9 @@ geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
 #' @export
 GeomXsidesegment <- ggplot2::ggproto("GeomXsidesegment",
                                   ggplot2::GeomSegment,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomSegment$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomSegment$default_aes,
+                                    xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                   ),
                                   setup_data = function(data, params){
                                     data <- parse_side_aes(data, params)
@@ -87,6 +88,7 @@ geom_ysidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
                                na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(data = data, mapping = mapping,
              stat = stat, geom = GeomYsidesegment,
              position = position, show.legend = show.legend,
@@ -107,9 +109,9 @@ geom_ysidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
 #' @export
 GeomYsidesegment <- ggplot2::ggproto("GeomYsidesegment",
                                      ggplot2::GeomSegment,
-                                     default_aes = new_default_aes(
-                                       aes(ycolour = NA, yfill = NA),
-                                       ggplot2::GeomSegment$default_aes
+                                     default_aes = aes(
+                                       !!!ggplot2::GeomSegment$default_aes,
+                                       ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                      ),
                                      setup_data = function(data, params){
                                        data <- parse_side_aes(data, params)

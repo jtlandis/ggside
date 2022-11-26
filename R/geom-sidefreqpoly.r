@@ -21,6 +21,7 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
                                show.legend = NA,
                                inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, "x")
+  mapping <- force_panel_type_mapping(mapping, "x")
   params <- list(na.rm = na.rm, ...)
   if (identical(stat, "bin")) {
     params$pad <- TRUE
@@ -50,6 +51,7 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
                                show.legend = NA,
                                inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, "y")
+  mapping <- force_panel_type_mapping(mapping, "y")
   params <- list(na.rm = na.rm, ...)
   if (identical(stat, "bin")) {
     params$pad <- TRUE

@@ -34,6 +34,7 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -58,9 +59,9 @@ geom_xsidetile <- function(mapping = NULL, data = NULL,
 #' @export
 GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
                                   ggplot2::GeomTile,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomTile$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomTile$default_aes,
+                                    xcolour = NA, xfill = NA, PANEL_TYPE = "x"
                                   ),
                                   setup_data = function(data, params) {
                                     data <- parse_side_aes(data, params)
@@ -84,6 +85,7 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -108,9 +110,9 @@ geom_ysidetile <- function(mapping = NULL, data = NULL,
 #' @export
 GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",
                                   ggplot2::GeomTile,
-                                  default_aes = new_default_aes(
-                                    aes(ycolour = NA, yfill = NA),
-                                    ggplot2::GeomTile$default_aes
+                                  default_aes = aes(
+                                    !!!ggplot2::GeomTile$default_aes,
+                                    ycolour = NA, yfill = NA, PANEL_TYPE = "y"
                                   ),
                                   setup_data = function(data, params) {
                                     data <- parse_side_aes(data, params)

@@ -37,6 +37,7 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, orientation)
+  mapping <- force_panel_type_mapping(mapping, "x")
   l <- layer(
     data = data,
     mapping = mapping,
@@ -71,6 +72,7 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
                                 show.legend = NA,
                                 inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, orientation)
+  mapping <- force_panel_type_mapping(mapping, "y")
   l <- layer(
     data = data,
     mapping = mapping,
