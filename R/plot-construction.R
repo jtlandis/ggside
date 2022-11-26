@@ -89,12 +89,12 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
   object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object$ggside$strip <- ggside$strip %||% object$ggside$strip %||% "default"
-  object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
+  #object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
 
   #verify the facet scales and ggside collapse is compatible
 
 
-  object[['coordinates']] <- as_ggsideCoord(object[['coordinates']])
+  #object[['coordinates']] <- as_ggsideCoord(object[['coordinates']])
   return(object)
 }
 
@@ -114,20 +114,6 @@ ggplot_add.ggside_options <- function(object, plot, object_name){
 #' @export
 ggplot_add.ggside_scale <- function(object, plot, object_name){
   plot$ggside[[intersect(c("xsidey","ysidex"), object$aesthetics)]] <- object #save scale in appropriate place
-  old_scales <- plot$scales
-  if (!inherits(old_scales, "ggsideScalesList")) {
-    plot$scales <- ggproto("ggsideScalesList",
-                           old_scales,
-                           scales = lapply(old_scales$scales, function(s) s$clone()),
-                           get_scales = function(self, output) {
-                             s <- ggproto_parent(old_scales, self)$get_scales(output)
-                             if (inherits(s, "ScaleContinuousPosition")) {
-                               f <- s$oob
-                               s$oob <- muffle_opts_warn(f)
-                             }
-                             s
-                           })
-  }
   as_ggside(plot)
 }
 

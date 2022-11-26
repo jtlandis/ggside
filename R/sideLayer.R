@@ -54,6 +54,7 @@ XLayer <- ggplot2::ggproto("XLayer",
                              data
                            },
                            map_statistic = function(self, data, plot) {
+                             browser()
                              plot <- plot_clone(plot)
                              plot$scales <- get_proper_scales(data, plot$scales) %||% plot$scales
                              ggproto_parent(Layer, self)$map_statistic(data, plot)
@@ -68,7 +69,9 @@ YLayer <- ggplot2::ggproto("YLayer",
                              data
                            },
                            map_statistic = function(self, data, plot) {
+                             browser()
                              plot <- plot_clone(plot)
                              plot$scales <- get_proper_scales(data, plot$scales) %||% plot$scales
-                             ggproto_parent(Layer, self)$map_statistic(data, plot)
+                             parent <- ggproto_parent(Layer, self)
+                             parent$map_statistic(data, plot)
                            })
