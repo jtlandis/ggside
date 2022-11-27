@@ -114,6 +114,7 @@ ggplot_add.ggside_options <- function(object, plot, object_name){
 #' @export
 ggplot_add.ggside_scale <- function(object, plot, object_name){
   plot$ggside[[intersect(c("xsidey","ysidex"), object$aesthetics)]] <- object #save scale in appropriate place
+  plot$scales$add(object)
   as_ggside(plot)
 }
 
