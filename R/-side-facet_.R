@@ -13,16 +13,26 @@ ggside_facet.default <- function(facet, ggside) {
 ggside_facet.FacetNull <- function(facet, ggside) {
   force(ggside)
 
+  new_facet <- new_ggside_facet(facet)
   ggproto(
-    "ggsideFacetNull",
-    facet,
+    "FacetSideNull",
+    new_facet,
     ggside = ggside,
     draw_panels = sideFacetNull_draw_panels,
-    compute_layout = ggside_compute_layout(facet),
-    init_scales = ggside_init_scales(facet),
-
+    map_data = sideFacetNull_map_data
   )
 
+}
+
+new_ggside_facet <- function(facet) {
+  force(facet)
+  ggproto(
+    "ggsideFacet",
+    facet,
+    compute_layout = ggside_compute_layout(facet),
+    init_scales = ggside_init_scales(facet),
+    train_scales = ggside_train_scales(facet),
+  )
 }
 
 
@@ -33,6 +43,14 @@ ggside_compute_layout <- function(facet) {
     layout <- check_scales_collapse(layout, params)
     layout <- sidePanelLayout(layout, ggside = params$ggside)
     layout
+  }
+}
+
+ggside_train_scales <- function(facet) {
+  function(x_scales, y_scales, layout, data, params) {
+    local_union_scale_aes(x_scales)
+    local_union_scale_aes(y_scales)
+    facet$train_scales(x_scales, y_scales, layout, data, params)
   }
 }
 
