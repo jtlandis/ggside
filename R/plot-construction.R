@@ -1,14 +1,4 @@
 
-validate_ggside <- function(e2, object) UseMethod('validate_ggside')
-validate_ggside.default <- function(e2, object) object
-validate_ggside.Facet <- function(e2, object){
-  object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
-  object
-}
-validate_ggside.Coord <- function(e2, object) {
-  object[["coordinates"]] <- as_ggsideCoord(object[["coordinates"]])
-  object
-}
 
 as_ggside <- function(x, ...) UseMethod('as_ggside')
 as_ggside.default <- function(x, ...) abort(glue("No as_ggside() method for class <", glue_collapse(class(x), sep = "/"),">"))
@@ -89,34 +79,11 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
   object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object$ggside$strip <- ggside$strip %||% object$ggside$strip %||% "default"
-  #object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
 
-  #verify the facet scales and ggside collapse is compatible
-
-
-  #object[['coordinates']] <- as_ggsideCoord(object[['coordinates']])
   return(object)
 }
 
-#' @importFrom ggplot2 ggplot_add
-#' @export
-ggplot_add.ggside_layer <- function(object, plot, object_name){
-  p <- NextMethod("ggplot_add")
-  as_ggside(p)
-}
 
-#' @export
-ggplot_add.ggside_options <- function(object, plot, object_name){
-  as_ggside(plot, object)
-}
-
-
-#' @export
-ggplot_add.ggside_scale <- function(object, plot, object_name){
-  plot$ggside[[intersect(c("xsidey","ysidex"), object$aesthetics)]] <- object #save scale in appropriate place
-  plot$scales$add(object)
-  as_ggside(plot)
-}
 
 muffle_opts_warn <- function(f) {
   function(...) {
@@ -132,14 +99,6 @@ muffle_opts_warn <- function(f) {
   }
 }
 
-# as_ggside <- function(plot, ggside = NULL){
-#   plot <- make_ggside(plot, ggside)
-#   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
-#     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
-#   }
-#   plot[["facet"]] <- as_ggsideFacet(plot[["facet"]], plot[["ggside"]])
-#   plot
-# }
 
 get_sides <- function(layers){
   layer_mappings <- lapply(layers, guess_layer_mapping)
