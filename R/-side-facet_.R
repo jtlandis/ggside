@@ -1,5 +1,12 @@
 
-
+#'@rdname ggside-ggproto-facets
+#'@description
+#' S3 class that converts old Facet into one that
+#' is compatible with ggside. Can also update
+#' ggside on the object. Typically, the new ggproto
+#' will inherit from the object being replaced.
+#' @param facet Facet ggproto Object to replace
+#' @param ggside ggside object to update
 #' @export
 ggside_facet <- function(facet, ggside) UseMethod("ggside_facet", facet)
 
@@ -32,6 +39,18 @@ ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
     ggside = ggside,
     draw_panels = sideFacetGrid_draw_panels,
     map_data = sideFacetGrid_map_data
+  )
+}
+
+ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
+
+  new_facet <- new_ggside_facet(facet)
+  ggproto(
+    "FacetSideWrap",
+    new_facet,
+    ggside = ggside,
+    draw_panels = sideFacetWrap_draw_panels,
+    map_data = sideFacetWrap_map_data
   )
 }
 
