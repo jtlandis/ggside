@@ -86,7 +86,9 @@ local_union_scale_aes <- function(scales, frame = parent.frame()) {
 #' are removed from the object
 #' @param panel_params the panel_params element of the Layout ggproto object
 #' @param layout the layout element of the Layout ggproto object
-standardise_panel_params <- function(panel_params, layout) {
+standardise_panel_params <- function(built) {
+  panel_params <- built$layout$panel_params
+  layout <- built$layout$layout
   layout <- layout[layout$PANEL_TYPE!="main",]
   if (nrow(layout)==0) return(panel_params)
   for (i in 1:nrow(layout)) {
@@ -102,7 +104,8 @@ standardise_panel_params <- function(panel_params, layout) {
     }
     panel_params[[panel]] <- params
   }
-  panel_params
+  built$layout$panel_params <- panel_params
+  built
 }
 
 
