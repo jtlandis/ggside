@@ -3,15 +3,14 @@
 #' @export
 ggside_facet <- function(facet, ggside) UseMethod("ggside_facet", facet)
 
-ggside_facet.default <- function(facet, ggside) {
+ggside_facet.default <- function(facet, ggside = ggside()) {
   abort(
     sprintf("No %s() method for object of class <%s>", "ggside_facet", class(facet)[1]),
   )
 }
 
 
-ggside_facet.FacetNull <- function(facet, ggside) {
-  force(ggside)
+ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
 
   new_facet <- new_ggside_facet(facet)
   ggproto(
@@ -22,6 +21,18 @@ ggside_facet.FacetNull <- function(facet, ggside) {
     map_data = sideFacetNull_map_data
   )
 
+}
+
+ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
+
+  new_facet <- new_ggside_facet(facet)
+  ggproto(
+    "FacetSideGrid",
+    new_facet,
+    ggside = ggside,
+    draw_panels = sideFacetGrid_draw_panels,
+    map_data = sideFacetGrid_map_data
+  )
 }
 
 new_ggside_facet <- function(facet) {
