@@ -218,20 +218,3 @@ unwrap <- function(df, by, cols = NULL){
 }
 
 
-
-#'@rdname ggside-ggproto-facets
-#'@description
-#' `prep_map_data` is a utility function to help modify
-#' the `data` and `layout` variables of the Facet's
-#' `$map_data` method. This will be sure to include the
-#' column `PANEL_TYPE` that will assist where data should
-#' map to. Please be sure to join against this column as well.
-#' @export
-prep_map_data <- function(layout, data){
-  if(!"PANEL_TYPE"%in%colnames(data)){
-    eval.parent(quote(data$PANEL_TYPE <- "main"))
-  }
-  eval.parent(quote(layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")))
-  return(invisible(TRUE))
-}
-

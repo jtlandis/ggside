@@ -372,7 +372,10 @@ sideFacetGrid_map_data <- function (data, layout, params) {
   rows <- params$rows
   cols <- params$cols
   vars <- c(names(rows), names(cols), "PANEL_TYPE")
-  prep_map_data(layout, data)
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
+  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
   if (length(vars) == 0) {
     data$PANEL <- layout$PANEL
     return(data)

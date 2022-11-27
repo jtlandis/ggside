@@ -375,7 +375,10 @@ sideFacetWrap_map_data <- function (data, layout, params) {
   if (empty(data)) {
     return(cbind(data, PANEL = integer(0)))
   }
-  prep_map_data(layout, data)
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
+  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
   vars <- c(params$facets, PANEL_TYPE = quo(PANEL_TYPE))
   if (length(vars) == 0) {
     data$PANEL <- layout$PANEL
