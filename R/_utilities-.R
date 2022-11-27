@@ -109,4 +109,12 @@ standardise_panel_params <- function(built) {
 }
 
 
+deprecated_fun <- function(fun) {
+  fun_sub <- substitute(fun)
+  function(...) {
+    .Deprecated(deparse1(fun_sub), package = "ggside")
+    fun(...)
+  }
+}
+
 
