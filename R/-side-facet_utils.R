@@ -218,3 +218,7 @@ unwrap <- function(df, by, cols = NULL){
 }
 
 
+map_panel_type <- function(panel_params, panel_types) {
+  mapply(function(x, y) {x$ggside_panel_type <- y; x}, x = panel_params, y = panel_types, SIMPLIFY = F)
+}
+
