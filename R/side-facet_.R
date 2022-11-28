@@ -19,11 +19,11 @@ ggside_facet.default <- function(facet, ggside = ggside()) {
 
 ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
 
-  new_facet <- new_ggside_facet(facet)
+  new_facet <- new_ggside_facet(facet, ggside)
   ggproto(
     "FacetSideNull",
     new_facet,
-    ggside = ggside,
+    params = c(new_facet$params, ggside = ggside),
     draw_panels = sideFacetNull_draw_panels,
     map_data = sideFacetNull_map_data
   )
@@ -32,11 +32,10 @@ ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
 
 ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
 
-  new_facet <- new_ggside_facet(facet)
+  new_facet <- new_ggside_facet(facet, ggside)
   ggproto(
     "FacetSideGrid",
     new_facet,
-    ggside = ggside,
     draw_panels = sideFacetGrid_draw_panels,
     map_data = sideFacetGrid_map_data
   )
@@ -44,21 +43,23 @@ ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
 
 ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
 
-  new_facet <- new_ggside_facet(facet)
+  new_facet <- new_ggside_facet(facet, ggside)
   ggproto(
     "FacetSideWrap",
     new_facet,
-    ggside = ggside,
     draw_panels = sideFacetWrap_draw_panels,
     map_data = sideFacetWrap_map_data
   )
 }
 
-new_ggside_facet <- function(facet) {
+new_ggside_facet <- function(facet, ggside) {
   force(facet)
+  params <- facet$params
+  params[["ggside"]] <- ggside
   ggproto(
     "ggsideFacet",
     facet,
+    params = params,
     compute_layout = ggside_compute_layout(facet),
     init_scales = ggside_init_scales(facet),
     train_scales = ggside_train_scales(facet),

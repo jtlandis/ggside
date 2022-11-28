@@ -212,7 +212,7 @@ sideFacetNull_map_data <- function (data, layout, params) {
   if(!"PANEL_TYPE"%in%colnames(data)){
     data$PANEL_TYPE <- "main"
   }
-  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS"))
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
   keys <- join_keys(data, layout, by = "PANEL_TYPE")
   data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
   data

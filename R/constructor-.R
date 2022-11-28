@@ -1,5 +1,6 @@
 
-
+#' utility function to make a ggside Geom
+#' @export
 ggside_geom <- function(class_name = NULL,
                         geom = NULL,
                         side = c("x","y")) {
