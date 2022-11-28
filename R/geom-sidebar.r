@@ -59,11 +59,9 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
                           show.legend = NA,
                           inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, orientation)
-  mapping <- force_panel_type_mapping(mapping, "x")
 
-  new_ggside_layer()
-
-  l <- layer(
+  new_ggside_layer(
+    side = "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -76,17 +74,15 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class=c("ggside_layer", class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsideBar <- ggside_geom("GeomXsideBar",GeomBar, "x")
+GeomXsidebar <- ggside_geom("GeomXsidebar", GeomBar, "x")
 
 
 #' @rdname geom_xsidebar
@@ -101,7 +97,9 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
                           inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, orientation)
   mapping <- force_panel_type_mapping(mapping, "y")
-  l <- layer(
+  names(mapping) <- rename_side(names(mapping), "y")
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -114,14 +112,12 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsideBar <- ggside_geom("GeomYsideBar",GeomBar, "y")
+GeomYsidebar <- ggside_geom("GeomYsidebar", GeomBar, "y")
