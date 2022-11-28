@@ -27,8 +27,8 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
-  mapping <- force_panel_type_mapping(mapping, "x")
-  l <- layer(
+  new_ggside_layer(
+    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -39,36 +39,15 @@ geom_xsidepoint <- function(mapping = NULL, data = NULL,
     params = list(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidepoint <- ggplot2::ggproto("GeomXsidepoint",
-                                   ggplot2::GeomPoint,
-                                   default_aes = aes(
-                                     !!!ggplot2::GeomPoint$default_aes,
-                                     xcolour = NA, xfill = NA, PANEL_TYPE = "x"
-                                   ),
-                                   setup_data = function(data, params){
-                                     data <- parse_side_aes(data, params)
-                                     ggplot2::GeomPoint$setup_data(data, params)
-                                   },
-                                   draw_panel = function(data, panel_params, coord, na.rm = FALSE){
-                                     data <- use_xside_aes(data)
-                                     ggplot2::GeomPoint$draw_panel(data = data, panel_params = panel_params,
-                                                                   coord = coord, na.rm = na.rm)
-                                   },
-                                   draw_key = function(data, params, size){
-                                     data <- use_xside_aes(data)
-                                     ggplot2::GeomPoint$draw_key(data, prams, size)
-                                   }
-                                   )
+GeomXsidepoint <- ggside_geom("GeomXsidepoint", GeomPoint, "x")
 
 #' @rdname geom_xsidepoint
 #' @export
@@ -78,8 +57,8 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
                             na.rm = FALSE,
                             show.legend = NA,
                             inherit.aes = TRUE) {
-  mapping <- force_panel_type_mapping(mapping, "y")
-  l <- layer(
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -90,35 +69,13 @@ geom_ysidepoint <- function(mapping = NULL, data = NULL,
     params = list(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidepoint <- ggplot2::ggproto("GeomYsidepoint",
-                                   ggplot2::GeomPoint,
-                                   default_aes = aes(
-                                     !!!ggplot2::GeomPoint$default_aes,
-                                     ycolour = NA, yfill = NA, PANEL_TYPE = "y"
-                                   ),
-                                   setup_data = function(data, params){
-                                     data <- parse_side_aes(data, params)
-                                     ggplot2::GeomPoint$setup_data(data, params)
-                                   },
-                                   draw_panel = function(data, panel_params, coord, na.rm = FALSE){
-                                     data <- use_yside_aes(data)
-                                     ggplot2::GeomPoint$draw_panel(data = data, panel_params = panel_params,
-                                                                   coord = coord, na.rm = na.rm)
-                                   },
-                                   draw_key = function(data, params, size){
-                                     data <- use_yside_aes(data)
-                                     ggplot2::GeomPoint$draw_key(data, prams, size)
-                                   }
-)
-
+GeomYsidepoint <- ggside_geom("GeomYsidepoint", GeomPoint, "y")
 

@@ -41,7 +41,7 @@ ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
   )
 }
 
-ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
+ggside_facet.FacetWrap <- function(facet, ggside = ggside()) {
 
   new_facet <- new_ggside_facet(facet, ggside)
   ggproto(

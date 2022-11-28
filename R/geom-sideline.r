@@ -15,8 +15,9 @@
 geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
-  mapping <- force_panel_type_mapping(mapping, "x")
-  l <- layer(
+
+  new_ggside_layer(
+    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -28,40 +29,15 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsideline <- ggplot2::ggproto("GeomXsideline",
-                                  ggplot2::GeomLine,
-                                  default_aes = aes(
-                                    !!!ggplot2::GeomLine$default_aes,
-                                    xcolour = NA,
-                                    xfill = NA,
-                                    PANEL_TYPE = "x"
-                                  ),
-                                  setup_data = function(data, params){
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomLine$setup_data(data, params)
-                                  },
-                                  draw_panel = function(data, panel_params, coord, arrow = NULL,
-                                                        lineend = "butt", linejoin = "round",
-                                                        linemitre = 10, na.rm = FALSE){
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomLine$draw_panel(data = data, panel_params = panel_params,
-                                                                 coord = coord, arrow = arrow, lineend = lineend,
-                                                                 linejoin = linejoin, linemitre = linemitre, na.rm = na.rm)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomLine$draw_key(data, params, size)
-                                  })
+GeomXsideline <- ggside_geom("GeomXsideline", GeomLine, "x")
 
 
 #' @rdname geom_xsideline
@@ -69,8 +45,8 @@ GeomXsideline <- ggplot2::ggproto("GeomXsideline",
 geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
-  mapping <- force_panel_type_mapping(mapping, "y")
-  l <- layer(
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -82,10 +58,8 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 
@@ -93,27 +67,5 @@ geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsideline <- ggplot2::ggproto("GeomYsideline",
-                                  ggplot2::GeomLine,
-                                  default_aes = aes(
-                                    !!!ggplot2::GeomLine$default_aes,
-                                    ycolour = NA, yfill = NA, PANEL_TYPE = "y",
-                                  ),
-                                  setup_data = function(data, params){
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomLine$setup_data(data, params)
-                                  },
-                                  draw_panel = function(data, panel_params, coord, arrow = NULL,
-                                                        lineend = "butt", linejoin = "round",
-                                                        linemitre = 10, na.rm = FALSE){
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomLine$draw_panel(data = data, panel_params = panel_params,
-                                                                 coord = coord, arrow = arrow, lineend = lineend,
-                                                                 linejoin = linejoin, linemitre = linemitre, na.rm = na.rm)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomLine$draw_key(data, params, size)
-                                  })
-
+GeomYsideline <- ggside_geom("GeomYsideline", GeomLine, "y")
 

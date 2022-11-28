@@ -61,8 +61,8 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               orientation = NA,
                               show.legend = NA,
                               inherit.aes = TRUE) {
-  mapping <- force_panel_type_mapping(mapping, "x")
-  l <- layer(
+  new_ggside_layer(
+    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -77,35 +77,15 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
-                                    ggplot2::GeomViolin,
-                                    default_aes = aes(
-                                      !!!ggplot2::GeomViolin$default_aes,
-                                      xcolour = NA, xfill = NA, PANEL_TYPE = "x"
-                                    ),
-                                    setup_data = function(data, params){
-                                      data <- parse_side_aes(data, params)
-                                      ggplot2::GeomViolin$setup_data(data, params)
-                                    },
-                                    draw_panel = function(self, data, panel_params, coord, ...){
-                                      data <- use_xside_aes(data)
-                                      ggplot2::GeomViolin$draw_panel(data = data, panel_params, coord = coord, ...)
-                                    },
-                                    draw_key = function(data, params, size){
-                                      data <- use_xside_aes(data)
-                                      ggplot2::GeomViolin$draw_key(data, params, size)
-                                    })
-
+GeomXsideviolin <- ggside_geom("GeomXsideviolin", GeomViolin, "x")
 
 #' @rdname geom_xsideviolin
 #' @export
@@ -119,8 +99,8 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
                              orientation = "y",
                              show.legend = NA,
                              inherit.aes = TRUE) {
-  mapping <- force_panel_type_mapping(mapping, "y")
-  l <- layer(
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -135,31 +115,12 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
-                                    ggplot2::GeomViolin,
-                                    default_aes = aes(
-                                      !!!ggplot2::GeomViolin$default_aes,
-                                      ycolour = NA, yfill = NA, PANEL_TYPE = "y"
-                                    ),
-                                    setup_data = function(data, params){
-                                      data <- parse_side_aes(data, params)
-                                      ggplot2::GeomViolin$setup_data(data, params)
-                                    },
-                                    draw_panel = function(self, data, panel_params, coord, ...){
-                                      data <- use_yside_aes(data)
-                                      ggplot2::GeomViolin$draw_panel(data = data, panel_params, coord = coord, ...)
-                                    },
-                                    draw_key = function(data, params, size){
-                                      data <- use_yside_aes(data)
-                                      ggplot2::GeomViolin$draw_key(data, params, size)
-                                    })
+GeomYsideviolin <- ggside_geom("GeomYsideviolin", GeomViolin, "y")

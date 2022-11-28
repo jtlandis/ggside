@@ -27,6 +27,7 @@ ggside_geom <- function(class_name = NULL,
     },
     draw_panel = function(self, data, panel_params,
                           coord, width = NULL, flipped_aes = FALSE) {
+      browser()
       data <- use_side_aes(data, side)
       data <- self$.data_unmapper(data)
       parent <- ggplot2::ggproto_parent(geom, self)

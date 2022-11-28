@@ -35,9 +35,9 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
          inherit.aes = TRUE,
          outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
-  mapping <- force_panel_type_mapping(mapping, "x")
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  l <- layer(
+  new_ggside_layer(
+    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -50,34 +50,15 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
-                                     ggplot2::GeomDensity,
-                                     default_aes = aes(
-                                       !!!ggplot2::GeomDensity$default_aes,
-                                       xcolour = NA, xfill = NA, PANEL_TYPE = "x"
-                                     ),
-                                     setup_data = function(data, params) {
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomDensity$setup_data(data, params)
-                                     },
-                                     draw_group = function(data, panel_params, coord, na.rm = FALSE, flipped_aes = FALSE, outline.type = "both") {
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomDensity$draw_group(data = data, panel_params = panel_params, coord = coord, na.rm = na.rm,
-                                                                       flipped_aes = flipped_aes, outline.type = outline.type)},
-                                     draw_key = function(data, params, size) {
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomDensity$draw_key(data, params, size)
-                                       })
+GeomXsidedensity <- ggside_geom("GeomXsidedensity", GeomDensity, "x")
 
 #' @rdname geom_xsidedensity
 #' @export
@@ -90,9 +71,9 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               inherit.aes = TRUE,
                               outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
-  mapping <- force_panel_type_mapping(mapping, "y")
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  l <- layer(
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -105,32 +86,12 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
       orientation = orientation,
       outline.type = outline.type,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
-                                     ggplot2::GeomDensity,
-                                     default_aes = aes(
-                                       !!!ggplot2::GeomDensity$default_aes,
-                                       ycolour = NA, yfill = NA, PANEL_TYPE = "y"
-                                     ),
-                                     setup_data = function(data, params) {
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomDensity$setup_data(data, params)
-                                     },
-                                     draw_group = function(data, panel_params, coord, na.rm = FALSE, flipped_aes = FALSE, outline.type = "both") {
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomDensity$draw_group(data = data, panel_params = panel_params, coord = coord, na.rm = na.rm,
-                                                                       flipped_aes = flipped_aes, outline.type = outline.type)
-                                     },
-                                     draw_key = function(data, params, size) {
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomDensity$draw_key(data, params, size)
-                                     })
+GeomYsidedensity <- ggside_geom("GeomYsidedensity", GeomDensity, "y")

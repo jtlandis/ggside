@@ -71,8 +71,9 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
       position$preserve <- "single"
     }
   }
-  mapping <- force_panel_type_mapping(mapping, "x")
-  l <- layer(
+
+  new_ggside_layer(
+    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -93,34 +94,15 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsideboxplot <- ggplot2::ggproto("GeomXsideboxplot",
-                                     ggplot2::GeomBoxplot,
-                                     default_aes = aes(
-                                       !!!ggplot2::GeomBoxplot$default_aes,
-                                       xcolour = NA, xfill = NA, PANEL_TYPE = "x"
-                                     ),
-                                     setup_data = function(data, params){
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomBoxplot$setup_data(data, params)
-                                     },
-                                     draw_panel = function(self, data, panel_params, coord, ...){
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomBoxplot$draw_panel(data = data, panel_params = panel_params, coord = coord, ...)
-                                     },
-                                     draw_key = function(data, params, size){
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomBoxplot$draw_key(data, params, size)
-                                     })
+GeomXsideboxplot <- ggside_geom("GeomXsideboxplot", GeomBoxplot, "x")
 
 
 #' @rdname geom_xsideboxplot
@@ -152,8 +134,9 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
       position$preserve <- "single"
     }
   }
-  mapping <- force_panel_type_mapping(mapping, "y")
-  l <- layer(
+
+  new_ggside_layer(
+    "y",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -174,32 +157,13 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
       na.rm = na.rm,
       orientation = orientation,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsideboxplot <- ggplot2::ggproto("GeomYsideboxplot",
-                                     ggplot2::GeomBoxplot,
-                                     default_aes = aes(
-                                       !!!ggplot2::GeomBoxplot$default_aes,
-                                       ycolour = NA, yfill = NA, PANEL_TYPE = "y"
-                                     ),
-                                     setup_data = function(data, params){
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomBoxplot$setup_data(data, params)
-                                     },
-                                     draw_panel = function(self, data, panel_params, coord, ...){
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomBoxplot$draw_panel(data = data, panel_params = panel_params, coord = coord, ...)
-                                     },
-                                     draw_key = function(data, params, size){
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomBoxplot$draw_key(data, params, size)
-                                     })
+GeomYsideboxplot <- ggside_geom("GeomYsideboxplot", GeomBoxplot, "y")
 
