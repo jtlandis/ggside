@@ -38,18 +38,10 @@ rename_side <- function(str, side) {
   str
 }
 
+
 #' utility to pull out an aesthetic we care about.
 #' helps code around the `|` aesthetics
 #' @return a character vector
-pull_side <- function(x, i) {
-  if (any(is_or <- grepl("|", x, fixed = T))) {
-    splits <- strsplit(x[is_or], "|", T)
-    out <-vapply(splits, `[`, i, FUN.VALUE = character(1))
-    x[is_or] <- out
-  }
-  x
-}
-
 pull_aes <- function(x) {
   if (any(is_or <- grepl("|", x, fixed = T))) {
     splits <- strsplit(x[is_or], "|", T)
