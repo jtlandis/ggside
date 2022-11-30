@@ -100,7 +100,6 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
 
   .xgroupby <- "COL"
   .ygroupby <- "ROW"
-  #browser()
   bottom <- do_by(layout, "COL", function(x, on){
     x[["ROW2"]] <- switch(on,
                           default = max(x[["ROW"]]),

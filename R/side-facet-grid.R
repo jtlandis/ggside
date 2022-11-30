@@ -176,7 +176,6 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   .xgroupby <- "COL"
   .ygroupby <- "ROW"
-
   bottom <- do_by(layout, "COL", function(x, on){
     x[["ROW2"]] <- switch(on,
                           default = max(x[["ROW"]]),

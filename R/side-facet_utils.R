@@ -48,6 +48,7 @@ check_scales_collapse <- function(data, params) {
 #' @export
 sidePanelLayout <- function(layout,
                             ggside){
+
   ggside$collapse <- check_collapse(ggside$collapse, ggside$sides_used)
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos

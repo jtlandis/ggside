@@ -89,6 +89,8 @@ ggside_train_scales <- function(facet) {
 ggside_init_scales <- function(facet) {
   force(facet)
   function(layout, x_scale = NULL, y_scale = NULL, params){
+    #Based on Compute Layout, IF a ggside scale exists,
+    # it will never be the first element of the layout$panel_scale_x
     scales <- facet$init_scales(layout, x_scale, y_scale, params)
     if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
       side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
