@@ -1,8 +1,15 @@
 
-# ggside 0.2.2
+# ggside 0.3.0
+
+### Breaking Changes
+
+* The following classes are no longer exported.
+ * `FacetSideNull`, `FacetSideGrid`, `FacetSideWrap`
+* `ggside` now exports its own method for `ggplot_build`. This may affect how `ggside` works with other packages that also have `ggplot_build` method (`gganimate`). 
 
 ### Updates
 
+* The `ggside_options` object now inherits from `ggproto` instead of a list.
 * fixed issue where `facet_wrap(..., scales = "free/free_x/free_y")` prevented the associated `scale_ysidex_*()`/`scale_xsidey_*()` functions from plotting the guides. Addresses issue #35
 * `ggside` now provides an informative warning if the user provides free scales to facets but an incompatible argument to `ggside(collapse = ...)`. This warning will force the collapse parameter to something that will comply with the facet scales specification.
 * `ggside` should be more resistant to `ggplot2`'s updates to their default aesthetics. `ggplot2 v3.4.0` has included a new default aesthetic that has caused `ggside` geoms to break. Addresses issue #36
@@ -10,6 +17,7 @@
   * `scale_xsidey_log10()`, `scale_ysidex_log10()`
   * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`
   * `scale_xsidey_sqrt()`, `scale_ysidex_reverse()`
+* all `ggside` Geom ggproto objects have their aesthetics changed. For example, `GeomXsidebar$required_aes` is set to `c("x", "xsidey")` instead of `c("x", "y")`. This is to ensure side panel's respective axis generates its own default scale. With this change, users no longer need to preemptively provide a `scale_(x|y)side(y|x)_*()` function.
 
 
 # ggside 0.2.1
