@@ -38,16 +38,24 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
   if (!is.null(collapse)) {
     collapse <- match.arg(collapse, c("all", "x","y"))
   }
-  structure(list(x.pos = x.pos,
-                 y.pos = y.pos,
-                 scales = scales,
-                 collapse = collapse,
-                 xsidey = NULL,
-                 ysidex = NULL,
-                 draw_x_on = draw_x_on,
-                 draw_y_on = draw_y_on,
-                 strip = strip), class = c("ggside_options","gg"))
+
+
+  ggproto(
+    "ggside_options",
+    x.pos = x.pos,
+    y.pos = y.pos,
+    scales = scales,
+    collapse = collapse,
+    xsidey = NULL,
+    ysidex = NULL,
+    draw_x_on = draw_x_on,
+    draw_y_on = draw_y_on,
+    strip = strip,
+    sides_used = NULL
+  )
 }
+
+
 
 #' @title Check ggside objects
 #' @param x Object to test
