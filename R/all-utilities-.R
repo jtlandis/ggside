@@ -19,14 +19,19 @@ use_side_aes <- function(data, side) {
 rename_side <- function(str, side) {
   other <- switch(side, x = "y", y = "x")
   is_or <- all(grepl("|", str, fixed = T))
-
+  aes <- .ggside_global[[paste0(".", other,"_aes")]]
   if (is_or) {
     splits <- strsplit(str, "|", T)
     i <- match(other, c("x", "y"))
-    splits <- lapply(splits, function(x, i) {x[i] <-paste0(side,"side", x[i]);x}, i = i)
+
+    splits <- lapply(splits,
+                     function(x) {
+                       l <- x %in% aes
+                       x[l] <- paste0(side, "side", x[l])
+                       x})
     str <- vapply(splits, paste, character(1), collapse = "|")
   } else {
-    to_rename <- grepl(sprintf("^%s", other), str)
+    to_rename <- str %in% aes
     if (any(to_rename))
       str[to_rename] <- sprintf("%sside%s", side, str[to_rename])
   }
@@ -41,6 +46,15 @@ pull_side <- function(x, i) {
     splits <- strsplit(x[is_or], "|", T)
     out <-vapply(splits, `[`, i, FUN.VALUE = character(1))
     x[is_or] <- out
+  }
+  x
+}
+
+pull_aes <- function(x) {
+  if (any(is_or <- grepl("|", x, fixed = T))) {
+    splits <- strsplit(x[is_or], "|", T)
+    out <- unlist(splits)
+    x <- c(x[!is_or], out)
   }
   x
 }
