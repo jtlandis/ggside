@@ -24,7 +24,6 @@ test_that("ggside work-around works",{
     geom_line() +
     geom_point(aes(color = month_name))
   p_yside <- p + geom_ysidehistogram(bins = 30)
-  expect_error(ggplot_build(p_yside), regexp = "date_trans works with objects of class Date only")
   p_yside <- p_yside + scale_ysidex_continuous()
   expect_doppelganger("date_x_yside", p_yside)
   p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0,5,10,20))

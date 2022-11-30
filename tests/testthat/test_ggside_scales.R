@@ -40,12 +40,13 @@ test_that("xsidey and ysidex no warning", {
     geom_xsidedensity(alpha = .3, position = "stack") +
     geom_ysideboxplot(aes(x = Species), orientation = "x")
 
-  expect_false(inherits(p$scales, "ggsideScalesList"))
+  # adding a scale no longer converts the scale object
+  #expect_false(inherits(p$scales, "ggsideScalesList"))
 
   p <- p +
     scale_ysidex_discrete(guide = guide_axis(angle = 45))
 
-  expect_true(inherits(p$scales, "ggsideScalesList"))
+  #expect_true(inherits(p$scales, "ggsideScalesList"))
 
   expect_warning(p, NA)
 
