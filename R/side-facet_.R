@@ -61,7 +61,6 @@ new_ggside_facet <- function(facet, ggside) {
     facet,
     params = params,
     compute_layout = ggside_compute_layout(facet),
-    init_scales = ggside_init_scales(facet),
     train_scales = ggside_train_scales(facet),
   )
 }
@@ -110,27 +109,5 @@ ggside_train_scales <- function(facet) {
   }
 }
 
-
-ggside_init_scales <- function(facet) {
-  force(facet)
-  function(layout, x_scale = NULL, y_scale = NULL, params){
-    #Based on Compute Layout, IF a ggside scale exists,
-    # it will never be the first element of the layout$panel_scale_x
-    scales <- facet$init_scales(layout, x_scale, y_scale, params)
-    # if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
-    #   side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
-    #   scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
-    #   # first_scale_x <- scales$x[[1]]
-    #   # side_aes <- unique(unlist(lapply(scales$x[side_indx], `[[`, "aesthetics")))
-    #   # first_scale_x$aesthetics <-c(first_scale_x$aesthetics, side_aes)
-    # }
-    # if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
-    #   side_indx <-  unique(layout[layout$PANEL_TYPE=="x",]$SCALE_Y)
-    #   scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
-    #
-    # }
-    scales
-  }
-}
 
 
