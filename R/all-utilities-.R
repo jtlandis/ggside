@@ -64,8 +64,8 @@ local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
   s_quo <- enexpr(scale)
   aes_ <- expr((!!s_quo)$aesthetics)
   old <- eval_bare(expr(!!aes_), frame)
-  eval_bare(expr((!!aes_) <- (!!aes_)[!grepl('(x|y)side', !!old)]))
-  eval_bare(expr(on.exit((!!aes_) <- !!old, add = T)))
+  eval_bare(expr((!!aes_) <- (!!aes_)[!grepl('(x|y)side', !!old)]), frame)
+  eval_bare(expr(on.exit((!!aes_) <- !!old, add = T)), frame)
 }
 
 #' Temporarily changes the first element of a list to contain the
