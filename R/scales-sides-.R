@@ -46,9 +46,9 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 
   new_oob <- muffle_opts_warn(oob)
 
-  sc <- continuous_scale(c("y", "ymin", "ymax", "yend", "yintercept",
+  sc <- continuous_scale(paste0("xside",c("y", "ymin", "ymax", "yend", "yintercept",
                            "ymin_final", "ymax_final", "lower", "middle", "upper",
-                           "y0","xsidey"), "position_c", identity, name = name, breaks = breaks,
+                           "y0")), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
                          limits = limits, expand = expand, oob = new_oob, na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
@@ -68,9 +68,9 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     position = "bottom", sec.axis = waiver()){
   new_oob <- muffle_opts_warn(oob)
 
-  sc <- continuous_scale(c("x", "xmin", "xmax", "xend", "xintercept",
+  sc <- continuous_scale(paste0("yside",c("x", "xmin", "xmax", "xend", "xintercept",
                            "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
-                           "x0", "ysidex"), "position_c", identity, name = name, breaks = breaks,
+                           "x0")), "position_c", identity, name = name, breaks = breaks,
                          n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
                          limits = limits, expand = expand, oob = new_oob, na.value = na.value,
                          trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
@@ -116,7 +116,7 @@ NULL
 scale_xsidey_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "left") {
 
-  sc <- discrete_scale(c("y", "ymin", "ymax", "yend", "xsidey"), "position_d",
+  sc <- discrete_scale(paste0("xside",c("y", "ymin", "ymax", "yend")), "position_d",
                        identity, ..., expand = expand, guide = guide, position = position,
                        super = ScaleDiscretePosition)
   sc$range_c <- continuous_range()
@@ -131,7 +131,7 @@ scale_xsidey_discrete <- function(..., expand = waiver(),
 scale_ysidex_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "bottom") {
 
-  sc <- discrete_scale(c("x", "xmin", "xmax", "xend", "ysidex"), "position_d",
+  sc <- discrete_scale(paste0("yside",c("x", "xmin", "xmax", "xend")), "position_d",
                        identity, ..., expand = expand, guide = guide, position = position,
                        super = ScaleDiscretePosition)
   sc$range_c <- continuous_range()
@@ -139,12 +139,13 @@ scale_ysidex_discrete <- function(..., expand = waiver(),
             class = c("ggside_scale", class(sc)))
 
 }
-new_mapped_discrete <- function(x=double()){
-  vctrs::vec_assert(x, double())
-  obj <- vctrs::new_vctr(x, class = "ggplot2_mapped_discrete")
-  class(obj) <- c(class(obj), "numeric")
-  obj
-}
+
+# new_mapped_discrete <- function(x=double()){
+#   vctrs::vec_assert(x, double())
+#   obj <- vctrs::new_vctr(x, class = "ggplot2_mapped_discrete")
+#   class(obj) <- c(class(obj), "numeric")
+#   obj
+# }
 
 # #' @export
 # vec_ptype2.logical.ggplot2_mapped_discrete <- function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
