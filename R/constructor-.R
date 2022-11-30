@@ -7,9 +7,9 @@ ggside_geom <- function(class_name = NULL,
   side <- match.arg(side, c("x","y"))
   o <- switch(side, x = "y", y = "x")
   i <- match(side, c("x","y"))
-  req_aes <- pull_side(geom$required_aes, i)
-  opt_aes <- pull_side(geom$optional_aes, i)
-  non_mis <- pull_side(geom$non_missing_aes, i)
+  req_aes <- pull_aes(geom$required_aes)
+  opt_aes <- pull_aes(geom$optional_aes)
+  non_mis <- pull_aes(geom$non_missing_aes)
   def_aes <- names(geom$default_aes)
   all_aes <- c(req_aes, opt_aes, non_mis, def_aes)
   .aes_to_map <- all_aes[all_aes %in% .ggside_global[[sprintf(".%s_aes",o)]]]
@@ -35,7 +35,7 @@ ggside_geom <- function(class_name = NULL,
     optional_aes = rename_side(geom$optional_aes, side),
     non_missing_aes = rename_side(geom$non_missing_aes, side),
     setup_data = function(self, data, params) {
-      browser()
+      #browser()
       data <- parse_side_aes(data, params)
       data <- self$.data_unmapper(data)
       geom$setup_data(data, params)
@@ -135,10 +135,12 @@ new_pos_scale <- function(scale) {
     transform_df = function(self, df) {
       local_vanilla_scale_aes(self)
       ggproto_parent(scale, self)$transform_df(df)
+    },
+    map = function(self, x, limits = self$get_limits()) {
+      if (length(x)==0) return(x)
+      parent <- ggproto_parent(scale, self)
+      parent$map(x, limits)
     })
 }
 
 
-fun_method <- function(name, args, fun) {
-
-}
