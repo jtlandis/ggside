@@ -1,4 +1,19 @@
 
+new_side_pos_scale <- function(scale, side) {
+  side <- match.arg(side, choices = c("x","y"))
+  ggproto(
+    "ggside_scale",
+    scale,
+    aesthetics = sprintf("%sside%s", side, scale$aesthetics),
+    map = function(self, x, limits = self$get_limits()) {
+      if (length(x)==0) return(x)
+      parent <- ggproto_parent(scale, self)
+      parent$map(x, limits)
+    }
+  )
+}
+
+
 #' @title Position scales for continuous data ggside scales
 #'
 #' @name ggside-scales-continuous
@@ -37,25 +52,38 @@
 NULL
 
 #' @rdname ggside-scales-continuous
-#' @usage NULL
 #' @export
 scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "left", sec.axis = waiver()){
 
-  #new_oob <- muffle_opts_warn(oob)
+  new_side_pos_scale(
+    side = "x",
+    scale_y_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
+                       n.breaks = n.breaks, labels = labels, limits = limits,
+                       expand = expand, oob = oob, na.value = na.value,
+                       trans = trans, guide = guide, position = position, sec.axis = sec.axis)
+  )
 
-  sc <- continuous_scale(paste0("xside",c("y", "ymin", "ymax", "yend", "yintercept",
-                           "ymin_final", "ymax_final", "lower", "middle", "upper",
-                           "y0")), "position_c", identity, name = name, breaks = breaks,
-                         n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = oob, na.value = na.value,
-                         trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
-  sc <- set_sec_axis(sec.axis, sc)
-  structure(sc,
-            class = c("ggside_scale", class(sc)))
+}
 
+#' @rdname ggside-scales-continuous
+#' @export
+scale_xsidey_log10 <- function(...) {
+  scale_xsidey_continuous(..., trans = scales::log10_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_xsidey_reverse <- function(...) {
+  scale_xsidey_continuous(..., trans = scales::reverse_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_xsidey_sqrt <- function(...) {
+  scale_xsidey_continuous(..., trans = scales::sqrt_trans())
 }
 
 
@@ -66,18 +94,33 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
                                     position = "bottom", sec.axis = waiver()){
-  #new_oob <- muffle_opts_warn(oob)
+  new_side_pos_scale(
+    side = "y",
+    scale_x_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
+                       n.breaks = n.breaks, labels = labels, limits = limits,
+                       expand = expand, oob = oob, na.value = na.value,
+                       trans = trans, guide = guide, position = position, sec.axis = sec.axis)
+  )
 
-  sc <- continuous_scale(paste0("yside",c("x", "xmin", "xmax", "xend", "xintercept",
-                           "xmin_final", "xmax_final", "xlower", "xmiddle", "xupper",
-                           "x0")), "position_c", identity, name = name, breaks = breaks,
-                         n.breaks = n.breaks, minor_breaks = minor_breaks, labels = labels,
-                         limits = limits, expand = expand, oob = oob, na.value = na.value,
-                         trans = trans, guide = guide, position = position, super = ScaleContinuousPosition)
-  sc <- set_sec_axis(sec.axis, sc)
-  structure(sc,
-            class = c("ggside_scale", class(sc)))
+}
 
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_log10 <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::log10_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_reverse <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::reverse_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_sqrt <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::sqrt_trans())
 }
 
 
@@ -116,12 +159,10 @@ NULL
 scale_xsidey_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "left") {
 
-  sc <- discrete_scale(paste0("xside",c("y", "ymin", "ymax", "yend")), "position_d",
-                       identity, ..., expand = expand, guide = guide, position = position,
-                       super = ScaleDiscretePosition)
-  sc$range_c <- continuous_range()
-  structure(sc,
-            class = c("ggside_scale", class(sc)))
+  new_side_pos_scale(
+    side = "x",
+    scale_y_discrete(..., expand = expand, guide = guide, position = position)
+  )
 
 }
 
@@ -131,24 +172,60 @@ scale_xsidey_discrete <- function(..., expand = waiver(),
 scale_ysidex_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "bottom") {
 
-  sc <- discrete_scale(paste0("yside",c("x", "xmin", "xmax", "xend")), "position_d",
-                       identity, ..., expand = expand, guide = guide, position = position,
-                       super = ScaleDiscretePosition)
-  sc$range_c <- continuous_range()
-  structure(sc,
-            class = c("ggside_scale", class(sc)))
+  new_side_pos_scale(
+    side = "y",
+    scale_x_discrete(..., expand = expand, guide = guide, position = position)
+  )
 
 }
 
-# new_mapped_discrete <- function(x=double()){
-#   vctrs::vec_assert(x, double())
-#   obj <- vctrs::new_vctr(x, class = "ggplot2_mapped_discrete")
-#   class(obj) <- c(class(obj), "numeric")
-#   obj
-# }
 
-# #' @export
-# vec_ptype2.logical.ggplot2_mapped_discrete <- function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
-# #' @export
-# vec_ptype2.ggplot2_mapped_discrete.logical <- function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong")
+#' @title Position scales for binning continuous data ggside scales
+#' @name ggside-scales-binned
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2]{scale_x_binned}/\link[ggplot2]{scale_y_binned}.
+#' [scale_xsidey_binned] enables better control on how the y-axis is rendered on the xside panel and
+#' [scale_ysidex_binned] enables better control on how the x-axis is rendered on the yside panel.
+#'
+#' @inheritParams ggplot2::binned_scale
+#' @return ggside_scale object inheriting from ggplot2::ScaleBinnedPosition
+#' @examples
+#'
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length)) +
+#'   geom_point() + geom_xsidepoint(aes(y = Petal.Width, xcolour = Petal.Length)) +
+#'   scale_xsidey_binned(n.breaks = 4) +
+#'   scale_colour_steps(aesthetics ="xcolour", guide = guide_colorbar(available_aes = "xcolour")) +
+#'   theme(ggside.panel.scale.x = .3)
+#'
+#' @export
+scale_xsidey_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
+                                 breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
+                                 oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
+                                 trans = "identity", guide = waiver(), position = "left")
+{
 
+  new_side_pos_scale(
+    side = "x",
+    scale_y_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
+                   breaks = breaks, labels = labels, limits = limits, expand = expand,
+                   oob = oob, na.value = na.value, right = right, show.limits = show.limits,
+                   trans = trans, guide = guide, position = position)
+  )
+}
+
+#' @rdname ggside-scales-binned
+#' @export
+scale_ysidex_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
+                                 breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
+                                 oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
+                                 trans = "identity", guide = waiver(), position = "bottom")
+{
+
+  new_side_pos_scale(
+    side = "y",
+    scale_x_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
+                   breaks = breaks, labels = labels, limits = limits, expand = expand,
+                   oob = oob, na.value = na.value, right = right, show.limits = show.limits,
+                   trans = trans, guide = guide, position = position)
+  )
+}
