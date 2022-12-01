@@ -54,14 +54,12 @@ ggplot(mpg, aes(displ, hwy, colour = class)) +
   
 ```
 
-Mix discrete and continuous axis with `scale_xsidey_*`/`scale_ysidex_*`.
+After version `0.3.0` you no longer __need__ to use `scale_(y|x)side(x|y)_*()` to mix discrete and continuous axes. `ggside` geom's have their default positional aesthetics `x` and `y` aesthetics to be prepended with `ysidex` and `xsidey` respectively under the hood. Now you may mix discrete and continuous axes with ease.
 
 ```{r example-mix-scales}
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
   geom_xsideboxplot(aes(y =class), orientation = "y") +
-  scale_xsidey_discrete() + #In order to use xsideboxplot with a main panel that uses
-  #continuous data, force y axis in xside panel to be discrete
   geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
   scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL) +
   theme(ggside.panel.scale = .3)
@@ -94,11 +92,10 @@ If you find any issues or want to suggest an enhancement, please make a post at 
 
 ## Known Issues
 
-The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.2.1.
+The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.3.0.
 
 
-* [\#35
-     ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/35) Side scales were not added properly with `facet_wrap(scales = "free")`.
+
      
 
 
