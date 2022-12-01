@@ -21,6 +21,12 @@ knitr::opts_chunk$set(
 library(ggside)
 ```
 
+```{r}
+p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+   geom_point(size = 2) +
+   theme_bw()
+```
+
 The purpose of this vignette is to document a _slight_ change in API expectation with certain `geom_*side*` when there are global aesthetic mappings for both `x` and `y`.
 
 In `ggside (<0.1.0)`, the user was expected to explicitly map all computed aesthetics, especially in the case when `x` and `y` are mapped globally for the main panel. The nature of `ggside` is generally to plot supplemental data, and the user will likely want to inherit the `x` global mapping if they use a `geom_xside*` geometry, but map something different to `y`.

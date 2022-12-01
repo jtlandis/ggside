@@ -1,5 +1,10 @@
 
-
+#' @name new_ggside_layer
+#' @description utility function to make a layer compatible with `ggside` internals
+#' @param side the side the layer will be plotted. "x" corresponds to "xside" and
+#' "y" corresponds to "yside".
+#' @inheritParams ggplot2::layer
+#' @export
 new_ggside_layer <- function(side = c("x","y"), geom = NULL, stat = NULL, data = NULL, mapping = NULL,
                              position = NULL, params = list(), inherit.aes = TRUE, check.aes = TRUE,
                              check.param = TRUE, show.legend = NA, key_glyph = NULL) {
