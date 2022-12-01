@@ -71,6 +71,9 @@ ggside_scales <- function(scales, ggside) {
     NULL,
     scales,
     ggside = ggside,
+    non_position_scales = function(self) {
+      ggproto(NULL, self, scales = self$scales[!self$find(c("x","y", "ysidex", "xsidey"))])
+    },
     add = function(self, scale) {
       parent <- ggproto_parent(scales, self)
       parent$add(scale)
@@ -142,5 +145,7 @@ new_pos_scale <- function(scale) {
       parent$map(x, limits)
     })
 }
+
+
 
 
