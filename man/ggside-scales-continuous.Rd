@@ -3,8 +3,43 @@
 \name{ggside-scales-continuous}
 \alias{ggside-scales-continuous}
 \alias{scale_xsidey_continuous}
+\alias{scale_xsidey_log10}
+\alias{scale_xsidey_reverse}
+\alias{scale_xsidey_sqrt}
 \alias{scale_ysidex_continuous}
+\alias{scale_ysidex_log10}
+\alias{scale_ysidex_reverse}
+\alias{scale_ysidex_sqrt}
 \title{Position scales for continuous data ggside scales}
+\usage{
+scale_xsidey_continuous(
+  name = waiver(),
+  breaks = waiver(),
+  minor_breaks = waiver(),
+  n.breaks = NULL,
+  labels = waiver(),
+  limits = NULL,
+  expand = waiver(),
+  oob = scales::censor,
+  na.value = NA_real_,
+  trans = "identity",
+  guide = waiver(),
+  position = "left",
+  sec.axis = waiver()
+)
+
+scale_xsidey_log10(...)
+
+scale_xsidey_reverse(...)
+
+scale_xsidey_sqrt(...)
+
+scale_ysidex_log10(...)
+
+scale_ysidex_reverse(...)
+
+scale_ysidex_sqrt(...)
+}
 \arguments{
 \item{name}{The name of the scale. Used as the axis or legend title. If
 \code{waiver()}, the default, the name of the scale is taken from the first
