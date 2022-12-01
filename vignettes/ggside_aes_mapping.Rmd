@@ -25,59 +25,6 @@ The purpose of this vignette is to document a _slight_ change in API expectation
 
 In `ggside (<0.1.0)`, the user was expected to explicitly map all computed aesthetics, especially in the case when `x` and `y` are mapped globally for the main panel. The nature of `ggside` is generally to plot supplemental data, and the user will likely want to inherit the `x` global mapping if they use a `geom_xside*` geometry, but map something different to `y`.
 
-For example take the following example `ggplot`
-
-```{r ggplot_readme_example}
-p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
-  geom_point(size = 2) +
-  theme_bw()
-p
-```
-
-With the old API, the user could not simply call `geom_xsidedensity` without specifying `aes(y = after_stat(density))`.
-
-```{r legacy_example, echo= FALSE}
-geom_xsidedensity_legacy <- function(mapping = NULL, data = NULL,
-         stat = "density", position = "identity",
-         ...,
-         na.rm = FALSE,
-         orientation = "x",
-         show.legend = NA,
-         inherit.aes = TRUE,
-         outline.type = "upper") {
-  outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = ggside:::GeomXsidedensity,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      outline.type = outline.type,
-      ...
-    ),
-    layer_class = ggside:::XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
-```
-
-``` {r error_plot, eval = F}
-#geom_xsidedensity_legacy is not exported with new versions of `ggside`
-p_error <- p + geom_xsidedensity_legacy()
-
-p_error
-
-```
-
-```{r ggside_legacy_example}
-p + geom_xsidedensity_legacy(aes(y = after_stat(density)))
-```
-
 This decision was made in order to keep all `geom_*side*` geometries as similar to their `ggplot2::geom_*` geometry counterparts. However, using `ggside` becomes a tad bit annoying when you must specify _*every*_ positional aesthetic, especially when it obvious what the user may want.
 
 In `ggside (>=0.1.0)`, certain `geom_*side*` geometries will use the default aesthetic mapping of the associated `Stat`, depending on the `orientation` parameter.
