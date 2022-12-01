@@ -39,7 +39,6 @@ geom_xsidehistogram <- function(mapping = NULL, data = NULL,
   mapping <- default_stat_aes(mapping, stat, orientation)
 
   new_ggside_layer(
-    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -72,7 +71,6 @@ geom_ysidehistogram <- function(mapping = NULL, data = NULL,
                                 inherit.aes = TRUE) {
   mapping <- default_stat_aes(mapping, stat, orientation)
   new_ggside_layer(
-    "y",
     data = data,
     mapping = mapping,
     stat = stat,

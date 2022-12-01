@@ -41,7 +41,7 @@ geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
                                na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 {
-  new_ggside_layer("x", data = data, mapping = mapping,
+  new_ggside_layer(data = data, mapping = mapping,
              stat = stat, geom = GeomXsidesegment,
              position = position, show.legend = show.legend,
              inherit.aes = inherit.aes,
@@ -66,7 +66,7 @@ geom_ysidesegment <- function(mapping = NULL, data = NULL, stat = "identity", po
                                ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
                                na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
 {
-  new_ggside_layer("y", data = data, mapping = mapping,
+  new_ggside_layer(data = data, mapping = mapping,
              stat = stat, geom = GeomYsidesegment,
              position = position, show.legend = show.legend,
              inherit.aes = inherit.aes,

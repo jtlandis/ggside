@@ -17,7 +17,11 @@ ggside_geom <- function(class_name = NULL,
   args <- formals(environment(geom$draw_panel)$f)
   args2 <- lapply(names(args), as.name)
   names(args2) <- names(args)
-  args2 <- args2[setdiff(names(args2), "self")]
+  if (!"self" %in% names(args)) {
+    args$self <- quote(self)
+  } else {
+    args2 <- args2[setdiff(names(args2), "self")]
+  }
   fun <- function() {}
   formals(fun) <- args
   body(fun) <- expr({
@@ -30,6 +34,7 @@ ggside_geom <- function(class_name = NULL,
   ggplot2::ggproto(
     class_name,
     geom,
+    .side = side,
     default_aes = new_default_aes(geom, side),
     required_aes = rename_side(geom$required_aes, side),
     optional_aes = rename_side(geom$optional_aes, side),

@@ -61,7 +61,6 @@ geom_xsidebar <- function(mapping = NULL, data = NULL,
   mapping <- default_stat_aes(mapping, stat, orientation)
 
   new_ggside_layer(
-    side = "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -99,7 +98,6 @@ geom_ysidebar <- function(mapping = NULL, data = NULL,
   mapping <- force_panel_type_mapping(mapping, "y")
   names(mapping) <- rename_side(names(mapping), "y")
   new_ggside_layer(
-    "y",
     data = data,
     mapping = mapping,
     stat = stat,

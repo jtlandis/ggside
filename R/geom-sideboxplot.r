@@ -73,7 +73,6 @@ geom_xsideboxplot <- function(mapping = NULL, data = NULL,
   }
 
   new_ggside_layer(
-    "x",
     data = data,
     mapping = mapping,
     stat = stat,
@@ -136,7 +135,6 @@ geom_ysideboxplot <- function(mapping = NULL, data = NULL,
   }
 
   new_ggside_layer(
-    "y",
     data = data,
     mapping = mapping,
     stat = stat,
