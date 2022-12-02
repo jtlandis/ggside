@@ -8,6 +8,11 @@ ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
                              position = NULL, params = list(), inherit.aes = TRUE, check.aes = TRUE,
                              check.param = TRUE, show.legend = NA, key_glyph = NULL) {
 
+  if (is.character(geom)) {
+    geom <- check_subclass(geom, "Geom", env = parent.frame())
+  } else if(!inherits(geom, "Geom")) {
+    stop("arg `geom` should be a ggproto Geom")
+  }
   side <- geom$.side
   if (! side %in% c("x", "y")) {
     stop("A ggside Layer must have a ggside Geom")
@@ -30,6 +35,8 @@ ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
 
 
 #' @rdname ggside_layer
+#' @param layer a LayerInstance object made from \link[ggplot2]{layer}
+#' @param side should the resulting `ggplot2_layer` be configured for x or y side
 #' @export
 as_ggside_layer <- function(layer, side) UseMethod("as_ggside_layer", layer)
 

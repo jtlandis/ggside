@@ -39,9 +39,9 @@ rename_side <- function(str, side) {
 }
 
 
-#' utility to pull out an aesthetic we care about.
-#' helps code around the `|` aesthetics
-#' @return a character vector
+# utility to pull out an aesthetic we care about.
+# helps code around the `|` aesthetics
+# @return a character vector
 pull_aes <- function(x) {
   if (any(is_or <- grepl("|", x, fixed = T))) {
     splits <- strsplit(x[is_or], "|", T)
@@ -51,8 +51,8 @@ pull_aes <- function(x) {
   x
 }
 
-#' utility to recode default aesthetics of a geom.
-#' @returns an object of class 'uneval'
+# utility to recode default aesthetics of a geom.
+# @returns an object of class 'uneval'
 new_default_aes <- function(geom, side) {
   defaults <- geom$default_aes
   names(defaults) <- rename_side(names(defaults), side)
@@ -62,10 +62,10 @@ new_default_aes <- function(geom, side) {
 }
 
 
-#' Temporarily changes any `xside` or `yside` prefix to be removed
-#' from scale$aesthetic. Values are returned when exiting the frame this
-#' function was called in.
-#' @param scale a ggproto Scale object
+# Temporarily changes any `xside` or `yside` prefix to be removed
+# from scale$aesthetic. Values are returned when exiting the frame this
+# function was called in.
+# @param scale a ggproto Scale object
 local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
   s_quo <- enexpr(scale)
   aes_ <- expr((!!s_quo)$aesthetics)
@@ -74,9 +74,9 @@ local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
   eval_bare(expr(on.exit((!!aes_) <- !!old, add = T)), frame)
 }
 
-#' Temporarily changes the first element of a list to contain the
-#' union aesthetics of all other elements
-#' @param scales a list containing a ggproto Scale object
+# Temporarily changes the first element of a list to contain the
+# union aesthetics of all other elements
+# @param scales a list containing a ggproto Scale object
 local_union_scale_aes <- function(scales, frame = parent.frame()) {
   s_quo <- enexpr(scales)
   aes_ <- expr((!!s_quo)[[1]]$aesthetics)
@@ -88,10 +88,10 @@ local_union_scale_aes <- function(scales, frame = parent.frame()) {
 }
 
 
-#' Standardize the panel params such that any `xside` or `yside` prefixes
-#' are removed from the object
-#' @param panel_params the panel_params element of the Layout ggproto object
-#' @param layout the layout element of the Layout ggproto object
+# Standardize the panel params such that any `xside` or `yside` prefixes
+# are removed from the object
+# @param panel_params the panel_params element of the Layout ggproto object
+# @param layout the layout element of the Layout ggproto object
 standardise_panel_params <- function(built) {
   panel_params <- built$layout$panel_params
   layout <- built$layout$layout

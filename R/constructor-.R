@@ -1,5 +1,10 @@
 
-#' utility function to make a ggside Geom
+#' @name ggside_geom
+#' @title ggside geom constructor
+#' @description utility function to make a ggside Geom
+#' @param class_name New class name for the ggproto object
+#' @param geom The Geom ggproto to inherit from
+#' @param side should the resulting object be configured for x or y
 #' @export
 ggside_geom <- function(class_name = NULL,
                         geom = NULL,
@@ -67,10 +72,10 @@ ggside_geom <- function(class_name = NULL,
 }
 
 
-#' Creates new ScaleList
-#' Modifies the `$add` method such that
-#' when a positional scale is added it is
-#' recast with `new_pos_scale`
+# Creates new ScaleList
+# Modifies the `$add` method such that
+# when a positional scale is added it is
+# recast with `new_pos_scale`
 ggside_scales <- function(scales, ggside) {
   new_scales <- ggproto(
     NULL,
@@ -130,12 +135,12 @@ ggside_scales <- function(scales, ggside) {
 
 }
 
-#' positional scales in `ggside` will contain
-#' the `xsidey` and `ysidex` in their aesthetics
-#' to ensure all data are trained properly.
-#' To ensure each scale retains its own transform,
-#' these scales will ignore `xsidey` and `ysidex`
-#' aesthetics when `$transform_df` is called.
+# positional scales in `ggside` will contain
+# the `xsidey` and `ysidex` in their aesthetics
+# to ensure all data are trained properly.
+# To ensure each scale retains its own transform,
+# these scales will ignore `xsidey` and `ysidex`
+# aesthetics when `$transform_df` is called.
 new_pos_scale <- function(scale) {
   ggproto(
     NULL,
