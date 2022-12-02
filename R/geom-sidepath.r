@@ -10,7 +10,7 @@ geom_xsidepath <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -48,7 +48,7 @@ geom_ysidepath <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,

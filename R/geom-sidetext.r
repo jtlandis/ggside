@@ -24,7 +24,7 @@ geom_xsidetext <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -69,7 +69,7 @@ geom_ysidetext <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,

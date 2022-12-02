@@ -36,7 +36,7 @@ geom_xsidedensity <- function(mapping = NULL, data = NULL,
          outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -71,7 +71,7 @@ geom_ysidedensity <- function(mapping = NULL, data = NULL,
                               outline.type = "upper") {
   mapping <- default_stat_aes(mapping, stat, orientation)
   outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,

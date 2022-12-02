@@ -16,7 +16,7 @@ geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -44,7 +44,7 @@ GeomXsideline <- ggside_geom("GeomXsideline", GeomLine, "x")
 geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
                            position = "identity", na.rm = FALSE, orientation = NA,
                            show.legend = NA, inherit.aes = TRUE, ...) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,

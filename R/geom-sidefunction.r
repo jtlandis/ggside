@@ -25,7 +25,7 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -47,7 +47,7 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
                                show.legend = NA, inherit.aes = TRUE) {
 
 
-  new_ggside_layer(data = data, mapping = mapping, stat = StatFunction,
+  ggside_layer(data = data, mapping = mapping, stat = StatFunction,
         geom = geom, position = position, show.legend = show.legend,
         inherit.aes = inherit.aes,
         params = list(fun = fun, n = n,
@@ -70,7 +70,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
                            show.legend = NA,
                            inherit.aes = TRUE) {
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -91,7 +91,7 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE) {
 
-  new_ggside_layer(data = data, mapping = mapping, stat = StatYsidefunction,
+  ggside_layer(data = data, mapping = mapping, stat = StatYsidefunction,
              geom = geom, position = position, show.legend = show.legend,
              inherit.aes = inherit.aes,
              params = list(fun = fun, n = n,

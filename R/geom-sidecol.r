@@ -7,7 +7,7 @@ geom_xsidecol <- function(mapping = NULL, data = NULL,
                           na.rm = FALSE,
                           show.legend = NA,
                           inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = "identity",
@@ -40,7 +40,7 @@ geom_ysidecol <- function(mapping = NULL, data = NULL,
                           inherit.aes = TRUE,
                           orientation = "y") {
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = "identity",

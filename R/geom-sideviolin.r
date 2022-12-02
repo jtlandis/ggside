@@ -61,7 +61,7 @@ geom_xsideviolin <- function(mapping = NULL, data = NULL,
                               orientation = NA,
                               show.legend = NA,
                               inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -98,7 +98,7 @@ geom_ysideviolin <- function(mapping = NULL, data = NULL,
                              orientation = "y",
                              show.legend = NA,
                              inherit.aes = TRUE) {
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,

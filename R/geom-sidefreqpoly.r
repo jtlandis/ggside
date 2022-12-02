@@ -26,7 +26,7 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -53,7 +53,7 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  new_ggside_layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
