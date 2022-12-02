@@ -2,9 +2,16 @@
 % Please edit documentation in R/constructor-.R
 \name{ggside_geom}
 \alias{ggside_geom}
-\title{utility function to make a ggside Geom}
+\title{ggside geom constructor}
 \usage{
 ggside_geom(class_name = NULL, geom = NULL, side = c("x", "y"))
+}
+\arguments{
+\item{class_name}{New class name for the ggproto object}
+
+\item{geom}{The Geom ggproto to inherit from}
+
+\item{side}{should the resulting object be configured for x or y}
 }
 \description{
 utility function to make a ggside Geom
