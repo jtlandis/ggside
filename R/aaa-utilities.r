@@ -1,5 +1,6 @@
 NO_PANEL <- -1L
 PANEL_TYPE <- c("x","y", "main")
+self <- NULL
 
 
 "%||%" <- function(a, b) {

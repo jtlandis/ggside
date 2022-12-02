@@ -70,8 +70,8 @@ local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
   s_quo <- enexpr(scale)
   aes_ <- expr((!!s_quo)$aesthetics)
   old <- eval_bare(expr(!!aes_), frame)
-  eval_bare(expr(!!aes_ <- (!!aes_)[!grepl('(x|y)side', !!old)]), frame)
-  eval_bare(expr(on.exit(!!aes_ <- !!old, add = T)), frame)
+  eval_bare(expr( `<-`(!!aes_, (!!aes_)[!grepl('(x|y)side', !!old)])) , frame)
+  eval_bare(expr(on.exit(`<-`(!!aes_ ,!!old), add = T)), frame)
 }
 
 # Temporarily changes the first element of a list to contain the
@@ -82,8 +82,8 @@ local_union_scale_aes <- function(scales, frame = parent.frame()) {
   aes_ <- expr((!!s_quo)[[1]]$aesthetics)
   old <- eval_bare(expr(!!aes_), frame)
   new <- eval_bare(expr(unique(unlist(lapply(!!s_quo, `[[`, "aesthetics")))), frame)
-  eval_bare(expr(!!aes_ <- !!new), frame)
-  expr <- expr(on.exit(!!aes_ <- !!old, add = TRUE))
+  eval_bare(expr(`<-`(!!aes_, !!new)), frame)
+  expr <- expr(on.exit(`<-`(!!aes_, !!old) , add = TRUE))
   eval_bare(expr, frame)
 }
 

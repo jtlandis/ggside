@@ -75,8 +75,8 @@ ggplot(iris, aes(Sepal.Width, Sepal.Length, fill = Species)) +
   scale_ysidex_discrete(guide = guide_axis(angle = 45)) +
   theme_dark() +
   theme(ggside.panel.scale = .3,
-        ggside.panel.border = element_rect(NA, "red", size = 2),
-        ggside.panel.grid = element_line("black", size = .1, linetype = "dotted"),
+        ggside.panel.border = element_rect(NA, "red", linewidth = 2),
+        ggside.panel.grid = element_line("black", linewidth = .1, linetype = "dotted"),
         ggside.panel.background = element_blank()) +
   guides(color = "none", fill = "none")
 ```
