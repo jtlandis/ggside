@@ -101,7 +101,7 @@ muffle_opts_warn <- function(f) {
 
 
 get_sides <- function(layers){
-  layer_mappings <- lapply(layers, guess_layer_mapping)
+  layer_mappings <- lapply(layers, layer_type)
   sides_used <- unlist(layer_mappings)
   sides_used <- unique(sides_used[!sides_used %in% "main"])
   return(sides_used)

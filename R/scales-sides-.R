@@ -24,7 +24,7 @@ new_side_pos_scale <- function(scale, side) {
 #' [scale_ysidex_continuous] enables better control on how the x-axis is rendered on the yside panel.
 #'
 #' @param ... Other arguments passed on to scale_(y|x)side(x|y)_continuous()
-#' @inheritParams ggplot2::scale_continuous
+#' @inheritParams ggplot2::scale_x_continuous
 #' @return ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
 #' @examples
 #'

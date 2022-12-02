@@ -134,6 +134,10 @@ transformation with \code{\link[scales:trans_new]{scales::trans_new()}}.}
 
 \item{position}{For position scales, The position of the axis.
 \code{left} or \code{right} for y axes, \code{top} or \code{bottom} for x axes.}
+
+\item{sec.axis}{\code{\link[ggplot2:sec_axis]{sec_axis()}} is used to specify a secondary axis.}
+
+\item{...}{Other arguments passed on to scale_(y|x)side(x|y)_continuous()}
 }
 \value{
 ggside_scale object inheriting from ggplot2::ScaleContinuousPosition

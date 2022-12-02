@@ -8,8 +8,7 @@ ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
                              position = NULL, params = list(), inherit.aes = TRUE, check.aes = TRUE,
                              check.param = TRUE, show.legend = NA, key_glyph = NULL) {
 
-
-  side <- layer$geom$.side
+  side <- geom$.side
   if (! side %in% c("x", "y")) {
     stop("A ggside Layer must have a ggside Geom")
   }
@@ -29,6 +28,30 @@ ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
 
 }
 
+
+#' @rdname ggside_layer
+#' @export
+as_ggside_layer <- function(layer, side) UseMethod("as_ggside_layer", layer)
+
+#' @export
+as_ggside_layer.ggside_layer <- function(layer, side) layer
+
+#' @export
+as_ggside_layer.LayerInstance <- function(layer, side = NULL) {
+
+  if (! side %in% c("x", "y")) {
+    stop("You must specify a side for the layer")
+  }
+  geom <- layer$geom
+  new_geom <- ggside_geom("ggside_psudo_geom", geom, side)
+  mapping <- force_panel_type_mapping(layer$mapping, side)
+  names(mapping) <- rename_side(names(mapping), side)
+  layer$mapping <- mapping
+  layer$geom <- new_geom
+  new_ggside_layer(layer, side)
+
+}
+
 new_ggside_layer <- function(layer, side) {
 
   other <- switch(side, x = "y", y = "x")
@@ -36,7 +59,6 @@ new_ggside_layer <- function(layer, side) {
   parent_layer <- ggproto(
     `_class`,
     layer,
-    mapping = mapping,
     .side = side,
     .other = other
   )
@@ -64,7 +86,8 @@ new_ggside_layer <- function(layer, side) {
     },
     compute_statistic = function(self, data, layout) {
       data <- self$geom$.data_unmapper(data)
-      data <- ggproto_parent(parent_layer, self)$compute_statistic(data, layout)
+      parent <- ggproto_parent(parent_layer, self)
+      data <- parent$compute_statistic(data, layout)
       self$geom$.data_mapper(data)
     },
     map_statistic = function(self, data, plot) {
