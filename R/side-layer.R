@@ -1,21 +1,36 @@
 
 #' @name ggside_layer
 #' @title New ggside layer
-#' @description utility function to make a layer compatible with `ggside` internals
-#' @param layer the default layer. Note that this will only change the
-#' layer, but without the proper Geom, it is almost pointless.
-#' @param side the side the layer will be plotted. "x" corresponds to "xside" and
-#' "y" corresponds to "yside".
+#' @description utility function to make a ggside layer compatible with `ggside` internals
+#' @inheritParams ggplot2::layer
 #' @export
-ggside_layer <- function(layer) {
+ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
+                             position = NULL, params = list(), inherit.aes = TRUE, check.aes = TRUE,
+                             check.param = TRUE, show.legend = NA, key_glyph = NULL) {
+
 
   side <- layer$geom$.side
   if (! side %in% c("x", "y")) {
     stop("A ggside Layer must have a ggside Geom")
   }
-  mapping <- layer$mapping
   mapping <- force_panel_type_mapping(mapping, side)
   names(mapping) <- rename_side(names(mapping), side)
+  layer <- ggplot2::layer(geom = geom, stat = stat,
+                 data = data, mapping = mapping,
+                 position = position,
+                 show.legend = show.legend,
+                 inherit.aes = inherit.aes,
+                 params = params,
+                 check.aes = check.aes,
+                 check.param = check.param,
+                 key_glyph = key_glyph)
+
+  new_ggside_layer(layer = layer, side = side)
+
+}
+
+new_ggside_layer <- function(layer, side) {
+
   other <- switch(side, x = "y", y = "x")
   `_class` <- switch(side, x = "XLayer", y = "YLayer")
   parent_layer <- ggproto(
@@ -66,25 +81,6 @@ ggside_layer <- function(layer) {
       self$geom$.data_mapper(data)
     }
   )
-}
-
-new_ggside_layer <- function(geom = NULL, stat = NULL, data = NULL, mapping = NULL,
-                             position = NULL, params = list(), inherit.aes = TRUE, check.aes = TRUE,
-                             check.param = TRUE, show.legend = NA, key_glyph = NULL) {
-
-
-  layer <- layer(geom = geom, stat = stat,
-                 data = data, mapping = mapping,
-                 position = position,
-                 show.legend = show.legend,
-                 inherit.aes = inherit.aes,
-                 params = params,
-                 check.aes = check.aes,
-                 check.param = check.param,
-                 key_glyph = key_glyph)
-
-  ggside_layer(layer = layer)
-
 }
 
 
