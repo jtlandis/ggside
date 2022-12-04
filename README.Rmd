@@ -77,8 +77,8 @@ ggplot(iris, aes(Sepal.Width, Sepal.Length, fill = Species)) +
   scale_ysidex_discrete(guide = guide_axis(angle = 45)) +
   theme_dark() +
   theme(ggside.panel.scale = .3,
-        ggside.panel.border = element_rect(NA, "red", size = 2),
-        ggside.panel.grid = element_line("black", size = .1, linetype = "dotted"),
+        ggside.panel.border = element_rect(NA, "red", linewidth = 2),
+        ggside.panel.grid = element_line("black", linewidth = .1, linetype = "dotted"),
         ggside.panel.background = element_blank()) +
   guides(color = "none", fill = "none")
 ```
@@ -94,11 +94,11 @@ If you find any issues or want to suggest an enhancement, please make a post at 
 
 ## Known Issues
 
-The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.2.1.
+The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.2.2.
 
 
-* [\#35
-     ![](https://img.shields.io/badge/fixed-main-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/35) Side scales were not added properly with `facet_wrap(scales = "free")`.
+* [\#40
+     ![](https://img.shields.io/badge/fixed-dev-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/40) Side scales cannot be reliably transformed. This is "fixed" under the dev version of `ggside`, but the overall new approach in the development branch is not in a place where I am comfortable to release just yet. This will be added in `ggside 0.3.0`.
      
 
 
