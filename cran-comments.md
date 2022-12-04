@@ -17,4 +17,7 @@ This is a minor content update to the `ggside` package to keep up with `ggplot 3
 
 ## Downstream dependencies
 
-All reverse dependencies checked with `revdepcheck::revdep_check()` using R CMD - No issues detected.
+We checked 6 reverse dependencies (3 from CRAN + 3 from Bioconductor) with `revdepcheck::revdep_check()`, comparing R CMD check results across CRAN and dev versions of `ggside`.
+
+ * We saw 0 new problems
+ * We failed to check 0 packages
