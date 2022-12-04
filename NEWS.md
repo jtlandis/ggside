@@ -5,7 +5,7 @@
 
 * The following classes are no longer exported.
  * `FacetSideNull`, `FacetSideGrid`, `FacetSideWrap`
-* `ggside` now exports its own method for `ggplot_build`. This may affect how `ggside` works with other packages that also have `ggplot_build` method (`gganimate`). 
+* `ggside` now exports its own method for `ggplot_build`. This may affect how `ggside` works with other packages that also have `ggplot_build` method (`gganimate`). `ggplot_build.ggside` makes a call to `NextMethod` so `ggside` layers should be added last. 
 
 ### Updates
 
