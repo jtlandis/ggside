@@ -8,7 +8,7 @@
 #' [scale_xsidey_continuous] enables better control on how the y-axis is rendered on the xside panel and
 #' [scale_ysidex_continuous] enables better control on how the x-axis is rendered on the yside panel.
 #'
-#' @inheritParams ggplot2::continuous_scale
+#' @inheritParams ggplot2::scale_x_continuous
 #' @return ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
 #' @examples
 #'
@@ -88,7 +88,7 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 #' [scale_xsidey_discrete] enables better control on how the y-axis is rendered on the xside panel and
 #' [scale_ysidex_discrete] enables better control on how the x-axis is rendered on the yside panel.
 #'
-#' @inheritParams ggplot2::discrete_scale
+#' @inheritParams ggplot2::scale_x_discrete
 #' @return ggside_scale object inheriting from ggplot2::ScaleDiscretePosition
 #' @examples
 #'
