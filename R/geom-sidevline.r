@@ -1,4 +1,4 @@
-#' @aliases geom_vline
+#' @aliases geom_*vline
 #' @rdname geom_xsideabline
 #' @export
 geom_xsidevline <- function(mapping = NULL, data = NULL,
