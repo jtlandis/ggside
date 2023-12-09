@@ -1,4 +1,4 @@
-This is a minor content update to the `ggside` package to keep up with `ggplot 3.4.0` recent update. The main intention behind this release is to better protect `ggside` from `ggplot2`'s API changes. There were some minor bugs patched as well as a few extra functions exported to the NAMESPACE.
+This is a minor content update to the `ggside` package to address issues with CRAN checks, specifically playing catch up with `scales (v1.3.0)` recent update. There were some minor bugs patched as well.
 
 ## Test environments
 * local macOS Big Sur install, R 4.2.0
