@@ -9,7 +9,7 @@
 \alias{geom_*hline}
 \alias{geom_ysidehline}
 \alias{geom_xsidevline}
-\alias{geom_vline}
+\alias{geom_*vline}
 \alias{geom_ysidevline}
 \title{Side Reference lines}
 \usage{
