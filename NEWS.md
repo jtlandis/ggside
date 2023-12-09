@@ -6,6 +6,7 @@
 * fixes issue where `facet_grid(..., scales = "free/free_x/free_y")` was not allowed with certain `ggside(collaps = "all/x/y")`. This restriction makes sense with `facet_wrap` but not `facet_grid`. Addresses issue #45
 * fixes tests so `ggside` is compatible with `scales (v1.3.0)`.
 * adding `cli` as a dependency
+* added `xside` and `yside` variants for `geom_abline`, `geom_hline` and `geom_vline`. Addresses issue #48 
 
 # ggside 0.2.2
 
