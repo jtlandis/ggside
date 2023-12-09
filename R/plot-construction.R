@@ -47,7 +47,7 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
   fp <- object[['facet']]$params
   col <- object$ggside$collapse
-  if (!is.null(fp$free) && !is.null(col) && any(.lgl <- vapply(fp$free, identity, logical(1)))) {
+  if (!is.null(fp$free) && !is.null(col) && inherits(object[['facet']], "FacetWrap") && any(.lgl <- vapply(fp$free, identity, logical(1)))) {
     # if ggside collapse all - but scales is free - prioritize the scale and dont
     # collapse
     # i.e. facet_wrap(..., scales='free_y') + ggside(collapse="y") --> warning
