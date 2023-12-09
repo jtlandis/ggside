@@ -5,6 +5,7 @@
 #' \link[ggplot2]{geom_hline} and \link[ggplot2]{geom_vline} are
 #' [geom_*abline], [geom_*hline], and [geom_*vline].
 #'
+#' @aliases geom_*abline
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
 #' @param mapping Set of aesthetic mappings created by [aes()].
