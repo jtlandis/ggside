@@ -64,9 +64,13 @@ unwrap <- function(df, by, cols = NULL){
 #' @param ggside ggside object to update
 #'@export
 as_ggsideFacet <- function(facet, ggside) UseMethod("as_ggsideFacet")
+
+#' @export
 as_ggsideFacet.default <- function(facet, ggside){
   abort(glue("No known method to make {class(facet)[1]} ggside friendly"))
 }
+
+#' @export
 as_ggsideFacet.FacetNull <- function(facet, ggside){
   params <- facet$params
   params[["ggside"]] <- ggside
@@ -75,6 +79,8 @@ as_ggsideFacet.FacetNull <- function(facet, ggside){
                    params = params,
                    shrink = facet$shrink)
 }
+
+#' @export
 as_ggsideFacet.FacetGrid <- function(facet, ggside){
   params <- facet$params
   params[["ggside"]] <- ggside
@@ -83,6 +89,8 @@ as_ggsideFacet.FacetGrid <- function(facet, ggside){
                    params = params,
                    shrink = facet$shrink)
 }
+
+#' @export
 as_ggsideFacet.FacetWrap <- function(facet, ggside){
   params <- facet$params
   params[["ggside"]] <- ggside
