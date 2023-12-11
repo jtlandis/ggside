@@ -28,7 +28,7 @@ ggside_panel_guides_grob <- function(guides, position, theme) {
   guide_gengrob(guide, theme)
 }
 
-#' @importFrom ggplot2 guide_gengrob
+
 #' @export
 guide_gengrob.ggside_axis <- function(guide, theme) {
   aesthetic <- names(guide$key)[!grepl("^\\.", names(guide$key))][1]

@@ -101,7 +101,6 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   return(object)
 }
 
-#' @importFrom ggplot2 ggplot_add
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name){
   p <- NextMethod("ggplot_add")
