@@ -10,14 +10,29 @@
 ### Updates
 
 * The `ggside_options` object now inherits from `ggproto` instead of a list.
-* fixed issue where `facet_wrap(..., scales = "free/free_x/free_y")` prevented the associated `scale_ysidex_*()`/`scale_xsidey_*()` functions from plotting the guides. Addresses issue #35
-* `ggside` now provides an informative warning if the user provides free scales to facets but an incompatible argument to `ggside(collapse = ...)`. This warning will force the collapse parameter to something that will comply with the facet scales specification.
-* `ggside` should be more resistant to `ggplot2`'s updates to their default aesthetics. `ggplot2 v3.4.0` has included a new default aesthetic that has caused `ggside` geoms to break. Addresses issue #36
 * `ggside` now allows for the `trans` argument of the `scale_(x|y)side(y|x)_continuous(...)` functions to be used. Addresses issue #40. This feature is experimental and may be removed depending on how `ggplot2` develops in the future. Additional helper functions have been added:
   * `scale_xsidey_log10()`, `scale_ysidex_log10()`
   * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`
   * `scale_xsidey_sqrt()`, `scale_ysidex_reverse()`
 * all `ggside` Geom ggproto objects have their aesthetics changed. For example, `GeomXsidebar$required_aes` is set to `c("x", "xsidey")` instead of `c("x", "y")`. This is to ensure side panel's respective axis generates its own default scale. With this change, users no longer need to preemptively provide a `scale_(x|y)side(y|x)_*()` function.
+
+# ggside 0.2.3
+
+### Updates
+
+* fixes issue where `facet_grid(..., scales = "free/free_x/free_y")` was not allowed with certain `ggside(collaps = "all/x/y")`. This restriction makes sense with `facet_wrap` but not `facet_grid`. Addresses issue #45
+* fixes tests so `ggside` is compatible with `scales (v1.3.0)`.
+* adding `cli` as a dependency
+* added `xside` and `yside` variants for `geom_abline`, `geom_hline` and `geom_vline`. Addresses issue #48 
+
+# ggside 0.2.2
+
+### Updates
+
+* The `ggside_options` object now inherits from `ggproto` instead of a list.
+* fixed issue where `facet_wrap(..., scales = "free/free_x/free_y")` prevented the associated `scale_ysidex_*()`/`scale_xsidey_*()` functions from plotting the guides. Addresses issue #35
+* `ggside` now provides an informative warning if the user provides free scales to facets but an incompatible argument to `ggside(collapse = ...)`. This warning will force the collapse parameter to something that will comply with the facet scales specification.
+* `ggside` should be more resistant to `ggplot2`'s updates to their default aesthetics. `ggplot2 v3.4.0` has included a new default aesthetic that has caused `ggside` geoms to break. Addresses issue #36
 
 
 # ggside 0.2.1

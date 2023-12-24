@@ -1,7 +1,6 @@
 #' @title ggside options
 #' @rdname ggside
 #' @description Set characteristics of side panels
-#' @docType package
 #' @param x.pos x side panel can either take "top" or "bottom"
 #' @param y.pos y side panel can either take "right" or "left"
 #' @param scales Determines side panel's unaligned axis

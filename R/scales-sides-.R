@@ -23,6 +23,7 @@ new_side_pos_scale <- function(scale, side) {
 #' [scale_xsidey_continuous] enables better control on how the y-axis is rendered on the xside panel and
 #' [scale_ysidex_continuous] enables better control on how the x-axis is rendered on the yside panel.
 #'
+
 #' @param ... Other arguments passed on to scale_(y|x)side(x|y)_continuous()
 #' @inheritParams ggplot2::scale_x_continuous
 #' @return ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
@@ -125,6 +126,25 @@ scale_ysidex_sqrt <- function(...) {
 }
 
 
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_log10 <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::log10_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_reverse <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::reverse_trans())
+}
+
+#' @rdname ggside-scales-continuous
+#' @export
+scale_ysidex_sqrt <- function(...) {
+  scale_ysidex_continuous(..., trans = scales::sqrt_trans())
+}
+
+
 #' @title Position scales for discrete data ggside scales
 #' @name ggside-scales-discrete
 #' @description
@@ -132,7 +152,7 @@ scale_ysidex_sqrt <- function(...) {
 #' [scale_xsidey_discrete] enables better control on how the y-axis is rendered on the xside panel and
 #' [scale_ysidex_discrete] enables better control on how the x-axis is rendered on the yside panel.
 #'
-#' @inheritParams ggplot2::discrete_scale
+#' @inheritParams ggplot2::scale_x_discrete
 #' @return ggside_scale object inheriting from ggplot2::ScaleDiscretePosition
 #' @examples
 #'
