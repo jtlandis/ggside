@@ -22,7 +22,7 @@ geom_xsidehline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = StatIdentity,
@@ -33,10 +33,7 @@ geom_xsidehline <- function(mapping = NULL, data = NULL,
     params = list2(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer", class(l)))
+    ))
 }
 
 
@@ -63,7 +60,7 @@ geom_ysidehline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = StatIdentity,
@@ -74,62 +71,17 @@ geom_ysidehline <- function(mapping = NULL, data = NULL,
     params = list2(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer", class(l)))
+    ))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomXsidehline <- ggplot2::ggproto(
-  "GeomXsidehline",
-  ggplot2::GeomHline,
-  default_aes = new_default_aes(
-    aes(xcolour = NA, xfill = NA),
-    ggplot2::GeomHline$default_aes
-  ),
-  setup_data = function(data, params) {
-    data <- parse_side_aes(data, params)
-    ggplot2::GeomHline$setup_data(data, params)
-  },
-  draw_panel = function(data, panel_params, coord, lineend = "butt") {
-    data <- use_xside_aes(data)
-    ggplot2::GeomHline$draw_panel(data = data, panel_params = panel_params,
-                                   coord = coord, lineend = lineend)
-
-  },
-  draw_key = function(data, params, size) {
-    data <- use_xside_aes(data)
-    ggplot2::GeomHline$draw_key(data, params, size)
-  }
-)
+GeomXsidehline <- ggside_geom("GeomXsidehline", GeomHline, "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomYsidehline <- ggplot2::ggproto(
-  "GeomYsidehline",
-  ggplot2::GeomHline,
-  default_aes = new_default_aes(
-    aes(ycolour = NA, yfill = NA),
-    ggplot2::GeomHline$default_aes
-  ),
-  setup_data = function(data, params) {
-    data <- parse_side_aes(data, params)
-    ggplot2::GeomHline$setup_data(data, params)
-  },
-  draw_panel = function(data, panel_params, coord, lineend = "butt") {
-    data <- use_yside_aes(data)
-    ggplot2::GeomHline$draw_panel(data = data, panel_params = panel_params,
-                                   coord = coord, lineend = lineend)
-
-  },
-  draw_key = function(data, params, size) {
-    data <- use_yside_aes(data)
-    ggplot2::GeomHline$draw_key(data, params, size)
-  }
-)
+GeomYsidehline <- ggside_geom("GeomYsidehline", GeomHline, "y")
