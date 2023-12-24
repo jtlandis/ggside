@@ -39,6 +39,12 @@ scale_ysidex_log10(...)
 scale_ysidex_reverse(...)
 
 scale_ysidex_sqrt(...)
+
+scale_ysidex_log10(...)
+
+scale_ysidex_reverse(...)
+
+scale_ysidex_sqrt(...)
 }
 \arguments{
 \item{name}{The name of the scale. Used as the axis or legend title. If
