@@ -57,7 +57,7 @@ NULL
 #' @export
 scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
-                                    oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
+                                    oob = scales::censor, na.value = NA_real_, transform = "identity", guide = waiver(),
                                     position = "left", sec.axis = waiver()){
 
   new_side_pos_scale(
@@ -65,7 +65,7 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
     scale_y_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
                        n.breaks = n.breaks, labels = labels, limits = limits,
                        expand = expand, oob = oob, na.value = na.value,
-                       trans = trans, guide = guide, position = position, sec.axis = sec.axis)
+                       transform = transform, guide = guide, position = position, sec.axis = sec.axis)
   )
 
 }
@@ -73,19 +73,19 @@ scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 #' @rdname ggside-scales-continuous
 #' @export
 scale_xsidey_log10 <- function(...) {
-  scale_xsidey_continuous(..., trans = scales::log10_trans())
+  scale_xsidey_continuous(..., transform = scales::log10_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_xsidey_reverse <- function(...) {
-  scale_xsidey_continuous(..., trans = scales::reverse_trans())
+  scale_xsidey_continuous(..., transform = scales::reverse_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_xsidey_sqrt <- function(...) {
-  scale_xsidey_continuous(..., trans = scales::sqrt_trans())
+  scale_xsidey_continuous(..., transform = scales::sqrt_trans())
 }
 
 
@@ -94,14 +94,14 @@ scale_xsidey_sqrt <- function(...) {
 #' @export
 scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
-                                    oob = scales::censor, na.value = NA_real_, trans = "identity", guide = waiver(),
+                                    oob = scales::censor, na.value = NA_real_, transform = "identity", guide = waiver(),
                                     position = "bottom", sec.axis = waiver()){
   new_side_pos_scale(
     side = "y",
     scale_x_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
                        n.breaks = n.breaks, labels = labels, limits = limits,
                        expand = expand, oob = oob, na.value = na.value,
-                       trans = trans, guide = guide, position = position, sec.axis = sec.axis)
+                       transform = transform, guide = guide, position = position, sec.axis = sec.axis)
   )
 
 }
@@ -110,38 +110,38 @@ scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_br
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_log10 <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::log10_trans())
+  scale_ysidex_continuous(..., transform = scales::log10_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_reverse <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::reverse_trans())
+  scale_ysidex_continuous(..., transform = scales::reverse_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_sqrt <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::sqrt_trans())
+  scale_ysidex_continuous(..., transform = scales::sqrt_trans())
 }
 
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_log10 <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::log10_trans())
+  scale_ysidex_continuous(..., transform = scales::log10_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_reverse <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::reverse_trans())
+  scale_ysidex_continuous(..., transform = scales::reverse_trans())
 }
 
 #' @rdname ggside-scales-continuous
 #' @export
 scale_ysidex_sqrt <- function(...) {
-  scale_ysidex_continuous(..., trans = scales::sqrt_trans())
+  scale_ysidex_continuous(..., transform = scales::sqrt_trans())
 }
 
 
@@ -222,7 +222,7 @@ scale_ysidex_discrete <- function(..., expand = waiver(),
 scale_xsidey_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
                                  breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
                                  oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
-                                 trans = "identity", guide = waiver(), position = "left")
+                                 transform = "identity", guide = waiver(), position = "left")
 {
 
   new_side_pos_scale(
@@ -230,7 +230,7 @@ scale_xsidey_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = T
     scale_y_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
                    breaks = breaks, labels = labels, limits = limits, expand = expand,
                    oob = oob, na.value = na.value, right = right, show.limits = show.limits,
-                   trans = trans, guide = guide, position = position)
+                   transform = transform, guide = guide, position = position)
   )
 }
 
@@ -239,7 +239,7 @@ scale_xsidey_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = T
 scale_ysidex_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
                                  breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
                                  oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
-                                 trans = "identity", guide = waiver(), position = "bottom")
+                                 transform = "identity", guide = waiver(), position = "bottom")
 {
 
   new_side_pos_scale(
@@ -247,6 +247,6 @@ scale_ysidex_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = T
     scale_x_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
                    breaks = breaks, labels = labels, limits = limits, expand = expand,
                    oob = oob, na.value = na.value, right = right, show.limits = show.limits,
-                   trans = trans, guide = guide, position = position)
+                   transform = transform, guide = guide, position = position)
   )
 }
