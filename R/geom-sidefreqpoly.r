@@ -26,7 +26,7 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -34,10 +34,8 @@ geom_xsidefreqpoly <- function(mapping = NULL, data = NULL,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = params,
-    layer_class = XLayer
+    params = params
   )
-  structure(l, class = c("ggside_layer",class(l)))
 
 }
 
@@ -55,7 +53,7 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
     params$pad <- TRUE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -63,8 +61,6 @@ geom_ysidefreqpoly <- function(mapping = NULL, data = NULL,
     position = position,
     show.legend = show.legend,
     inherit.aes = inherit.aes,
-    params = params,
-    layer_class = YLayer
+    params = params
   )
-  structure(l, class=c("ggside_layer", class(l)))
 }

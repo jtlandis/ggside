@@ -285,13 +285,13 @@ new_data_frame <- function(x = list(), n = NULL) {
   x
 }
 
-guess_layer_mapping <- function(layer) {
-  geom_class <- str_extr(class(layer$geom), "(X|Y)side")
-  val <- if(all(is.na(geom_class))){
+layer_type <- function(layer) {
+  layer_class <- str_extr(class(layer), "(X|Y)Layer")
+  val <- if(all(is.na(layer_class))){
     "main"
   } else {
-    geom_class <- geom_class[!is.na(geom_class)]
-    to_lower_ascii(substr(geom_class,1,1))
+    layer_class <- layer_class[!is.na(layer_class)]
+    to_lower_ascii(substr(layer_class,1,1))
   }
   return(val)
 }

@@ -26,7 +26,7 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -40,35 +40,15 @@ geom_xsidelabel <- function(mapping = NULL, data = NULL,
       label.r = label.r,
       label.size = label.size,
       na.rm = na.rm,
-      ...),
-    layer_class = XLayer
+      ...)
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidelabel <- ggplot2::ggproto("GeomXsidelabel",
-                                   ggplot2::GeomLabel,
-                                   default_aes = new_default_aes(
-                                     aes(xcolour = NA, xfill = NA),
-                                     ggplot2::GeomLabel$default_aes
-                                   ),
-                                   setup_data = function(data, params){
-                                     parse_side_aes(data, params)
-                                   },
-                                   draw_panel = function(self, data, panel_params, coord, parse = FALSE,
-                                                         na.rm = FALSE) {
-                                     data <- use_xside_aes(data)
-                                     ggplot2::GeomLabel$draw_panel(data = data, panel_params = panel_params,
-                                                                   coord = coord, parse = parse, na.rm = na.rm)
-                                   },
-                                   draw_key = function(data, params, size){
-                                     data <- use_xside_aes(data)
-                                     ggplot2::GeomLabel$draw_key(data, params, size)
-                                   })
+GeomXsidelabel <- ggside_geom("GeomXsidelabel", GeomLabel, "x")
 
 
 #' @rdname geom_xsidelabel
@@ -94,7 +74,7 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
     position <- position_nudge(nudge_x, nudge_y)
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -108,32 +88,12 @@ geom_ysidelabel <- function(mapping = NULL, data = NULL,
       label.r = label.r,
       label.size = label.size,
       na.rm = na.rm,
-      ...),
-    layer_class = YLayer
+      ...)
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidelabel <- ggplot2::ggproto("GeomYsidelabel",
-                                   ggplot2::GeomLabel,
-                                   default_aes = new_default_aes(
-                                     aes(ycolour = NA, yfill = NA),
-                                     ggplot2::GeomLabel$default_aes
-                                   ),
-                                   setup_data = function(data, params){
-                                     parse_side_aes(data, params)
-                                   },
-                                   draw_panel = function(self, data, panel_params, coord, parse = FALSE,
-                                                         na.rm = FALSE){
-                                     data <- use_yside_aes(data)
-                                     ggplot2::GeomLabel$draw_panel(data = data, panel_params = panel_params,
-                                                                   coord = coord, parse = parse, na.rm = na.rm)
-                                   },
-                                   draw_key = function(data, params, size){
-                                     data <- use_yside_aes(data)
-                                     ggplot2::GeomLabel$draw_key(data, params, size)
-                                   })
+GeomYsidelabel <- ggside_geom("GeomYsidelabel", GeomLabel, "y")

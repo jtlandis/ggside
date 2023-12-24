@@ -27,7 +27,7 @@ test_that("ggside work-around works",{
   expect_error(ggplot_build(p_yside), regexp = "works with objects of class <Date> only")
   p_yside <- p_yside + scale_ysidex_continuous()
   expect_doppelganger("date_x_yside", p_yside)
-  p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "log10")
+  p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0,5,10,20))
   expect_doppelganger("date_x_xside", p_xside)
   p_both <- p_yside + geom_xsidehistogram(bins = 30)
   expect_doppelganger("date_x_both", p_both)

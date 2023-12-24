@@ -176,7 +176,6 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
 
   .xgroupby <- "COL"
   .ygroupby <- "ROW"
-
   bottom <- do_by(layout, "COL", function(x, on){
     x[["ROW2"]] <- switch(on,
                           default = max(x[["ROW"]]),
@@ -288,14 +287,14 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     layout
   }
   Vstrip_panel_pos <- unique(do_by(Vstrip_panel_pos, "COL",
-                            function(x, vstrip){
-                              if(vstrip=="top"){
-                                x[["ROW"]] <- min(x[["ROW"]])
-                              } else {
-                                x[["ROW"]] <- max(x[["ROW"]])
-                              }
-                              x
-                            }, vstrip = vertical.strip))
+                                   function(x, vstrip){
+                                     if(vstrip=="top"){
+                                       x[["ROW"]] <- min(x[["ROW"]])
+                                     } else {
+                                       x[["ROW"]] <- max(x[["ROW"]])
+                                     }
+                                     x
+                                   }, vstrip = vertical.strip))
   Vstrip_panel_pos <- semi_join(layout, Vstrip_panel_pos, by = c("COL","ROW"))
   Vstrip_panel_pos <- unique(Vstrip_panel_pos[!Vstrip_panel_pos[["PANEL_TYPE"]]=="y",c("PANEL","panel_pos")])
 
@@ -365,67 +364,42 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table
 }
 
-#' @rdname ggside-ggproto-facets
-#' @usage NULL
-#' @format NULL
-#' @export
-FacetSideGrid <- ggplot2::ggproto("FacetSideGrid",
-                                  ggplot2::FacetGrid,
-                                  compute_layout = function(data, params){
-                                    layout <- ggplot2::FacetGrid$compute_layout(data, params)
-                                    layout <- check_scales_collapse(layout, params)
-                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
-                                    layout },
-                                  init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
-                                    scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
-                                    if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
-                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
-                                      scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
-
-                                    }
-                                    if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
-                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="x",]$SCALE_Y)
-                                      scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
-
-                                    }
-                                    scales
-                                  },
-                                  map_data = function (data, layout, params)
-                                  {
-                                    if (empty(data)) {
-                                      return(cbind(data, PANEL = integer(0)))
-                                    }
-                                    rows <- params$rows
-                                    cols <- params$cols
-                                    vars <- c(names(rows), names(cols), "PANEL_TYPE")
-                                    prep_map_data(layout, data)
-                                    if (length(vars) == 0) {
-                                      data$PANEL <- layout$PANEL
-                                      return(data)
-                                    }
-                                    margin_vars <- list(intersect(names(rows), names(data)),
-                                                        intersect(names(cols), names(data)))
-                                    data <- reshape_add_margins(data, margin_vars, params$margins)
-                                    facet_vals <- eval_facets(c(rows, cols, PANEL_TYPE = quo(PANEL_TYPE)), data, params$.possible_columns)
-                                    missing_facets <- setdiff(vars, names(facet_vals))
-                                    if (length(missing_facets) > 0) {
-                                      to_add <- unique(layout[missing_facets])
-                                      data_rep <- rep.int(1:nrow(data), nrow(to_add))
-                                      facet_rep <- rep(1:nrow(to_add), each = nrow(data))
-                                      data <- unrowname(data[data_rep, , drop = FALSE])
-                                      facet_vals <- unrowname(cbind(facet_vals[data_rep, ,
-                                                                               drop = FALSE], to_add[facet_rep, , drop = FALSE]))
-                                    }
-                                    if (nrow(facet_vals) == 0) {
-                                      data$PANEL <- NO_PANEL
-                                    }
-                                    else {
-                                      facet_vals[] <- lapply(facet_vals[], as.factor)
-                                      facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
-                                      keys <- join_keys(facet_vals, layout, by = vars)
-                                      data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
-                                    }
-                                    data
-                                  },
-                                  draw_panels = sideFacetGrid_draw_panels
-)
+sideFacetGrid_map_data <- function (data, layout, params) {
+  if (empty(data)) {
+    return(cbind(data, PANEL = integer(0)))
+  }
+  rows <- params$rows
+  cols <- params$cols
+  vars <- c(names(rows), names(cols), "PANEL_TYPE")
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
+  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+  if (length(vars) == 0) {
+    data$PANEL <- layout$PANEL
+    return(data)
+  }
+  margin_vars <- list(intersect(names(rows), names(data)),
+                      intersect(names(cols), names(data)))
+  data <- reshape_add_margins(data, margin_vars, params$margins)
+  facet_vals <- eval_facets(c(rows, cols, PANEL_TYPE = quo(PANEL_TYPE)), data, params$.possible_columns)
+  missing_facets <- setdiff(vars, names(facet_vals))
+  if (length(missing_facets) > 0) {
+    to_add <- unique(layout[missing_facets])
+    data_rep <- rep.int(1:nrow(data), nrow(to_add))
+    facet_rep <- rep(1:nrow(to_add), each = nrow(data))
+    data <- unrowname(data[data_rep, , drop = FALSE])
+    facet_vals <- unrowname(cbind(facet_vals[data_rep, ,
+                                             drop = FALSE], to_add[facet_rep, , drop = FALSE]))
+  }
+  if (nrow(facet_vals) == 0) {
+    data$PANEL <- NO_PANEL
+  }
+  else {
+    facet_vals[] <- lapply(facet_vals[], as.factor)
+    facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
+    keys <- join_keys(facet_vals, layout, by = vars)
+    data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
+  }
+  data
+}

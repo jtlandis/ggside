@@ -1,16 +1,9 @@
 
-sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
-                                     ranges, coord, data, theme, params) {
 
-  # if (inherits(coord, "CoordFlip")) {
-  #   if (params$free$x) {
-  #     layout$SCALE_X <- seq_len(nrow(layout))
-  #   } else {
-  #     layout$SCALE_X <- 1L
-  #   }
-  #     layout$SCALE_Y <- 1L
-  #   }
-  # }
+sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
+                                      ranges, coord, data, theme, params) {
+
+
   if (params$ggside$strip!="default") {
     warn("`ggside(strip = 'main', ...)` is only compatible with `facet_grid(...)`",
          .frequency = "regularly",
@@ -107,7 +100,6 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
 
   .xgroupby <- "COL"
   .ygroupby <- "ROW"
-  #browser()
   bottom <- do_by(layout, "COL", function(x, on){
     x[["ROW2"]] <- switch(on,
                           default = max(x[["ROW"]]),
@@ -210,40 +202,17 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   panel_table
 }
 
-#' @rdname ggside-ggproto-facets
-#' @usage NULL
-#' @format NULL
-#' @export
-FacetSideNull <- ggplot2::ggproto("FacetSideNull",
-                                  ggplot2::FacetNull,
-                                  compute_layout = function(data, params){
-                                    layout <- ggplot2::FacetNull$compute_layout(data, params)
-                                    layout <- check_scales_collapse(layout, params)
-                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
-                                    layout },
-                                  init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
-                                    scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
-                                    if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
-                                      side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
-                                      scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
+sideFacetNull_map_data <- function (data, layout, params) {
+  if (is.waive(data))
+    return(new_data_frame(list(PANEL = factor())))
+  if (empty(data))
+    return(new_data_frame(c(data, list(PANEL = factor()))))
 
-                                    }
-                                    if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
-                                      side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
-                                      scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
-
-                                    }
-                                    scales
-                                  },
-                                  map_data = function (data, layout, params) {
-                                    if (is.waive(data))
-                                      return(new_data_frame(list(PANEL = factor())))
-                                    if (empty(data))
-                                      return(new_data_frame(c(data, list(PANEL = factor()))))
-
-                                    prep_map_data(layout, data)
-                                    keys <- join_keys(data, layout, by = "PANEL_TYPE")
-                                    data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
-                                    data
-                                  },
-                                  draw_panels = sideFacetNull_draw_panels)
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
+  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+  keys <- join_keys(data, layout, by = "PANEL_TYPE")
+  data[["PANEL"]] <- layout[["PANEL"]][match(keys$x, keys$y)]
+  data
+}

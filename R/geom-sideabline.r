@@ -49,7 +49,7 @@ geom_xsideabline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = StatIdentity,
@@ -60,10 +60,7 @@ geom_xsideabline <- function(mapping = NULL, data = NULL,
     params = list2(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer", class(l)))
+    ))
 
 }
 
@@ -105,7 +102,7 @@ geom_ysideabline <- function(mapping = NULL, data = NULL,
     show.legend <- FALSE
   }
 
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = StatIdentity,
@@ -116,10 +113,7 @@ geom_ysideabline <- function(mapping = NULL, data = NULL,
     params = list2(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer", class(l)))
+    ))
 
 }
 
@@ -128,52 +122,10 @@ geom_ysideabline <- function(mapping = NULL, data = NULL,
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomXsideabline <- ggplot2::ggproto(
-    "GeomXsideabline",
-    ggplot2::GeomAbline,
-    default_aes = new_default_aes(
-      aes(xcolour = NA, xfill = NA),
-      ggplot2::GeomAbline$default_aes
-    ),
-    setup_data = function(data, params) {
-      data <- parse_side_aes(data, params)
-      ggplot2::GeomAbline$setup_data(data, params)
-    },
-    draw_panel = function(data, panel_params, coord, lineend = "butt") {
-      data <- use_xside_aes(data)
-      ggplot2::GeomAbline$draw_panel(data = data, panel_params = panel_params,
-                                     coord = coord, lineend = lineend)
-
-    },
-    draw_key = function(data, params, size) {
-      data <- use_xside_aes(data)
-      ggplot2::GeomAbline$draw_key(data, params, size)
-    }
-)
+GeomXsideabline <- ggside_geom("GeomXsideabline", GeomAbline, "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @format NULL
 #' @usage NULL
 #' @export
-GeomYsideabline <- ggplot2::ggproto(
-  "GeomYsideabline",
-  ggplot2::GeomAbline,
-  default_aes = new_default_aes(
-    aes(ycolour = NA, yfill = NA),
-    ggplot2::GeomAbline$default_aes
-  ),
-  setup_data = function(data, params) {
-    data <- parse_side_aes(data, params)
-    ggplot2::GeomAbline$setup_data(data, params)
-  },
-  draw_panel = function(data, panel_params, coord, lineend = "butt") {
-    data <- use_yside_aes(data)
-    ggplot2::GeomAbline$draw_panel(data = data, panel_params = panel_params,
-                                   coord = coord, lineend = lineend)
-
-  },
-  draw_key = function(data, params, size) {
-    data <- use_yside_aes(data)
-    ggplot2::GeomAbline$draw_key(data, params, size)
-  }
-)
+GeomYsideabline <- ggside_geom("GeomYsideabline", GeomAbline, "y")

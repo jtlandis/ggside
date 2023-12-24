@@ -1,71 +1,20 @@
+NO_PANEL <- -1L
+PANEL_TYPE <- c("x","y", "main")
+self <- NULL
+
 
 "%||%" <- function(a, b) {
   if (!is.null(a)) a else b
 }
 
-"%|W|%" <- function(a, b) {
-  if (!is.waive(a)) a else b
+force_panel_type_mapping <- function(mapping, type) {
+  if ("PANEL_TYPE" %in% names(mapping)) return(mapping)
+  switch(type,
+         x = aes(!!!mapping, PANEL_TYPE = "x"),
+         y = aes(!!!mapping, PANEL_TYPE = "y"))
 }
 
 
-check_required_aesthetics <- function(required, present, name) {
-  if (is.null(required)) return()
-
-  required <- strsplit(required, "|", fixed = TRUE)
-  if (any(vapply(required, length, integer(1)) > 1)) {
-    required <- lapply(required, rep_len, 2)
-    required <- list(
-      vapply(required, `[`, character(1), 1),
-      vapply(required, `[`, character(1), 2)
-    )
-  } else {
-    required <- list(unlist(required))
-  }
-  missing_aes <- lapply(required, setdiff, present)
-  if (any(vapply(missing_aes, length, integer(1)) == 0)) return()
-
-  abort(glue(
-    "{name} requires the following missing aesthetics: ",
-    glue_collapse(lapply(missing_aes, glue_collapse, sep = ", ", last = " and "), sep = " or ")
-  ))
-}
-
-# Concatenate a named list for output
-# Print a `list(a=1, b=2)` as `(a=1, b=2)`
-#
-# @param list to concatenate
-# @keyword internal
-#X clist(list(a=1, b=2))
-#X clist(par()[1:5])
-clist <- function(l) {
-  paste(paste(names(l), l, sep = " = ", collapse = ", "), sep = "")
-}
-
-
-# Test whether package `package` is available. `fun` provides
-# the name of the ggplot2 function that uses this package, and is
-# used only to produce a meaningful error message if the
-# package is not available.
-try_require <- function(package, fun) {
-  if (requireNamespace(package, quietly = TRUE)) {
-    return(invisible())
-  }
-
-  abort(glue("
-    Package `{package}` required for `{fun}`.
-    Please install and try again.
-  "))
-}
-
-# Return unique columns
-# This is used for figuring out which columns are constant within a group
-#
-# @keyword internal
-uniquecols <- function(df) {
-  df <- df[1, sapply(df, function(x) length(unique(x)) == 1), drop = FALSE]
-  rownames(df) <- 1:nrow(df)
-  df
-}
 
 remove_missing <- function(df, na.rm = FALSE, vars = names(df), name = "",
                            finite = FALSE) {

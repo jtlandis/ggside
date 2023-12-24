@@ -25,7 +25,7 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  l <- layer(
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -36,10 +36,8 @@ geom_xsidefunction <- function(mapping = NULL, data = NULL,
     params = list(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = XLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname geom_xsidefunction
@@ -48,40 +46,19 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
                                ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE) {
 
-  l <- layer(data = data, mapping = mapping, stat = StatFunction,
+
+  ggside_layer(data = data, mapping = mapping, stat = StatFunction,
         geom = geom, position = position, show.legend = show.legend,
-        inherit.aes = inherit.aes, params = list(fun = fun, n = n,
-                                                 args = args, na.rm = na.rm, xlim = xlim, ...),
-        layer_class = XLayer)
-  structure(l, class = c("ggside_layer", class(l)))
+        inherit.aes = inherit.aes,
+        params = list(fun = fun, n = n,
+                      args = args, na.rm = na.rm, xlim = xlim, ...))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidefunction <- ggplot2::ggproto("GeomXsidefunction",
-                                  ggplot2::GeomFunction,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomFunction$default_aes
-                                  ),
-                                  setup_data = function(data, params){
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomPath$setup_data(data, params)
-                                  },
-                                  draw_panel = function(data, panel_params, coord, arrow = NULL,
-                                                        lineend = "butt", linejoin = "round", linemitre = 10,
-                                                        na.rm = FALSE){
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomPath$draw_panel(data = data, panel_params, coord = coord, arrow = arrow,
-                                                                 lineend = lineend, linejoin = linejoin, linemitre = linemitre)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomPath$draw_key(data, params, size)
-                                  })
-
+GeomXsidefunction <- ggside_geom("GeomXsidefunction", GeomFunction, "x")
 
 
 #' @rdname geom_xsidefunction
@@ -92,7 +69,8 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
                            na.rm = FALSE,
                            show.legend = NA,
                            inherit.aes = TRUE) {
-  l <- layer(
+
+  ggside_layer(
     data = data,
     mapping = mapping,
     stat = stat,
@@ -103,10 +81,8 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
     params = list(
       na.rm = na.rm,
       ...
-    ),
-    layer_class = YLayer
+    )
   )
-  structure(l, class = c("ggside_layer",class(l)))
 }
 
 #' @rdname geom_xsidefunction
@@ -115,39 +91,18 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
                                ..., fun, ylim = NULL, n = 101, args = list(), na.rm = FALSE,
                                show.legend = NA, inherit.aes = TRUE) {
 
-  l <- layer(data = data, mapping = mapping, stat = StatYsidefunction,
+  ggside_layer(data = data, mapping = mapping, stat = StatYsidefunction,
              geom = geom, position = position, show.legend = show.legend,
-             inherit.aes = inherit.aes, params = list(fun = fun, n = n,
-                                                      args = args, na.rm = na.rm, ylim = ylim, ...),
-             layer_class = YLayer)
-  structure(l, class = c("ggside_layer", class(l)))
+             inherit.aes = inherit.aes,
+             params = list(fun = fun, n = n,
+                           args = args, na.rm = na.rm, ylim = ylim, ...))
 }
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidefunction <- ggplot2::ggproto("GeomYsidefunction",
-                                  ggplot2::GeomFunction,
-                                  default_aes = new_default_aes(
-                                    aes(ycolour = NA, yfill = NA),
-                                    ggplot2::GeomFunction$default_aes
-                                  ),
-                                  setup_data = function(data, params){
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomPath$setup_data(data, params)
-                                  },
-                                  draw_panel = function(data, panel_params, coord, arrow = NULL,
-                                                        lineend = "butt", linejoin = "round", linemitre = 10,
-                                                        na.rm = FALSE){
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomPath$draw_panel(data = data, panel_params, coord = coord, arrow = arrow,
-                                                                 lineend = lineend, linejoin = linejoin, linemitre = linemitre)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomPath$draw_key(data, params, size)
-                                  })
+GeomYsidefunction <- ggside_geom("GeomYsidefunction", GeomFunction, "y")
 
 
 

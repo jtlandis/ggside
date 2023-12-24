@@ -1,4 +1,3 @@
-#sideFacetWrap
 
 convertInd <- function(row, col, nrow) {
   (col - 1) * nrow + row
@@ -209,25 +208,25 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
                     x}, on = params$ggside$draw_x_on)
   top <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.y,], .xgroupby,
                function(x, on){
-    x[["ROW2"]] <- switch(on,
-                          default = min(x[["ROW"]]),
-                          main = min(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
-                          side = min(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
-    x}, on = params$ggside$draw_x_on)
+                 x[["ROW2"]] <- switch(on,
+                                       default = min(x[["ROW"]]),
+                                       main = min(x[["ROW"]][x[["PANEL_TYPE"]]!="x"]),
+                                       side = min(x[["ROW"]][x[["PANEL_TYPE"]]!="main"]))
+                 x}, on = params$ggside$draw_x_on)
   right <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
                  function(x, on){
-    x[["COL2"]] <- switch(on,
-                          default = max(x[["COL"]]),
-                          main = max(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
-                          side = max(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
-    x}, on = params$ggside$draw_y_on)
+                   x[["COL2"]] <- switch(on,
+                                         default = max(x[["COL"]]),
+                                         main = max(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
+                                         side = max(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
+                   x}, on = params$ggside$draw_y_on)
   left <- do_by(layout[!layout[["PANEL_TYPE"]]%in%.x,], .ygroupby,
                 function(x, on){
-    x[["COL2"]] <- switch(on,
-                          default = min(x[["COL"]]),
-                          main = min(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
-                          side = min(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
-    x}, on = params$ggside$draw_y_on)
+                  x[["COL2"]] <- switch(on,
+                                        default = min(x[["COL"]]),
+                                        main = min(x[["COL"]][!x[["PANEL_TYPE"]]=="y"]),
+                                        side = min(x[["COL"]][!x[["PANEL_TYPE"]]=="main"]))
+                  x}, on = params$ggside$draw_y_on)
 
   if(params$ggside$scales%in%c("free","free_y")){ #if y is free, include x PANELS_TYPES
     right <- right[right[["COL"]]==right[["COL2"]]|right[["PANEL_TYPE"]]=="x",]
@@ -371,58 +370,34 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   panel_table
 }
 
-#' @rdname ggside-ggproto-facets
-#' @usage NULL
-#' @format NULL
-#' @export
-FacetSideWrap <- ggplot2::ggproto("FacetSideWrap",
-                                  ggplot2::FacetWrap,
-                                  compute_layout = function(data, params){
-                                    layout <- ggplot2::FacetWrap$compute_layout(data, params)
-                                    layout <- check_scales_collapse(layout, params)
-                                    layout <- sidePanelLayout(layout, ggside = params$ggside)
-                                    layout },
-                                  init_scales = function(layout, x_scale = NULL, y_scale = NULL, params){
-                                    scales <- FacetNull$init_scales(layout, x_scale, y_scale, params)
-                                    if (!is.null(x_scale)&& !is.null(params$ggside$ysidex)){
-                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
-                                      scales$x[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
 
-                                    }
-                                    if (!is.null(y_scale)&& !is.null(params$ggside$xsidey)){
-                                      side_indx <-  unique(layout[layout$PANEL_TYPE=="x",]$SCALE_Y)
-                                      scales$y[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
+sideFacetWrap_map_data <- function (data, layout, params) {
+  if (empty(data)) {
+    return(cbind(data, PANEL = integer(0)))
+  }
+  if(!"PANEL_TYPE"%in%colnames(data)){
+    data$PANEL_TYPE <- "main"
+  }
+  layout <- unwrap(layout, c("ROW","COL"), "FACET_VARS")
+  vars <- c(params$facets, PANEL_TYPE = quo(PANEL_TYPE))
+  if (length(vars) == 0) {
+    data$PANEL <- layout$PANEL
+    return(data)
+  }
 
-                                    }
-                                    scales
-                                  },
-                                  map_data = function (data, layout, params)
-                                  {
-                                    if (empty(data)) {
-                                      return(cbind(data, PANEL = integer(0)))
-                                    }
-                                    prep_map_data(layout, data)
-                                    vars <- c(params$facets, PANEL_TYPE = quo(PANEL_TYPE))
-                                    if (length(vars) == 0) {
-                                      data$PANEL <- layout$PANEL
-                                      return(data)
-                                    }
+  facet_vals <- eval_facets(vars, data, params$.possible_columns)
+  facet_vals[] <- lapply(facet_vals[], as.factor)
+  missing_facets <- setdiff(names(vars), names(facet_vals))
+  if (length(missing_facets) > 0) {
+    to_add <- unique(layout[missing_facets])
+    data_rep <- rep.int(1:nrow(data), nrow(to_add))
+    facet_rep <- rep(1:nrow(to_add), each = nrow(data))
+    data <- unrowname(data[data_rep, , drop = FALSE])
+    facet_vals <- unrowname(cbind(facet_vals[data_rep, ,
+                                             drop = FALSE], to_add[facet_rep, , drop = FALSE]))
+  }
 
-                                    facet_vals <- eval_facets(vars, data, params$.possible_columns)
-                                    facet_vals[] <- lapply(facet_vals[], as.factor)
-                                    missing_facets <- setdiff(names(vars), names(facet_vals))
-                                    if (length(missing_facets) > 0) {
-                                      to_add <- unique(layout[missing_facets])
-                                      data_rep <- rep.int(1:nrow(data), nrow(to_add))
-                                      facet_rep <- rep(1:nrow(to_add), each = nrow(data))
-                                      data <- unrowname(data[data_rep, , drop = FALSE])
-                                      facet_vals <- unrowname(cbind(facet_vals[data_rep, ,
-                                                                               drop = FALSE], to_add[facet_rep, , drop = FALSE]))
-                                    }
-
-                                    keys <- join_keys(facet_vals, layout, by = names(vars))
-                                    data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
-                                    data
-                                  },
-                                  draw_panels = sideFacetWrap_draw_panels
-)
+  keys <- join_keys(facet_vals, layout, by = names(vars))
+  data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
+  data
+}
