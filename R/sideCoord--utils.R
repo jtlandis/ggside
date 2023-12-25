@@ -26,12 +26,24 @@ guide_for_position <- function (guides, position)
   Reduce(guide_merge, guides[order(guides_order)])
 }
 
+clone_guide <- function(guide) {
+  ggproto(NULL, guide)
+}
+
 ggside_panel_guides_grob <- function(guides, position, theme, labels = NULL) {
+  # browser()
   if (!inherits(guides, "Guides")) {
     return(zeroGrob())
   }
   pair <- guides$get_position(position)
+  pair$guide <- clone_guide(pair$guide)
   pair$params$draw_label <- labels %||% NULL
+  # only use ggside themes if specified...
+  ggside_eles <- names(theme)[grep("^ggside", names(theme))]
+  to_rename <- pair$guide$elements %in% sub("^ggside\\.", "", ggside_eles)
+  if (any(to_rename)) {
+    pair$guide$elements[to_rename] <- paste("ggside", pair$guide$elements[to_rename], sep = ".")
+  }
   pair$guide$draw(theme, params = pair$params)
 }
 
@@ -221,13 +233,7 @@ draw_axis <- function (break_positions, break_labels, axis_position, theme,
 #     FALSE
 #   any(.lgl) && all(vapply(theme[.lgl], function(x) !is.null(x), logical(1)))
 # }
-#
-# use_ggside_ele <- function(ele, theme, side = NULL, family = NULL) {
-#   if (theme_ele_exists(ele, "ggside", c(family, side), theme))
-#     paste0("ggside",ifelse(is.null(side), "", paste0(".",side)),".",ele)
-#   else
-#     ele
-# }
+
 
 use_ggside_ele <- function(ele, side = NULL, family = NULL, theme) {
   theme_nms <- names(theme)
@@ -248,118 +254,118 @@ use_ggside_ele <- function(ele, side = NULL, family = NULL, theme) {
     return(ele)
 }
 
-# draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
-#                               check.overlap = FALSE, angle = NULL, n.dodge = 1){
-#   browser()
-#
-#   axis_position <- match.arg(axis_position, c("top", "bottom",
-#                                               "right", "left"))
-#   aesthetic <- if (axis_position %in% c("top", "bottom"))  "x" else "y"
-#
-#   aes_axis_pos <- paste0(aesthetic, ".", axis_position)
-#
-#   line_element_name <- paste0(use_ggside_ele("axis.line", family = "line", theme = theme), ".", aes_axis_pos)
-#   tick_element_name <- paste0(use_ggside_ele("axis.ticks", family = "line", theme = theme), ".", aes_axis_pos)
-#   tick_length_element_name <- paste0(use_ggside_ele("axis.ticks.length", theme = theme), ".", aes_axis_pos)
-#   label_element_name <- paste0(use_ggside_ele("axis.text", family = "text", theme = theme), ".", aes_axis_pos)
-#
-#   line_element <- calc_element(line_element_name, theme)
-#   tick_element <- calc_element(tick_element_name, theme)
-#   tick_length <- calc_element(tick_length_element_name, theme)
-#   label_element <- calc_element(label_element_name, theme)
-#   if (inherits(label_element, "element_text")) {
-#     label_overrides <- axis_label_element_overrides(axis_position,
-#                                                     angle)
-#     if (!is.null(label_overrides$angle)) {
-#       label_element$angle <- label_overrides$angle
-#     }
-#     if (!is.null(label_overrides$hjust)) {
-#       label_element$hjust <- label_overrides$hjust
-#     }
-#     if (!is.null(label_overrides$vjust)) {
-#       label_element$vjust <- label_overrides$vjust
-#     }
-#   }
-#   is_vertical <- axis_position %in% c("left", "right")
-#   position_dim <- if (is_vertical)
-#     "y"
-#   else "x"
-#   non_position_dim <- if (is_vertical)
-#     "x"
-#   else "y"
-#   position_size <- if (is_vertical)
-#     "height"
-#   else "width"
-#   non_position_size <- if (is_vertical)
-#     "width"
-#   else "height"
-#   gtable_element <- if (is_vertical)
-#     gtable_row
-#   else gtable_col
-#   measure_gtable <- if (is_vertical)
-#     gtable_width
-#   else gtable_height
-#   measure_labels_non_pos <- if (is_vertical)
-#     grobWidth
-#   else grobHeight
-#   is_second <- axis_position %in% c("right", "top")
-#   tick_direction <- if (is_second)
-#     1
-#   else -1
-#   non_position_panel <- if (is_second)
-#     unit(0, "npc")
-#   else unit(1, "npc")
-#   tick_coordinate_order <- if (is_second)
-#     c(2, 1)
-#   else c(1, 2)
-#   labels_first_gtable <- axis_position %in% c("left", "top")
-#   n_breaks <- length(break_positions)
-#   opposite_positions <- c(top = "bottom", bottom = "top", right = "left",
-#                           left = "right")
-#   axis_position_opposite <- unname(opposite_positions[axis_position])
-#   line_grob <- exec(element_grob, line_element, `:=`(!!position_dim,
-#                                                      unit(c(0, 1), "npc")), `:=`(!!non_position_dim, unit.c(non_position_panel,
-#                                                                                                             non_position_panel)))
-#   if (n_breaks == 0) {
-#     return(absoluteGrob(gList(line_grob), width = grobWidth(line_grob),
-#                         height = grobHeight(line_grob)))
-#   }
-#   if (is.list(break_labels)) {
-#     if (any(vapply(break_labels, is.language, logical(1)))) {
-#       break_labels <- do.call(expression, break_labels)
-#     }
-#     else {
-#       break_labels <- unlist(break_labels)
-#     }
-#   }
-#   dodge_pos <- rep(seq_len(n.dodge), length.out = n_breaks)
-#   dodge_indices <- split(seq_len(n_breaks), dodge_pos)
-#   label_grobs <- lapply(dodge_indices, function(indices) {
-#     draw_axis_labels(break_positions = break_positions[indices],
-#                      break_labels = break_labels[indices], label_element = label_element,
-#                      is_vertical = is_vertical, check.overlap = check.overlap)
-#   })
-#   ticks_grob <- exec(element_grob, tick_element, `:=`(!!position_dim,
-#                                                       rep(unit(break_positions, "native"), each = 2)), `:=`(!!non_position_dim,
-#                                                                                                             rep(unit.c(non_position_panel + (tick_direction * tick_length),
-#                                                                                                                        non_position_panel)[tick_coordinate_order], times = n_breaks)),
-#                      id.lengths = rep(2, times = n_breaks))
-#   non_position_sizes <- paste0(non_position_size, "s")
-#   label_dims <- do.call(unit.c, lapply(label_grobs, measure_labels_non_pos))
-#   grobs <- c(list(ticks_grob), label_grobs)
-#   grob_dims <- unit.c(max(tick_length, unit(0, "pt")), label_dims)
-#   if (labels_first_gtable) {
-#     grobs <- rev(grobs)
-#     grob_dims <- rev(grob_dims)
-#   }
-#   gt <- exec(gtable_element, name = "axis", grobs = grobs,
-#              `:=`(!!non_position_sizes, grob_dims), `:=`(!!position_size,
-#                                                          unit(1, "npc")))
-#   justvp <- exec(viewport, `:=`(!!non_position_dim, non_position_panel),
-#                  `:=`(!!non_position_size, measure_gtable(gt)), just = axis_position_opposite)
-#   absoluteGrob(gList(line_grob, gt), width = gtable_width(gt),
-#                height = gtable_height(gt), vp = justvp)
-# }
+draw_ggside_axis <- function (break_positions, break_labels, axis_position, theme,
+                              check.overlap = FALSE, angle = NULL, n.dodge = 1){
+  browser()
+
+  axis_position <- match.arg(axis_position, c("top", "bottom",
+                                              "right", "left"))
+  aesthetic <- if (axis_position %in% c("top", "bottom"))  "x" else "y"
+
+  aes_axis_pos <- paste0(aesthetic, ".", axis_position)
+
+  line_element_name <- paste0(use_ggside_ele("axis.line", family = "line", theme = theme), ".", aes_axis_pos)
+  tick_element_name <- paste0(use_ggside_ele("axis.ticks", family = "line", theme = theme), ".", aes_axis_pos)
+  tick_length_element_name <- paste0(use_ggside_ele("axis.ticks.length", theme = theme), ".", aes_axis_pos)
+  label_element_name <- paste0(use_ggside_ele("axis.text", family = "text", theme = theme), ".", aes_axis_pos)
+
+  line_element <- calc_element(line_element_name, theme)
+  tick_element <- calc_element(tick_element_name, theme)
+  tick_length <- calc_element(tick_length_element_name, theme)
+  label_element <- calc_element(label_element_name, theme)
+  if (inherits(label_element, "element_text")) {
+    label_overrides <- axis_label_element_overrides(axis_position,
+                                                    angle)
+    if (!is.null(label_overrides$angle)) {
+      label_element$angle <- label_overrides$angle
+    }
+    if (!is.null(label_overrides$hjust)) {
+      label_element$hjust <- label_overrides$hjust
+    }
+    if (!is.null(label_overrides$vjust)) {
+      label_element$vjust <- label_overrides$vjust
+    }
+  }
+  is_vertical <- axis_position %in% c("left", "right")
+  position_dim <- if (is_vertical)
+    "y"
+  else "x"
+  non_position_dim <- if (is_vertical)
+    "x"
+  else "y"
+  position_size <- if (is_vertical)
+    "height"
+  else "width"
+  non_position_size <- if (is_vertical)
+    "width"
+  else "height"
+  gtable_element <- if (is_vertical)
+    gtable_row
+  else gtable_col
+  measure_gtable <- if (is_vertical)
+    gtable_width
+  else gtable_height
+  measure_labels_non_pos <- if (is_vertical)
+    grobWidth
+  else grobHeight
+  is_second <- axis_position %in% c("right", "top")
+  tick_direction <- if (is_second)
+    1
+  else -1
+  non_position_panel <- if (is_second)
+    unit(0, "npc")
+  else unit(1, "npc")
+  tick_coordinate_order <- if (is_second)
+    c(2, 1)
+  else c(1, 2)
+  labels_first_gtable <- axis_position %in% c("left", "top")
+  n_breaks <- length(break_positions)
+  opposite_positions <- c(top = "bottom", bottom = "top", right = "left",
+                          left = "right")
+  axis_position_opposite <- unname(opposite_positions[axis_position])
+  line_grob <- exec(element_grob, line_element, `:=`(!!position_dim,
+                                                     unit(c(0, 1), "npc")), `:=`(!!non_position_dim, unit.c(non_position_panel,
+                                                                                                            non_position_panel)))
+  if (n_breaks == 0) {
+    return(absoluteGrob(gList(line_grob), width = grobWidth(line_grob),
+                        height = grobHeight(line_grob)))
+  }
+  if (is.list(break_labels)) {
+    if (any(vapply(break_labels, is.language, logical(1)))) {
+      break_labels <- do.call(expression, break_labels)
+    }
+    else {
+      break_labels <- unlist(break_labels)
+    }
+  }
+  dodge_pos <- rep(seq_len(n.dodge), length.out = n_breaks)
+  dodge_indices <- split(seq_len(n_breaks), dodge_pos)
+  label_grobs <- lapply(dodge_indices, function(indices) {
+    draw_axis_labels(break_positions = break_positions[indices],
+                     break_labels = break_labels[indices], label_element = label_element,
+                     is_vertical = is_vertical, check.overlap = check.overlap)
+  })
+  ticks_grob <- exec(element_grob, tick_element, `:=`(!!position_dim,
+                                                      rep(unit(break_positions, "native"), each = 2)), `:=`(!!non_position_dim,
+                                                                                                            rep(unit.c(non_position_panel + (tick_direction * tick_length),
+                                                                                                                       non_position_panel)[tick_coordinate_order], times = n_breaks)),
+                     id.lengths = rep(2, times = n_breaks))
+  non_position_sizes <- paste0(non_position_size, "s")
+  label_dims <- do.call(unit.c, lapply(label_grobs, measure_labels_non_pos))
+  grobs <- c(list(ticks_grob), label_grobs)
+  grob_dims <- unit.c(max(tick_length, unit(0, "pt")), label_dims)
+  if (labels_first_gtable) {
+    grobs <- rev(grobs)
+    grob_dims <- rev(grob_dims)
+  }
+  gt <- exec(gtable_element, name = "axis", grobs = grobs,
+             `:=`(!!non_position_sizes, grob_dims), `:=`(!!position_size,
+                                                         unit(1, "npc")))
+  justvp <- exec(viewport, `:=`(!!non_position_dim, non_position_panel),
+                 `:=`(!!non_position_size, measure_gtable(gt)), just = axis_position_opposite)
+  absoluteGrob(gList(line_grob, gt), width = gtable_width(gt),
+               height = gtable_height(gt), vp = justvp)
+}
 
 absoluteGrob <- function (grob, width = NULL, height = NULL, xmin = NULL, ymin = NULL,
                           vp = NULL) {
@@ -484,7 +490,7 @@ ggside_guide_grid <- function(theme, x.minor, x.major, y.minor, y.major, side = 
 
 
 ggside_render_fg <- function(panel_params, theme) {
-  panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
+  panel_type <- panel_params$ggside_panel_type
   if (is.element(panel_type, c("x", "y"))) {
     element_render(theme, use_ggside_ele("panel.border", side = paste0(panel_type, "side"), family = "rect", theme = theme))
   } else {
@@ -492,39 +498,39 @@ ggside_render_fg <- function(panel_params, theme) {
   }
 }
 
-# render_axis <- function (panel_params, axis, scale, position, theme)
-# {
-#   browser()
-#   if (axis == "primary") {
-#     draw_axis(panel_params[[paste0(scale, ".major")]], panel_params[[paste0(scale,
-#                                                                             ".labels")]], position, theme)
-#   }
-#   else if (axis == "secondary" && !is.null(panel_params[[paste0(scale,
-#                                                                 ".sec.major")]])) {
-#     draw_axis(panel_params[[paste0(scale, ".sec.major")]],
-#               panel_params[[paste0(scale, ".sec.labels")]], position,
-#               theme)
-#   }
-#   else {
-#     zeroGrob()
-#   }
-# }
-#
-# ggside_render_axis <- function (panel_params, axis, scale, position, theme)
-# {
-#   browser()
-#   if (axis == "primary") {
-#     draw_ggside_axis(panel_params[[paste0(scale, ".major")]], panel_params[[paste0(scale,
-#                                                                             ".labels")]], position, theme)
-#   }
-#   else if (axis == "secondary" && !is.null(panel_params[[paste0(scale,
-#                                                                 ".sec.major")]])) {
-#     draw_ggside_axis(panel_params[[paste0(scale, ".sec.major")]],
-#               panel_params[[paste0(scale, ".sec.labels")]], position,
-#               theme)
-#   }
-#   else {
-#     zeroGrob()
-#   }
-# }
+render_axis <- function (panel_params, axis, scale, position, theme)
+{
+  browser()
+  if (axis == "primary") {
+    draw_axis(panel_params[[paste0(scale, ".major")]], panel_params[[paste0(scale,
+                                                                            ".labels")]], position, theme)
+  }
+  else if (axis == "secondary" && !is.null(panel_params[[paste0(scale,
+                                                                ".sec.major")]])) {
+    draw_axis(panel_params[[paste0(scale, ".sec.major")]],
+              panel_params[[paste0(scale, ".sec.labels")]], position,
+              theme)
+  }
+  else {
+    zeroGrob()
+  }
+}
+
+ggside_render_axis <- function (panel_params, axis, scale, position, theme)
+{
+  browser()
+  if (axis == "primary") {
+    draw_ggside_axis(panel_params[[paste0(scale, ".major")]], panel_params[[paste0(scale,
+                                                                            ".labels")]], position, theme)
+  }
+  else if (axis == "secondary" && !is.null(panel_params[[paste0(scale,
+                                                                ".sec.major")]])) {
+    draw_ggside_axis(panel_params[[paste0(scale, ".sec.major")]],
+              panel_params[[paste0(scale, ".sec.labels")]], position,
+              theme)
+  }
+  else {
+    zeroGrob()
+  }
+}
 

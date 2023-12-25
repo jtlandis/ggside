@@ -149,7 +149,7 @@ CoordSideTrans <- ggplot2::ggproto(
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.CoordFixed<- function(coord){
+as_ggsideCoord.CoordFixed <- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
   ggplot2::ggproto("CoordSide",
