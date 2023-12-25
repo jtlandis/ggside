@@ -124,3 +124,18 @@ deprecated_fun <- function(fun) {
 }
 
 
+modify_body <- function(call_body, from, to) {
+  for (i in seq_along(call_body)) {
+    call <- call_body[[i]]
+    if(!rlang::is_missing(call)) {
+      if(identical(call, from)) {
+        call_body[[i]] <- to
+      } else if (length(call)>1) {
+        call_body[[i]] <- modify_body(call, from, to)
+      }
+    }
+  }
+  call_body
+}
+
+

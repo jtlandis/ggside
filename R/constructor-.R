@@ -85,6 +85,7 @@ ggside_scales <- function(scales, ggside) {
       ggproto(NULL, self, scales = self$scales[!self$find(c("x","y", "ysidex", "xsidey"))])
     },
     add = function(self, scale) {
+      # browser()
       parent <- ggproto_parent(scales, self)
       parent$add(scale)
       if (!is.null(scale)) {
@@ -145,10 +146,11 @@ new_pos_scale <- function(scale) {
   ggproto(
     NULL,
     scale,
-    transform_df = function(self, df) {
-      local_vanilla_scale_aes(self)
-      ggproto_parent(scale, self)$transform_df(df)
-    },
+    # transform_df = function(self, df) {
+    #   browser()
+    #   # local_vanilla_scale_aes(self)
+    #   ggproto_parent(scale, self)$transform_df(df)
+    # },
     map = function(self, x, limits = self$get_limits()) {
       if (length(x)==0) return(x)
       parent <- ggproto_parent(scale, self)

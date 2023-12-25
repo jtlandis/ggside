@@ -79,6 +79,7 @@ ggside_compute_layout <- function(facet) {
 ggside_train_scales <- function(facet) {
   force(facet)
   function(x_scales, y_scales, layout, data, params) {
+    browser()
     if (!is.null(x_scales) && !is.null(params$ggside$ysidex) &&
         (!any(vapply(x_scales, function(s) "ysidex" %in% s$aesthetics, logical(1))))) {
       side_indx <- unique(layout[layout$PANEL_TYPE=="y",]$SCALE_X)
@@ -87,9 +88,9 @@ ggside_train_scales <- function(facet) {
         j <- side_indx[i]
         vec_poke_n(x_scales, j, side_x, i, n = 1L)
       }
-      first_scale_x <- x_scales[[1]]
-      side_aes <- unique(unlist(lapply(side_x, `[[`, "aesthetics")))
-      first_scale_x$aesthetics <-c(first_scale_x$aesthetics, side_aes)
+      # first_scale_x <- x_scales[[1]]
+      # side_aes <- unique(unlist(lapply(side_x, `[[`, "aesthetics")))
+      # first_scale_x$aesthetics <-c(first_scale_x$aesthetics, side_aes)
     }
 
     if (!is.null(y_scales) && !is.null(params$ggside$xsidey) &&
@@ -100,9 +101,9 @@ ggside_train_scales <- function(facet) {
         j <- side_indx[i]
         vec_poke_n(y_scales, j, side_y, i, n = 1L)
       }
-      first_scale_y <- y_scales[[1]]
-      side_aes <- unique(unlist(lapply(side_y, `[[`, "aesthetics")))
-      first_scale_y$aesthetics <-c(first_scale_y$aesthetics, side_aes)
+      # first_scale_y <- y_scales[[1]]
+      # side_aes <- unique(unlist(lapply(side_y, `[[`, "aesthetics")))
+      # first_scale_y$aesthetics <-c(first_scale_y$aesthetics, side_aes)
     }
     facet$train_scales(x_scales, y_scales, layout, data, params)
   }

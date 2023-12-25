@@ -18,6 +18,7 @@ ggplot_build.ggside <- function(plot) {
   plot$scales <- ggside_scales(plot$scales, plot$ggside)
   plot$facet <- ggside_facet(plot$facet, plot$ggside)
   plot$coordinates <- as_ggsideCoord(plot$coordinates)
+  plot$layout <- new_side_layout(plot$layout)
 
   built <- NextMethod("ggplot_build")
   standardise_panel_params(built)
