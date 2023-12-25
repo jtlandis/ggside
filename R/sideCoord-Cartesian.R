@@ -40,7 +40,7 @@ CoordSideCartesian <- ggplot2::ggproto(
   "CoordSideCartesian",
   ggplot2::CoordCartesian,
   render_bg = function(panel_params, theme) {
-    panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
+    panel_type <- panel_params$ggside_panel_type
     if (is.element(panel_type, c("x", "y"))) {
       ggside_guide_grid(
         theme,

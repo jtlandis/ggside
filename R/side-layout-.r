@@ -20,13 +20,25 @@ mod_ggproto_fun <- function(ggproto_method, ...) {
     env = proto_env)
 }
 
+mod_fun_at <- function(fun, insert, at) {
+  body(fun) <- insert_call_at(body(fun), insert, at)
+  fun
+}
+
 insert_call_at <- function(call, insert, at) {
   stopifnot("`call` isnt a call"=is.call(call),
-            "`at` isnt numeric/integer"=is.numeric(at))
+            "`at` isnt integer"=is.numeric(at))
   len <- length(call)
-  if (at > len) {
+  at <- as.integer(at)
+  if (at < 0) {
+    at <- len + at
+  }
+  if (at <= 0) {
+    at <- 1L
+  } else if (at > len) {
     at <- len
   }
+
   seq_args <- seq_along(call)[-1]
   seq_upto <- seq_args[seq_len(at-1)]
   seq_after <- setdiff(seq_args, seq_upto)
@@ -61,16 +73,14 @@ new_side_layout <- function(layout) {
       self$panel_scales_x[[1]]$aesthetics ~ unique(unlist(lapply(self$panel_scales_x, `[[`, "aesthetics"))),
       self$panel_scales_y[[1]]$aesthetics ~ unique(unlist(lapply(self$panel_scales_y, `[[`, "aesthetics")))
       ),
-    train_position = function(self, data, x_scale, y_scale) {
-      parent <- ggproto_parent(parent_layout, self)
-      out <- parent$train_position(data, x_scale, y_scale)
-      out
-    },
-    setup_panel_params = function(self) {
-      browser()
-      parent <- ggproto_parent(parent_layout, self)
-      out <- parent$setup_panel_params()
-      invisible()
-    }
+    setup_panel_params = mod_ggproto_fun(parent_layout$setup_panel_params) |>
+      mod_fun_at(quote(self$panel_params <- Map(\(param, type) {
+        param$ggside_panel_type <- type
+        names(param) <- sub("(x|y)side","",names(param))
+        is_proto <- vapply(param, is.ggproto, logical(1))
+        param[is_proto] <- lapply(param[is_proto],\(x) {x$aesthetics <- sub("(x|y)side", "", x$aesthetics);x})
+        param},
+        self$panel_params, self$layout$PANEL_TYPE)), at = -1),
+    setup_panel_guides = mod_ggproto_fun(parent_layout$setup_panel_guides)
   )
 }
