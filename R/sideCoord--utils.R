@@ -1,9 +1,13 @@
 
 
-panel_guides_grob <- function (guides, position, theme)
+panel_guides_grob <- function (guides, position, theme, labels = NULL)
 {
-  guide <- guide_for_position(guides, position) %||% guide_none()
-  guide_gengrob(guide, theme)
+  if (!inherits(guides, "Guides")) {
+    return(zeroGrob())
+  }
+  pair <- guides$get_position(position)
+  pair$params$draw_label <- labels %||% NULL
+  pair$guide$draw(theme, params = pair$params)
 }
 
 as_ggside_axis <- function(x) {
@@ -23,9 +27,12 @@ guide_for_position <- function (guides, position)
 }
 
 ggside_panel_guides_grob <- function(guides, position, theme) {
-  guide <- guide_for_position(guides, position) %||% guide_none()
-  guide <- as_ggside_axis(guide)
-  guide_gengrob(guide, theme)
+  if (!inherits(guides, "Guides")) {
+    return(zeroGrob())
+  }
+  pair <- guides$get_position(position)
+  pair$params$draw_label <- labels %||% NULL
+  pair$guide$draw(theme, params = pair$params)
 }
 
 

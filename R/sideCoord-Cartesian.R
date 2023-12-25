@@ -69,6 +69,7 @@ CoordSideCartesian <- ggplot2::ggproto(
     } else {
       list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme),
            bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
+
     }
   },
   render_axis_v = function (panel_params, theme) {
