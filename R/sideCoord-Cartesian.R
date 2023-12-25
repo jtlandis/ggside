@@ -64,11 +64,11 @@ CoordSideCartesian <- ggplot2::ggproto(
   render_axis_h = function (panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
     if (panel_type=="y") {
-      list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme),
-           bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
+      list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
     } else {
-      list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme),
-           bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
+      list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
 
     }
   },
@@ -76,11 +76,11 @@ CoordSideCartesian <- ggplot2::ggproto(
     panel_type <- panel_params$ggside_panel_type
 
     if (panel_type=="x") {
-      list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme),
-           right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme))
+      list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     } else {
-      list(left = panel_guides_grob(panel_params$guides, position = "left", theme = theme),
-           right = panel_guides_grob(panel_params$guides, position = "right", theme = theme))
+      list(left = panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     }
   }
 )

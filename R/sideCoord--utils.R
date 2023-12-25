@@ -26,7 +26,7 @@ guide_for_position <- function (guides, position)
   Reduce(guide_merge, guides[order(guides_order)])
 }
 
-ggside_panel_guides_grob <- function(guides, position, theme) {
+ggside_panel_guides_grob <- function(guides, position, theme, labels = NULL) {
   if (!inherits(guides, "Guides")) {
     return(zeroGrob())
   }
