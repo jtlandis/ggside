@@ -149,10 +149,27 @@ specifically set. \cr
 \code{ggside.axis.ticks.length, ggside.axis.ticks.length.x,
 ggside.axis.ticks.length.y, ggside.axis.ticks.length.x.top, ggside.axis.ticks.length.x.bottom,
 ggside.axis.ticks.length.y.left, ggside.axis.ticks.length.y.right} \tab
-length of ticks along the side panel's axis.Due to the layout of side panels, \code{ggside.axis.ticks.length.x}
+length of ticks along the side panel's axis. Due to the layout of side panels, \code{ggside.axis.ticks.length.x}
 will only affect the yside panel's x-axis text and \code{ggside.axis.ticks.length.y} will
 only affect the xside panel's y-axis text. Theme elements inherit from \code{axis.ticks.length}
 and will default to the current theme's \code{axis.ticks.length} inheritance scheme unless
+specifically set. \cr
+\tab \cr
+\code{ggside.axis.minor.ticks, ggside.axis.minor.ticks.x, ggside.axis.minor.ticks.y,
+ggside.axis.minor.ticks.x.top, ggside.axis.minor.ticks.x.bottom, ggside.axis.minor.ticks.y.left, ggside.axis.minor.ticks.y.right} \tab
+Tick marks along the side panel's axis. Due to the layout of side panels, \code{ggside.axis.minor.ticks.x}
+will only affect the yside panel's x-axis text and \code{ggside.axis.minor.ticks.y} will
+only affect the xside panel's y-axis text. Theme elements inherit from \code{axis.minor.ticks}
+and will default to the current theme's \code{axis.minor.ticks} inheritance scheme unless
+specifically set. \cr
+\tab \cr
+\code{ggside.axis.minor.ticks.length, ggside.axis.minor.ticks.length.x,
+ggside.axis.minor.ticks.length.y, ggside.axis.minor.ticks.length.x.top, ggside.axis.minor.ticks.length.x.bottom,
+ggside.axis.minor.ticks.length.y.left, ggside.axis.minor.ticks.length.y.right} \tab
+length of minor ticks along the side panel's axis. Due to the layout of side panels, \code{ggside.axis.minor.ticks.length.x}
+will only affect the yside panel's x-axis text and \code{ggside.axis.minor.ticks.length.y} will
+only affect the xside panel's y-axis text. Theme elements inherit from \code{axis.minor.ticks.length}
+and will default to the current theme's \code{axis.minor.ticks.length} inheritance scheme unless
 specifically set. \cr
 \tab \cr
 }
