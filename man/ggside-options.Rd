@@ -5,13 +5,14 @@
 \title{ggside options}
 \usage{
 ggside(
-  x.pos = "top",
-  y.pos = "right",
-  scales = "fixed",
+  x.pos = NULL,
+  y.pos = NULL,
+  scales = NULL,
   collapse = NULL,
-  draw_x_on = c("default", "main", "side"),
-  draw_y_on = c("default", "main", "side"),
-  strip = c("default", "main")
+  draw_x_on = NULL,
+  draw_y_on = NULL,
+  strip = NULL,
+  respect_side_labels = NULL
 )
 }
 \arguments{
@@ -41,6 +42,12 @@ to all axis positions.}
 
 \item{strip}{Determines if the strip should be rendered on the main plot or
 on their default locations. Only has an effect on \code{facet_grid}.}
+
+\item{respect_side_labels}{logical. indicates if panel spacing should respect
+the axis labels. Generally only applicable when both x and y side layers are
+used and axis labels are plotted in non default locations. The default (FALSE)
+will not provide spacing between the main panel a side panel to accommodate the
+labels of the complementary side panel.}
 }
 \value{
 a object of class 'ggside_options' or to be added to a ggplot

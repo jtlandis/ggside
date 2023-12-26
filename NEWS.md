@@ -11,6 +11,7 @@
 ### Updates
 
 * The `ggside_options` object now inherits from `ggproto` instead of a list.
+* The `ggside_options` defaults arguments are now `NULL`. This will help update the object appropriately without overriding previous options specified through `ggside()`.
 * `ggside` now allows for the `trans` argument of the `scale_(x|y)side(y|x)_continuous(...)` functions to be used. Addresses issue #40. This feature is experimental and may be removed depending on how `ggplot2` develops in the future. Additional helper functions have been added:
   * `scale_xsidey_log10()`, `scale_ysidex_log10()`
   * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`

@@ -1,5 +1,5 @@
 #' @title ggside options
-#' @rdname ggside
+#' @rdname ggside-options
 #' @description Set characteristics of side panels
 #' @param x.pos x side panel can either take "top" or "bottom"
 #' @param y.pos y side panel can either take "right" or "left"
@@ -22,15 +22,68 @@
 #' to all axis positions.
 #' @param strip Determines if the strip should be rendered on the main plot or
 #' on their default locations. Only has an effect on `facet_grid`.
+#' @param respect_side_labels logical. indicates if panel spacing should respect
+#' the axis labels. Generally only applicable when both x and y side layers are
+#' used and axis labels are plotted in non default locations. The default (FALSE)
+#' will not provide spacing between the main panel a side panel to accommodate the
+#' labels of the complementary side panel.
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
 #' @return a object of class 'ggside_options' or to be added to a ggplot
 #' @export
-ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
+ggside <- function(x.pos = NULL, y.pos = NULL, scales = NULL, collapse = NULL,
+                   draw_x_on = NULL,
+                   draw_y_on = NULL,
+                   strip = NULL,
+                   respect_side_labels = NULL){
+
+  x.pos <- resolve_arg(x.pos, c("top", "bottom"))
+  y.pos <- resolve_arg(y.pos, c("right", "left"))
+  draw_x_on <- resolve_arg(draw_x_on, c("default","main","side"))
+  draw_y_on <- resolve_arg(draw_y_on, c("default","main","side"))
+  strip <- resolve_arg(strip, c("default", "main"))
+  collapse <- resolve_arg(collapse, c("all", "x", "y"))
+  respect_side_labels <- resolve_arg(respect_side_labels, c(FALSE, TRUE))
+
+
+  ggproto(
+    "ggside_options",
+    x.pos = x.pos,
+    y.pos = y.pos,
+    scales = scales,
+    collapse = collapse,
+    xsidey = NULL,
+    ysidex = NULL,
+    draw_x_on = draw_x_on,
+    draw_y_on = draw_y_on,
+    strip = strip,
+    sides_used = NULL,
+    respect_side_labels = respect_side_labels
+  )
+}
+
+resolve_arg <- function(arg, opt, several.ok = FALSE) {
+  arg_sym <- substitute(arg)
+  if (!is.null(arg)) {
+    arg <- opt[opt %in% arg]
+    len <- length(arg)
+    opt_len <- length(opt)
+    if (len==0)
+      cli::cli_abort("valid {cli::qty(opt_len)} option{?s} for argument {.arg {arg_sym}} {?is/are} {.val {opt}}",
+                     call = parent.frame())
+    if (length(arg)>1 && !several.ok)
+      cli::cli_abort("you specified {length(arg)} arguments to {.arg {arg_sym}}, but only one of {.or {.val {opt}}} are allowed",
+                     call = parent.frame())
+  }
+  arg
+}
+
+new_ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
                    draw_x_on = c("default","main","side"),
                    draw_y_on = c("default","main","side"),
-                   strip = c("default", "main")){
+                   strip = c("default", "main"),
+                   respect_side_labels = FALSE){
   draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
   draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
   strip <- match.arg(strip, c("default", "main"))
@@ -50,7 +103,8 @@ ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = 
     draw_x_on = draw_x_on,
     draw_y_on = draw_y_on,
     strip = strip,
-    sides_used = NULL
+    sides_used = NULL,
+    respect_side_labels = respect_side_labels
   )
 }
 
