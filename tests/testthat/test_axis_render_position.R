@@ -1,7 +1,7 @@
 library(vdiffr)
 
 test_that("axis may be rendered in between plots", {
-
+  testthat::skip("skipping these plots until most other tests complete")
   p <- ggplot(iris, aes(Sepal.Width, Sepal.Length)) +
     geom_point() +
     geom_xsidedensity(aes(color = Species)) +

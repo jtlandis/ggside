@@ -9,8 +9,8 @@ test_that("base plot did not change",{
   expect_doppelganger("base plot", p)
 })
 
-px <- p + geom_xsidecol()
-py <- p + geom_ysidecol()
+px <- p + geom_xsidecol(width = 0.9)
+py <- p + geom_ysidecol(width = 0.9)
 
 test_that("ggside x-axis plotting",{
   expect_doppelganger("xside top", px)
@@ -34,7 +34,7 @@ test_that("ggside y-axis plotting",{
   expect_doppelganger("yside right-noaxis", py + theme(axis.text.y = element_blank()))
 })
 
-pxy <- p + geom_xsidecol() + geom_ysidecol()
+pxy <- p + geom_xsidecol(width = 0.9) + geom_ysidecol(width = 0.9)
 
 test_that("ggside xy-axis plotting", {
   expect_doppelganger("xyside", pxy)
