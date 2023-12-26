@@ -68,6 +68,25 @@ new_side_layout <- function(layout) {
   ggproto(
     NULL,
     parent_layout,
+    train_position = mod_ggproto_fun(parent_layout$train_position) |>
+      mod_fun_at(quote(self$find_ggside_scales()), at = -1),
+    find_ggside_scales = function(self) {
+      params <- self$facet_params
+      layout <- self$layout
+      x_scale <- self$panel_scales_x
+      if (!is.null(x_scale) && !is.null(params$ggside$ysidex)){
+        side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
+        x_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
+        self$panel_scales_x <- x_scale
+      }
+      y_scale <- self$panel_scales_y
+      if (!is.null(y_scale) && !is.null(params$ggside$xsidey)){
+        side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
+        y_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
+        self$panel_scales_y <- y_scale
+      }
+      invisible()
+    },
     map_position = mod_ggproto_fun(
       parent_layout$map_position,
       self$panel_scales_x[[1]]$aesthetics ~ unique(unlist(lapply(self$panel_scales_x, `[[`, "aesthetics"))),
