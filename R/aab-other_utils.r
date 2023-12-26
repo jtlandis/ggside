@@ -98,32 +98,44 @@ ggname <- function(prefix, grob) {
   grob
 }
 
-manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), ...) {
-  # check for missing `values` parameter, in lieu of providing
-  # a default to all the different scale_*_manual() functions
-  if (rlang::is_missing(values)) {
+manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), name = waiver(),
+                         ..., limits = NULL, call = caller_call())
+{
+  call <- call %||% current_call()
+  if (is_missing(values)) {
     values <- NULL
-  } else {
+  }
+  else {
     force(values)
   }
-
-  # order values according to breaks
+  if (is.null(limits) && !is.null(names(values))) {
+    force(aesthetic)
+    limits <- function(x) {
+      x <- intersect(x, c(names(values), NA)) %||% character()
+      if (length(x) < 1) {
+        cli::cli_warn(paste0("No shared levels found between {.code names(values)} of the manual ",
+                             "scale and the data's {.field {aesthetic}} values."))
+      }
+      x
+    }
+  }
   if (is.vector(values) && is.null(names(values)) && !is.waive(breaks) &&
       !is.null(breaks) && !is.function(breaks)) {
     if (length(breaks) <= length(values)) {
       names(values) <- breaks
-    } else {
+    }
+    else {
       names(values) <- breaks[1:length(values)]
     }
   }
-
   pal <- function(n) {
     if (n > length(values)) {
-      abort(glue("Insufficient values in manual scale. {n} needed but only {length(values)} provided."))
+      cli::cli_abort("Insufficient values in manual scale. {n} needed but only {length(values)} provided.")
     }
     values
   }
-  discrete_scale(aesthetic, "manual", pal, breaks = breaks, ...)
+  discrete_scale(aesthetic, name = name, palette = pal, breaks = breaks,
+                 limits = limits, call = call, ...)
 }
 
 
