@@ -18,22 +18,22 @@ use_side_aes <- function(data, side) {
 
 rename_side <- function(str, side) {
   other <- switch(side, x = "y", y = "x")
-  is_or <- all(grepl("|", str, fixed = T))
+  is_or <- grepl("|", str, fixed = T)
   aes <- .ggside_global[[paste0(".", other,"_aes")]]
-  if (is_or) {
-    splits <- strsplit(str, "|", T)
-    i <- match(other, c("x", "y"))
-
-    splits <- lapply(splits,
-                     function(x) {
-                       l <- x %in% aes
-                       x[l] <- paste0(side, "side", x[l])
-                       x})
-    str <- vapply(splits, paste, character(1), collapse = "|")
-  } else {
-    to_rename <- str %in% aes
+  rename_aes <- function(x) {
+    to_rename <- x %in% aes
     if (any(to_rename))
-      str[to_rename] <- sprintf("%sside%s", side, str[to_rename])
+      x[to_rename] <- sprintf("%sside%s", side, x[to_rename])
+    x
+  }
+  if (any(is_or)) {
+    or <- str[is_or]
+    splits <- strsplit(or, "|", T)
+    splits <- lapply(splits, rename_aes)
+    str[!is_or] <- rename_aes(str[!is_or])
+    str[is_or] <- vapply(splits, paste, character(1), collapse = "|")
+  } else {
+    str <- rename_aes(str)
   }
   str
 }
