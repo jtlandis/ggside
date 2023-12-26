@@ -82,7 +82,7 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
   object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object$ggside$strip <- ggside$strip %||% object$ggside$strip %||% "default"
-
+  object$ggside$respect_side_labels <- ggside$respect_side_labels %||% object$ggside$respect_side_labels %||% FALSE
   return(object)
 }
 

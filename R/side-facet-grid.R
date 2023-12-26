@@ -230,45 +230,44 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   axis_mat_y_left[left] <- list(zeroGrob())
   axis_mat_y_right[right] <- list(zeroGrob())
 
-  if(all(c("x","y") %in% side_panels_present)){
-    x_pos <- layout[layout[["PANEL_TYPE"]]=="x",][["panel_pos"]]
-    if(y.pos=="left"){
-      for(i in x_pos){
-        axis_mat_y_left[i][[1]]$width <- NULL
-      }
-    } else {
-      for(i in x_pos){
-        axis_mat_y_right[i][[1]]$width <- NULL
-      }
+  include <- seq_len(ncol)
+  if (!params$ggside$respect_side_labels && all(c("x","y") %in% side_panels_present)) {
+    #only view main panels top and bot
+    shift <- 0L
+    if (y.pos=="right") {
+      shift <- 1L
     }
-    y_pos <- layout[layout[["PANEL_TYPE"]]=="y",][["panel_pos"]]
-    if(x.pos=="top"){
-      for(i in y_pos){
-        axis_mat_x_top[i][[1]]$height <- NULL
-      }
-    } else {
-      for(i in y_pos){
-        axis_mat_x_bottom[i][[1]]$height <- NULL
-      }
-    }
+    include <- which((include %% 2) == shift)
   }
 
   axis_height_top <- unit(
-    apply(axis_mat_x_top, 1, max_height, value_only = TRUE),
+    apply(axis_mat_x_top, 1, calc_max_height, value_only = TRUE, include = include),
     "cm"
   )
   axis_height_bottom <- unit(
-    apply(axis_mat_x_bottom, 1, max_height, value_only = TRUE),
+    apply(axis_mat_x_bottom, 1, calc_max_height, value_only = TRUE, include = include),
     "cm"
   )
+
+  include <- seq_len(nrow)
+  if (!params$ggside$respect_side_labels && all(c("x","y") %in% side_panels_present)) {
+    #only view main panels top and bot
+    shift <- 0L
+    if (x.pos=="bottom") {
+      shift <- 1L
+    }
+    include <- which((include %% 2) == shift)
+  }
+
   axis_width_left <- unit(
-    apply(axis_mat_y_left, 2, max_width, value_only = TRUE),
+    apply(axis_mat_y_left, 2, calc_max_width, value_only = TRUE, include = include),
     "cm"
   )
   axis_width_right <- unit(
-    apply(axis_mat_y_right, 2, max_width, value_only = TRUE),
+    apply(axis_mat_y_right, 2, calc_max_width, value_only = TRUE, include = include),
     "cm"
   )
+
   panel_table <- weave_tables_row(panel_table, axis_mat_x_top, -1, axis_height_top, "axis-t", 3)
   panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, axis_height_bottom, "axis-b", 3)
   panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, axis_width_left, "axis-l", 3)
