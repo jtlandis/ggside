@@ -81,6 +81,7 @@ new_side_layout <- function(layout) {
         param[is_proto] <- lapply(param[is_proto],\(x) {x$aesthetics <- sub("(x|y)side", "", x$aesthetics);x})
         param},
         self$panel_params, self$layout$PANEL_TYPE)), at = -1),
-    setup_panel_guides = mod_ggproto_fun(parent_layout$setup_panel_guides)
+    setup_panel_guides = mod_ggproto_fun(parent_layout$setup_panel_guides),
+    get_scales = mod_ggproto_fun(parent_layout$get_scales)
   )
 }

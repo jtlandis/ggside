@@ -45,10 +45,14 @@ ggside_geom <- function(class_name = NULL,
     optional_aes = rename_side(geom$optional_aes, side),
     non_missing_aes = rename_side(geom$non_missing_aes, side),
     setup_data = function(self, data, params) {
-      #browser()
+      # browser()
       data <- parse_side_aes(data, params)
       data <- self$.data_unmapper(data)
-      geom$setup_data(data, params)
+      levels <- levels(data$PANEL)
+      data$PANEL <- droplevels(data$PANEL)
+      data <- geom$setup_data(data, params)
+      data$PANEL <- factor(data$PANEL, levels = levels)
+      data
     },
     draw_panel = fun,
     draw_key = function(data, params, size) {
