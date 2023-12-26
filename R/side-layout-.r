@@ -74,13 +74,15 @@ new_side_layout <- function(layout) {
       params <- self$facet_params
       layout <- self$layout
       x_scale <- self$panel_scales_x
-      if (!is.null(x_scale) && !is.null(params$ggside$ysidex)){
+      if (!is.null(x_scale) && !is.null(params$ggside$ysidex) &&
+          !any(vapply(x_scale, function(scale) "ysidex" %in% scale$aesthetics, logical(1)))){
         side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
         x_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
         self$panel_scales_x <- x_scale
       }
       y_scale <- self$panel_scales_y
-      if (!is.null(y_scale) && !is.null(params$ggside$xsidey)){
+      if (!is.null(y_scale) && !is.null(params$ggside$xsidey) &&
+          !any(vapply(y_scale, function(scale) "xsidey" %in% scale$aesthetics, logical(1)))){
         side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
         y_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
         self$panel_scales_y <- y_scale
