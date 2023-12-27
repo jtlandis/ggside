@@ -31,7 +31,6 @@ clone_guide <- function(guide) {
 }
 
 ggside_panel_guides_grob <- function(guides, position, theme, labels = NULL) {
-  # browser()
   if (!inherits(guides, "Guides")) {
     return(zeroGrob())
   }
@@ -40,7 +39,9 @@ ggside_panel_guides_grob <- function(guides, position, theme, labels = NULL) {
   pair$params$draw_label <- labels %||% NULL
   # only use ggside themes if specified...
   ggside_eles <- names(theme)[grep("^ggside", names(theme))]
-  to_rename <- pair$guide$elements %in% sub("^ggside\\.", "", ggside_eles)
+  to_rename <- apply(vapply(pair$guide$elements,
+                            grepl, x = ggside_eles,
+                            logical(length(ggside_eles))), 2, any)
   if (any(to_rename)) {
     pair$guide$elements[to_rename] <- paste("ggside", pair$guide$elements[to_rename], sep = ".")
   }

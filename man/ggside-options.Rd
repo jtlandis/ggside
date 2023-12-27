@@ -47,8 +47,8 @@ on their default locations. Only has an effect on \code{facet_grid}.}
 "all", and "none" Indicates if panel spacing should respect the axis
 labels. The default is to respect side panel labels except when xside
 labels are on the same side as the yside panel. Note: setting this
-parameter to "x" is to say yside labels, if present, are not respected
-and vise versa for "y" and xside labels.}
+parameter to "x" is to "respect the labels of the xside panel" and
+consequently the yside labels, if present, are not respected.}
 }
 \value{
 a object of class 'ggside_options' or to be added to a ggplot
