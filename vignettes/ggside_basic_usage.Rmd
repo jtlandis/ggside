@@ -164,7 +164,7 @@ p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
 
 ```{r base_example_FacetNull}
 p2 <- p + geom_xsidedensity(aes(y=stat(density))) +
-  geom_ysidedensity(aes(x=stat(density))) +
+  geom_ysidedensity(aes(x=after_stat(density))) +
   theme_bw()
 p2 + labs(title = "FacetNull")
 ```
@@ -172,7 +172,7 @@ p2 + labs(title = "FacetNull")
 ```{r base_example_FacetWrap}
 p2 + facet_wrap(Species~Species2) +
   labs(title = "FacetWrap") +
-  guides(guide_axis(check.overlap = T))
+  guides(x = guide_axis(check.overlap = T))
 ```
 
 ```{r base_example_FacetGrid}

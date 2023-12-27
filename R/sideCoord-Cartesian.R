@@ -123,26 +123,23 @@ CoordSideTrans <- ggplot2::ggproto(
   },
   render_fg = ggside_render_fg,
   render_axis_h = function (panel_params, theme) {
-    arrange <- panel_params$x.arrange %||% c("secondary","primary")
     panel_type <- panel_params$ggside_panel_type
-    if (is.element(panel_type, c("x", "main"))) {
-      list(top = render_axis(panel_params, arrange[1], "x", "top", theme),
-           bottom = render_axis(panel_params, arrange[2], "x", "bottom", theme))
+    if (panel_type=="y") {
+      list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
     } else {
-      list(top = ggside_render_axis(panel_params, arrange[1], "x", "top", theme),
-           bottom = ggside_render_axis(panel_params, arrange[2], "x", "bottom", theme))
+      list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
     }
   },
   render_axis_v = function (panel_params, theme) {
-    arrange <- panel_params$x.arrange %||% c("primary","secondary")
     panel_type <- panel_params$ggside_panel_type
-
-    if (is.element(panel_type, c("y", "main"))) {
-      list(left = render_axis(panel_params, arrange[1], "y", "left",theme),
-           right = render_axis(panel_params, arrange[2], "y", "right", theme))
+    if (panel_type=="x") {
+      list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     } else {
-      list(left = ggside_render_axis(panel_params, arrange[1], "y", "left",theme),
-           right = ggside_render_axis(panel_params, arrange[2], "y", "right", theme))
+      list(left = panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     }
   }
 )
@@ -165,7 +162,7 @@ CoordSideFixed <- ggplot2::ggproto(
   "CoordSideFixed",
   ggplot2::CoordFixed,
   render_bg = function(panel_params, theme) {
-    panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
+    panel_type <- panel_params$ggside_panel_type
     if (is.element(panel_type, c("x", "y"))) {
       ggside_guide_grid(
         theme,
@@ -188,23 +185,23 @@ CoordSideFixed <- ggplot2::ggproto(
   render_fg = ggside_render_fg,
   render_axis_h = function (panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
-    if (is.element(panel_type, c("x", "main"))) {
-      list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme),
-           bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
+    if (panel_type=="y") {
+      list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
     } else {
-      list(top = ggside_panel_guides_grob(panel_params$guides, position = "top", theme = theme),
-           bottom = ggside_panel_guides_grob(panel_params$guides, position = "bottom", theme = theme))
+      list(top = panel_guides_grob(panel_params$guides, position = "top", theme = theme, labels = panel_params$draw_labels$top),
+           bottom = panel_guides_grob(panel_params$guides, position = "bottom", theme = theme, labels = panel_params$draw_labels$bottom))
+
     }
   },
   render_axis_v = function (panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
-
-    if (is.element(panel_type, c("y", "main"))) {
-      list(left = panel_guides_grob(panel_params$guides, position = "left", theme = theme),
-           right = panel_guides_grob(panel_params$guides, position = "right", theme = theme))
+    if (panel_type=="x") {
+      list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     } else {
-      list(left = ggside_panel_guides_grob(panel_params$guides, position = "left", theme = theme),
-           right = ggside_panel_guides_grob(panel_params$guides, position = "right", theme = theme))
+      list(left = panel_guides_grob(panel_params$guides, position = "left", theme = theme, labels = panel_params$draw_labels$left),
+           right = panel_guides_grob(panel_params$guides, position = "right", theme = theme, labels = panel_params$draw_labels$right))
     }
   }
 )
