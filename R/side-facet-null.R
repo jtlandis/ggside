@@ -155,99 +155,16 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
   axis_mat_y_left[left] <- list(zeroGrob())
   axis_mat_y_right[right] <- list(zeroGrob())
 
-  include <- seq_len(ncol)
-  if (!params$ggside$respect_side_labels && all(c("x","y") %in% side_panels_present)) {
-    #only view main panels top and bot
-    shift <- 0L
-    if (y.pos=="right") {
-      shift <- 1L
-    }
-    include <- which((include %% 2) == shift)
-  }
-
-  axis_height_top <- unit(
-    apply(axis_mat_x_top, 1, calc_max_height, value_only = TRUE, include = include),
-    "cm"
-  )
-  axis_height_bottom <- unit(
-    apply(axis_mat_x_bottom, 1, calc_max_height, value_only = TRUE, include = include),
-    "cm"
-  )
-
-  include <- seq_len(nrow)
-  if (!params$ggside$respect_side_labels && all(c("x","y") %in% side_panels_present)) {
-    #only view main panels top and bot
-    shift <- 0L
-    if (x.pos=="bottom") {
-      shift <- 1L
-    }
-    include <- which((include %% 2) == shift)
-  }
-
-  axis_width_left <- unit(
-    apply(axis_mat_y_left, 2, calc_max_width, value_only = TRUE, include = include),
-    "cm"
-  )
-  axis_width_right <- unit(
-    apply(axis_mat_y_right, 2, calc_max_width, value_only = TRUE, include = include),
-    "cm"
-  )
-  panel_table <- weave_tables_row(panel_table, axis_mat_x_top, -1, axis_height_top, "axis-t", 3)
-  panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, axis_height_bottom, "axis-b", 3)
-  panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, axis_width_left, "axis-l", 3)
-  panel_table <- weave_tables_col(panel_table, axis_mat_y_right, 0, axis_width_right, "axis-r", 3)
+  #calculate spacing based on ggside params and layout
+  spacing <- calc_panel_spacing(ggside = params$ggside, layout = layout,
+                                top = axis_mat_x_top, right = axis_mat_y_right,
+                                bot = axis_mat_x_bottom, left = axis_mat_y_left)
+  panel_table <- weave_tables_row(panel_table, axis_mat_x_top, -1, spacing$top, "axis-t", 3)
+  panel_table <- weave_tables_row(panel_table, axis_mat_x_bottom, 0, spacing$bot, "axis-b", 3)
+  panel_table <- weave_tables_col(panel_table, axis_mat_y_left, -1, spacing$left, "axis-l", 3)
+  panel_table <- weave_tables_col(panel_table, axis_mat_y_right, 0, spacing$right, "axis-r", 3)
 
   panel_table
-}
-
-calc_max_height <- function(grobs, value_only = FALSE, include = seq_along(grobs)) {
-  width <- max(unlist(
-    lapply(grobs[include], height_cm)
-  ))
-  if (!value_only)
-    width <- unit(width, "cm")
-  width
-}
-
-calc_max_width <- function(grobs, value_only = FALSE, include = seq_along(grobs)) {
-  width <- max(unlist(
-    lapply(grobs[include], width_cm)
-  ))
-  if (!value_only)
-    width <- unit(width, "cm")
-  width
-}
-
-width_cm <- function (x)
-{
-  if (is.grob(x)) {
-    convertWidth(grobWidth(x), "cm", TRUE)
-  }
-  else if (is.unit(x)) {
-    convertWidth(x, "cm", TRUE)
-  }
-  else if (is.list(x)) {
-    vapply(x, width_cm, numeric(1))
-  }
-  else {
-    cli::cli_abort("Don't know how to get width of {.cls {class(x)}} object")
-  }
-}
-
-height_cm <- function (x)
-{
-  if (is.grob(x)) {
-    convertHeight(grobHeight(x), "cm", TRUE)
-  }
-  else if (is.unit(x)) {
-    convertHeight(x, "cm", TRUE)
-  }
-  else if (is.list(x)) {
-    vapply(x, height_cm, numeric(1))
-  }
-  else {
-    cli::cli_abort("Don't know how to get height of {.cls {class(x)}} object")
-  }
 }
 
 sideFacetNull_map_data <- function (data, layout, params) {

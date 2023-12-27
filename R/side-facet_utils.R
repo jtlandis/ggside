@@ -223,3 +223,51 @@ map_panel_type <- function(panel_params, panel_types) {
   mapply(function(x, y) {x$ggside_panel_type <- y; x}, x = panel_params, y = panel_types, SIMPLIFY = F)
 }
 
+calc_panel_spacing <- function(ggside, layout, top, right, bot, left) {
+  respect <- ggside$respect_side_labels
+  y.pos <- ggside$y.pos
+  x.pos <- ggside$x.pos
+  xside <- "x" %in% layout$PANEL_TYPE
+  yside <- "y" %in% layout$PANEL_TYPE
+  n_row <- max(layout$ROW)
+
+  top_height <- vapply(top, height_cm, numeric(1))
+  right_width <- vapply(right, width_cm, numeric(1))
+  bot_height <- vapply(bot, height_cm, numeric(1))
+  left_width <- vapply(left, width_cm, numeric(1))
+
+  xside_panels <- layout$panel_pos[layout$PANEL_TYPE=="x"]
+  yside_panels <- layout$panel_pos[layout$PANEL_TYPE=="y"]
+
+  if (respect=="default" && xside && yside) {
+    #heights
+    if (y.pos=="left")
+      left_width[xside_panels] <- 0
+    else
+      right_width[xside_panels] <- 0
+
+    #widths
+    if (x.pos=="top")
+      top_height[yside_panels] <- 0
+    else
+      bot_height[yside_panels] <- 0
+  } else {
+
+    if (respect %in% c("x", "none") && yside) {
+      bot_height[yside_panels] <- top_height[yside_panels] <- 0
+    }
+    if (respect %in% c("y", "none") && xside) {
+      left_width[xside_panels] <- right_width[xside_panels] <- 0
+    }
+
+  }
+
+  list(
+    top = unit(apply(matrix(top_height, nrow = n_row), 1, max), "cm"),
+    right = unit(apply(matrix(right_width, nrow = n_row), 2, max), "cm"),
+    bot = unit(apply(matrix(bot_height, nrow = n_row), 1, max), "cm"),
+    left = unit(apply(matrix(left_width, nrow = n_row), 2, max), "cm")
+  )
+
+}
+
