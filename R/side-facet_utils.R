@@ -48,7 +48,6 @@ check_scales_collapse <- function(data, params) {
 #' @export
 sidePanelLayout <- function(layout,
                             ggside){
-
   ggside$collapse <- check_collapse(ggside$collapse, ggside$sides_used)
   facet_vars <- setdiff(colnames(layout), c("PANEL","ROW","COL","SCALE_X","SCALE_Y","PANEL_GROUP","PANEL_TYPE"))
   x.pos = ggside$x.pos
@@ -150,9 +149,9 @@ sidePanelLayout <- function(layout,
 
   }
   .pty <- layout[["PANEL_TYPE"]]=="y"
-  layout[["SCALE_X"]][.pty] <-  x_scale_fun(layout[["SCALE_X"]],.pty)
+  layout[["SCALE_X"]][.pty] <-  x_scale_fun(layout[["SCALE_X"]], .pty, interaction(layout[["ROW"]], layout[["COL"]], lex.order = TRUE))
   .ptx <- layout[["PANEL_TYPE"]]=="x"
-  layout[["SCALE_Y"]][.ptx] <-  y_scale_fun(layout[["SCALE_Y"]], .ptx)
+  layout[["SCALE_Y"]][.ptx] <-  y_scale_fun(layout[["SCALE_Y"]], .ptx, interaction(layout[["ROW"]], layout[["COL"]], lex.order = TRUE))
   layout <- layout[,setdiff(colnames(layout), c("ROW_trans","COL_trans","PANEL"))]
   layout <- unique(layout)
   layout <- layout[order(layout$ROW, layout$COL),]
@@ -163,12 +162,15 @@ sidePanelLayout <- function(layout,
 
 
 
-fixed_fun <- function(x, lgl){
+fixed_fun <- function(x, lgl, indx){
   rep(max(x)+1L,sum(lgl))
 }
 
-free_fun <- function(x, lgl){
-  max(x)+(seq_len(sum(lgl)))
+free_fun <- function(x, lgl, indx){
+  ind <- indx[lgl]
+  uindx <- unique(ind)
+  scale <- seq_along(uindx)
+  max(x) + scale[match(ind, uindx)]
 }
 
 max_factor <- function(x){
@@ -224,42 +226,79 @@ map_panel_type <- function(panel_params, panel_types) {
 }
 
 calc_panel_spacing <- function(ggside, layout, top, right, bot, left) {
+
   respect <- ggside$respect_side_labels
   y.pos <- ggside$y.pos
   x.pos <- ggside$x.pos
   xside <- "x" %in% layout$PANEL_TYPE
   yside <- "y" %in% layout$PANEL_TYPE
   n_row <- max(layout$ROW)
+  collapse <- ggside$collapse
+  collapsed <- !is.null(collapse)
 
   top_height <- vapply(top, height_cm, numeric(1))
   right_width <- vapply(right, width_cm, numeric(1))
   bot_height <- vapply(bot, height_cm, numeric(1))
   left_width <- vapply(left, width_cm, numeric(1))
 
-  xside_panels <- layout$panel_pos[layout$PANEL_TYPE=="x"]
-  yside_panels <- layout$panel_pos[layout$PANEL_TYPE=="y"]
+  xsub <- layout[layout$PANEL_TYPE=="x",]
+  ysub <- layout[layout$PANEL_TYPE=="y",]
+  xside_panels <- xsub$panel_pos
+  yside_panels <- ysub$panel_pos
 
   if (respect=="default" && xside && yside) {
     #heights
-    if (y.pos=="left")
+    if (y.pos=="left") {
       left_width[xside_panels] <- 0
-    else
+    } else {
       right_width[xside_panels] <- 0
+    }
 
     #widths
-    if (x.pos=="top")
+    if (x.pos=="top") {
       top_height[yside_panels] <- 0
-    else
+    } else {
       bot_height[yside_panels] <- 0
-  } else {
+    }
+  } else if (respect == "independent" && xside && yside) {
+    #heights
+    if (y.pos=="left") {
+      if (collapsed && collapse %in% c("y", "all")) {
+        left_width[tapply(xsub$panel_pos, xsub$ROW, min)] <- 0
+      } else {
+        left_width[xside_panels] <- 0
+      }
+    } else {
+      if (collapsed && collapse %in% c("y", "all")) {
+        left_width[tapply(xsub$panel_pos, xsub$ROW, max)] <- 0
+      } else {
+        right_width[xside_panels] <- 0
+      }
+    }
 
+    #widths
+    if (x.pos=="top") {
+      if (collapsed && collapse %in% c("x", "all")) {
+        top_height[tapply(ysub$panel_pos, ysub$COL, min)]
+      } else {
+        top_height[yside_panels] <- 0
+      }
+    } else {
+      if (collapsed && collapse %in% c("x", "all")) {
+        #only set bottom y panel to 0
+        bot_height[tapply(ysub$panel_pos, ysub$COL, max)] <- 0
+      } else {
+        bot_height[yside_panels] <- 0
+      }
+    }
+
+  } else {
     if (respect %in% c("x", "none") && yside) {
       bot_height[yside_panels] <- top_height[yside_panels] <- 0
     }
     if (respect %in% c("y", "none") && xside) {
       left_width[xside_panels] <- right_width[xside_panels] <- 0
     }
-
   }
 
   list(

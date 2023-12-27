@@ -333,6 +333,7 @@ sideFacetGrid_map_data <- function (data, layout, params) {
   if (empty(data)) {
     return(cbind(data, PANEL = integer(0)))
   }
+
   rows <- params$rows
   cols <- params$cols
   vars <- c(names(rows), names(cols), "PANEL_TYPE")

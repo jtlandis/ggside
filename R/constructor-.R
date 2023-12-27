@@ -92,22 +92,16 @@ ggside_scales <- function(scales, ggside) {
       # browser()
       parent <- ggproto_parent(scales, self)
       parent$add(scale)
-      if (!is.null(scale)) {
-        if (any(pos <- c("x","y") %in% scale$aesthetics)) {
-          side <- switch(c("x","y")[pos], x = "yside", y = "xside")
-          s <- new_pos_scale(self$scales[[self$n()]])
-          self$scales[[self$n()]] <- s
-        } else if (any(pos <- c("ysidex", "xsidey") %in% scale$aesthetics)) {
-          side <- c("ysidex", "xsidey")[pos]
-          main_scale <- self$find(switch(side, ysidex = "x", xsidey = "y"))
-          # if main scale is already specified
-          # then assume its position.
-          if (any(main_scale)) {
-            main_scale <- self$scales[main_scale]
-            scale$position <- main_scale[[1]]$position
-          }
-          self$ggside[[side]] <- scale
+      if (!is.null(scale) && any(pos <- c("ysidex", "xsidey") %in% scale$aesthetics)) {
+        side <- c("ysidex", "xsidey")[pos]
+        main_scale <- self$find(switch(side, ysidex = "x", xsidey = "y"))
+        # if main scale is already specified
+        # then assume its position.
+        if (any(main_scale)) {
+          main_scale <- self$scales[main_scale]
+          scale$position <- main_scale[[1]]$position
         }
+        self$ggside[[side]] <- scale
       }
     },
     input = function(self) {
@@ -132,9 +126,9 @@ ggside_scales <- function(scales, ggside) {
              }, logical(1))
     })
 
-  lgl <- new_scales$find(c("x","y"))
-  if (any(lgl))
-    new_scales$scales[lgl] <- lapply(new_scales$scales[lgl], new_pos_scale)
+  # lgl <- new_scales$find(c("x","y"))
+  # if (any(lgl))
+  #   new_scales$scales[lgl] <- lapply(new_scales$scales[lgl], new_pos_scale)
 
   new_scales
 
@@ -155,11 +149,12 @@ new_pos_scale <- function(scale) {
     #   # local_vanilla_scale_aes(self)
     #   ggproto_parent(scale, self)$transform_df(df)
     # },
-    map = function(self, x, limits = self$get_limits()) {
-      if (length(x)==0) return(x)
-      parent <- ggproto_parent(scale, self)
-      parent$map(x, limits)
-    })
+    # map = function(self, x, limits = self$get_limits()) {
+    #   if (length(x)==0) return(x)
+    #   parent <- ggproto_parent(scale, self)
+    #   parent$map(x, limits)
+    # }
+    )
 }
 
 

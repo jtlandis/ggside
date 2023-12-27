@@ -45,7 +45,7 @@ ggside <- function(x.pos = NULL, y.pos = NULL, scales = NULL, collapse = NULL,
   draw_y_on <- resolve_arg(draw_y_on, c("default","main","side"))
   strip <- resolve_arg(strip, c("default", "main"))
   collapse <- resolve_arg(collapse, c("all", "x", "y"))
-  respect_side_labels <- resolve_arg(respect_side_labels, c("default","x","y", "all", "none"))
+  respect_side_labels <- resolve_arg(respect_side_labels, c("default","x","y", "all", "none", "independent"))
 
 
   ggproto(
