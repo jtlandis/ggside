@@ -78,18 +78,17 @@ ggside_geom <- function(class_name = NULL,
 
 # Creates new ScaleList
 # Modifies the `$add` method such that
-# when a positional scale is added it is
-# recast with `new_pos_scale`
+# when a ggside scale is added, it caches in ggside
+# object as well
 ggside_scales <- function(scales, ggside) {
-  new_scales <- ggproto(
+  ggproto(
     NULL,
     scales,
     ggside = ggside,
-    non_position_scales = function(self) {
-      ggproto(NULL, self, scales = self$scales[!self$find(c("x","y", "ysidex", "xsidey"))])
-    },
+    # non_position_scales = function(self) {
+    #   ggproto(NULL, self, scales = self$scales[!self$find(c("x","y", "ysidex", "xsidey"))])
+    # },
     add = function(self, scale) {
-      # browser()
       parent <- ggproto_parent(scales, self)
       parent$add(scale)
       if (!is.null(scale) && any(pos <- c("ysidex", "xsidey") %in% scale$aesthetics)) {
@@ -103,59 +102,12 @@ ggside_scales <- function(scales, ggside) {
         }
         self$ggside[[side]] <- scale
       }
-    },
-    input = function(self) {
-      out <- lapply(self$scales, `[[`, "aesthetics")
-      x_scales <- self$find("x")
-      if (any(x_scales))
-        out[x_scales] <- lapply(out[x_scales], function(x) x[!grepl("yside", x)])
-      y_scales <- self$find("y")
-      if (any(y_scales))
-        out[y_scales] <- lapply(out[y_scales], function(x) x[!grepl("xside", x)])
-      unlist(out)
-    },
-    find = function(self, aesthetic) {
-      vapply(self$scales,
-             function(x) {
-               aes <- x$aesthetics
-               if(any(pos <- c("x","y") %in% aes)) {
-                 side <- switch(c("x","y")[pos], x = "yside", y = "xside")
-                 aes <- aes[!grepl(side, aes)]
-               }
-               any(aesthetic %in% aes)
-             }, logical(1))
-    })
-
-  # lgl <- new_scales$find(c("x","y"))
-  # if (any(lgl))
-  #   new_scales$scales[lgl] <- lapply(new_scales$scales[lgl], new_pos_scale)
-
-  new_scales
-
-}
-
-# positional scales in `ggside` will contain
-# the `xsidey` and `ysidex` in their aesthetics
-# to ensure all data are trained properly.
-# To ensure each scale retains its own transform,
-# these scales will ignore `xsidey` and `ysidex`
-# aesthetics when `$transform_df` is called.
-new_pos_scale <- function(scale) {
-  ggproto(
-    NULL,
-    scale,
-    # transform_df = function(self, df) {
-    #   browser()
-    #   # local_vanilla_scale_aes(self)
-    #   ggproto_parent(scale, self)$transform_df(df)
-    # },
-    # map = function(self, x, limits = self$get_limits()) {
-    #   if (length(x)==0) return(x)
-    #   parent <- ggproto_parent(scale, self)
-    #   parent$map(x, limits)
-    # }
+    }
     )
+
 }
+
+
 
 
 
