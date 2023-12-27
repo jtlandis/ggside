@@ -30,11 +30,12 @@ NULL
 #' @rdname scale_xcolour
 #' @usage NULL
 #' @export
-scale_xcolour_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
+scale_xcolour_hue <- function(name = waiver(), ..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
                             direction = 1, na.value = "grey50", aesthetics = "xcolour")
 {
-  ggplot2::discrete_scale(aesthetics, "hue",
-                          scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+  ggplot2::discrete_scale(aesthetics = aesthetics, name = name,
+                          palette = scales::hue_pal(h, c, l, h.start, direction),
+                          na.value = na.value, ...)
 }
 
 #' scale_xcolour_manual
@@ -56,43 +57,43 @@ scale_xcolor_manual <- function(..., values, aesthetics = "xcolour", breaks = wa
 #' @rdname scale_xcolour
 #' @usage NULL
 #' @export
-scale_xcolour_gradient <- function (..., low = "#132B43", high = "#56B1F7",
+scale_xcolour_gradient <- function(name = waiver(), ..., low = "#132B43", high = "#56B1F7",
                                   space = "Lab",na.value = "grey50",
                                   guide = guide_colorbar(available_aes = "xcolour"), aesthetics = "xcolour")
 {
-  continuous_scale(aesthetics,
-                   "gradient",
-                   scales::seq_gradient_pal(low, high, space),
+  continuous_scale(aesthetics = aesthetics,
+                   name = name,
+                   palette = scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_xcolour
 #' @usage NULL
 #' @export
-scale_xcolor_gradientn <- function (..., colours, values = NULL,
+scale_xcolor_gradientn <- function(name = waiver(), ..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "xcolour"), aesthetics = "xcolour", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, name = name,
+                   palette = scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_xcolour
 #' @usage NULL
 #' @export
-scale_xcolour_gradientn <- function (..., colours, values = NULL,
+scale_xcolour_gradientn <- function(name = waiver(), ..., colours, values = NULL,
                                      space = "Lab", na.value = "grey50",
                                      guide = guide_colorbar(available_aes = "xcolour"), aesthetics = "xcolour", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, name = name,
+                   palette = scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
@@ -125,11 +126,12 @@ scale_xcolor_continuous <- scale_xcolour_gradient
 #' @rdname scale_ycolour
 #' @usage NULL
 #' @export
-scale_ycolour_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
+scale_ycolour_hue <- function(name = waiver(), ..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
                             direction = 1, na.value = "grey50", aesthetics = "ycolour")
 {
-  ggplot2::discrete_scale(aesthetics, "hue",
-                          scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+  ggplot2::discrete_scale(aesthetics = aesthetics, name = name,
+                          palette = scales::hue_pal(h, c, l, h.start, direction),
+                          na.value = na.value, ...)
 }
 
 #' scale_ycolour_manual
@@ -151,43 +153,43 @@ scale_ycolor_manual <- function(..., values, aesthetics = "ycolour", breaks = wa
 #' @rdname scale_ycolour
 #' @usage NULL
 #' @export
-scale_ycolour_gradient <- function (..., low = "#132B43", high = "#56B1F7",
+scale_ycolour_gradient <- function(name = waiver(), ..., low = "#132B43", high = "#56B1F7",
                                   space = "Lab",na.value = "grey50",
                                   guide = guide_colorbar(available_aes = "ycolour"), aesthetics = "ycolour")
 {
-  continuous_scale(aesthetics,
-                   "gradient",
-                   scales::seq_gradient_pal(low, high, space),
+  continuous_scale(aesthetics = aesthetics,
+                   name = name,
+                   palette = scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_ycolour
 #' @usage NULL
 #' @export
-scale_ycolour_gradientn <- function (..., colours, values = NULL,
+scale_ycolour_gradientn <- function(name = waiver(), ..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "ycolour"), aesthetics = "ycolour", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, name = name,
+                   palette = scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_ycolour
 #' @usage NULL
 #' @export
-scale_ycolor_gradientn <- function (..., colours, values = NULL,
+scale_ycolor_gradientn <- function(name = waiver(), ..., colours, values = NULL,
                                      space = "Lab", na.value = "grey50",
                                      guide = guide_colorbar(available_aes = "ycolour"), aesthetics = "ycolour", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, name = name,
+                   palette = scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
