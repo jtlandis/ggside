@@ -303,10 +303,10 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     inside_x <- (theme$strip.placement.x %||% theme$strip.placement %||% "inside") == "inside"
     if (params$strip.position == "top") {
       placement <- if (inside_x) -1 else -2
-      strip_pad <- axis_height_top
+      strip_pad <- spacing$top
     } else {
       placement <- if (inside_x) 0 else 1
-      strip_pad <- axis_height_bottom
+      strip_pad <- spacing$bot
     }
     strip_height <- unit(apply(strip_mat, 1, max_height, value_only = TRUE), "cm")
     panel_table <- weave_tables_row(panel_table, strip_mat, placement, strip_height, strip_name, 2, coord$clip)
@@ -318,10 +318,10 @@ sideFacetWrap_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
     inside_y <- (theme$strip.placement.y %||% theme$strip.placement %||% "inside") == "inside"
     if (params$strip.position == "left") {
       placement <- if (inside_y) -1 else -2
-      strip_pad <- axis_width_left
+      strip_pad <- spacing$left
     } else {
       placement <- if (inside_y) 0 else 1
-      strip_pad <- axis_width_right
+      strip_pad <- spacing$right
     }
     strip_pad[as.numeric(strip_pad) != 0] <- strip_padding
     strip_width <- unit(apply(strip_mat, 2, max_width, value_only = TRUE), "cm")

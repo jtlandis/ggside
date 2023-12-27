@@ -43,11 +43,12 @@ to all axis positions.}
 \item{strip}{Determines if the strip should be rendered on the main plot or
 on their default locations. Only has an effect on \code{facet_grid}.}
 
-\item{respect_side_labels}{logical. indicates if panel spacing should respect
-the axis labels. Generally only applicable when both x and y side layers are
-used and axis labels are plotted in non default locations. The default (FALSE)
-will not provide spacing between the main panel a side panel to accommodate the
-labels of the complementary side panel.}
+\item{respect_side_labels}{Valid arguments are "default", "x", "y",
+"all", and "none" Indicates if panel spacing should respect the axis
+labels. The default is to respect side panel labels except when xside
+labels are on the same side as the yside panel. Note: setting this
+parameter to "x" is to say yside labels, if present, are not respected
+and vise versa for "y" and xside labels.}
 }
 \value{
 a object of class 'ggside_options' or to be added to a ggplot
