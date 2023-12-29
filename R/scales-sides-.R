@@ -1,16 +1,95 @@
 
+# is_active <- function(f) {
+#   class(f) <- "is_active"
+#   f
+# }
+#
+# extract_active <- function(x, name) {
+#   res <- fetch_ggproto(x, name)
+#   if (!is.function(res)) {
+#     return(res)
+#   }
+#   method <- make_proto_method(x, res, name)
+#   if (inherits(res, "is_active")) {
+#     return(method())
+#   }
+#   method
+# }
+#
+# replace_active <- function(x, name, value) {
+#   res <- fetch_ggproto(x, name)
+#   if (inherits(res, "is_active")) {
+#     make_proto_method(x, res, name)(value)
+#   } else {
+#     NextMethod()
+#   }
+# }
+
+# # #' @export
+# #`$.ggside_scale` <- extract_active
+#
+# #' @export
+# `[[.ggside_scale` <- extract_active
+#
+# #' @export
+# `$<-.ggside_scale` <- replace_active
+#
+# #' @export
+# `[[<-.ggside_scale` <- replace_active
+
+
+# fetch_ggproto <- function (x, name) {
+#   res <- NULL
+#   val <- .subset2(x, name)
+#   if (!is.null(val) || exists(name, envir = x, inherits = FALSE)) {
+#     res <- val
+#   }
+#   else {
+#     super <- .subset2(x, "super")
+#     if (is.null(super)) {
+#     }
+#     else if (is.function(super)) {
+#       res <- fetch_ggproto(super(), name)
+#     }
+#     else {
+#       cli::cli_abort(c("{class(x)[[1]]} was built with an incompatible version of ggproto.",
+#                        i = "Please reinstall the package that provides this extension."))
+#     }
+#   }
+#   res
+# }
+#
+# make_proto_method <- function (self, f, name) {
+#   args <- formals(f)
+#   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
+#   assign(name, f, envir = environment())
+#   args <- list(quote(...))
+#   if (has_self) {
+#     args$self <- quote(self)
+#   }
+#   fun <- inject(function(...) !!call2(name, !!!args))
+#   class(fun) <- "ggproto_method"
+#   fun
+# }
+
 new_side_pos_scale <- function(scale, side) {
   side <- match.arg(side, choices = c("x","y"))
+  # other <- switch(side, x = "y", y =)
   ggproto(
     "ggside_scale",
     scale,
     aesthetics = sprintf("%sside%s", side, scale$aesthetics),
-    map = function(self, x, limits = self$get_limits()) {
-      if (length(x)==0) return(x)
-      parent <- ggproto_parent(scale, self)
-      parent$map(x, limits)
-    }
+    map = mod_ggproto_fun(scale$map) |> mod_fun_at(quote(if (length(x)==0) return(x)), 1)
   )
+}
+
+report_positional_context <- function() {
+  calls <- sys.calls()
+  #return TRUE only when
+  # in non_positional_scales context
+  in_context <- vapply(calls, is_call, logical(1),
+                       name = "non_positional_scales")
+  any(in_context)
 }
 
 

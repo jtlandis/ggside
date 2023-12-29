@@ -63,6 +63,14 @@ new_ggside_layer <- function(layer, side) {
 
   other <- switch(side, x = "y", y = "x")
   `_class` <- switch(side, x = "XLayer", y = "YLayer")
+
+  ggside_pos <- function(position) {
+    ggproto(
+      NULL,
+      position,
+      compute_panel = mod_ggproto_fun(position$compute_panel)
+    )
+  }
   parent_layer <- ggproto(
     `_class`,
     layer,
@@ -72,6 +80,7 @@ new_ggside_layer <- function(layer, side) {
   ggproto(
     "ggside_layer",
     parent_layer,
+    position = ggside_pos(parent_layer$position),
     setup_layer = function(self, data, plot) {
       names(plot$mapping) <- rename_side(names(plot$mapping), self$.side)
       plot$mapping <- drop_plot_aes(plot$mapping, self$mapping, self$.side)

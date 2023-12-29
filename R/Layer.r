@@ -7,6 +7,10 @@ find_global <- function (name, env, mode = "any") {
   if (exists(name, envir = nsenv, mode = mode)) {
     return(get(name, envir = nsenv, mode = mode))
   }
+  nsenv <- asNamespace("ggside")
+  if (exists(name, envir = nsenv, mode = mode)) {
+    return(get(name, envir = nsenv, mode = mode))
+  }
   NULL
 }
 

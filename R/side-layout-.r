@@ -62,6 +62,38 @@ browse_fun <- function(fun, at = 1) {
   fun
 }
 
+find_positional_side_scale <- function (aes, x, env = parent.frame())
+{
+  if (!aes %in% c("xsidey","ysidex") || is.null(x) || (is_atomic(x) && all(is.infinite(x)))) {
+    return(NULL)
+  }
+  type <- scale_type(x)
+  candidates <- paste("scale", aes, type, sep = "_")
+  for (scale in candidates) {
+    scale_f <- find_global(scale, env, mode = "function")
+    if (!is.null(scale_f)) {
+      sc <- scale_f()
+      sc$call <- parse_expr(paste0(scale, "()"))
+      return(sc)
+    }
+  }
+  return(NULL)
+}
+
+find_side_scale <- function(side, data) {
+  lapply(data, function(layer_data, side) {
+    aesthetics <- names(layer_data)
+    aesthetics <- aesthetics[grep(side, aesthetics)]
+    if (length(aesthetics)==0) return(NULL)
+    sc <- NULL
+    for (aes in aesthetics) {
+      sc <- find_positional_side_scale(side, layer_data[[aes]])
+      if (!is.null(sc)) return(sc)
+    }
+    sc
+  }, side = side)
+}
+
 new_side_layout <- function(layout) {
   parent_layout <- layout
 
@@ -69,11 +101,33 @@ new_side_layout <- function(layout) {
     NULL,
     parent_layout,
     train_position = mod_ggproto_fun(parent_layout$train_position) |>
-      mod_fun_at(quote(self$find_ggside_scales()), at = -1),
-    find_ggside_scales = function(self) {
+      mod_fun_at(quote(self$find_ggside_scales(data)), at = -1),
+    find_ggside_scales = function(self, data) {
       params <- self$facet_params
       layout <- self$layout
       x_scale <- self$panel_scales_x
+      y_scale <- self$panel_scales_y
+
+      if ("y" %in% params$ggside$sides_used &&
+          is.null(params$ggside$ysidex)) {
+        ysidex <- find_side_scale("ysidex", data)
+        ysidex <- unlist(ysidex)[[1]]
+        #assume that if it being added this way
+        # we follow the x_scale's position
+        if (!is.null(ysidex) && !is.null(x_scale) )
+          ysidex$position <- x_scale[[1]]$position
+        params$ggside$ysidex <- ysidex
+      }
+
+      if ("x" %in% params$ggside$sides_used &&
+          is.null(params$ggside$xsidey)) {
+        xsidey <- find_side_scale("xsidey", data)
+        xsidey <- unlist(xsidey)[[1]]
+        if (!is.null(xsidey) && !is.null(y_scale))
+          xsidey$position <- y_scale[[1]]$position
+        params$ggside$xsidey <- xsidey
+      }
+
       if (!is.null(x_scale) && !is.null(params$ggside$ysidex) &&
           !any(vapply(x_scale, function(scale) "ysidex" %in% scale$aesthetics, logical(1)))){
         side_indx <-  layout[layout$PANEL_TYPE=="y",]$SCALE_X
