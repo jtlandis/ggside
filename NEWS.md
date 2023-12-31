@@ -1,5 +1,5 @@
 
-# ggside 0.3.0
+# ggside 0.2.3.9999
 
 ### Breaking Changes
 
@@ -12,7 +12,8 @@
 
 * The `ggside_options` object now inherits from `ggproto` instead of a list.
 * The `ggside_options` defaults arguments are now `NULL`. This will help update the object appropriately without overriding previous options specified through `ggside()`.
-* `ggside_options` object now has a new argument `respect_side_labels` which if set to `TRUE` will cause spacing between side panels to be set to the minimum across all labels, not just the main panel. Note, if theme option `ggside.panel.spacing` is smaller than space required for labels, then priority is given to the `respect_side_labels` option until `ggside.panel.spacing` is greater.
+* `ggside` now subclasses `Layout` allowing for better control of how side scales are trained. This feature may be relatively unstable depending on the version of `ggplot2` installed. 
+* `ggside_options` object now has a new argument `respect_side_labels` which will control spacing given between panels for their axes text labels. See `?ggside` for argument options. Note, if theme option `ggside.panel.spacing` is smaller than space required for labels, then priority is given to the `respect_side_labels` option until `ggside.panel.spacing` is greater.
 * `ggside` now allows for the `trans` argument of the `scale_(x|y)side(y|x)_continuous(...)` functions to be used. Addresses issue #40. This feature is experimental and may be removed depending on how `ggplot2` develops in the future. Additional helper functions have been added:
   * `scale_xsidey_log10()`, `scale_ysidex_log10()`
   * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`
