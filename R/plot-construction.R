@@ -35,54 +35,16 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   }
   object$ggside$sides_used <- get_sides(object[["layers"]])
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
-  fp <- object[['facet']]$params
-  col <- object$ggside$collapse
-  if (!is.null(fp$free) &&
-      !is.null(col) &&
-      inherits(object[['facet']], "FacetWrap") &&
-      any(.lgl <- vapply(fp$free, identity, logical(1)))) {
-    # if ggside collapse all - but scales is free - prioritize the scale and dont
-    # collapse
-    # i.e. facet_wrap(..., scales='free_y') + ggside(collapse="y") --> warning
-    # main plots may have different y scales and thus we cannot collapse y.
-    s <- sum(c(1,2)*.lgl)
-    new_col <- switch(
-      s,
-      free_x = {
-        .f <- "free_x"
-        switch(col,
-               all = "y",
-               x = NULL,
-               col)
-      },
-      free_y = {
-        .f <- "free_y"
-        switch(col,
-               all = "x",
-               y = NULL,
-               col)
-      },
-      free = {
-        .f <- "free"
-        NULL
-      }
-    )
-
-    warning(glue("Plot's Facet parameter `scales = \"{.f}\"` is ",
-                 "incompatible with `ggside(..., collapse = \"{col}\")`.",
-                 " Setting collapse to ",
-                 if(is.null(new_col)) 'NULL' else glue('"{new_col}"')),
-            call. = F)
-    object$ggside$collapse <- new_col
-
-
-  }
   object$ggside$xsidey <- ggside$xsidey %||% object$ggside$xsidey %||% NULL
   object$ggside$ysidex <- ggside$ysidex %||% object$ggside$ysidex %||% NULL
   object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
   object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object$ggside$strip <- ggside$strip %||% object$ggside$strip %||% "default"
   object$ggside$respect_side_labels <- ggside$respect_side_labels %||% object$ggside$respect_side_labels %||% "default"
+
+  object$facet <- ggside_facet(object$facet, object$ggside)
+  object$coordinates <- ggside_coord(object$coordinates)
+  object$layout <- ggside_layout(object$layout)
   return(object)
 }
 

@@ -94,11 +94,18 @@ find_side_scale <- function(side, data) {
   }, side = side)
 }
 
-new_side_layout <- function(layout) {
+ggside_layout <- function(layout) UseMethod("ggside_layout")
+ggside_layout.Layout <- function(layout) {
+  new_ggside_layout(layout = layout)
+}
+ggside_layout.ggsideLayout <- function(layout) layout
+ggside_layout.default <- function(layout) cli::cli_abort("cannot create ggside layout from {.cls {class(layout)}}")
+
+new_ggside_layout <- function(layout) {
   parent_layout <- layout
 
   ggproto(
-    NULL,
+    "ggsideLayout",
     parent_layout,
     train_position = mod_ggproto_fun(parent_layout$train_position) |>
       mod_fun_at(quote(self$find_ggside_scales(data)), at = -1),

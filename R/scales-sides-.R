@@ -83,14 +83,7 @@ new_side_pos_scale <- function(scale, side) {
   )
 }
 
-report_positional_context <- function() {
-  calls <- sys.calls()
-  #return TRUE only when
-  # in non_positional_scales context
-  in_context <- vapply(calls, is_call, logical(1),
-                       name = "non_positional_scales")
-  any(in_context)
-}
+
 
 
 #' @title Position scales for continuous data ggside scales

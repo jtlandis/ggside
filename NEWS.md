@@ -5,8 +5,8 @@
 
 * The following classes are no longer exported.
  * `FacetSideNull`, `FacetSideGrid`, `FacetSideWrap`
-* `ggside` now exports its own method for `ggplot_build`. This may affect how `ggside` works with other packages that also have `ggplot_build` method (`gganimate`). `ggplot_build.ggside` makes a call to `NextMethod` so `ggside` layers should be added last. 
 * `ggplot2`'s GeomCol and GeomBar now compute resolution based on panels, and not the entire data as a whole. This may affect `ggside` plots that use these variant geometries. Set the `width` parameter manually to retain old figures. 
+* `ggside` now depends on `ggplot2 (>3.5.0)` as to make side positional scales work reliably, the `layer` slot of the `ggplot` object needs to be extended and modified. This slot is only available in the latest version of `ggplot2`. Attempting to render a `ggside` object whose Layout has not been subclassed by `ggside` may lead to unexpected results.
 
 ### Updates
 

@@ -1,5 +1,49 @@
 library(vdiffr)
 
+ggproto_members <- function(proto) {
+  members <- ls(envir = proto)
+  super <- proto$super
+  while(!is.null(super)) {
+    members <- union(members, ls(envir = super()))
+    super <- super()$super
+  }
+  setdiff(members, "super")
+}
+
+extract_ggproto_members <- function(proto, members) {
+  objs <- lapply(members, function(mem, x) x[[mem]], x = proto)
+  for (i in seq_along(objs)) {
+    obj <- objs[[i]]
+    if (is.ggproto(obj))
+      objs[[i]] <- extract_ggproto_members(obj, ggproto_members(obj))
+    if (is.function(obj))
+      objs[[i]] <- environment(obj)$f
+  }
+  objs
+}
+
+expect_ggproto_id <- function(object, expected) {
+  act <- quasi_label(enquo(object), arg = "object")
+  exp <- quasi_label(enquo(expected), arg = "expected")
+
+  members_act <- ggproto_members(act$val)
+  members_exp <- ggproto_members(exp$val)
+  identical_members <- all(members_exp %in% members_act) &&
+    all(members_act %in% members_exp)
+
+  vals_act <- extract_ggproto_members(act$val, members_exp)
+  vals_exp <- extract_ggproto_members(exp$val, members_exp)
+
+  comp <- waldo::compare(x = vals_act, y = vals_exp,
+                         x_arg = "object", y_arg = "expected")
+  expect(length(comp) == 0,
+         sprintf("%s (%s) not %s to %s (%s).\n\n%s",
+                 act$lab, "`actual`", "identical", exp$lab, "`expected`",
+                 paste0(comp,collapse = "\n\n")),
+         info = NULL, trace_env = parent.frame())
+
+}
+
 test_that("xsidey and ysidex appear",{
   p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
     geom_point(size = 2) +
@@ -13,12 +57,12 @@ test_that("xsidey and ysidex appear",{
   xsidey_scale <- scale_xsidey_continuous(breaks = c(0,1,2))
   p <- p + xsidey_scale
 
-  expect_identical(p$ggside$xsidey, xsidey_scale)
+  expect_ggproto_id(p$ggside$xsidey, xsidey_scale)
 
   ysidex_scale <- scale_ysidex_continuous(breaks = NULL, labels = NULL)
   p <- p + ysidex_scale
 
-  expect_identical(p$ggside$ysidex, ysidex_scale)
+  expect_ggproto_id(p$ggside$ysidex, ysidex_scale)
 
   expect_doppelganger("xsidey-ysidex-FacetNull", p)
 
