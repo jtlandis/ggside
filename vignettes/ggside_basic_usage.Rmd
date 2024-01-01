@@ -202,8 +202,8 @@ p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
 ```
 
 ```{r base_example_custom2}
-p + geom_xsidedensity(aes(y=after_after_stat(density)))+
-  geom_ysidedensity(aes(x=after_after_stat(density), ycolor = Species2)) +
+p + geom_xsidedensity(aes(y=after_stat(density)))+
+  geom_ysidedensity(aes(x=after_stat(density), ycolor = Species2)) +
   theme_bw() + 
   facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
@@ -237,7 +237,8 @@ You may also change the size of the side panels with the theme elements `ggside.
 ```{r base_example_theme}
 p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing X Side Panels and \nAdjusted Side Panel Relative Size") +
-  ggside(collapse = "all", x.pos = "bottom", scales = "free_x") +
+  ggside(collapse = "all", x.pos = "bottom", scales = "free_x",
+         respect_side_labels = "y") +
   theme(ggside.panel.scale.x = .4,
         ggside.panel.scale.y = .25)
 ```

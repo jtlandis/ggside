@@ -28,7 +28,9 @@ ggplot_add.ggside_options <- function(object, plot, object_name){
 ggplot_add.ggside_scale <- function(object, plot, object_name){
   plot <- clone_ggside_plot(plot)
   plot$ggside[[intersect(c("xsidey","ysidex"), object$aesthetics)]] <- object #save scale in appropriate place
-  plot$scales$add(object)
+  new_scale <- object$clone()
+  new_scale$guide <- waiver()
+  plot$scales$add(new_scale)
   as_ggside(plot)
 }
 
