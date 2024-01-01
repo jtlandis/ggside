@@ -19,6 +19,9 @@
   * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`
   * `scale_xsidey_sqrt()`, `scale_ysidex_reverse()`
 * all `ggside` Geom ggproto objects have their aesthetics changed. For example, `GeomXsidebar$required_aes` is set to `c("x", "xsidey")` instead of `c("x", "y")`. This is to ensure side panel's respective axis generates its own default scale. With this change, users no longer need to preemptively provide a `scale_(x|y)side(y|x)_*()` function.
+* The following functions have been deprecated
+  * `as_ggsideFacet` -> `ggside_facet`
+  * `as_ggsideCoord` -> `ggside_coord`
 
 # ggside 0.2.3
 

@@ -8,17 +8,17 @@
 #' will inherit from the object being replaced.
 #' @param coord coord ggproto Object to replace
 #' @export
-as_ggsideCoord <- function(coord) UseMethod("as_ggsideCoord")
+ggside_coord <- function(coord) UseMethod("ggside_coord")
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.default <- function(coord){
+ggside_coord.default <- function(coord){
   abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
 }
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.CoordCartesian <- function(coord){
+ggside_coord.CoordCartesian <- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
   if (class(coord)[1L]!="CoordCartesian") abort(glue("No known method to make {class(coord)[1]} ggside friendly"))
@@ -32,7 +32,7 @@ as_ggsideCoord.CoordCartesian <- function(coord){
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.CoordSide <- function(coord) {
+ggside_coord.CoordSide <- function(coord) {
   coord
 }
 
@@ -88,7 +88,7 @@ CoordSideCartesian <- ggplot2::ggproto(
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.CoordTrans <- function(coord) {
+ggside_coord.CoordTrans <- function(coord) {
   ggplot2::ggproto("CoordSide",
                    CoordSideTrans,
                    trans = coord$trans,
@@ -146,7 +146,7 @@ CoordSideTrans <- ggplot2::ggproto(
 
 #' @rdname ggside-ggproto-coord
 #' @export
-as_ggsideCoord.CoordFixed <- function(coord){
+ggside_coord.CoordFixed <- function(coord){
   # insure classes that inherit from CoordCartesian fail
   # if there is no S3 method called.
   ggplot2::ggproto("CoordSide",

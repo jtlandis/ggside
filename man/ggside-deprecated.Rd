@@ -3,9 +3,11 @@
 \name{ggside-deprecated}
 \alias{ggside-deprecated}
 \alias{as_ggsideFacet}
+\alias{as_ggsideCoord}
 \title{Deprecated Functions}
 \description{
 The following functions have been deprecated.
 
 as_ggsideFacet <- \link{ggside_facet}
+as_ggsideCoord <- \link{ggside_coord}
 }
