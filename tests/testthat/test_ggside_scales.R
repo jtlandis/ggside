@@ -101,3 +101,29 @@ test_that("xsidey and ysidex no warning", {
   expect_warning(p, NA)
 
 })
+
+test_that("side scales can use transforms", {
+  df <- data.frame(
+    x = seq(from = 20, to = 60, by = 1),
+    y1 = seq(from = 0.001, to = 1, length.out = 41),
+    y2 = seq(from = 5000, to = 1, length.out = 41)
+  )
+
+  p <- ggplot(data = df) +
+    geom_line(mapping = aes(x = x, y = y1, group = "obs1")) +
+    geom_xsideline(mapping = aes(x = x, y = y2)) +
+    scale_xsidey_log10(expand = c(0, 0))
+
+  expect_doppelganger("transformation works", p)
+})
+
+test_that("side scales can use guide's argument", {
+  p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+    geom_point(size = 2) +
+    geom_xsideboxplot(aes(y =class), orientation = "y") +
+    geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+    theme(ggside.panel.scale = .3) +
+    scale_xsidey_discrete() +
+    scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL)
+  expect_warning(p, NA)
+})
