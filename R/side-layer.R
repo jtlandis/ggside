@@ -152,12 +152,13 @@ new_ggproto_fun <- function(ggproto_method,
   proto_env <- environment(ggproto_method)
   ggproto_parent_method <- proto_env$f
   ggproto_parent_formals <- formals(ggproto_parent_method, proto_env)
-  names <- names(ggproto_parent_formals)
+  names_ <- names(ggproto_parent_formals)
   for (i in seq_along(ggproto_parent_formals)) {
-    ggproto_parent_formals[[i]] <- as.name(names[i])
+    ggproto_parent_formals[[i]] <- as.name(names_[i])
   }
-  if ("..." %in% names)
-    names(ggproto_parent_formals)[names %in% "..."] <- ""
+  if ("..." %in% names_)
+    names(ggproto_parent_formals)[names_ %in% "..."] <- ""
+  rm(names_)
   body <- enquo0(body)
   body <- do.call(expr, list(quo_get_expr(body)))
   fun <- new_function(

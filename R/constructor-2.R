@@ -6,7 +6,7 @@ aes_to_map <- function(ggproto, side) {
   opt_aes <- pull_aes(ggproto$optional_aes)
   non_mis <- pull_aes(ggproto$non_missing_aes)
   def_aes <- names(ggproto$default_aes)
-  all_aes <- c(req_aes, opt_aes, non_mis, def_aes)
+  all_aes <- unique(c(req_aes, opt_aes, non_mis, def_aes))
   all_aes[all_aes %in% .ggside_global[[sprintf("%s_aes", other_side)]]]
 }
 
