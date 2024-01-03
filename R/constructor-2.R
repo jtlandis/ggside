@@ -106,7 +106,7 @@ ggside_geom_draw_panel <- function(geom, side, env = parent.frame()) {
 
 ggside_geom_draw_key <- function(geom, side, env = parent.frame()) {
   ggprotoGeom <- eval(geom, envir = env)
-  args <- ggproto_formals(ggprotoGeom$draw_panel)
+  args <- ggproto_formals(ggprotoGeom$draw_key)
   arg_names <- lapply(names(args), as.name)
   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
   body <- if(has_self) {
