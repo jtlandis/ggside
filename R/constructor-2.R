@@ -144,7 +144,7 @@ ggside_geom <- function(class_name = NULL,
                         env = parent.frame()) {
 
 
-  side <- reslove_arg(side, c("x", "y"), null.ok = FALSE)
+  side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
   geom_name <- enforce_geom(geom)
 
   ggplot2::ggproto(
