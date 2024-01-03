@@ -359,3 +359,30 @@ continuous_range <- function(){
   ggproto(NULL, RangeContinuous)
 }
 
+assert_lgl <- function(arg) {
+  arg_sym <- caller_arg(arg)
+  vctrs::vec_assert(x = arg, ptype = logical(), size = 1L, arg = arg_sym, call = parent.frame())
+  if (is.na(arg))
+    cli::cli_abort("{.arg {arg_sym}} cannot be {.obj_type_friendly {NA}}", call = parent.frame())
+}
+
+resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
+  assert_lgl(several.ok)
+  assert_lgl(null.ok)
+  arg_sym <- caller_arg(arg)
+  if (!is.null(arg)) {
+    arg <- opt[opt %in% arg]
+    len <- length(arg)
+    opt_len <- length(opt)
+    if (len==0)
+      cli::cli_abort("valid {cli::qty(opt_len)} option{?s} for argument {.arg {arg_sym}} {?is/are} {.val {opt}}",
+                     call = parent.frame())
+    if (length(arg)>1 && !several.ok)
+      cli::cli_abort("you specified {length(arg)} value{?s} to argument {.arg {arg_sym}}, but only one of {.or {.val {opt}}} are allowed",
+                     call = parent.frame())
+  } else if (!null.ok) {
+    cli::cli_abort("argument {.arg {arg_sym}} cannot be {.obj_type_friendly {NULL}}", call = parent.frame())
+  }
+  arg
+}
+
