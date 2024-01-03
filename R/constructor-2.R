@@ -146,16 +146,6 @@ ggside_geom <- function(class_name = NULL,
 
   side <- reslove_arg(side, c("x", "y"), null.ok = FALSE)
   geom_name <- enforce_geom(geom)
-  #
-  #
-  #
-  #
-  #
-  #
-  #
-  #
-  #
-
 
   ggplot2::ggproto(
     class_name,
