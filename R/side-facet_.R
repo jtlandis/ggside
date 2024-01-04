@@ -77,7 +77,17 @@ new_ggside_facet <- function(facet, ggside) {
     train_scales = mod_ggproto_fun(
       facet$train_scales,
       x_scales[[1]]$aesthetics ~ unique(unlist(lapply(x_scales, `[[`, "aesthetics"))),
-      y_scales[[1]]$aesthetics ~ unique(unlist(lapply(y_scales, `[[`, "aesthetics")))),
+      y_scales[[1]]$aesthetics ~ unique(unlist(lapply(y_scales, `[[`, "aesthetics")))
+      ),
+    finish_data = new_ggproto_fun(
+      facet$finish_data,
+      {
+        if ("PANEL_TYPE" %in% names(data) &&
+            all(data$PANEL_TYPE != "main")) {
+         data <- use_side_aes(data, unique(data$PANEL_TYPE))
+        }
+        call_parent_method
+      })
   )
 }
 

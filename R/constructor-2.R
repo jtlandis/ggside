@@ -7,7 +7,7 @@ aes_to_map <- function(ggproto, side) {
   non_mis <- pull_aes(ggproto$non_missing_aes)
   def_aes <- names(ggproto$default_aes)
   all_aes <- unique(c(req_aes, opt_aes, non_mis, def_aes))
-  all_aes[all_aes %in% .ggside_global[[sprintf("%s_aes", other_side)]]]
+  all_aes[all_aes %in% .ggside_global[[sprintf(".%s_aes", other_side)]]]
 }
 
 data_unmap <- function(data, side) {
@@ -49,56 +49,55 @@ enforce_geom <- function(geom) {
 
 ggside_geom_setup_data <- function(geom, side, env = parent.frame()) {
   ggprotoGeom <- eval(geom, envir = env)
-  args <- ggproto_formals(ggprotoGeom$setup_data)
-  arg_names <- lapply(names(args), as.name)
+  args <- ggproto_formals0(ggprotoGeom$setup_data)
   #all ggplot2 geoms do NOT have `self`,
   # but in case that changes in the future
   # or another geom is extended that does have `self`
   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
   body <- if(has_self) {
-    arg_names <- arg_names[setdiff(names(arg_names), "self")]
+    args <- args[setdiff(names(args), "self")]
     expr({
       data <- parse_side_aes(data)
       data <- data_unmap(data, !!side)
       parent <- ggproto_parent(!!geom, self)
-      parent$setup_data(!!!arg_names)
+      parent$setup_data(!!!args)
     })
   } else {
     expr({
       data <- parse_side_aes(data)
       data <- data_unmap(data, !!side)
-      (!!geom)$setup_data(!!!arg_names)
+      (!!geom)$setup_data(!!!args)
      })
   }
   rlang::new_function(
-    args = args,
+    args = ggproto_formals(ggprotoGeom$setup_data),
     body = body,
     env = env
   )
 }
 
 ggside_geom_draw_panel <- function(geom, side, env = parent.frame()) {
+
   ggprotoGeom <- eval(geom, envir = env)
-  args <- ggproto_formals(ggprotoGeom$draw_panel)
-  arg_names <- lapply(names(args), as.name)
+  args <- ggproto_formals0(ggprotoGeom$draw_panel)
   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
   body <- if(has_self) {
-    arg_names <- arg_names[setdiff(names(arg_names), "self")]
+    args <- args[!names(args) %in% "self"]
     expr({
       data <- use_side_aes(data, !!side)
       data <- data_unmap(data, !!side)
       parent <- ggproto_parent(!!geom, self)
-      parent$draw_panel(!!!arg_names)
+      parent$draw_panel(!!!args)
     })
   } else {
     expr({
       data <- use_side_aes(data, !!side)
       data <- data_unmap(data, !!side)
-      (!!geom)$draw_panel(!!!arg_names)
+      (!!geom)$draw_panel(!!!args)
     })
   }
   rlang::new_function(
-    args = args,
+    args = ggproto_formals(ggprotoGeom$draw_panel),
     body = body,
     env = env
   )
@@ -106,26 +105,25 @@ ggside_geom_draw_panel <- function(geom, side, env = parent.frame()) {
 
 ggside_geom_draw_key <- function(geom, side, env = parent.frame()) {
   ggprotoGeom <- eval(geom, envir = env)
-  args <- ggproto_formals(ggprotoGeom$draw_key)
-  arg_names <- lapply(names(args), as.name)
+  args <- ggproto_formals0(ggprotoGeom$draw_key)
   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
   body <- if(has_self) {
-    arg_names <- arg_names[setdiff(names(arg_names), "self")]
+    args <- args[setdiff(names(args), "self")]
     expr({
       data <- use_side_aes(data, !!side)
       data <- data_unmap(data, !!side)
       parent <- ggproto_parent(!!geom, self)
-      parent$draw_key(!!!arg_names)
+      parent$draw_key(!!!args)
     })
   } else {
     expr({
       data <- use_side_aes(data, !!side)
       data <- data_unmap(data, !!side)
-      (!!geom)$draw_key(!!!arg_names)
+      (!!geom)$draw_key(!!!args)
     })
   }
   rlang::new_function(
-    args = args,
+    args = ggproto_formals(ggprotoGeom$draw_key),
     body = body,
     env = env
   )
@@ -156,6 +154,39 @@ ggside_geom <- function(class_name = NULL,
     non_missing_aes = rename_side(geom$non_missing_aes, side),
     setup_data = ggside_geom_setup_data(geom_name, side, env),
     draw_panel = ggside_geom_draw_panel(geom_name, side, env),
+    draw_key = ggside_geom_draw_key(geom_name, side, env)
+  )
+}
+
+ggside_stat <- function(class_name = NULL,
+                        stat = NULL,
+                        side = NULL) {
+  side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
+  mapping <- stat$default_aes
+  names(mapping) <- rename_side(names(mapping), side)
+  ggplot2::ggproto(
+    class_name,
+    stat,
+    default_aes = mapping,
+    required_aes = rename_side(stat$required_aes, side),
+    optional_aes = rename_side(stat$optional_aes, side),
+    non_missing_aes = rename_side(stat$non_missing_aes, side)
+  )
+}
+
+ggside_geom2 <- function(class_name = NULL,
+                        geom = NULL,
+                        side = NULL) {
+  side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
+  env <- parent.frame()
+  geom_name <- enforce_geom(geom)
+  ggplot2::ggproto(
+    class_name,
+    geom,
+    default_aes = new_default_aes(geom, side),
+    required_aes = rename_side(geom$required_aes, side),
+    optional_aes = rename_side(geom$optional_aes, side),
+    non_missing_aes = rename_side(geom$non_missing_aes, side),
     draw_key = ggside_geom_draw_key(geom_name, side, env)
   )
 }

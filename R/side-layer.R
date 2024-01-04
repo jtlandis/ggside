@@ -59,7 +59,7 @@ as_ggside_layer.LayerInstance <- function(layer, side = NULL) {
 
 }
 
-new_ggside_layer <- function(layer, side, constructor) {
+new_ggside_layer <- function(layer, side) {
 
   other <- switch(side, x = "y", y = "x")
   `_class` <- switch(side, x = "XLayer", y = "YLayer")
@@ -99,14 +99,14 @@ new_ggside_layer <- function(layer, side, constructor) {
       }
       data[, setdiff(names(data), aes_to_drop), drop = FALSE]
     },
-    compute_statistic = new_ggproto_fun(
+    test = new_ggproto_fun(
       parent_layer$compute_statistic,
       {
         data <- data_unmap(data, !!side)
         data <- ggproto_parent_method(!!!ggproto_parent_formals)
         data_map(data, !!side, !!map)
       }),
-    test = function(self, data, layout) {
+    compute_statistic = function(self, data, layout) {
       data <- data_unmap(data,)
       parent <- ggproto_parent(parent_layer, self)
       data <- parent$compute_statistic(data, layout)
@@ -144,27 +144,24 @@ drop_plot_aes <- function(plot_map, layer_map, side) {
 }
 
 
-#installs ggproto_parent_method function
-#and ggproto_parent_formals
+# injects the body with enexpr.
+# call_parent_method --> ggproto_parent_method(!!!args)
+# and then the proper formals of the function are made
 new_ggproto_fun <- function(ggproto_method,
                             body) {
-
-  proto_env <- environment(ggproto_method)
-  ggproto_parent_method <- proto_env$f
-  ggproto_parent_formals <- formals(ggproto_parent_method, proto_env)
-  names_ <- names(ggproto_parent_formals)
-  for (i in seq_along(ggproto_parent_formals)) {
-    ggproto_parent_formals[[i]] <- as.name(names_[i])
-  }
-  if ("..." %in% names_)
-    names(ggproto_parent_formals)[names_ %in% "..."] <- ""
-  rm(names_)
-  body <- enquo0(body)
-  body <- do.call(expr, list(quo_get_expr(body)))
+  body <- enexpr(body)
+  inj <- list(call_parent_method = quote(ggproto_parent_method(!!!formals_)))
+  body <- do.call(substitute, list(body, inj))
+  ggproto_parent_method <- environment(ggproto_method)$f
+  formals_ <- ggproto_formals0(ggproto_method)
+  body <- inject(expr(!!body))
   fun <- new_function(
-    args = formals(ggproto_parent_method, proto_env),
+    args = formals(ggproto_parent_method),
     body = body
   )
   fun
 
 }
+
+
+
