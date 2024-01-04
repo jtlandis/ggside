@@ -1,33 +1,6 @@
 #' @rdname geom_xsideline
 #' @export
-geom_xsidepath <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
-                           ...,
-                           lineend = "butt",
-                           linejoin = "round",
-                           linemitre = 10,
-                           arrow = NULL,
-                           na.rm = FALSE,
-                           show.legend = NA,
-                           inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidepath,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      lineend = lineend,
-      linejoin = linejoin,
-      linemitre = linemitre,
-      arrow = arrow,
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_xsidepath <- ggside_layer_function(fun = geom_path, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -38,34 +11,7 @@ GeomXsidepath <- ggside_geom("GeomXsidepath", GeomPath, "x")
 
 #' @rdname geom_xsideline
 #' @export
-geom_ysidepath <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
-                           ...,
-                           lineend = "butt",
-                           linejoin = "round",
-                           linemitre = 10,
-                           arrow = NULL,
-                           na.rm = FALSE,
-                           show.legend = NA,
-                           inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidepath,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      lineend = lineend,
-      linejoin = linejoin,
-      linemitre = linemitre,
-      arrow = arrow,
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_ysidepath <- ggside_layer_function(fun = geom_path, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

@@ -1,27 +1,6 @@
 #' @rdname geom_xsidebar
 #' @export
-geom_xsidecol <- function(mapping = NULL, data = NULL,
-                          position = "stack",
-                          ...,
-                          width = NULL,
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = "identity",
-    geom = GeomXsidecol,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      width = width,
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_xsidecol <- ggside_layer_function(fun = geom_col, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -31,31 +10,7 @@ GeomXsidecol <- ggside_geom("GeomXsidecol", GeomCol, "x")
 
 #' @rdname geom_xsidebar
 #' @export
-geom_ysidecol <- function(mapping = NULL, data = NULL,
-                          position = "stack",
-                          ...,
-                          width = NULL,
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE,
-                          orientation = "y") {
-
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = "identity",
-    geom = GeomYsidecol,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      width = width,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_ysidecol <- ggside_layer_function(fun = geom_col, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

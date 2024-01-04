@@ -26,32 +26,7 @@
 #'  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 #'
 #' @export
-geom_xsidedensity <- function(mapping = NULL, data = NULL,
-         stat = "density", position = "identity",
-         ...,
-         na.rm = FALSE,
-         orientation = "x",
-         show.legend = NA,
-         inherit.aes = TRUE,
-         outline.type = "upper") {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidedensity,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      outline.type = outline.type,
-      ...
-    )
-  )
-}
+geom_xsidedensity <- ggside_layer_function(fun = geom_density, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -61,32 +36,7 @@ GeomXsidedensity <- ggside_geom("GeomXsidedensity", GeomDensity, "x")
 
 #' @rdname geom_xsidedensity
 #' @export
-geom_ysidedensity <- function(mapping = NULL, data = NULL,
-                              stat = "density", position = "identity",
-                              ...,
-                              na.rm = FALSE,
-                              orientation = "y",
-                              show.legend = NA,
-                              inherit.aes = TRUE,
-                              outline.type = "upper") {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidedensity,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      outline.type = outline.type,
-      ...
-    )
-  )
-}
+geom_ysidedensity <- ggside_layer_function(fun = geom_density, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

@@ -21,26 +21,7 @@
 #'         ggside.panel.scale = .3
 #'     )
 #' @export
-geom_xsidepoint <- function(mapping = NULL, data = NULL,
-                            stat = "identity", position = "identity",
-                            ...,
-                            na.rm = FALSE,
-                            show.legend = NA,
-                            inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidepoint,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_xsidepoint <- ggside_layer_function(fun = geom_point, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -50,26 +31,7 @@ GeomXsidepoint <- ggside_geom("GeomXsidepoint", GeomPoint, "x")
 
 #' @rdname geom_xsidepoint
 #' @export
-geom_ysidepoint <- function(mapping = NULL, data = NULL,
-                            stat = "identity", position = "identity",
-                            ...,
-                            na.rm = FALSE,
-                            show.legend = NA,
-                            inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidepoint,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_ysidepoint <- ggside_layer_function(fun = geom_point, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

@@ -12,25 +12,7 @@
 #'   geom_xsideline(aes(y = unemploy)) +
 #'   geom_col()
 #' @export
-geom_xsideline <- function(mapping = NULL, data = NULL, stat = "identity",
-                           position = "identity", na.rm = FALSE, orientation = NA,
-                           show.legend = NA, inherit.aes = TRUE, ...) {
-
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsideline,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_xsideline <- ggside_layer_function(fun = geom_line, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -41,24 +23,7 @@ GeomXsideline <- ggside_geom("GeomXsideline", GeomLine, "x")
 
 #' @rdname geom_xsideline
 #' @export
-geom_ysideline <- function(mapping = NULL, data = NULL, stat = "identity",
-                           position = "identity", na.rm = FALSE, orientation = NA,
-                           show.legend = NA, inherit.aes = TRUE, ...) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsideline,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_ysideline <- ggside_layer_function(fun = geom_line, side = "y")
 
 
 #' @rdname ggside-ggproto-geoms

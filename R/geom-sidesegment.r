@@ -37,22 +37,7 @@
 #' p +
 #'   geom_xsidesegment(data = dendrox$segments,aes(x = x, y = y, xend = xend, yend = yend))
 #' @export
-geom_xsidesegment <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
-                               ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
-                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
-{
-  ggside_layer(data = data, mapping = mapping,
-             stat = stat, geom = GeomXsidesegment,
-             position = position, show.legend = show.legend,
-             inherit.aes = inherit.aes,
-             params = list(arrow = arrow,
-                           arrow.fill = arrow.fill,
-                           lineend = lineend,
-                           linejoin = linejoin,
-                           na.rm = na.rm,
-                      ...)
-             )
-}
+geom_xsidesegment <- ggside_layer_function(fun = geom_segment, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -62,21 +47,7 @@ GeomXsidesegment <- ggside_geom("GeomXsidesegment", GeomSegment, "x")
 
 #' @rdname geom_xsidesegment
 #' @export
-geom_ysidesegment <- function(mapping = NULL, data = NULL, stat = "identity", position = "identity",
-                               ..., arrow = NULL, arrow.fill = NULL, lineend = "butt", linejoin = "round",
-                               na.rm = FALSE, show.legend = NA, inherit.aes = TRUE)
-{
-  ggside_layer(data = data, mapping = mapping,
-             stat = stat, geom = GeomYsidesegment,
-             position = position, show.legend = show.legend,
-             inherit.aes = inherit.aes,
-             params = list(arrow = arrow,
-                           arrow.fill = arrow.fill,
-                           lineend = lineend,
-                           linejoin = linejoin,
-                           na.rm = na.rm,
-                           ...))
-}
+geom_ysidesegment <- ggside_layer_function(fun = geom_segment, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

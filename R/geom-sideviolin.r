@@ -51,34 +51,7 @@
 #'
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
-geom_xsideviolin <- function(mapping = NULL, data = NULL,
-                              stat = "ydensity", position = "dodge",
-                              ...,
-                              draw_quantiles = NULL,
-                              trim = TRUE,
-                              scale = "area",
-                              na.rm = FALSE,
-                              orientation = NA,
-                              show.legend = NA,
-                              inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsideviolin,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      trim = trim,
-      scale = scale,
-      draw_quantiles = draw_quantiles,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_xsideviolin <- ggside_layer_function(fun = geom_violin, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -88,34 +61,7 @@ GeomXsideviolin <- ggside_geom("GeomXsideviolin", GeomViolin, "x")
 
 #' @rdname geom_xsideviolin
 #' @export
-geom_ysideviolin <- function(mapping = NULL, data = NULL,
-                             stat = "ydensity", position = "dodge",
-                             ...,
-                             draw_quantiles = NULL,
-                             trim = TRUE,
-                             scale = "area",
-                             na.rm = FALSE,
-                             orientation = "y",
-                             show.legend = NA,
-                             inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsideviolin,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      trim = trim,
-      scale = scale,
-      draw_quantiles = draw_quantiles,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_ysideviolin <- ggside_layer_function(fun = geom_violin, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

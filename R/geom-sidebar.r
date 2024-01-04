@@ -50,32 +50,7 @@
 #'   geom_ysidecol()
 #'
 #' @export
-geom_xsidebar <- function(mapping = NULL, data = NULL,
-                          stat = "count", position = "stack",
-                          ...,
-                          width = NULL,
-                          na.rm = FALSE,
-                          orientation = "x",
-                          show.legend = NA,
-                          inherit.aes = TRUE) {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      width = width,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_xsidebar <- ggside_layer_function(fun = geom_bar, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -86,33 +61,7 @@ GeomXsidebar <- ggside_geom("GeomXsidebar", GeomBar, "x")
 
 #' @rdname geom_xsidebar
 #' @export
-geom_ysidebar <- function(mapping = NULL, data = NULL,
-                          stat = "count", position = "stack",
-                          ...,
-                          width = NULL,
-                          na.rm = FALSE,
-                          orientation = "y",
-                          show.legend = NA,
-                          inherit.aes = TRUE) {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  mapping <- force_panel_type_mapping(mapping, "y")
-  names(mapping) <- rename_side(names(mapping), "y")
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      width = width,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    )
-  )
-}
+geom_ysidebar <- ggside_layer_function(fun = geom_bar, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
