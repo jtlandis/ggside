@@ -190,3 +190,65 @@ ggside_geom2 <- function(class_name = NULL,
     draw_key = ggside_geom_draw_key(geom_name, side, env)
   )
 }
+
+# calls source function first to make the layer.
+#
+#' @export
+ggside_layer_function <- function(fun, side, env = caller_env()) {
+  # browser()
+  fun_sym <- caller_arg(fun)
+  formals_ <- formals(fun)
+  defaults_ <- formals_as_defaults(formals_)
+  non_pos_aes <- paste0(side, c("fill", "colour", "color"))
+  pos_aes <- paste0(side, "side")
+  `_class` <- switch(side, x = "XLayer", y = "YLayer")
+  Side <- switch(side, x = "\\1Xside\\L\\2", y = "\\1Yside\\L\\2")
+  body <- expr({
+    map_names <- names(mapping)
+    side_aes_used <- map_names %in% !!non_pos_aes
+    # temporarily remove ggside specific aes
+    # need to re-add afterwards
+    if (any(side_aes_used)) {
+      names(mapping)[side_aes_used] <- sub(!!side, "", map_names[side_aes_used])
+    }
+    pos_aes_used <- grepl(!!pos_aes, map_names, fixed = TRUE)
+    if (any(pos_aes_used)) {
+      names(mapping)[pos_aes_used] <- sub(!!pos_aes, "", map_names[pos_aes_used])
+    }
+    layer <- (!!fun_sym)(!!!defaults_)
+    # re-add after vanilla layer has been constructed
+    mapping <- layer$mapping
+    if (any(side_aes_used)) {
+      names(mapping)[side_aes_used] <- map_names[side_aes_used]
+    }
+
+    names(mapping) <- rename_side(names(mapping), !!side)
+
+    # remaps
+    geom_aes_map <- aes_to_map(layer$geom, !!side)
+    stat_aes_map <- aes_to_map(layer$stat, !!side)
+    remap <- union(geom_aes_map, stat_aes_map)
+    # ggside_geom
+    geom <- ggside_geom2(gsub("(Geom)([A-Z])", !!Side,
+                              class(layer$geom)[1], perl = T),
+                         geom = layer$geom,
+                         side = !!side)
+    stat <- ggside_stat(gsub("(Stat)([A-Z])", !!Side,
+                             class(layer$stat)[1], perl = T),
+                        stat = layer$stat,
+                        side = !!side)
+    SideLayer <- ggproto(
+      !!`_class`, layer,
+      geom = geom, stat = stat,
+      mapping = mapping
+    )
+    new_ggside_layer2(SideLayer, !!side, remap)
+  })
+
+  new_function(
+    formals_,
+    body = body,
+    env = env
+  )
+
+}

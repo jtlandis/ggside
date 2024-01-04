@@ -388,6 +388,10 @@ resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
 
 ggproto_formals0 <- function(ggproto_method) {
   formals_ <- ggproto_formals(ggproto_method)
+  formals_as_defaults(formals_ = formals_)
+}
+
+formals_as_defaults <- function(formals_) {
   names_ <- names(formals_)
   for (i in seq_along(formals_)) {
     formals_[[i]] <- as.name(names_[i])
@@ -396,3 +400,4 @@ ggproto_formals0 <- function(ggproto_method) {
     names(formals_)[names_ %in% "..."] <- ""
   formals_
 }
+
