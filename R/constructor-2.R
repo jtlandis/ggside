@@ -198,6 +198,10 @@ ggside_layer_function <- function(fun, side, env = caller_env()) {
   # browser()
   fun_sym <- caller_arg(fun)
   formals_ <- formals(fun)
+  has_orientation <- !is.null(formals_[["orientation"]]) || "orientation" %in% names(formals_)
+  if (has_orientation && is.na(formals_[["orientation"]])) {
+    formals_[["orientation"]] <- side
+  }
   defaults_ <- formals_as_defaults(formals_)
   non_pos_aes <- paste0(side, c("fill", "colour", "color"))
   pos_aes <- paste0(side, "side")
