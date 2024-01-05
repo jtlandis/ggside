@@ -91,7 +91,6 @@ parse_side_aes <- function(data, params){
 }
 
 # proto2 TODO: better way of getting formals for self$draw
-ggproto_formals <- function(x) formals(environment(x)$f)
 
 ggname <- function(prefix, grob) {
   grob$name <- grobName(grob, prefix)
