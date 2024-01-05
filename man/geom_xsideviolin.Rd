@@ -14,9 +14,10 @@ geom_xsideviolin(
   ...,
   draw_quantiles = NULL,
   trim = TRUE,
+  bounds = c(-Inf, Inf),
   scale = "area",
   na.rm = FALSE,
-  orientation = NA,
+  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE
 )
@@ -29,6 +30,7 @@ geom_ysideviolin(
   ...,
   draw_quantiles = NULL,
   trim = TRUE,
+  bounds = c(-Inf, Inf),
   scale = "area",
   na.rm = FALSE,
   orientation = "y",

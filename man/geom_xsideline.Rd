@@ -14,7 +14,7 @@ geom_xsideline(
   stat = "identity",
   position = "identity",
   na.rm = FALSE,
-  orientation = NA,
+  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE,
   ...
@@ -26,7 +26,7 @@ geom_ysideline(
   stat = "identity",
   position = "identity",
   na.rm = FALSE,
-  orientation = NA,
+  orientation = "y",
   show.legend = NA,
   inherit.aes = TRUE,
   ...

@@ -116,8 +116,11 @@ new_ggside_layer2 <- function(layer, side, remap, constructor) {
       {
         data <- parse_side_aes(data)
         self$geom$required_aes <- sub(sprintf("%sside", !!side), "", aes_ <- self$geom$required_aes)
+        levels <- levels(data$PANEL)
+        data$PANEL <- droplevels(data$PANEL)
         data <- data_unmap(data, !!side)
         data <- call_parent_method
+        data$PANEL <- factor(data$PANEL, levels = levels)
         self$geom$required_aes <- aes_
         data_map(data, !!side, !!remap)
       }

@@ -27,11 +27,14 @@ enforce_geom <- function(geom) {
   stopifnot("`geom` should be a ggproto object"=inherits(geom, "ggproto"),
             "`geom` should be a Geom object"=inherits(geom, "Geom"))
   class_name <- class(geom)[1]
-  where <- find(class_name)
+  where <- find(class_name, simple.words = FALSE)
   if (length(where)==0) {
     stop(
       sprintf("could not find ggproto Geom <%s>", class_name)
     )
+  }
+  if (length(where)>1) {
+    cli::cli_abort("found {length(where)} locations for {.arg {class_name}}: {where}")
   }
   class_name <- as.name(class_name)
   if (grepl("^package:", where)) {
@@ -178,8 +181,8 @@ ggside_geom2 <- function(class_name = NULL,
                         geom = NULL,
                         side = NULL) {
   side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
-  env <- parent.frame()
-  geom_name <- enforce_geom(geom)
+  # env <- parent.frame()
+  # geom_name <- enforce_geom(geom)
   ggplot2::ggproto(
     class_name,
     geom,
@@ -187,29 +190,47 @@ ggside_geom2 <- function(class_name = NULL,
     required_aes = rename_side(geom$required_aes, side),
     optional_aes = rename_side(geom$optional_aes, side),
     non_missing_aes = rename_side(geom$non_missing_aes, side),
-    draw_key = ggside_geom_draw_key(geom_name, side, env)
+    draw_key = new_ggproto_fun(
+      geom$draw_key,
+      {
+        data <- use_side_aes(data, !!side)
+        data <- data_unmap(data, !!side)
+        call_parent_method
+      })
   )
 }
 
 # calls source function first to make the layer.
 #
 #' @export
-ggside_layer_function <- function(fun, side, env = caller_env()) {
+ggside_layer_function <- function(fun, side, env = caller_env(), ...,
+                                  force_missing) {
   # browser()
   fun_sym <- caller_arg(fun)
   formals_ <- formals(fun)
+  formals_ <- dots_list(!!!formals_, ..., .homonyms = "last")
+  formals_ <- formals_[!vapply(formals_, is_zap, logical(1))]
+  handel_orien <- expr(mapping <- layer$mapping)
   has_orientation <- !is.null(formals_[["orientation"]]) || "orientation" %in% names(formals_)
-  if (has_orientation && is.na(formals_[["orientation"]])) {
-    formals_[["orientation"]] <- side
+  if (has_orientation) {
+    if (is.na(formals_[["orientation"]]))
+      formals_[["orientation"]] <- side
+
+    handel_orien <- expr(mapping <- default_stat_aes(layer$mapping, layer$stat, orientation))
   }
   defaults_ <- formals_as_defaults(formals_)
+  if (!missing(force_missing)) {
+    defaults_ <- defaults_[!names(defaults_) %in% force_missing]
+  }
   non_pos_aes <- paste0(side, c("fill", "colour", "color"))
   pos_aes <- paste0(side, "side")
   `_class` <- switch(side, x = "XLayer", y = "YLayer")
   Side <- switch(side, x = "\\1Xside\\L\\2", y = "\\1Yside\\L\\2")
   body <- expr({
+
     map_names <- names(mapping)
-    side_aes_used <- map_names %in% !!non_pos_aes
+    non_pos_aes <- !!non_pos_aes
+    side_aes_used <- map_names %in% non_pos_aes
     # temporarily remove ggside specific aes
     # need to re-add afterwards
     if (any(side_aes_used)) {
@@ -217,11 +238,13 @@ ggside_layer_function <- function(fun, side, env = caller_env()) {
     }
     pos_aes_used <- grepl(!!pos_aes, map_names, fixed = TRUE)
     if (any(pos_aes_used)) {
-      names(mapping)[pos_aes_used] <- sub(!!pos_aes, "", map_names[pos_aes_used])
+      names(mapping)[pos_aes_used] <- sub(pos_aes, "", map_names[pos_aes_used])
     }
-    layer <- (!!fun_sym)(!!!defaults_)
+    to_zap <- non_pos_aes[non_pos_aes %in% ...names()]
+    layer <- with_geom_params((!!fun_sym)(!!!defaults_), zap = to_zap, ...)
+    !!handel_orien
     # re-add after vanilla layer has been constructed
-    mapping <- layer$mapping
+    # mapping <- layer$mapping
     if (any(side_aes_used)) {
       names(mapping)[side_aes_used] <- map_names[side_aes_used]
     }
@@ -255,4 +278,21 @@ ggside_layer_function <- function(fun, side, env = caller_env()) {
     env = env
   )
 
+}
+
+with_geom_params <- function(expr, zap = character(), env = caller_env(), ...) {
+  call <- match.call()$expr
+  any_zap <- length(zap)>0
+  if (any_zap) {
+    to_zap <- rep_named(zap, list(zap()))
+    dots <- list(...)
+    dots_zapped <- dots[!names(dots) %in% zap]
+    call <- call_modify(call, ...=zap(), !!! dots_zapped)
+    zap <- sub("color", "colour", zap, fixed = TRUE)
+    names(dots) <- sub("color", "colour", names(dots), fixed = TRUE)
+  }
+  layer <- eval(call, envir = env)
+  if (any_zap)
+    layer$aes_params[zap] <- dots[names(dots) %in% zap]
+  layer
 }

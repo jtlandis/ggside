@@ -5,7 +5,7 @@
 #' @aliases geom_*sidetext
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
-geom_xsidetext <- ggside_layer_function(fun = geom_text, side = "x")
+geom_xsidetext <- ggside_layer_function(fun = geom_text, side = "x", force_missing = c("nudge_x","nudge_y","position"))
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -16,7 +16,7 @@ GeomXsidetext <- ggside_geom("GeomXsidetext", GeomText, "x")
 
 #' @rdname geom_xsidetext
 #' @export
-geom_ysidetext <- ggside_layer_function(fun = geom_text, side = "y")
+geom_ysidetext <- ggside_layer_function(fun = geom_text, side = "y", force_missing = c("nudge_x","nudge_y","position"))
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

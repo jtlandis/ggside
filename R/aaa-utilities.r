@@ -305,7 +305,7 @@ split_with_index <- function(x, f, n = max(f)) {
   unname(split(x, f))
 }
 
-check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env = parent.frame())
+check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env = parent.frame(), call = caller_env())
 {
   if (inherits(x, subclass)) {
     x
@@ -314,14 +314,14 @@ check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env
     name <- paste0(subclass, camelize(x, first = TRUE))
     obj <- find_global(name, env = env)
     if (is.null(obj) || !inherits(obj, subclass)) {
-      abort(glue("Can't find `{argname}` called '{x}'"))
+      cli::cli_abort("Can't find {argname} called {.val {x}}", call = call)
     }
     else {
       obj
     }
   }
   else {
-    abort(glue("`{argname}` must be either a string or a {subclass} object, not {obj_desc(x)}"))
+    cli::cli_abort("{argname} must be either a string or a {.cls {subclass}} object", call = call)
   }
 }
 

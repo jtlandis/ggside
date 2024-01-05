@@ -19,40 +19,11 @@
 #'   theme_classic()
 #' p
 #' @export
-geom_xsidefunction <- function(mapping = NULL, data = NULL,
-                           stat = "function", position = "identity",
-                           ...,
-                           na.rm = FALSE,
-                           show.legend = NA,
-                           inherit.aes = TRUE) {
-  ggside_layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidefunction,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      ...
-    )
-  )
-}
+geom_xsidefunction <- ggside_layer_function(fun = geom_function, side = "x")
 
 #' @rdname geom_xsidefunction
 #' @export
-stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunction", position = "identity",
-                               ..., fun, xlim = NULL, n = 101, args = list(), na.rm = FALSE,
-                               show.legend = NA, inherit.aes = TRUE) {
-
-
-  ggside_layer(data = data, mapping = mapping, stat = StatFunction,
-        geom = geom, position = position, show.legend = show.legend,
-        inherit.aes = inherit.aes,
-        params = list(fun = fun, n = n,
-                      args = args, na.rm = na.rm, xlim = xlim, ...))
-}
+stat_xsidefunction <- ggside_layer_function(fun = stat_function, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -60,6 +31,13 @@ stat_xsidefunction <- function(mapping = NULL, data = NULL, geom = "xsidefunctio
 #' @export
 GeomXsidefunction <- ggside_geom("GeomXsidefunction", GeomFunction, "x")
 
+#' @rdname geom_xsidefunction
+#' @export
+geom_ysidefunction2 <- ggside_layer_function(fun = geom_function, side = "y")
+
+#' @rdname geom_xsidefunction
+#' @export
+stat_ysidefunction2 <- ggside_layer_function(fun = stat_function, side = "y")
 
 #' @rdname geom_xsidefunction
 #' @export
