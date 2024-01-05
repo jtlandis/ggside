@@ -1,91 +1,31 @@
 
-.ggside_global <- new.env(parent = emptyenv())
-.ggside_global$.y_aes <- c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final",
-                 "ymax_final", "lower", "middle", "upper", "y0")
-.ggside_global$.x_aes <- c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final",
-                 "xmax_final", "xlower", "xmiddle", "xupper", "x0")
 
-
-`%NA%` <- function(a, b) {
-  if(all(is.na(a))) b else a
-}
-
-use_side_aes <- function(data, side) {
-  data[["fill"]] <- data[[sprintf("%sfill", side)]] %NA% data[["fill"]]
-  data[["colour"]] <- data[[sprintf("%scolour", side)]] %NA% data[["colour"]]
-  data
-}
-
-rename_side <- function(str, side) {
-  other <- switch(side, x = "y", y = "x")
-  is_or <- grepl("|", str, fixed = T)
-  aes <- .ggside_global[[paste0(".", other,"_aes")]]
-  rename_aes <- function(x) {
-    to_rename <- x %in% aes
-    if (any(to_rename))
-      x[to_rename] <- sprintf("%sside%s", side, x[to_rename])
-    x
-  }
-  if (any(is_or)) {
-    or <- str[is_or]
-    splits <- strsplit(or, "|", T)
-    splits <- lapply(splits, rename_aes)
-    str[!is_or] <- rename_aes(str[!is_or])
-    str[is_or] <- vapply(splits, paste, character(1), collapse = "|")
-  } else {
-    str <- rename_aes(str)
-  }
-  str
-}
-
-
-# utility to pull out an aesthetic we care about.
-# helps code around the `|` aesthetics
-# @return a character vector
-pull_aes <- function(x) {
-  if (any(is_or <- grepl("|", x, fixed = T))) {
-    splits <- strsplit(x[is_or], "|", T)
-    out <- unlist(splits)
-    x <- c(x[!is_or], out)
-  }
-  x
-}
-
-# utility to recode default aesthetics of a geom.
-# @returns an object of class 'uneval'
-new_default_aes <- function(geom, side) {
-  defaults <- geom$default_aes
-  names(defaults) <- rename_side(names(defaults), side)
-  new_defaults <- list(NA, NA, PANEL_TYPE = side)
-  names(new_defaults)[c(1,2)] <- paste0(side, c("colour", "fill"))
-  do.call('aes', c(defaults, new_defaults))
-}
 
 
 # Temporarily changes any `xside` or `yside` prefix to be removed
 # from scale$aesthetic. Values are returned when exiting the frame this
 # function was called in.
 # @param scale a ggproto Scale object
-local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
-  s_quo <- enexpr(scale)
-  aes_ <- expr((!!s_quo)$aesthetics)
-  old <- eval_bare(expr(!!aes_), frame)
-  eval_bare(expr( `<-`(!!aes_, (!!aes_)[!grepl('(x|y)side', !!old)])) , frame)
-  eval_bare(expr(on.exit(`<-`(!!aes_ ,!!old), add = T)), frame)
-}
+# local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
+#   s_quo <- enexpr(scale)
+#   aes_ <- expr((!!s_quo)$aesthetics)
+#   old <- eval_bare(expr(!!aes_), frame)
+#   eval_bare(expr( `<-`(!!aes_, (!!aes_)[!grepl('(x|y)side', !!old)])) , frame)
+#   eval_bare(expr(on.exit(`<-`(!!aes_ ,!!old), add = T)), frame)
+# }
 
 # Temporarily changes the first element of a list to contain the
 # union aesthetics of all other elements
 # @param scales a list containing a ggproto Scale object
-local_union_scale_aes <- function(scales, frame = parent.frame()) {
-  s_quo <- enexpr(scales)
-  aes_ <- expr((!!s_quo)[[1]]$aesthetics)
-  old <- eval_bare(expr(!!aes_), frame)
-  new <- eval_bare(expr(unique(unlist(lapply(!!s_quo, `[[`, "aesthetics")))), frame)
-  eval_bare(expr(`<-`(!!aes_, !!new)), frame)
-  expr <- expr(on.exit(`<-`(!!aes_, !!old) , add = TRUE))
-  eval_bare(expr, frame)
-}
+# local_union_scale_aes <- function(scales, frame = parent.frame()) {
+#   s_quo <- enexpr(scales)
+#   aes_ <- expr((!!s_quo)[[1]]$aesthetics)
+#   old <- eval_bare(expr(!!aes_), frame)
+#   new <- eval_bare(expr(unique(unlist(lapply(!!s_quo, `[[`, "aesthetics")))), frame)
+#   eval_bare(expr(`<-`(!!aes_, !!new)), frame)
+#   expr <- expr(on.exit(`<-`(!!aes_, !!old) , add = TRUE))
+#   eval_bare(expr, frame)
+# }
 
 
 # Standardize the panel params such that any `xside` or `yside` prefixes
