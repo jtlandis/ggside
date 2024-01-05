@@ -1,33 +1,6 @@
 
 
 
-
-# Temporarily changes any `xside` or `yside` prefix to be removed
-# from scale$aesthetic. Values are returned when exiting the frame this
-# function was called in.
-# @param scale a ggproto Scale object
-# local_vanilla_scale_aes <- function(scale, frame = parent.frame()) {
-#   s_quo <- enexpr(scale)
-#   aes_ <- expr((!!s_quo)$aesthetics)
-#   old <- eval_bare(expr(!!aes_), frame)
-#   eval_bare(expr( `<-`(!!aes_, (!!aes_)[!grepl('(x|y)side', !!old)])) , frame)
-#   eval_bare(expr(on.exit(`<-`(!!aes_ ,!!old), add = T)), frame)
-# }
-
-# Temporarily changes the first element of a list to contain the
-# union aesthetics of all other elements
-# @param scales a list containing a ggproto Scale object
-# local_union_scale_aes <- function(scales, frame = parent.frame()) {
-#   s_quo <- enexpr(scales)
-#   aes_ <- expr((!!s_quo)[[1]]$aesthetics)
-#   old <- eval_bare(expr(!!aes_), frame)
-#   new <- eval_bare(expr(unique(unlist(lapply(!!s_quo, `[[`, "aesthetics")))), frame)
-#   eval_bare(expr(`<-`(!!aes_, !!new)), frame)
-#   expr <- expr(on.exit(`<-`(!!aes_, !!old) , add = TRUE))
-#   eval_bare(expr, frame)
-# }
-
-
 # Standardize the panel params such that any `xside` or `yside` prefixes
 # are removed from the object
 # @param panel_params the panel_params element of the Layout ggproto object

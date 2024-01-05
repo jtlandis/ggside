@@ -27,34 +27,3 @@ data_map <- function(data, side, map) {
   data
 }
 
-zap_dots <- function(call, zap = character(), ...) {
-  dots <- enexprs(...)
-  # remove dots and splice them in
-  call <- call_modify(call, ... = zap(), !!!dots)
-  if (length(zap) > 0) {
-    to_zap <- rep_named(zap, list(zap()))
-    call <- call_modify(call, !!!to_zap)
-  }
-  call
-}
-
-call_layer_param_aware <-
-  function(expr,
-           zap = character(),
-           ...,
-           env = caller_env()) {
-    call <- match.call()$expr
-    call <- zap_dots(call, zap = zap, ...)
-    layer <- eval(call, envir = env)
-    any_zap <- length(zap) > 0
-    dot_names <- ...names()
-    if (length(intersect(dot_names, zap)) > 0) {
-      ind <- which(dot_names %in% zap)
-      new_name <- sub("color", "colour", dot_names[ind], fixed = TRUE)
-      lst <- vector("list", length(ind))
-      for (i in seq_along(lst))
-        lst[[i]] <- ...elt(ind[i])
-      layer$aes_params[new_name] <- lst
-    }
-    layer
-  }
