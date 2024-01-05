@@ -144,24 +144,7 @@ drop_plot_aes <- function(plot_map, layer_map, side) {
 }
 
 
-# injects the body with enexpr.
-# call_parent_method --> ggproto_parent_method(!!!args)
-# and then the proper formals of the function are made
-new_ggproto_fun <- function(ggproto_method,
-                            body) {
-  body <- enexpr(body)
-  inj <- list(call_parent_method = quote(ggproto_parent_method(!!!formals_)))
-  body <- do.call(substitute, list(body, inj))
-  ggproto_parent_method <- environment(ggproto_method)$f
-  formals_ <- ggproto_formals0(ggproto_method)
-  body <- inject(expr(!!body))
-  fun <- new_function(
-    args = formals(ggproto_parent_method),
-    body = body
-  )
-  fun
 
-}
 
 
 
