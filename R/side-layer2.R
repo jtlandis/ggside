@@ -32,9 +32,9 @@ ggside_layer2 <-
     stat_aes_map <- aes_to_map(stat, side)
     remap <- union(geom_aes_map, stat_aes_map)
     # ggside_geom
-    geom <- ggside_geom2(paste0(Side, class(geom)[1]),
-                         geom = geom,
-                         side = side)
+    geom <- ggside_geom(paste0(Side, class(geom)[1]),
+                        geom = geom,
+                        side = side)
     stat <- ggside_stat(paste0(Side, class(stat)[1]),
                         stat = stat,
                         side = side)

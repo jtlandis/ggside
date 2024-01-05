@@ -249,7 +249,6 @@ ggside_layer_function <-
     `_class` <- switch(side, x = "XLayer", y = "YLayer")
     Side <- switch(side, x = "\\1Xside\\L\\2", y = "\\1Yside\\L\\2")
     body <- expr({
-      env <- caller_env()
       map_names <- names(mapping)
       non_pos_aes <- !!non_pos_aes
       side_aes_used <- map_names %in% non_pos_aes
@@ -267,8 +266,7 @@ ggside_layer_function <-
       to_zap <- non_pos_aes[non_pos_aes %in% ...names()]
       layer <- call_layer_param_aware((!!fun_sym)(!!!defaults_),
                                       zap = to_zap,
-                                      ...,
-                                      env = env)
+                                      ...)
       !!pull_mapping
       # re-add after vanilla layer has been constructed
       # mapping <- layer$mapping
@@ -283,7 +281,7 @@ ggside_layer_function <-
       stat_aes_map <- aes_to_map(layer$stat, !!side)
       remap <- union(geom_aes_map, stat_aes_map)
       # ggside_geom
-      geom <- ggside_geom2(
+      geom <- ggside_geom(
         gsub("(Geom)([A-Z])", !!Side,
              class(layer$geom)[1], perl = T),
         geom = layer$geom,
@@ -312,15 +310,17 @@ ggside_layer_function <-
   }
 
 zap_dots <- function(call, zap = character(), ...) {
-  any_zap <- length(zap) > 0
-  if (any_zap) {
+  dots <- enexprs(...)
+  # remove dots and splice them in
+  call <- call_modify(call, ... = zap(), !!!dots)
+  if (length(zap) > 0) {
     to_zap <- rep_named(zap, list(zap()))
-    dots <- enexprs(...)
     dots_zapped <- dots[!names(dots) %in% zap]
-    call <- call_modify(call, ... = zap(), !!!dots_zapped)
+    call <- call_modify(call, !!!dots_zapped)
   }
   call
 }
+
 call_layer_param_aware <-
   function(expr,
            zap = character(),
