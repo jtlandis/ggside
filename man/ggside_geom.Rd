@@ -4,7 +4,7 @@
 \alias{ggside_geom}
 \title{ggside geom constructor}
 \usage{
-ggside_geom(class_name = NULL, geom = NULL, side = NULL, env = parent.frame())
+ggside_geom(class_name = NULL, geom = NULL, side = NULL, ...)
 }
 \arguments{
 \item{class_name}{New class name for the ggproto object}
@@ -12,6 +12,8 @@ ggside_geom(class_name = NULL, geom = NULL, side = NULL, env = parent.frame())
 \item{geom}{The Geom ggproto to inherit from}
 
 \item{side}{should the resulting object be configured for x or y}
+
+\item{...}{additional members to add to the ggproto class.}
 }
 \description{
 utility function to make a ggside Geom
