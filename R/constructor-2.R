@@ -27,115 +27,7 @@ data_map <- function(data, side, map) {
   data
 }
 
-enforce_geom <- function(geom) {
-  stopifnot(
-    "`geom` should be a ggproto object" = inherits(geom, "ggproto"),
-    "`geom` should be a Geom object" = inherits(geom, "Geom")
-  )
-  class_name <- class(geom)[1]
-  where <- find(class_name, simple.words = FALSE)
-  if (length(where) == 0) {
-    stop(sprintf("could not find ggproto Geom <%s>", class_name))
-  }
-  if (length(where) > 1) {
-    cli::cli_abort("found {length(where)} locations for {.arg {class_name}}: {where}")
-  }
-  class_name <- as.name(class_name)
-  if (grepl("^package:", where)) {
-    pkg <- as.name(sub("package:", "", where))
-    expr <- call("::", pkg, class_name)
-  } else {
-    expr <- class_name
-  }
 
-  #finally check that it is identical
-  stopifnot("Could not confirm geom" = identical(geom, eval(expr)))
-  expr
-
-}
-
-ggside_geom_setup_data <-
-  function(geom, side, env = parent.frame()) {
-    ggprotoGeom <- eval(geom, envir = env)
-    args <- ggproto_formals0(ggprotoGeom$setup_data)
-    #all ggplot2 geoms do NOT have `self`,
-    # but in case that changes in the future
-    # or another geom is extended that does have `self`
-    has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
-    body <- if (has_self) {
-      args <- args[setdiff(names(args), "self")]
-      expr({
-        data <- parse_side_aes(data)
-        data <- data_unmap(data, !!side)
-        parent <- ggproto_parent(!!geom, self)
-        parent$setup_data(!!!args)
-      })
-    } else {
-      expr({
-        data <- parse_side_aes(data)
-        data <- data_unmap(data, !!side)
-        (!!geom)$setup_data(!!!args)
-      })
-    }
-    rlang::new_function(
-      args = ggproto_formals(ggprotoGeom$setup_data),
-      body = body,
-      env = env
-    )
-  }
-
-ggside_geom_draw_panel <-
-  function(geom, side, env = parent.frame()) {
-    ggprotoGeom <- eval(geom, envir = env)
-    args <- ggproto_formals0(ggprotoGeom$draw_panel)
-    has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
-    body <- if (has_self) {
-      args <- args[!names(args) %in% "self"]
-      expr({
-        data <- use_side_aes(data, !!side)
-        data <- data_unmap(data, !!side)
-        parent <- ggproto_parent(!!geom, self)
-        parent$draw_panel(!!!args)
-      })
-    } else {
-      expr({
-        data <- use_side_aes(data, !!side)
-        data <- data_unmap(data, !!side)
-        (!!geom)$draw_panel(!!!args)
-      })
-    }
-    rlang::new_function(
-      args = ggproto_formals(ggprotoGeom$draw_panel),
-      body = body,
-      env = env
-    )
-  }
-
-ggside_geom_draw_key <- function(geom, side, env = parent.frame()) {
-  ggprotoGeom <- eval(geom, envir = env)
-  args <- ggproto_formals0(ggprotoGeom$draw_key)
-  has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
-  body <- if (has_self) {
-    args <- args[setdiff(names(args), "self")]
-    expr({
-      data <- use_side_aes(data, !!side)
-      data <- data_unmap(data, !!side)
-      parent <- ggproto_parent(!!geom, self)
-      parent$draw_key(!!!args)
-    })
-  } else {
-    expr({
-      data <- use_side_aes(data, !!side)
-      data <- data_unmap(data, !!side)
-      (!!geom)$draw_key(!!!args)
-    })
-  }
-  rlang::new_function(
-    args = ggproto_formals(ggprotoGeom$draw_key),
-    body = body,
-    env = env
-  )
-}
 
 #' @name ggside_geom
 #' @title ggside geom constructor
@@ -315,8 +207,7 @@ zap_dots <- function(call, zap = character(), ...) {
   call <- call_modify(call, ... = zap(), !!!dots)
   if (length(zap) > 0) {
     to_zap <- rep_named(zap, list(zap()))
-    dots_zapped <- dots[!names(dots) %in% zap]
-    call <- call_modify(call, !!!dots_zapped)
+    call <- call_modify(call, !!!to_zap)
   }
   call
 }
