@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include side-layout-.r
+#' @include sideCoord-Cartesian.R
+NULL
+### INCLUDE END
 
 
 as_ggside <- function(x, ...) UseMethod('as_ggside')

@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include utils-calls.R
+NULL
+### INCLUDE END
 
 # is_active <- function(f) {
 #   class(f) <- "is_active"

@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include performance.R
+NULL
+### INCLUDE END
 
 #' Adds missing elements to a vector from a default vector
 #'

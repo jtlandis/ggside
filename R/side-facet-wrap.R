@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include side-facet_utils.R
+NULL
+### INCLUDE END
 
 convertInd <- function(row, col, nrow) {
   (col - 1) * nrow + row

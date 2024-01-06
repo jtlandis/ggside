@@ -1,3 +1,11 @@
+### INCLUDE BEGIN
+#' @include side-layer2.R
+#' @include utils-.R
+#' @include utils-calls.R
+#' @include utils-constructors.R
+#' @include utils-ggproto.R
+NULL
+### INCLUDE END
 
 #' @name ggside_layer
 #' @title New ggside layer

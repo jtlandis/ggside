@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include scales-sides-.R
+NULL
+### INCLUDE END
 
 #' @title Side boxplots
 #' @description

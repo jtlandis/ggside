@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include ggside.R
+NULL
+### INCLUDE END
 
 clone_ggside <- function(ggside) {
   new_ggside <- ggside(x.pos = ggside$x.pos,

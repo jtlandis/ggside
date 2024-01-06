@@ -1,3 +1,9 @@
+### INCLUDE BEGIN
+#' @include ggplot_build.r
+#' @include ggside.R
+#' @include plot-construction.R
+NULL
+### INCLUDE END
 
 clone_ggside_plot <- function(plot) {
   #does not clone scales, we should assume they

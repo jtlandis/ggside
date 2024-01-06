@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include performance.R
+NULL
+### INCLUDE END
 
 
 find_build_plotEnv <- function(){

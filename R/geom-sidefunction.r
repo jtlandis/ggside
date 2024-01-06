@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include performance.R
+#' @include side-layer.R
+NULL
+### INCLUDE END
 #' @title Side function plot
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_function}

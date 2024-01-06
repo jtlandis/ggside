@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include side-facet-wrap.R
+#' @include side-facet_utils.R
+NULL
+### INCLUDE END
 
 sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges, coord, data, theme, params) {
 
