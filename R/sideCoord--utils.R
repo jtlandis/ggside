@@ -2,8 +2,14 @@
 
 panel_guides_grob <- function (guides, position, theme)
 {
-  guide <- guide_for_position(guides, position) %||% guide_none()
-  guide_gengrob(guide, theme)
+  if (!inherits(guides, "Guides")) {
+    guide <- guide_for_position(guides, position) %||% guide_none()
+    guide_gengrob(guide, theme)
+  } else {
+    pair <- guides$get_position(position)
+    pair$guide$draw(theme, params = pair$params)
+  }
+
 }
 
 as_ggside_axis <- function(x) {
@@ -23,9 +29,20 @@ guide_for_position <- function (guides, position)
 }
 
 ggside_panel_guides_grob <- function(guides, position, theme) {
-  guide <- guide_for_position(guides, position) %||% guide_none()
-  guide <- as_ggside_axis(guide)
-  guide_gengrob(guide, theme)
+  if (inherits(guides, "Guides")) {
+    pair <- guides$get_position(position)
+    # # To use new guide system activate the line below
+    # pair$guide$draw(theme, params = pair$params)
+    # # And deactivate the line below up until the `} else {` line
+    if (inherits(pair$params$angle, "waiver")) {
+      pair$params$angle <- NULL
+    }
+    guide_gengrob.ggside_axis(pair$params, theme)
+  } else {
+    guide <- guide_for_position(guides, position) %||% guide_none()
+    guide <- as_ggside_axis(guide)
+    guide_gengrob(guide, theme)
+  }
 }
 
 
