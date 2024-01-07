@@ -1,5 +1,6 @@
 ### INCLUDE BEGIN
 #' @include ggside.R
+#' @include side-facet_.R
 #' @include side-layout-.r
 #' @include sideCoord-Cartesian.R
 NULL

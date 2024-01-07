@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include Layer.r
 #' @include utils-calls.R
 NULL
 ### INCLUDE END

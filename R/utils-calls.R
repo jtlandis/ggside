@@ -1,5 +1,6 @@
 ### INCLUDE BEGIN
 #' @include all-utilities-.R
+#' @include side-facet-ggplot_clones.R
 NULL
 ### INCLUDE END
 

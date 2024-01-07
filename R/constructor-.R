@@ -4,8 +4,9 @@
 #' @include compat-plyr.R
 #' @include side-layer2.R
 #' @include utils-.R
-#' @include utils-ggproto.R
+#' @include utils-calls.R
 #' @include utils-constructors.R
+#' @include utils-ggproto.R
 NULL
 ### INCLUDE END
 

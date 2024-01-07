@@ -1,7 +1,9 @@
 ### INCLUDE BEGIN
 #' @include ggplot_add.R
 #' @include ggside.R
+#' @include side-facet_.R
 #' @include sideCoord-Cartesian.R
+#' @include z-depricated.R
 NULL
 ### INCLUDE END
 validate_ggside <- function(e2, plot) UseMethod('validate_ggside')

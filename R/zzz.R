@@ -1,8 +1,3 @@
-### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include ggside-themes.R
-NULL
-### INCLUDE END
 
 #' @title ggside custom themes
 #' @name ggside-theme

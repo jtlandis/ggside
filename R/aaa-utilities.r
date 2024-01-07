@@ -1,8 +1,6 @@
 ### INCLUDE BEGIN
+#' @include Layer.r
 #' @include aab-other_utils.r
-#' @include compat-plyr.R
-#' @include performance.R
-#' @include utils-ggproto.R
 NULL
 ### INCLUDE END
 NO_PANEL <- -1L

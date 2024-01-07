@@ -1,6 +1,5 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include constructor-2.R
+#' @include constructor-.R
 NULL
 ### INCLUDE END
 #' @title Side Violin plots

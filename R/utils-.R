@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include aaa-utilities.r
+NULL
+### INCLUDE END
 
 .ggside_global <- new.env(parent = emptyenv())
 .ggside_global$.y_aes <- c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final",

@@ -1,9 +1,8 @@
 ### INCLUDE BEGIN
 #' @include aaa-utilities.r
-#' @include aab-other_utils.r
-#' @include compat-plyr.R
 #' @include performance.R
 #' @include plot-construction.R
+#' @include side-facet-ggplot_clones.R
 NULL
 ### INCLUDE END
 

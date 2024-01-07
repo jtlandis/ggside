@@ -1,5 +1,9 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
 #' @include ggside.R
+#' @include side-facet-grid.R
+#' @include side-facet-null.R
+#' @include side-facet-wrap.R
 #' @include side-facet_utils.R
 #' @include utils-.R
 #' @include utils-calls.R

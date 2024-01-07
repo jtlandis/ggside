@@ -1,7 +1,5 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include constructor-2.R
-#' @include scales-sides-.R
+#' @include constructor-.R
 NULL
 ### INCLUDE END
 

@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include constructor-2.R
+#' @include constructor-.R
 NULL
 ### INCLUDE END
 #' @rdname geom_xsidebar

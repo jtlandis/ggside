@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include aab-other_utils.r
+#' @include performance.R
+NULL
+### INCLUDE END
 
 
 # Check inputs with tibble but allow column vectors (see #2609 and #2374)
