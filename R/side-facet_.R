@@ -1,6 +1,6 @@
 ### INCLUDE BEGIN
+#' @include utils-side-facet.R
 #' @include ggside.R
-#' @include side-facet_utils.R
 #' @include utils-.R
 #' @include utils-calls.R
 #' @include utils-ggproto.R

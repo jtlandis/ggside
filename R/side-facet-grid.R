@@ -1,9 +1,9 @@
 ### INCLUDE BEGIN
-#' @include ggplot2-reimpl-.R
+#' @include utils-ggplot2-reimpl-.R
+#' @include utils-side-facet.R
 #' @include utils-.R
 #' @include compat-plyr.R
 #' @include side-facet-wrap.R
-#' @include side-facet_utils.R
 NULL
 ### INCLUDE END
 

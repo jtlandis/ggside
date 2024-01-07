@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include ggplot2-reimpl-.R
+#' @include utils-ggplot2-reimpl-.R
 #' @include compat-plyr.R
 #' @include performance.R
 NULL

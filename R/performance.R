@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include ggplot2-reimpl-.R
+#' @include utils-ggplot2-reimpl-.R
 NULL
 ### INCLUDE END
 # Taken from ggplot2

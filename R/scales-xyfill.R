@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include ggplot2-reimpl-.R
+#' @include utils-ggplot2-reimpl-.R
 NULL
 ### INCLUDE END
 #' Scales for the *fill aesthetics

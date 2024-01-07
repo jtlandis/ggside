@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include constructor-.R
+#' @include utils-ggplot2-reimpl-.R
+NULL
+### INCLUDE END
 
 NO_PANEL <- -1L
 PANEL_TYPE <- c("x","y", "main")
