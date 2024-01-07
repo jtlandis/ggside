@@ -1,7 +1,6 @@
 ### INCLUDE BEGIN
 #' @include utils-ggplot2-reimpl-.R
 #' @include utils-.R
-#' @include plot-construction.R
 #' @include side-facet-ggplot_clones.R
 NULL
 ### INCLUDE END
@@ -359,4 +358,24 @@ unrowname <- function(x) {
 }
 
 
+check_collapse <- function(collapse, sides){
+  if(!is.null(collapse)){
+    if(length(sides)==0) {
+      warn(glue('collapse set to "{collapse}" but no side geometry used. Setting collapse to NULL.'))
+      return(NULL)
+    } else if(collapse=="all"&!all(c("x","y") %in% sides)){
+      warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
+      return(sides)
+    } else if(collapse %in% c("x","y") && !collapse %in% sides){
+      warn(glue('collapse set to "{collapse}", but no {collapse}side geometry used. Setting collapse to NULL.'))
+      return(NULL)
+    }
+  }
+  return(collapse)
+}
 
+# used   all , x , y
+# none   N     N   N
+# x      x     +   N
+# y      y     N   +
+# x, y   +     +   +

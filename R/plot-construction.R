@@ -56,22 +56,6 @@ update_ggside.ggplot <- function(object, ggside = NULL){
 }
 
 
-
-muffle_opts_warn <- function(f) {
-  function(...) {
-    withCallingHandlers(
-      warning = function(cnd) {
-        msg <- conditionMessage(cnd)
-        if (grepl(".(<|>). not meaningful for factors", msg)) {
-          rlang::cnd_muffle(cnd)
-        }
-      },
-      f(...)
-    )
-  }
-}
-
-
 get_sides <- function(layers){
   layer_mappings <- lapply(layers, layer_type)
   sides_used <- unlist(layer_mappings)
@@ -81,24 +65,4 @@ get_sides <- function(layers){
 
 
 
-check_collapse <- function(collapse, sides){
-  if(!is.null(collapse)){
-    if(length(sides)==0) {
-      warn(glue('collapse set to "{collapse}" but no side geometry used. Setting collapse to NULL.'))
-      return(NULL)
-    } else if(collapse=="all"&!all(c("x","y") %in% sides)){
-      warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
-      return(sides)
-    } else if(collapse %in% c("x","y") && !collapse %in% sides){
-      warn(glue('collapse set to "{collapse}", but no {collapse}side geometry used. Setting collapse to NULL.'))
-      return(NULL)
-    }
-  }
-  return(collapse)
-}
 
-# used   all , x , y
-# none   N     N   N
-# x      x     +   N
-# y      y     N   +
-# x, y   +     +   +
