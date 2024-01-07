@@ -30,9 +30,7 @@ remove_missing <- function(df, na.rm = FALSE, vars = names(df), name = "",
     if (!na.rm) {
       if (name != "") name <- paste(" (", name, ")", sep = "")
       str <- if (finite) "non-finite" else "missing"
-      warning_wrap(
-        "Removed ", sum(missing), " rows containing ", str, " values", name, "."
-      )
+      cli::cli_warn("Removed {sum(missing)} row{?s} containing {str} value{?s} {name}")
     }
   }
 
@@ -59,32 +57,6 @@ cases <- function(x, fun) {
   }
 }
 
-# Wrapper around is.finite to handle list cols
-is_finite <- function(x) {
-  if (typeof(x) == "list") {
-    !vapply(x, is.null, logical(1))
-  } else {
-    is.finite(x)
-  }
-}
-
-is_complete <- function(x) {
-  if (typeof(x) == "list") {
-    !vapply(x, is.null, logical(1))
-  } else {
-    !is.na(x)
-  }
-}
-
-
-should_stop <- function(expr) {
-  res <- try(print(force(expr)), TRUE)
-  if (!inherits(res, "try-error")) {
-    abort("No error!")
-  }
-  invisible()
-}
-
 
 #' A waiver object.
 #'
@@ -99,28 +71,6 @@ waiver <- function() structure(list(), class = "waiver")
 
 is.waive <- function(x) inherits(x, "waiver")
 
-
-rescale01 <- function(x) {
-  rng <- range(x, na.rm = TRUE)
-  (x - rng[1]) / (rng[2] - rng[1])
-}
-
-binned_pal <- function(palette) {
-  function(x) {
-    palette(length(x))
-  }
-}
-
-
-
-has_name <- function(x) {
-  nms <- names(x)
-  if (is.null(nms)) {
-    return(rep(FALSE, length(x)))
-  }
-
-  !is.na(nms) & nms != ""
-}
 
 # Use chartr() for safety since toupper() fails to convert i to I in Turkish locale
 lower_ascii <- "abcdefghijklmnopqrstuvwxyz"
@@ -166,18 +116,6 @@ is.discrete <- function(x) {
   is.factor(x) || is.character(x) || is.logical(x)
 }
 
-# This function checks that all columns of a dataframe `x` are data and returns
-# the names of any columns that are not.
-# We define "data" as atomic types or lists, not functions or otherwise.
-# The `inherits(x, "Vector")` check is for checking S4 classes from Bioconductor
-# and wether they can be expected to follow behavior typical of vectors. See
-# also #3835
-check_nondata_cols <- function(x) {
-  idx <- (vapply(x, function(x) {
-    is.null(x) || rlang::is_vector(x) || inherits(x, "Vector")
-  }, logical(1)))
-  names(x)[which(!idx)]
-}
 
 compact <- function(x) {
   null <- vapply(x, is.null, logical(1))
@@ -185,33 +123,6 @@ compact <- function(x) {
 }
 
 is.formula <- function(x) inherits(x, "formula")
-
-deparse2 <- function(x) {
-  y <- deparse(x, backtick = TRUE)
-  if (length(y) == 1) {
-    y
-  } else {
-    paste0(y[[1]], "...")
-  }
-}
-
-message_wrap <- function(...) {
-  msg <- paste(..., collapse = "", sep = "")
-  wrapped <- strwrap(msg, width = getOption("width") - 2)
-  message(paste0(wrapped, collapse = "\n"))
-}
-
-warning_wrap <- function(...) {
-  msg <- paste(..., collapse = "", sep = "")
-  wrapped <- strwrap(msg, width = getOption("width") - 2)
-  warn(glue_collapse(wrapped, "\n", last = "\n"))
-}
-
-
-
-
-
-
 
 
 split_with_index <- function(x, f, n = max(f)) {
