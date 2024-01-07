@@ -1,6 +1,5 @@
 ### INCLUDE BEGIN
 #' @include constructor-.R
-#' @include side-layer.R
 #' @include utils-.R
 #' @include utils-constructors.R
 #' @include utils-ggproto.R

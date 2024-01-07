@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include sideCoord--utils.R
+#' @include utils-side-coord.R
 NULL
 ### INCLUDE END
 

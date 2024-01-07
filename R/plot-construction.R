@@ -1,8 +1,8 @@
 ### INCLUDE BEGIN
+#' @include side-coord-cartesian.R
 #' @include ggside.R
 #' @include side-facet_.R
 #' @include side-layout-.r
-#' @include sideCoord-Cartesian.R
 NULL
 ### INCLUDE END
 

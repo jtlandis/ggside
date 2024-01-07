@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include utils-ggplot2-reimpl-.R
 #' @include side-layer.R
 #' @include utils-.R
 #' @include utils-calls.R

@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include utils-ggplot2-reimpl-.R
 #' @include utils-calls.R
 NULL
 ### INCLUDE END

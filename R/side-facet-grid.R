@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include side-facet-ggplot_clones.R
 #' @include utils-ggplot2-reimpl-.R
 #' @include utils-side-facet.R
 #' @include utils-.R

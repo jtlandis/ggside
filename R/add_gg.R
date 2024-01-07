@@ -1,7 +1,7 @@
 ### INCLUDE BEGIN
+#' @include side-coord-cartesian.R
 #' @include ggplot_add.R
 #' @include side-facet_.R
-#' @include sideCoord-Cartesian.R
 #' @include z-depricated.R
 NULL
 ### INCLUDE END

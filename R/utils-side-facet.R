@@ -1,7 +1,6 @@
 ### INCLUDE BEGIN
 #' @include utils-ggplot2-reimpl-.R
 #' @include utils-.R
-#' @include side-facet-ggplot_clones.R
 NULL
 ### INCLUDE END
 
