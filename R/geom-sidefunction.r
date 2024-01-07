@@ -1,7 +1,6 @@
 ### INCLUDE BEGIN
 #' @include utils-ggplot2-reimpl-.R
 #' @include constructor-.R
-#' @include performance.R
 #' @include side-layer.R
 NULL
 ### INCLUDE END

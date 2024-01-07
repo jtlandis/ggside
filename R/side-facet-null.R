@@ -1,8 +1,6 @@
 ### INCLUDE BEGIN
 #' @include utils-ggplot2-reimpl-.R
 #' @include utils-side-facet.R
-#' @include compat-plyr.R
-#' @include performance.R
 #' @include side-facet-wrap.R
 NULL
 ### INCLUDE END

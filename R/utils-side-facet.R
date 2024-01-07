@@ -1,7 +1,6 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
+#' @include utils-ggplot2-reimpl-.R
 #' @include utils-.R
-#' @include performance.R
 #' @include plot-construction.R
 #' @include side-facet-ggplot_clones.R
 NULL
@@ -192,8 +191,6 @@ min_factor <- function(x){
   unique(x[x%in%min_])
 }
 
-
-
 wrapup <- function(df, by, ...){
   if(...length()==0) return(df)
   indx <- interaction(df[,by], drop = T)
@@ -336,4 +333,30 @@ semi_join <- function(x, y, by) {
   keys <- join_keys(x, y, by)
   x[keys$x%in%keys$y,]
 }
+
+# Adapted from plyr::join.keys
+# Create a shared unique id across two data frames such that common variable
+# combinations in the two data frames gets the same id
+join_keys <- function(x, y, by) {
+  joint <- vec_rbind(!!!list(x[by], y[by]))
+  keys <- id(joint, drop = TRUE)
+  n_x <- nrow(x)
+  n_y <- nrow(y)
+  list(x = keys[seq_len(n_x)], y = keys[n_x + seq_len(n_y)],
+       n = attr(keys, "n"))
+}
+
+# Remove rownames from data frames and matrices
+unrowname <- function(x) {
+  if (is.data.frame(x)) {
+    attr(x, "row.names") <- .set_row_names(.row_names_info(x, 2L))
+  } else if (is.matrix(x)) {
+    dimnames(x)[1] <- list(NULL)
+  } else {
+    abort("Can only remove rownames from data.frame and matrix objects")
+  }
+  x
+}
+
+
 
