@@ -1,8 +1,3 @@
-### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include ggplot2-reimpl-.R
-NULL
-### INCLUDE END
 # Environment that holds various global variables and settings for ggplot,
 # such as the current theme. It is not exported and should not be directly
 # manipulated by other packages.

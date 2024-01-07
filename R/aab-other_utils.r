@@ -1,5 +1,4 @@
 ### INCLUDE BEGIN
-#' @include aes-evaluation.r
 #' @include compat-plyr.R
 #' @include ggplot2-reimpl-.R
 #' @include performance.R

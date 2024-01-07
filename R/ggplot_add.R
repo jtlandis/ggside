@@ -1,8 +1,5 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include side-layer.R
 #' @include ggplot_build.r
-#' @include ggside.R
 #' @include plot-construction.R
 NULL
 ### INCLUDE END

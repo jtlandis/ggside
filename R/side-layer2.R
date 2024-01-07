@@ -1,9 +1,5 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include ggside.R
-#' @include plot-construction.R
 #' @include aab-other_utils.r
-#' @include aes-evaluation.r
 #' @include constructor-.R
 #' @include side-layer.R
 #' @include utils-.R

@@ -1,7 +1,3 @@
-### INCLUDE BEGIN
-#' @include compat-plyr.R
-NULL
-### INCLUDE END
 
 
 after_stat <- function(x) {

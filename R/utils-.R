@@ -1,10 +1,3 @@
-### INCLUDE BEGIN
-#' @include aab-other_utils.r
-#' @include compat-plyr.R
-#' @include ggplot2-reimpl-.R
-#' @include ggside.R
-NULL
-### INCLUDE END
 
 NO_PANEL <- -1L
 PANEL_TYPE <- c("x","y", "main")

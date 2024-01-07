@@ -1,7 +1,4 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include ggplot2-reimpl-.R
-#' @include ggside.R
 #' @include utils-.R
 #' @include performance.R
 #' @include plot-construction.R

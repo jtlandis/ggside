@@ -1,6 +1,4 @@
 ### INCLUDE BEGIN
-#' @include Layer.r
-#' @include compat-plyr.R
 #' @include aab-other_utils.r
 #' @include performance.R
 NULL

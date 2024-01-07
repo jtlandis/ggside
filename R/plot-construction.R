@@ -1,6 +1,4 @@
 ### INCLUDE BEGIN
-#' @include aab-other_utils.r
-#' @include compat-plyr.R
 #' @include ggside.R
 #' @include side-facet_.R
 #' @include side-layout-.r

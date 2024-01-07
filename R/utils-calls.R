@@ -1,9 +1,3 @@
-### INCLUDE BEGIN
-#' @include compat-plyr.R
-#' @include ggplot2-reimpl-.R
-#' @include side-facet-ggplot_clones.R
-NULL
-### INCLUDE END
 
 
 zap_dots <- function(call, zap = character(), ...) {

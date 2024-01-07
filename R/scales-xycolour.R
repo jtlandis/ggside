@@ -1,5 +1,4 @@
 ### INCLUDE BEGIN
-#' @include compat-plyr.R
 #' @include aab-other_utils.r
 NULL
 ### INCLUDE END
