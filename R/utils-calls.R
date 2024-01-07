@@ -37,7 +37,19 @@ call_layer_param_aware <-
     layer
 }
 
-
+modify_body <- function(call_body, from, to) {
+  for (i in seq_along(call_body)) {
+    call <- call_body[[i]]
+    if(!rlang::is_missing(call)) {
+      if(identical(call, from)) {
+        call_body[[i]] <- to
+      } else if (length(call)>1) {
+        call_body[[i]] <- modify_body(call, from, to)
+      }
+    }
+  }
+  call_body
+}
 
 list_of_calls <- function(x) {
   vapply(x, function(y) is.call(y) || is.name(y) || (length(y)==1 && is.character(y)), logical(1))

@@ -16,6 +16,13 @@ NULL
 #' @aliases as_ggsideFacet
 #'
 
+deprecated_fun <- function(fun) {
+  fun_sub <- substitute(fun)
+  function(...) {
+    .Deprecated(deparse1(fun_sub), package = "ggside")
+    fun(...)
+  }
+}
 
 #' @rdname ggside-deprecated
 #' @usage NULL
