@@ -154,80 +154,6 @@ uniquecols <- function(df) {
 
 
 
-rbind_dfs <- function(dfs) {
-  out <- list()
-  columns <- unique(unlist(lapply(dfs, names)))
-  nrows <- vapply(dfs, .row_names_info, integer(1), type = 2L)
-  total <- sum(nrows)
-  if (length(columns) == 0) return(new_data_frame(list(), total))
-  allocated <- rep(FALSE, length(columns))
-  names(allocated) <- columns
-  col_levels <- list()
-  ord_levels <- list()
-  for (df in dfs) {
-    new_columns <- intersect(names(df), columns[!allocated])
-    for (col in new_columns) {
-      if (is.factor(df[[col]])) {
-        all_ordered <- all(vapply(dfs, function(df) {
-          val <- .subset2(df, col)
-          is.null(val) || is.ordered(val)
-        }, logical(1)))
-        all_factors <- all(vapply(dfs, function(df) {
-          val <- .subset2(df, col)
-          is.null(val) || is.factor(val)
-        }, logical(1)))
-        if (all_ordered) {
-          ord_levels[[col]] <- unique(unlist(lapply(dfs, function(df) levels(.subset2(df, col)))))
-        } else if (all_factors) {
-          col_levels[[col]] <- unique(unlist(lapply(dfs, function(df) levels(.subset2(df, col)))))
-        }
-        out[[col]] <- rep(NA_character_, total)
-      } else {
-        out[[col]] <- rep(.subset2(df, col)[1][NA], total)
-      }
-    }
-    allocated[new_columns] <- TRUE
-    if (all(allocated)) break
-  }
-  is_date <- lapply(out, inherits, 'Date')
-  is_time <- lapply(out, inherits, 'POSIXct')
-  pos <- c(cumsum(nrows) - nrows + 1)
-  for (i in seq_along(dfs)) {
-    df <- dfs[[i]]
-    rng <- seq(pos[i], length.out = nrows[i])
-    for (col in names(df)) {
-      date_col <- inherits(df[[col]], 'Date')
-      time_col <- inherits(df[[col]], 'POSIXct')
-      if (is_date[[col]] && !date_col) {
-        out[[col]][rng] <- as.Date(
-          unclass(df[[col]]),
-          origin = ggplot_global$date_origin
-        )
-      } else if (is_time[[col]] && !time_col) {
-        out[[col]][rng] <- as.POSIXct(
-          unclass(df[[col]]),
-          origin = ggplot_global$time_origin
-        )
-      } else if (date_col || time_col || inherits(df[[col]], 'factor')) {
-        out[[col]][rng] <- as.character(df[[col]])
-      } else {
-        out[[col]][rng] <- df[[col]]
-      }
-    }
-  }
-  for (col in names(ord_levels)) {
-    out[[col]] <- ordered(out[[col]], levels = ord_levels[[col]])
-  }
-  for (col in names(col_levels)) {
-    out[[col]] <- factor(out[[col]], levels = col_levels[[col]])
-  }
-  attributes(out) <- list(
-    class = "data.frame",
-    names = names(out),
-    row.names = .set_row_names(total)
-  )
-  out
-}
 
 check_required_aesthetics <- function(required, present, name) {
   if (is.null(required)) return()
@@ -274,7 +200,7 @@ dapply <- function(df, by, fun, ..., drop = TRUE) {
 
   ids <- id(grouping_cols, drop = drop)
   group_rows <- split_with_index(seq_len(nrow(df)), ids)
-  rbind_dfs(lapply(seq_along(group_rows), function(i) {
+  vec_rbind(!!!lapply(seq_along(group_rows), function(i) {
     cur_data <- df_rows(df, group_rows[[i]])
     apply_fun(cur_data)
   }))
@@ -327,7 +253,7 @@ do_by <- function(data, by, fun, ...){
   order_cache <- do.call('order', lapply(by, function(x){data[[x]]}))
   data <- data[order_cache,]
   split_by <- interaction(data[,by, drop = F], drop = T, lex.order = T)
-  data <- rbind_dfs(lapply(split(data, split_by), FUN = fun, ...))
+  data <- vec_rbind(!!!lapply(split(data, split_by), FUN = fun, ...))
   data <- data[order(order_cache),]
   rownames(data) <- seq_len(nrow(data))
   data

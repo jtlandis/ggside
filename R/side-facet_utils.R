@@ -127,7 +127,7 @@ sidePanelLayout <- function(layout,
       x_collapse$SCALE_Y <- 0
       x_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"x",
                                                            c("ROW_trans","COL_trans")]
-      layout <- rbind_dfs(list(layout, x_collapse))
+      layout <- vec_rbind(layout, x_collapse)
       if(x.pos=="bottom"){
         layout[["ROW"]] <- layout[["ROW"]] + ifelse(layout[["ROW_trans"]]=="bottom", max(layout[["ROW"]])+1, 0L)
       } else {
@@ -147,7 +147,7 @@ sidePanelLayout <- function(layout,
       y_collapse$SCALE_X <- 0
       y_collapse[,c("ROW_trans","COL_trans")] <- collapsed[collapsed$PANEL_TYPE%in%"y",
                                                            c("ROW_trans","COL_trans")]
-      layout <- rbind_dfs(list(layout, y_collapse))
+      layout <- vec_rbind(layout, y_collapse)
       if(y.pos=="right"){
         layout[["COL"]] <- layout[["COL"]] + ifelse(layout[["COL_trans"]]=="right", max(layout[["COL"]])+1, 0L)
       } else {
@@ -208,7 +208,7 @@ wrapup <- function(df, by, ...){
     x[,names(d)] <- wrap
     x
   }, d = dots_)
-  data <- rbind_dfs(l_)
+  data <- vec_rbind(!!!l_)
   data
 }
 
@@ -224,7 +224,7 @@ unwrap <- function(df, by, cols = NULL){
     if(nrow(x)!=1) stop("by must uniquely index df")
     cbind(x[rep(1, nrow(nest)),], nest)
   })
-  data <- rbind_dfs(l_)
+  data <- vec_rbind(!!!l_)
   data
 }
 

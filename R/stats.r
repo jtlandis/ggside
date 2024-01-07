@@ -73,7 +73,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                     self$compute_group(data = group, fun = fun, args = args)
                                   })
 
-                                  rbind_dfs(stats)
+                                  vec_rbind(stats)
                                 },
                                 compute_group = function(self, data, scales,  fun = NULL, args = args){
 
@@ -141,7 +141,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                       self$compute_group(data = group, fun = fun, args = args)
                                     })
 
-                                    rbind_dfs(stats)
+                                    vec_rbind(stats)
                                   },
                                   compute_group = function(self, data, scales,  fun = NULL, args = args){
 
