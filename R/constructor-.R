@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include side-layer2.R
+#' @include side-layer.R
 #' @include utils-.R
 #' @include utils-calls.R
 #' @include utils-constructors.R
@@ -171,7 +171,7 @@ ggside_layer_function <-
         stat = stat,
         mapping = mapping
       )
-      new_ggside_layer2(SideLayer, !!side, remap)
+      new_ggside_layer(SideLayer, !!side, remap)
     })
 
     new_function(formals_,
