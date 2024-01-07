@@ -11,6 +11,7 @@
 
 ### Updates
 
+
 * The `ggside_options` object now inherits from `ggproto` instead of a list.
 * The `ggside_options` defaults arguments are now `NULL`. This will help update the object appropriately without overriding previous options specified through `ggside()`.
 * `ggside` now subclasses `Layout` allowing for better control of how side scales are trained. This feature may be relatively unstable depending on the version of `ggplot2` installed. 
@@ -23,6 +24,7 @@
 * The following functions have been deprecated
   * `as_ggsideFacet` -> `ggside_facet`
   * `as_ggsideCoord` -> `ggside_coord`
+* Much of the syntax for creating a compatible `ggside` layer has been wrapped into `ggside_layer`, which is similar to `ggplot2::layer` except with an additional argument `side`. This will allow users to attempt to make a compatible `ggside_layer` object with custom Geom and Stat combinations. Ideally, the user should not have to modify the Geom or Stat directly, as this is handled by subclassing the Layer ggproto class directly.
 
 # ggside 0.2.3
 
