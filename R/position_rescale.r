@@ -5,6 +5,40 @@ NULL
 ### INCLUDE END
 
 
+find_build_plotEnv <- function(){
+  items <- lapply(sys.frames(), ls)
+  expected_items <- c("by_layer","data","layer_data",
+                      "layers","layout","plot","scale_x",
+                      "scale_y","scales")
+  EnvIndex <- unlist(lapply(items, function(x,y){sum(y%in%x)}, y = expected_items))
+  Env <- sys.frames()[which(EnvIndex==max(EnvIndex))]
+  return(Env[[1]])
+}
+
+get_variable <- function(x, envir){
+  if(is.null(envir)) return(NULL)
+  if(!x%in%ls(envir, all.names = T)) return(NULL)
+  return(get(x, envir = envir))
+}
+
+grab_Main_Mapping <- function(env = NULL){
+  if(is.null(env)|!is.environment(env)){
+    env <- find_build_plotEnv()
+  }
+  p <- get_variable("plot", env)
+  # Evaluate aesthetics
+  evaled <- lapply(p$mapping, eval_tidy, data = p$data)
+  evaled <- compact(evaled)
+  evaled <- as_gg_data_frame(evaled)
+  evaled[,names(evaled)] <- lapply(evaled, FUN = function(x){
+    if(!(is.numeric(x)|is.integer(x))) return(as.numeric(as.factor(x)))
+    return(x)
+  })
+  return(evaled)
+}
+
+#Very old code, will probably remove
+
 #Position rescale
 
 #' Rescale x or y onto new range in margin

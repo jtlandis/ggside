@@ -3,6 +3,10 @@
 NULL
 ### INCLUDE END
 
+ggname <- function(prefix, grob) {
+  grob$name <- grobName(grob, prefix)
+  grob
+}
 
 panel_guides_grob <- function (guides, position, theme, labels = NULL)
 {

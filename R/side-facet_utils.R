@@ -317,3 +317,22 @@ calc_panel_spacing <- function(ggside, layout, top, right, bot, left) {
 
 }
 
+do_by <- function(data, by, fun, ...){
+  order_cache <- do.call('order', lapply(by, function(x){data[[x]]}))
+  data <- data[order_cache,]
+  split_by <- interaction(data[,by, drop = F], drop = T, lex.order = T)
+  data <- vec_rbind(!!!lapply(split(data, split_by), FUN = fun, ...))
+  data <- data[order(order_cache),]
+  rownames(data) <- seq_len(nrow(data))
+  data
+}
+
+anti_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[!keys$x%in%keys$y,]
+}
+semi_join <- function(x, y, by) {
+  keys <- join_keys(x, y, by)
+  x[keys$x%in%keys$y,]
+}
+

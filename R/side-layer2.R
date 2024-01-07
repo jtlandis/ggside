@@ -177,3 +177,41 @@ drop_plot_aes <- function(plot_map, layer_map, side) {
 
   plot_map
 }
+
+#' @rdname ggside-ggproto-geoms
+#' @export
+parse_side_aes <- function(data, params){
+  #determine if fill, xfill, or yfill should be used
+  all_names <- c(colnames(data))
+  if(any(c("fill", "xfill", "yfill")%in% all_names)) {
+    fill_opts <- all_names[all_names %in% c("fill", "xfill", "yfill")]
+    side_fill <- c("xfill","yfill")%in%fill_opts
+    if(any(side_fill)){
+      fill_prec <- c("xfill","yfill")[side_fill]
+    } else {
+      fill_prec <- "fill"
+    }
+    data[[fill_prec]] <- data[[fill_prec]]
+    exclude <- fill_opts[!fill_opts %in% fill_prec]
+    if(length(exclude)!=0){
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
+    }
+  }
+
+  if(any(c("colour", "xcolour", "ycolour")%in% all_names)) {
+    colour_opts <- all_names[all_names %in% c("colour", "xcolour", "ycolour")]
+    side_colour <- c("xcolour","ycolour")%in%colour_opts
+    if(any(side_colour)){
+      colour_prec <- c("xcolour","ycolour")[side_colour]
+    } else {
+      colour_prec <- "colour"
+    }
+    data[[colour_prec]] <- data[[colour_prec]]
+    exclude <- colour_opts[!colour_opts %in% colour_prec]
+    if(length(exclude)!=0){
+      data <- data[, setdiff(colnames(data), exclude), drop = F]
+    }
+  }
+
+  return(data)
+}
