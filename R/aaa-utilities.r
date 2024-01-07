@@ -41,6 +41,22 @@ detect_missing <- function(df, vars, finite = FALSE) {
   !cases(df[, vars, drop = FALSE], if (finite) is_finite else is_complete)
 }
 
+is_finite <- function(x) {
+  if (typeof(x)=="list") {
+    !vapply(x, is.null, logical(1))
+  } else {
+    is.finite(x)
+  }
+}
+
+is_complete <- function(x) {
+  if (typeof(x) == "list") {
+    !vapply(x, is.null, logical(1))
+  } else {
+    !is.na(x)
+  }
+}
+
 # Returns a logical vector of same length as nrow(x). If all data on a row
 # is finite (not NA, NaN, Inf, or -Inf) return TRUE; otherwise FALSE.
 cases <- function(x, fun) {
