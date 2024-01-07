@@ -218,7 +218,17 @@ as_gg_data_frame <- function(x) {
   new_data_frame(x)
 }
 
+validate_column_vec <- function(x) {
+  if (is_column_vec(x)) {
+    dim(x) <- NULL
+  }
+  x
+}
 
+is_column_vec <- function(x) {
+  dims <- dim(x)
+  length(dims) == 2L && dims[[2]] == 1L
+}
 
 
 
@@ -248,5 +258,4 @@ check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env
     cli::cli_abort("{argname} must be either a string or a {.cls {subclass}} object", call = call)
   }
 }
-
 

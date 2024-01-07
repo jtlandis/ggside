@@ -51,6 +51,7 @@ pull_aes <- function(x) {
   x
 }
 
+
 # utility to recode default aesthetics of a geom.
 # @returns an object of class 'uneval'
 new_default_aes <- function(geom, side) {
@@ -61,6 +62,16 @@ new_default_aes <- function(geom, side) {
   do.call('aes', c(defaults, new_defaults))
 }
 
+assert_lgl <- function(arg) {
+  arg_sym <- caller_arg(arg)
+  vctrs::vec_assert(x = arg,
+                    ptype = logical(), size = 1L,
+                    arg = arg_sym,
+                    call = parent.frame())
+  if (is.na(arg))
+    cli::cli_abort("{.arg {arg_sym}} cannot be {.obj_type_friendly {NA}}", call = parent.frame())
+
+}
 
 resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
   assert_lgl(several.ok)
