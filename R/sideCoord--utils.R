@@ -1,7 +1,3 @@
-### INCLUDE BEGIN
-#' @include aab-other_utils.r
-NULL
-### INCLUDE END
 
 ggname <- function(prefix, grob) {
   grob$name <- grobName(grob, prefix)

@@ -102,3 +102,14 @@ resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
   }
   arg
 }
+
+layer_type <- function(layer) {
+  layer_class <- str_extr(class(layer), "(X|Y)Layer")
+  val <- if(all(is.na(layer_class))){
+    "main"
+  } else {
+    layer_class <- layer_class[!is.na(layer_class)]
+    to_lower_ascii(substr(layer_class,1,1))
+  }
+  return(val)
+}

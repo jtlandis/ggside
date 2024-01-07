@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
 #' @include utils-.R
 #' @include performance.R
 #' @include plot-construction.R

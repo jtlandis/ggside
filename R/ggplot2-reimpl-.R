@@ -1,8 +1,26 @@
 ### INCLUDE BEGIN
-#' @include aab-other_utils.r
+#' @include compat-plyr.R
 #' @include performance.R
 NULL
 ### INCLUDE END
+
+
+find_global <- function (name, env, mode = "any") {
+  if (exists(name, envir = env, mode = mode)) {
+    return(get(name, envir = env, mode = mode))
+  }
+  nsenv <- asNamespace("ggplot2")
+  if (exists(name, envir = nsenv, mode = mode)) {
+    return(get(name, envir = nsenv, mode = mode))
+  }
+  nsenv <- asNamespace("ggside")
+  if (exists(name, envir = nsenv, mode = mode)) {
+    return(get(name, envir = nsenv, mode = mode))
+  }
+  NULL
+}
+
+
 
 manual_scale <- function(aesthetic, values = NULL, breaks = waiver(), name = waiver(),
                          ..., limits = NULL, call = caller_call())
