@@ -94,3 +94,8 @@ is.discrete <- function(x) {
 is.waive <- function(x) inherits(x, "waiver")
 
 is.formula <- function(x) inherits(x, "formula")
+
+compact <- function(x) {
+  null <- vapply(x, is.null, logical(1))
+  x[!null]
+}
