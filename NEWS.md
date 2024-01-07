@@ -25,6 +25,7 @@
   * `as_ggsideFacet` -> `ggside_facet`
   * `as_ggsideCoord` -> `ggside_coord`
 * Much of the syntax for creating a compatible `ggside` layer has been wrapped into `ggside_layer`, which is similar to `ggplot2::layer` except with an additional argument `side`. This will allow users to attempt to make a compatible `ggside_layer` object with custom Geom and Stat combinations. Ideally, the user should not have to modify the Geom or Stat directly, as this is handled by subclassing the Layer ggproto class directly.
+* many of the `ggside` internals have been trimmed down for redundancy, resulting in a smaller package overall.
 
 # ggside 0.2.3
 
