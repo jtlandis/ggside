@@ -29,12 +29,8 @@ eval_facets <- function (facets, data, possible_columns = NULL) {
   vars <- compact(lapply(facets, eval_facet, data, possible_columns = possible_columns))
   data_frame0(tibble::as_tibble(vars))
 }
-downto <- function (a, b) {
-  rev(upto(a, rev(b)))
-}
-upto <- function (a, b) {
-  b[seq_len(match(a, b, nomatch = 0))]
-}
+
+
 reshape_margins <- function (vars, margins = NULL) {
   if (is.null(margins) || identical(margins, FALSE))
     return(NULL)
@@ -68,37 +64,6 @@ reshape_add_margins <- function (df, vars, margins = TRUE) {
     df[vars] <- rep(list(factor("(all)")), length(vars))
     df
   })
-  do.call("rbind", margin_dfs)
+  data_frame0(!!!margin_dfs)
 }
 
-width_cm <- function (x)
-{
-  if (is.grob(x)) {
-    convertWidth(grobWidth(x), "cm", TRUE)
-  }
-  else if (is.unit(x)) {
-    convertWidth(x, "cm", TRUE)
-  }
-  else if (is.list(x)) {
-    vapply(x, width_cm, numeric(1))
-  }
-  else {
-    cli::cli_abort("Don't know how to get width of {.cls {class(x)}} object")
-  }
-}
-
-height_cm <- function (x)
-{
-  if (is.grob(x)) {
-    convertHeight(grobHeight(x), "cm", TRUE)
-  }
-  else if (is.unit(x)) {
-    convertHeight(x, "cm", TRUE)
-  }
-  else if (is.list(x)) {
-    vapply(x, height_cm, numeric(1))
-  }
-  else {
-    cli::cli_abort("Don't know how to get height of {.cls {class(x)}} object")
-  }
-}
