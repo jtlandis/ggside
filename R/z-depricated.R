@@ -1,3 +1,11 @@
+### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggside.R
+#' @include plot-construction.R
+#' @include side-facet_.R
+#' @include sideCoord-Cartesian.R
+NULL
+### INCLUDE END
 
 deprecated_fun <- function(fun) {
   fun_sub <- substitute(fun)

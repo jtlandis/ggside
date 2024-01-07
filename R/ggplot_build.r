@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
 #' @include ggside.R
 NULL
 ### INCLUDE END

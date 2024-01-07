@@ -1,4 +1,6 @@
 ### INCLUDE BEGIN
+#' @include ggside.R
+#' @include side-layer.R
 #' @include aab-other_utils.r
 #' @include aes-evaluation.r
 #' @include compat-plyr.R

@@ -1,4 +1,7 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggside.R
+#' @include side-layer.R
 #' @include constructor-.R
 NULL
 ### INCLUDE END

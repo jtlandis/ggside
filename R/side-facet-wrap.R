@@ -1,5 +1,6 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include ggplot2-reimpl-.R
+#' @include utils-.R
 #' @include aab-other_utils.r
 #' @include compat-plyr.R
 #' @include ggside.R

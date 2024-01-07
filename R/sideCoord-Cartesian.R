@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include ggside.R
 #' @include compat-plyr.R
 #' @include sideCoord--utils.R
 NULL

@@ -1,5 +1,5 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include ggplot2-reimpl-.R
 #' @include aab-other_utils.r
 #' @include performance.R
 NULL
@@ -317,4 +317,12 @@ single_value.default <- function(x, ...) {
 single_value.factor <- function(x, ...) {
   # Panels are encoded as factor numbers and can never be missing (NA)
   identical(levels(x), "1")
+}
+
+
+split_with_index <- function(x, f, n = max(f)) {
+  if (n == 1) return(list(x))
+  f <- as.integer(f)
+  attributes(f) <- list(levels = as.character(seq_len(n)), class = "factor")
+  unname(split(x, f))
 }

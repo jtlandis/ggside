@@ -1,4 +1,8 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggplot2-reimpl-.R
+#' @include ggplot_build.r
+#' @include plot-construction.R
 #' @include ggplot_add.R
 #' @include ggside.R
 #' @include side-facet_.R

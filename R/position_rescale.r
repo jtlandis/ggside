@@ -1,4 +1,6 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggplot2-reimpl-.R
 #' @include aab-other_utils.r
 #' @include performance.R
 NULL

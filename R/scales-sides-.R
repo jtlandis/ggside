@@ -1,5 +1,6 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include compat-plyr.R
+#' @include ggside.R
 #' @include utils-calls.R
 NULL
 ### INCLUDE END

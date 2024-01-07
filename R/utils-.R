@@ -1,14 +1,27 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include aab-other_utils.r
+#' @include compat-plyr.R
+#' @include ggplot2-reimpl-.R
+#' @include ggside.R
 NULL
 ### INCLUDE END
+
+NO_PANEL <- -1L
+PANEL_TYPE <- c("x","y", "main")
+self <- NULL
+
+force_panel_type_mapping <- function(mapping, type) {
+  if ("PANEL_TYPE" %in% names(mapping)) return(mapping)
+  switch(type,
+         x = aes(!!!mapping, PANEL_TYPE = "x"),
+         y = aes(!!!mapping, PANEL_TYPE = "y"))
+}
 
 .ggside_global <- new.env(parent = emptyenv())
 .ggside_global$.y_aes <- c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final",
                            "ymax_final", "lower", "middle", "upper", "y0")
 .ggside_global$.x_aes <- c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final",
                            "xmax_final", "xlower", "xmiddle", "xupper", "x0")
-
 
 `%NA%` <- function(a, b) {
   if(all(is.na(a))) b else a

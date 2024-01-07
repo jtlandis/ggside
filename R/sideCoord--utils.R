@@ -1,4 +1,7 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggside.R
+#' @include plot-construction.R
 #' @include aab-other_utils.r
 NULL
 ### INCLUDE END

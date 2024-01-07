@@ -1,4 +1,6 @@
 ### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include ggside.R
 #' @include Layer.r
 #' @include utils-calls.R
 NULL

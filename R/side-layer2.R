@@ -1,5 +1,7 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include compat-plyr.R
+#' @include ggside.R
+#' @include plot-construction.R
 #' @include aab-other_utils.r
 #' @include aes-evaluation.r
 #' @include constructor-.R

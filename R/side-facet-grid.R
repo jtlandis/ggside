@@ -1,5 +1,7 @@
 ### INCLUDE BEGIN
-#' @include aaa-utilities.r
+#' @include ggplot2-reimpl-.R
+#' @include ggside.R
+#' @include utils-.R
 #' @include aab-other_utils.r
 #' @include compat-plyr.R
 #' @include side-facet-ggplot_clones.R
