@@ -85,7 +85,7 @@ check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env
 # Check inputs with tibble but allow column vectors (see #2609 and #2374)
 as_gg_data_frame <- function(x) {
   x <- lapply(x, validate_column_vec)
-  new_data_frame(x)
+  data_frame0(!!!x)
 }
 
 validate_column_vec <- function(x) {
@@ -178,19 +178,39 @@ check_required_aesthetics <- function(required, present, name) {
   ))
 }
 
+#' Apply function to unique subsets of a data.frame
+#'
+#' This function is akin to `plyr::ddply`. It takes a single data.frame,
+#' splits it by the unique combinations of the columns given in `by`, apply a
+#' function to each split, and then reassembles the results into a sigle
+#' data.frame again.
+#'
+#' @param df A data.frame
+#' @param by A character vector of column names to split by
+#' @param fun A function to apply to each split
+#' @param ... Further arguments to `fun`
+#' @param drop Should unused factor levels in the columns given in `by` be
+#' dropped.
+#'
+#' @return A data.frame if the result of `fun` does not include the columns
+#' given in `by` these will be prepended to the result.
+#'
+#' @keywords internal
+#' @noRd
 dapply <- function(df, by, fun, ..., drop = TRUE) {
   grouping_cols <- .subset(df, by)
   fallback_order <- unique(c(by, names(df)))
   apply_fun <- function(x) {
     res <- fun(x, ...)
     if (is.null(res)) return(res)
-    if (length(res) == 0) return(new_data_frame())
+    if (length(res) == 0) return(data_frame0())
     vars <- lapply(setNames(by, by), function(col) .subset2(x, col)[1])
     if (is.matrix(res)) res <- split_matrix(res)
     if (is.null(names(res))) names(res) <- paste0("V", seq_along(res))
-    if (all(by %in% names(res))) return(new_data_frame(unclass(res)))
+    if (all(by %in% names(res))) return(data_frame0(!!!unclass(res)))
     res <- modify_list(unclass(vars), unclass(res))
-    new_data_frame(res[intersect(c(fallback_order, names(res)), names(res))])
+    res <- res[intersect(c(fallback_order, names(res)), names(res))]
+    data_frame0(!!!res)
   }
 
   # Shortcut when only one group
@@ -206,25 +226,13 @@ dapply <- function(df, by, fun, ..., drop = TRUE) {
   }))
 }
 
+split_with_index <- function(x, f, n = max(f)) {
+  if (n == 1) return(list(x))
+  f <- as.integer(f)
+  attributes(f) <- list(levels = as.character(seq_len(n)), class = "factor")
+  unname(split(x, f))
+}
 
-new_data_frame <- function(x = list(), n = NULL) {
-  if (length(x) != 0 && is.null(names(x))) {
-    abort("Elements must be named")
-  }
-  lengths <- vapply(x, length, integer(1))
-  if (is.null(n)) {
-    n <- if (length(x) == 0 || min(lengths) == 0) 0 else max(lengths)
-  }
-  for (i in seq_along(x)) {
-    if (lengths[i] == n) next
-    if (lengths[i] != 1) {
-      abort("Elements must equal the number of rows or 1")
-    }
-    x[[i]] <- rep(x[[i]], n)
-  }
-
-  class(x) <- "data.frame"
-
-  attr(x, "row.names") <- .set_row_names(n)
-  x
+data_frame0 <- function(...) {
+  data_frame(..., .name_repair = "minimal")
 }

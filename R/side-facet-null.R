@@ -177,9 +177,9 @@ sideFacetNull_draw_panels <- function(panels, layout, x_scales, y_scales,
 
 sideFacetNull_map_data <- function (data, layout, params) {
   if (is.waive(data))
-    return(new_data_frame(list(PANEL = factor())))
+    return(data_frame0(PANEL = factor()))
   if (empty(data))
-    return(new_data_frame(c(data, list(PANEL = factor()))))
+    return(data_frame0(!!!c(data, list(PANEL = factor()))))
 
   if(!"PANEL_TYPE"%in%colnames(data)){
     data$PANEL_TYPE <- "main"

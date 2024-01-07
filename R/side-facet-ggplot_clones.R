@@ -28,7 +28,7 @@ eval_facet <- function (facet, data, possible_columns = NULL) {
 
 eval_facets <- function (facets, data, possible_columns = NULL) {
   vars <- compact(lapply(facets, eval_facet, data, possible_columns = possible_columns))
-  new_data_frame(tibble::as_tibble(vars))
+  data_frame0(tibble::as_tibble(vars))
 }
 downto <- function (a, b) {
   rev(upto(a, rev(b)))

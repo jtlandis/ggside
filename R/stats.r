@@ -58,7 +58,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                 compute_panel = function(self, data, scales, domain = NULL,
                                                          fun = NULL, args = list()) {
                                   #
-                                  if (empty(data)) return(new_data_frame())
+                                  if (empty(data)) return(data_frame0())
                                   #browser()
 
                                   if(is.null(fun)) {
@@ -112,7 +112,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                     scales <- layout$get_scales(data$PANEL[1])
                                     tryCatch(do.call(self$compute_panel, args), error = function(e) {
                                       warn(glue("Computation failed in `{snake_class(self)}()`:\n{e$message}"))
-                                      new_data_frame()
+                                      data_frame0()
                                     })
                                   })
                                 })
@@ -126,7 +126,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                   compute_panel = function(self, data, scales, domain = NULL,
                                                            fun = NULL, args = list()) {
                                     #
-                                    if (empty(data)) return(new_data_frame())
+                                    if (empty(data)) return(data_frame0())
                                     #browser()
 
                                     if(is.null(fun)) {
@@ -180,7 +180,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                       scales <- layout$get_scales(data$PANEL[1])
                                       tryCatch(do.call(self$compute_panel, args), error = function(e) {
                                         warn(glue("Computation failed in `{snake_class(self)}()`:\n{e$message}"))
-                                        new_data_frame()
+                                        data_frame0()
                                       })
                                     })
                                   })
