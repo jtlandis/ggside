@@ -396,7 +396,7 @@
 <text x='63.09' y='435.88' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>7</text>
 <text x='63.09' y='396.90' style='font-size: 8.80px; fill: #4D4D4D; font-family: sans;' textLength='4.89px' lengthAdjust='spacingAndGlyphs'>8</text>
 <text x='301.11' y='568.24' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='59.31px' lengthAdjust='spacingAndGlyphs'>Sepal.Width</text>
-<text transform='translate(633.29,283.95) rotate(90)' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='64.84px' lengthAdjust='spacingAndGlyphs'>Sepal.Length</text>
+<text transform='translate(635.57,283.95) rotate(90)' text-anchor='middle' style='font-size: 11.00px; font-family: sans;' textLength='64.84px' lengthAdjust='spacingAndGlyphs'>Sepal.Length</text>
 <rect x='654.10' y='250.36' width='60.42' height='67.17' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='654.10' y='259.07' style='font-size: 11.00px; font-family: sans;' textLength='39.14px' lengthAdjust='spacingAndGlyphs'>Species</text>
 <rect x='654.10' y='265.69' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
