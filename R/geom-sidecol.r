@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 #' @rdname geom_xsidebar
 #' @export
 geom_xsidecol <- ggside_layer_function(fun = geom_col, side = "x")

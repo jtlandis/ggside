@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 #' @aliases geom_*vline
 #' @rdname geom_xsideabline
 #' @export

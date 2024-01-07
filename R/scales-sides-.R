@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
 #' @include utils-calls.R
 NULL
 ### INCLUDE END

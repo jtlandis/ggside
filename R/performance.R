@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include aab-other_utils.r
+NULL
+### INCLUDE END
 # Taken from ggplot2
 # Fast data.frame constructor and indexing
 # No checking, recycling etc. unless asked for

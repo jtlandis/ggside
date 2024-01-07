@@ -1,4 +1,8 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include aab-other_utils.r
+#' @include compat-plyr.R
+#' @include side-facet-ggplot_clones.R
 #' @include side-facet-wrap.R
 #' @include side-facet_utils.R
 NULL

@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 #' @rdname geom_xsideline
 #' @export
 geom_xsidepath <- ggside_layer_function(fun = geom_path, side = "x")

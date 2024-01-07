@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include aes-evaluation.r
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 #' @title Side density distributions
 #'
 #' @description

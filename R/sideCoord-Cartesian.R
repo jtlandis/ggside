@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include sideCoord--utils.R
+NULL
+### INCLUDE END
 
 #'@rdname ggside-ggproto-coord
 #'@title Coord Compatible with ggside

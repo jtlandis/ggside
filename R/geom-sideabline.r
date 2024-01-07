@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 
 #' @title Side Reference lines
 #' @description

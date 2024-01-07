@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include compat-plyr.R
+#' @include constructor-2.R
+NULL
+### INCLUDE END
 #' @title Side Violin plots
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_violin}

@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
 #' @include ggplot_build.r
 #' @include ggside.R
 #' @include plot-construction.R

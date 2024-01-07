@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include aaa-utilities.r
+NULL
+### INCLUDE END
 #' @title ggside options
 #' @rdname ggside-options
 #' @description Set characteristics of side panels

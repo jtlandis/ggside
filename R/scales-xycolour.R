@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include aab-other_utils.r
+NULL
+### INCLUDE END
 #' Scales for the *colour aesthetics
 #'
 #' These are the various scales that can be applied to the xsidebar or ysidebar

@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include compat-plyr.R
+NULL
+### INCLUDE END
 
 
 

@@ -1,4 +1,7 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include aab-other_utils.r
+#' @include constructor-2.R
 #' @include performance.R
 #' @include side-layer.R
 NULL

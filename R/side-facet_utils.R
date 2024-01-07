@@ -1,3 +1,11 @@
+### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include aab-other_utils.r
+#' @include compat-plyr.R
+#' @include performance.R
+#' @include plot-construction.R
+NULL
+### INCLUDE END
 
 
 #'@rdname ggside-ggproto-facets

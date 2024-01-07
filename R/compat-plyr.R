@@ -1,4 +1,6 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
+#' @include aab-other_utils.r
 #' @include performance.R
 NULL
 ### INCLUDE END

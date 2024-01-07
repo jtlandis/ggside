@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include aaa-utilities.r
 #' @include compat-plyr.R
 #' @include performance.R
 NULL

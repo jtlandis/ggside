@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include aes-evaluation.r
+NULL
+### INCLUDE END
 
 #' Side Histograms
 #'

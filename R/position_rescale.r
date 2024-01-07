@@ -1,3 +1,8 @@
+### INCLUDE BEGIN
+#' @include aab-other_utils.r
+#' @include performance.R
+NULL
+### INCLUDE END
 
 
 #Position rescale

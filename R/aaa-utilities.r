@@ -10,10 +10,6 @@ PANEL_TYPE <- c("x","y", "main")
 self <- NULL
 
 
-"%||%" <- function(a, b) {
-  if (!is.null(a)) a else b
-}
-
 force_panel_type_mapping <- function(mapping, type) {
   if ("PANEL_TYPE" %in% names(mapping)) return(mapping)
   switch(type,
@@ -213,40 +209,8 @@ warning_wrap <- function(...) {
   warn(glue_collapse(wrapped, "\n", last = "\n"))
 }
 
-var_list <- function(x) {
-  x <- encodeString(x, quote = "`")
-  if (length(x) > 5) {
-    x <- c(x[1:5], paste0("and ", length(x) - 5, " more"))
-  }
 
-  paste0(x, collapse = ", ")
-}
 
-dispatch_args <- function(f, ...) {
-  args <- list(...)
-  formals <- formals(f)
-  formals[names(args)] <- args
-  formals(f) <- formals
-  f
-}
-
-is_missing_arg <- function(x) identical(x, quote(expr = ))
-# Get all arguments in a function as a list. Will fail if an ellipsis argument
-# named .ignore
-# @param ... passed on in case enclosing function uses ellipsis in argument list
-find_args <- function(...) {
-  env <- parent.frame()
-  args <- names(formals(sys.function(sys.parent(1))))
-
-  vals <- mget(args, envir = env)
-  vals <- vals[!vapply(vals, is_missing_arg, logical(1))]
-
-  modify_list(vals, list(..., `...` = NULL))
-}
-
-# Used in annotations to ensure printed even when no
-# global data
-dummy_data <- function() new_data_frame(list(x = NA), n = 1)
 
 # Check inputs with tibble but allow column vectors (see #2609 and #2374)
 as_gg_data_frame <- function(x) {
@@ -254,54 +218,7 @@ as_gg_data_frame <- function(x) {
   new_data_frame(x)
 }
 
-validate_column_vec <- function(x) {
-  if (is_column_vec(x)) {
-    dim(x) <- NULL
-  }
-  x
-}
-is_column_vec <- function(x) {
-  dims <- dim(x)
-  length(dims) == 2L && dims[[2]] == 1L
-}
 
-# Parse takes a vector of n lines and returns m expressions.
-# See https://github.com/tidyverse/ggplot2/issues/2864 for discussion.
-#
-# parse(text = c("alpha", "", "gamma"))
-# #> expression(alpha, gamma)
-#
-# parse_safe(text = c("alpha", "", "gamma"))
-# #> expression(alpha, NA, gamma)
-#
-parse_safe <- function(text) {
-  if (!is.character(text)) {
-    abort("`text` must be a character vector")
-  }
-  out <- vector("expression", length(text))
-  for (i in seq_along(text)) {
-    expr <- parse(text = text[[i]])
-    out[[i]] <- if (length(expr) == 0) NA else expr[[1]]
-  }
-  out
-}
-
-switch_orientation <- function(aesthetics) {
-  # We should have these as globals somewhere
-  x <- ggplot_global$x_aes
-  y <- ggplot_global$y_aes
-  x_aes <- match(aesthetics, x)
-  x_aes_pos <- which(!is.na(x_aes))
-  y_aes <- match(aesthetics, y)
-  y_aes_pos <- which(!is.na(y_aes))
-  if (length(x_aes_pos) > 0) {
-    aesthetics[x_aes_pos] <- y[x_aes[x_aes_pos]]
-  }
-  if (length(y_aes_pos) > 0) {
-    aesthetics[y_aes_pos] <- x[y_aes[y_aes_pos]]
-  }
-  aesthetics
-}
 
 
 
@@ -332,79 +249,4 @@ check_subclass <- function (x, subclass, argname = to_lower_ascii(subclass), env
   }
 }
 
-is.sec_axis <- function(x) inherits(x, "AxisSecondary")
-
-set_sec_axis <- function (sec.axis, scale) {
-  if (!is.waive(sec.axis)) {
-    if (is.formula(sec.axis))
-      sec.axis <- sec_axis(sec.axis)
-    if (!is.sec_axis(sec.axis))
-      abort("Secondary axes must be specified using 'sec_axis()'")
-    scale$secondary.axis <- sec.axis
-  }
-  return(scale)
-}
-
-
-
-
-Range <- ggproto("Range", NULL,
-                 range = NULL,
-                 reset = function(self) {
-                   self$range <- NULL
-                 }
-)
-
-
-RangeContinuous <- ggproto("RangeContinuous", Range,
-                           train = function(self, x) {
-                             self$range <- scales::train_continuous(x, self$range)
-                           }
-)
-
-continuous_range <- function(){
-  ggproto(NULL, RangeContinuous)
-}
-
-assert_lgl <- function(arg) {
-  arg_sym <- caller_arg(arg)
-  vctrs::vec_assert(x = arg, ptype = logical(), size = 1L, arg = arg_sym, call = parent.frame())
-  if (is.na(arg))
-    cli::cli_abort("{.arg {arg_sym}} cannot be {.obj_type_friendly {NA}}", call = parent.frame())
-}
-
-resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
-  assert_lgl(several.ok)
-  assert_lgl(null.ok)
-  arg_sym <- caller_arg(arg)
-  if (!is.null(arg)) {
-    arg <- opt[opt %in% arg]
-    len <- length(arg)
-    opt_len <- length(opt)
-    if (len==0)
-      cli::cli_abort("valid {cli::qty(opt_len)} option{?s} for argument {.arg {arg_sym}} {?is/are} {.val {opt}}",
-                     call = parent.frame())
-    if (length(arg)>1 && !several.ok)
-      cli::cli_abort("you specified {length(arg)} value{?s} to argument {.arg {arg_sym}}, but only one of {.or {.val {opt}}} are allowed",
-                     call = parent.frame())
-  } else if (!null.ok) {
-    cli::cli_abort("argument {.arg {arg_sym}} cannot be {.obj_type_friendly {NULL}}", call = parent.frame())
-  }
-  arg
-}
-
-ggproto_formals0 <- function(ggproto_method) {
-  formals_ <- ggproto_formals(ggproto_method)
-  formals_as_defaults(formals_ = formals_)
-}
-
-formals_as_defaults <- function(formals_) {
-  names_ <- names(formals_)
-  for (i in seq_along(formals_)) {
-    formals_[[i]] <- as.name(names_[i])
-  }
-  if ("..." %in% names_)
-    names(formals_)[names_ %in% "..."] <- ""
-  formals_
-}
 
