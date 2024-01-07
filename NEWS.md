@@ -7,6 +7,7 @@
  * `FacetSideNull`, `FacetSideGrid`, `FacetSideWrap`
 * `ggplot2`'s GeomCol and GeomBar now compute resolution based on panels, and not the entire data as a whole. This may affect `ggside` plots that use these variant geometries. Set the `width` parameter manually to retain old figures. 
 * `ggside` now depends on `ggplot2 (>3.5.0)` as to make side positional scales work reliably, the `layer` slot of the `ggplot` object needs to be extended and modified. This slot is only available in the latest version of `ggplot2`. Attempting to render a `ggside` object whose Layout has not been subclassed by `ggside` may lead to unexpected results.
+* with `ggplot2 (3.5.0)`, there is slightly more spacing between the y-axis title and the panels when the y-axis is plotted on the right side. This may be attributed to the new guide's system.
 
 ### Updates
 
