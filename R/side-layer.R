@@ -93,7 +93,7 @@ as_ggside_layer.LayerInstance <- function(layer, side = NULL) {
 
 new_ggside_layer <- function(layer, side, remap, constructor) {
   other <- switch(side, x = "y", y = "x")
-
+  type <- sprintf("%sside", side)
   ggproto(
     "ggside_layer",
     layer,
@@ -107,7 +107,6 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                   }),
     compute_aesthetics = new_ggproto_fun(layer$compute_aesthetics,
                                          {
-                                           # browser()
                                            data <- call_parent_method
                                            aes_to_drop <- !!other
                                            if (all(paste0(c(!!side, ""), "colour") %in% names(data))) {
@@ -120,39 +119,28 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                          }),
     compute_statistic = new_ggproto_fun(layer$compute_statistic,
                                         {
-                                          # browser()
-                                          self$stat$required_aes <-
-                                            sub(sprintf("%sside", !!side),
-                                                "",
-                                                aes_ <- self$stat$required_aes)
+                                          push_aes(self$stat, "required_aes", !!type)
                                           data <- data_unmap(data, !!side)
                                           data <- call_parent_method
-                                          self$stat$required_aes <- aes_
                                           data_map(data, !!side, !!remap)
                                         }),
-    map_statistic = new_ggproto_fun(layer$map_statistic,
-                                    {
-                                      # browser()
-                                      # old_nms <- names(self$stat$default_aes)
-                                      # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
-                                      data <- call_parent_method
-                                      # names(self$stat$default_aes) <- old_nms
-                                      data
-                                    }),
+    # map_statistic = new_ggproto_fun(layer$map_statistic,
+    #                                 {
+    #                                   # browser()
+    #                                   # old_nms <- names(self$stat$default_aes)
+    #                                   # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
+    #                                   data <- call_parent_method
+    #                                   data
+    #                                 }),
     compute_geom_1 = new_ggproto_fun(layer$compute_geom_1,
                                      {
-                                       # browser()
                                        data <- parse_side_aes(data)
-                                       self$geom$required_aes <-
-                                         sub(sprintf("%sside", !!side),
-                                             "",
-                                             aes_ <- self$geom$required_aes)
+                                       push_aes(self$geom, "required_aes", !!type)
                                        levels <- levels(data$PANEL)
                                        data$PANEL <- droplevels(data$PANEL)
                                        data <- data_unmap(data, !!side)
                                        data <- call_parent_method
                                        data$PANEL <- factor(data$PANEL, levels = levels)
-                                       self$geom$required_aes <- aes_
                                        data_map(data, !!side, !!remap)
                                      }),
     draw_geom = new_ggproto_fun(layer$draw_geom,
@@ -223,4 +211,16 @@ parse_side_aes <- function(data, params){
   }
 
   return(data)
+}
+
+
+push_aes <- function(ggproto, member, side) {
+
+  ggproto_arg <- enexpr(ggproto)
+  env <- caller_env()
+  old_value <- ggproto[[member]]
+
+  ggproto[[member]] <- sub(side, "", old_value)
+  expr <- expr(on.exit((!!ggproto_arg)[[!!member]] <- !!old_value, add = TRUE))
+  eval_bare(expr, env = env)
 }
