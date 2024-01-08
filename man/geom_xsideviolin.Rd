@@ -33,9 +33,9 @@ geom_ysideviolin(
   bounds = c(-Inf, Inf),
   scale = "area",
   na.rm = FALSE,
-  orientation = "y",
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  orientation = "y"
 )
 }
 \arguments{

@@ -21,6 +21,7 @@ ggside_geom <- function(class_name = NULL,
                         geom = NULL,
                         side = NULL,
                         ...) {
+
   side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
 
   members <- try_fetch(
@@ -47,6 +48,9 @@ ggside_geom <- function(class_name = NULL,
       )
     }
   )
+  if (is_ggside_subclass(geom)) {
+    class_name <- NULL
+  }
   ggplot2::ggproto(class_name,
                    geom,
                    !!!members)
@@ -56,6 +60,7 @@ ggside_stat <- function(class_name = NULL,
                         stat = NULL,
                         side = NULL,
                         ...) {
+
   side <- resolve_arg(side, c("x", "y"), null.ok = FALSE)
   mapping <- stat$default_aes
   names(mapping) <- rename_side(names(mapping), side)
@@ -77,7 +82,9 @@ ggside_stat <- function(class_name = NULL,
       )
     }
   )
-
+  if (is_ggside_subclass(stat)) {
+    class_name <- NULL
+  }
   ggplot2::ggproto(class_name,
                    stat,
                    !!!members)
@@ -93,24 +100,30 @@ ggside_layer_function <-
            side = NULL,
            env = caller_env(),
            ...,
-           force_missing) {
+           force_missing,
+           stat_orientation = NULL) {
     # browser()
     resolve_arg(side, c("x", "y"), null.ok = FALSE)
+    resolve_arg(stat_orientation, c("x", "y"), null.ok = TRUE)
     fun_sym <- caller_arg(fun)
     formals_ <- formals(fun)
     formals_ <- dots_list(!!!formals_, ..., .homonyms = "last")
     formals_ <- formals_[!vapply(formals_, is_zap, logical(1))]
     pull_mapping <- expr(mapping <- layer$mapping)
+    default_stat_set_manual <- !is.null(stat_orientation)
     has_orientation <-
       !is.null(formals_[["orientation"]]) ||
       "orientation" %in% names(formals_)
     if (has_orientation) {
       if (is.na(formals_[["orientation"]]))
         formals_[["orientation"]] <- side
-
       pull_mapping <-
         expr(mapping <-
                default_stat_aes(layer$mapping, layer$stat, orientation))
+    } else if (default_stat_set_manual) {
+      pull_mapping <-
+        expr(mapping <-
+               default_stat_aes(layer$mapping, layer$stat, !!stat_orientation))
     }
     defaults_ <- formals_as_defaults(formals_)
     if (!missing(force_missing)) {
@@ -133,7 +146,7 @@ ggside_layer_function <-
       pos_aes_used <- grepl(!!pos_aes, map_names, fixed = TRUE)
       if (any(pos_aes_used)) {
         names(mapping)[pos_aes_used] <-
-          sub(pos_aes, "", map_names[pos_aes_used])
+          sub(!!pos_aes, "", map_names[pos_aes_used])
       }
       to_zap <- non_pos_aes[non_pos_aes %in% ...names()]
       layer <- call_layer_param_aware((!!fun_sym)(!!!defaults_),

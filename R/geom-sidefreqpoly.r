@@ -18,8 +18,8 @@ NULL
 #'    geom_xsidefreqpoly(aes(y=after_stat(count)),binwidth = 500) +
 #'    geom_ysidefreqpoly(aes(x=after_stat(count)),binwidth = .2)
 #' @export
-geom_xsidefreqpoly <- ggside_layer_function(fun = geom_freqpoly, side = "x")
+geom_xsidefreqpoly <- ggside_layer_function(fun = geom_freqpoly, side = "x", stat_orientation = "x")
 
 #' @rdname geom_xsidefreqpoly
 #' @export
-geom_ysidefreqpoly <- ggside_layer_function(fun = geom_freqpoly, side = "y")
+geom_ysidefreqpoly <- ggside_layer_function(fun = geom_freqpoly, side = "y", stat_orientation = "y")

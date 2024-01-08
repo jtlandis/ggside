@@ -65,7 +65,7 @@ GeomXsideviolin <- ggside_geom("GeomXsideviolin", GeomViolin, "x")
 
 #' @rdname geom_xsideviolin
 #' @export
-geom_ysideviolin <- ggside_layer_function(fun = geom_violin, side = "y")
+geom_ysideviolin <- ggside_layer_function(fun = geom_violin, side = "y", orientation = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL

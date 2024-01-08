@@ -107,7 +107,7 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                   }),
     compute_aesthetics = new_ggproto_fun(layer$compute_aesthetics,
                                          {
-                                           #browser()
+                                           # browser()
                                            data <- call_parent_method
                                            aes_to_drop <- !!other
                                            if (all(paste0(c(!!side, ""), "colour") %in% names(data))) {
@@ -120,11 +120,11 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                          }),
     compute_statistic = new_ggproto_fun(layer$compute_statistic,
                                         {
-                                          browser()
+                                          # browser()
                                           self$stat$required_aes <-
                                             sub(sprintf("%sside", !!side),
                                                 "",
-                                                aes_ <- self$geom$required_aes)
+                                                aes_ <- self$stat$required_aes)
                                           data <- data_unmap(data, !!side)
                                           data <- call_parent_method
                                           self$stat$required_aes <- aes_
@@ -132,6 +132,7 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                         }),
     map_statistic = new_ggproto_fun(layer$map_statistic,
                                     {
+                                      # browser()
                                       # old_nms <- names(self$stat$default_aes)
                                       # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
                                       data <- call_parent_method
@@ -140,6 +141,7 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                     }),
     compute_geom_1 = new_ggproto_fun(layer$compute_geom_1,
                                      {
+                                       # browser()
                                        data <- parse_side_aes(data)
                                        self$geom$required_aes <-
                                          sub(sprintf("%sside", !!side),

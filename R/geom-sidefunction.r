@@ -65,7 +65,7 @@ geom_ysidefunction <- function(mapping = NULL, data = NULL,
     params = list(
       na.rm = na.rm,
       ...
-    )
+    ), side = "y"
   )
 }
 
@@ -79,7 +79,7 @@ stat_ysidefunction <- function(mapping = NULL, data = NULL, geom = "ysidefunctio
              geom = geom, position = position, show.legend = show.legend,
              inherit.aes = inherit.aes,
              params = list(fun = fun, n = n,
-                           args = args, na.rm = na.rm, ylim = ylim, ...))
+                           args = args, na.rm = na.rm, ylim = ylim, ...), side = "y")
 }
 
 #' @rdname ggside-ggproto-geoms
@@ -90,30 +90,31 @@ GeomYsidefunction <- ggside_geom("GeomYsidefunction", GeomFunction, "y")
 
 
 
-StatYsidefunction <- ggplot2::ggproto("StatYsidefunction",
-                                      ggplot2::StatFunction,
-                                      compute_group = function (data, scales, fun, ylim = NULL, n = 101, args = list()) {
-                                        if (is.null(scales$y)) {
-                                          range <- ylim %||% c(0, 1)
-                                          yseq <- seq(range[1], range[2], length.out = n)
-                                          y_trans <- yseq
-                                        }
-                                        else {
-                                          range <- ylim %||% scales$y$dimension()
-                                          yseq <- seq(range[1], range[2], length.out = n)
-                                          if (scales$y$is_discrete()) {
-                                            y_trans <- yseq
-                                          }
-                                          else {
-                                            y_trans <- scales$y$trans$inverse(yseq)
-                                          }
-                                        }
-                                        if (is.formula(fun))
-                                          fun <- as_function(fun)
-                                        x_out <- do.call(fun, c(list(quote(y_trans)), args))
-                                        if (!is.null(scales$y) && !scales$y$is_discrete()) {
-                                          x_out <- scales$y$trans$transform(x_out)
-                                        }
-                                        new_data_frame(list(x = x_out, y = yseq))
-                                      })
+StatYsidefunction <- ggplot2::ggproto(
+  "StatYsidefunction",
+  ggplot2::StatFunction,
+  compute_group = function (data, scales, fun, ylim = NULL, n = 101, args = list()) {
+    if (is.null(scales$y)) {
+      range <- ylim %||% c(0, 1)
+      yseq <- seq(range[1], range[2], length.out = n)
+      y_trans <- yseq
+    }
+    else {
+      range <- ylim %||% scales$y$dimension()
+      yseq <- seq(range[1], range[2], length.out = n)
+      if (scales$y$is_discrete()) {
+        y_trans <- yseq
+      }
+      else {
+        y_trans <- scales$y$get_transformation()$inverse(yseq)
+      }
+    }
+    if (is.formula(fun))
+      fun <- as_function(fun)
+    x_out <- inject(fun(y_trans, !!!args))
+    if (!is.null(scales$x) && !scales$x$is_discrete()) {
+      x_out <- scales$x$get_transformation()$transform(x_out)
+    }
+    data_frame0(x = x_out, y = yseq)
+  })
 
