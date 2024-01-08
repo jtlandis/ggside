@@ -232,6 +232,17 @@ data_frame0 <- function(...) {
   data_frame(..., .name_repair = "minimal")
 }
 
+single_value <- function (x, ...) {
+  UseMethod("single_value")
+}
+#' @export
+single_value.default <-function (x, ...) {
+  identical(attr(x, "n"), 1L)
+}
+#' @export
+single_value.factor <- function (x, ...) {
+  identical(levels(x), "1")
+}
 
 # Adapted from plyr:::id_vars
 # Create a unique id for elements in a single vector

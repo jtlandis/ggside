@@ -124,14 +124,13 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                           data <- call_parent_method
                                           data_map(data, !!side, !!remap)
                                         }),
-    # map_statistic = new_ggproto_fun(layer$map_statistic,
-    #                                 {
-    #                                   # browser()
-    #                                   # old_nms <- names(self$stat$default_aes)
-    #                                   # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
-    #                                   data <- call_parent_method
-    #                                   data
-    #                                 }),
+    map_statistic = new_ggproto_fun(layer$map_statistic,
+                                    {
+                                      # old_nms <- names(self$stat$default_aes)
+                                      # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
+                                      data <- call_parent_method
+                                      data
+                                    }),
     compute_geom_1 = new_ggproto_fun(layer$compute_geom_1,
                                      {
                                        data <- parse_side_aes(data)

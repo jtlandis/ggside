@@ -57,7 +57,6 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                                          fun = NULL, args = list()) {
                                   #
                                   if (empty(data)) return(data_frame0())
-                                  #browser()
 
                                   if(is.null(fun)) {
                                     warn("fun is NULL, using length as default")
@@ -69,7 +68,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                     self$compute_group(data = group, fun = fun, args = args)
                                   })
 
-                                  vec_rbind(stats)
+                                  vec_rbind(!!!stats)
                                 },
                                 compute_group = function(self, data, scales,  fun = NULL, args = args){
 
@@ -125,7 +124,6 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                                            fun = NULL, args = list()) {
                                     #
                                     if (empty(data)) return(data_frame0())
-                                    #browser()
 
                                     if(is.null(fun)) {
                                       warn("fun is NULL, using length as default")
@@ -137,7 +135,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                       self$compute_group(data = group, fun = fun, args = args)
                                     })
 
-                                    vec_rbind(stats)
+                                    vec_rbind(!!!stats)
                                   },
                                   compute_group = function(self, data, scales,  fun = NULL, args = args){
 
