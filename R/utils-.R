@@ -74,7 +74,8 @@ new_default_aes <- function(geom, side) {
   names(defaults) <- rename_side(names(defaults), side)
   new_defaults <- list(NA, NA, PANEL_TYPE = side)
   names(new_defaults)[c(1,2)] <- paste0(side, c("colour", "fill"))
-  do.call('aes', c(defaults, new_defaults))
+  args <- dots_list(!!!defaults, !!!new_defaults, .homonyms = "first")
+  do.call('aes', args)
 }
 
 assert_lgl <- function(arg) {
@@ -117,4 +118,9 @@ layer_type <- function(layer) {
     to_lower_ascii(substr(layer_class,1,1))
   }
   return(val)
+}
+
+is_ggside_subclass <- function(obj) {
+  class_ <- class(obj)
+  any(grepl("((X|Y)Layer|(X|Y)side)", class_))
 }

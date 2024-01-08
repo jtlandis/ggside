@@ -27,8 +27,13 @@ ggside_layer <-
     resolve_arg(side, c("x", "y"), null.ok = FALSE)
     `_class` <- switch(side, x = "XLayer", y = "YLayer")
     Side <- switch(side, x = "Xside", y = "Yside")
-
     names(mapping) <- rename_side(names(mapping), side)
+
+    #check class
+    geom <- check_subclass(geom, "Geom", env = parent.frame(),
+                           call = call_env)
+    stat <- check_subclass(stat, "Stat", env = parent.frame(),
+                           call = call_env)
 
     # remaps
     geom_aes_map <- aes_to_map(geom, side)
@@ -102,6 +107,7 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                   }),
     compute_aesthetics = new_ggproto_fun(layer$compute_aesthetics,
                                          {
+                                           #browser()
                                            data <- call_parent_method
                                            aes_to_drop <- !!other
                                            if (all(paste0(c(!!side, ""), "colour") %in% names(data))) {
@@ -114,18 +120,24 @@ new_ggside_layer <- function(layer, side, remap, constructor) {
                                          }),
     compute_statistic = new_ggproto_fun(layer$compute_statistic,
                                         {
+                                          browser()
+                                          self$stat$required_aes <-
+                                            sub(sprintf("%sside", !!side),
+                                                "",
+                                                aes_ <- self$geom$required_aes)
                                           data <- data_unmap(data, !!side)
                                           data <- call_parent_method
+                                          self$stat$required_aes <- aes_
                                           data_map(data, !!side, !!remap)
                                         }),
-    # map_statistic = new_ggproto_fun(layer$map_statistic,
-    #                                 {
-    #                                   # old_nms <- names(self$stat$default_aes)
-    #                                   # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
-    #                                   data <- call_parent_method
-    #                                   # names(self$stat$default_aes) <- old_nms
-    #                                   data
-    #                                 }),
+    map_statistic = new_ggproto_fun(layer$map_statistic,
+                                    {
+                                      # old_nms <- names(self$stat$default_aes)
+                                      # names(self$stat$default_aes) <- rename_side(names(self$stat$default_aes), !!side)
+                                      data <- call_parent_method
+                                      # names(self$stat$default_aes) <- old_nms
+                                      data
+                                    }),
     compute_geom_1 = new_ggproto_fun(layer$compute_geom_1,
                                      {
                                        data <- parse_side_aes(data)
