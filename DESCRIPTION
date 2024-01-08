@@ -86,7 +86,7 @@ Collate:
     'scales-sides-.R'
     'scales-xycolour.R'
     'scales-xyfill.R'
-    'side-facet-ggplot_clones.R'
+    'utils-ggplot2-reimpl-facet.R'
     'side-facet-wrap.R'
     'side-facet-grid.R'
     'side-facet-null.R'
