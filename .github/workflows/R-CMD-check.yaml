@@ -27,9 +27,11 @@ jobs:
     env:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       R_KEEP_PKG_SOURCE: yes
+      #only run vdiffr on release version of R
+      VDIFFR_RUN_TESTS: ${{ matrix.config.r == ('release' || 'oldrel-1') }}
 
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
 
       - uses: r-lib/actions/setup-pandoc@v2
 
