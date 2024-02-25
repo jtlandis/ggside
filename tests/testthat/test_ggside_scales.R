@@ -127,3 +127,13 @@ test_that("side scales can use guide's argument", {
     scale_ysidex_continuous(guide = guide_axis(angle = 90), minor_breaks = NULL)
   expect_warning(p, NA)
 })
+
+test_that("coord_cartesian(xlim = <limits>, ylim = <limits>) works", {
+  p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+    geom_point(size = 2) +
+    geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
+    geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+    theme(axis.text.x = element_text(angle = 90, vjust = .5)) +
+    coord_cartesian(xlim = c(3, 6), ylim = c(20, 30))
+  expect_doppelganger("coord_cartesian-no-zoom", p)
+})

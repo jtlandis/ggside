@@ -11,7 +11,7 @@
 
 ### Updates
 
-
+* Using `coord_cartesian(xlim = <limits>, ylim = <limits>)` will only apply to the main plotting scales and not side panel scales. For instance, using `p + coord_cartesian(xlim = c(0,1))` where `p` is a ggside object with a yside geometry will NOT set the limits on the ysidex scale. If the user wants to control the limits on the side scales, they should use `scale_(x|y)side(y|x)_*()` functions. Addresses issue #55
 * The `ggside_options` object now inherits from `ggproto` instead of a list.
 * The `ggside_options` defaults arguments are now `NULL`. This will help update the object appropriately without overriding previous options specified through `ggside()`.
 * `ggside` now subclasses `Layout` allowing for better control of how side scales are trained. This feature may be relatively unstable depending on the version of `ggplot2` installed. 
