@@ -43,6 +43,25 @@ ggside_coord.CoordSide <- function(coord) {
 CoordSideCartesian <- ggplot2::ggproto(
   "CoordSideCartesian",
   ggplot2::CoordCartesian,
+  setup_panel_params = new_ggproto_fun(
+    ggplot2::CoordCartesian$setup_panel_params,
+    {
+
+      if (!is.null(old_y_lim <- self$limits$y) &
+           is.ggside_scale(scale_y)) {
+        self$limits$y <- NULL
+        out <- call_parent_method
+        self$limits$y <- old_y_lim
+      } else if (!is.null(old_x_lim <- self$limits$x) &
+          is.ggside_scale(scale_x)) {
+        self$limits$x <- NULL
+        out <- call_parent_method
+        self$limits$x <- old_x_lim
+      } else {
+        out <- call_parent_method
+      }
+      out
+    }),
   render_bg = function(panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
     if (is.element(panel_type, c("x", "y"))) {
@@ -104,6 +123,24 @@ ggside_coord.CoordTrans <- function(coord) {
 CoordSideTrans <- ggplot2::ggproto(
   "CoordSideTrans",
   ggplot2::CoordTrans,
+  setup_panel_params = new_ggproto_fun(
+    ggplot2::CoordTrans$setup_panel_params,
+    {
+      if (!is.null(old_y_lim <- self$limits$y) &
+          is.ggside_scale(scale_y)) {
+        self$limits$y <- NULL
+        out <- call_parent_method
+        self$limits$y <- old_y_lim
+      } else if (!is.null(old_x_lim <- self$limits$x) &
+                 is.ggside_scale(scale_x)) {
+        self$limits$x <- NULL
+        out <- call_parent_method
+        self$limits$x <- old_x_lim
+      } else {
+        out <- call_parent_method
+      }
+      out
+    }),
   render_bg = function(panel_params, theme) {
     panel_type <- eval(quote(self$layout[self$layout$PANEL==i,]$PANEL_TYPE), sys.parent(2))
     if (is.element(panel_type, c("x", "y"))) {
@@ -165,6 +202,25 @@ ggside_coord.CoordFixed <- function(coord){
 CoordSideFixed <- ggplot2::ggproto(
   "CoordSideFixed",
   ggplot2::CoordFixed,
+  setup_panel_params = new_ggproto_fun(
+    ggplot2::CoordFixed$setup_panel_params,
+    {
+
+      if (!is.null(old_y_lim <- self$limits$y) &
+          is.ggside_scale(scale_y)) {
+        self$limits$y <- NULL
+        out <- call_parent_method
+        self$limits$y <- old_y_lim
+      } else if (!is.null(old_x_lim <- self$limits$x) &
+                 is.ggside_scale(scale_x)) {
+        self$limits$x <- NULL
+        out <- call_parent_method
+        self$limits$x <- old_x_lim
+      } else {
+        out <- call_parent_method
+      }
+      out
+    }),
   render_bg = function(panel_params, theme) {
     panel_type <- panel_params$ggside_panel_type
     if (is.element(panel_type, c("x", "y"))) {

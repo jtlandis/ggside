@@ -5,6 +5,8 @@
 #' @include z-depricated.R
 NULL
 ### INCLUDE END
+
+#' @keywords internal
 validate_ggside <- function(e2, plot) UseMethod('validate_ggside')
 validate_ggside.default <- function(e2, plot) plot
 validate_ggside.Facet <- function(e2, plot){

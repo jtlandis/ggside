@@ -6,7 +6,6 @@
 NULL
 ### INCLUDE END
 
-
 as_ggside <- function(x, ...) UseMethod('as_ggside')
 as_ggside.default <- function(x, ...) abort(glue("No as_ggside() method for class <", glue_collapse(class(x), sep = "/"),">"))
 as_ggside.ggplot <- function(x, ggside = NULL, ...) {

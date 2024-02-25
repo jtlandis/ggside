@@ -20,6 +20,7 @@ ggside_facet <-
   function(facet, ggside)
     UseMethod("ggside_facet", facet)
 
+#' @exportS3Method ggside::ggside_facet
 ggside_facet.default <- function(facet, ggside = ggside()) {
   abort(sprintf(
     "No %s() method for object of class <%s>",
@@ -28,12 +29,14 @@ ggside_facet.default <- function(facet, ggside = ggside()) {
   ),)
 }
 
+#' @exportS3Method ggside::ggside_facet
 ggside_facet.ggsideFacet <- function(facet, ggside = ggside()) {
   param <- facet$params
   param$ggside <- ggside
   check_facet(ggproto(NULL, facet, params = param))
 }
 
+#' @exportS3Method ggside::ggside_facet
 ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
   new_facet <- new_ggside_facet(facet, ggside)
   check_facet(
@@ -47,6 +50,7 @@ ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
 
 }
 
+#' @exportS3Method ggside::ggside_facet
 ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
   new_facet <- new_ggside_facet(facet, ggside)
   check_facet(
@@ -60,6 +64,7 @@ ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
 
 }
 
+#' @exportS3Method ggside::ggside_facet
 ggside_facet.FacetWrap <- function(facet, ggside = ggside()) {
   new_facet <- new_ggside_facet(facet, ggside)
   check_facet(
