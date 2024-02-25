@@ -100,3 +100,10 @@ height_cm <- function (x)
   }
 }
 
+downto <- function(a, b){
+  rev(upto(a, rev(b)))
+}
+
+upto <- function(a, b) {
+  b[seq_len(match(a, b, nomatch = 0))]
+}
