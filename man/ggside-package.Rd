@@ -2,7 +2,6 @@
 % Please edit documentation in R/ggside-package.r
 \docType{package}
 \name{ggside-package}
-\alias{ggside}
 \alias{ggside-package}
 \title{ggside: Side Grammar Graphics}
 \description{

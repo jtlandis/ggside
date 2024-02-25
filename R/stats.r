@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include utils-ggplot2-reimpl-.R
+NULL
+### INCLUDE END
 #Stat
 
 # Notes: overriding y is not effective for absolute positions, unless statIdentity is used.
@@ -52,8 +56,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                 compute_panel = function(self, data, scales, domain = NULL,
                                                          fun = NULL, args = list()) {
                                   #
-                                  if (empty(data)) return(new_data_frame())
-                                  #browser()
+                                  if (empty(data)) return(data_frame0())
 
                                   if(is.null(fun)) {
                                     warn("fun is NULL, using length as default")
@@ -65,7 +68,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                     self$compute_group(data = group, fun = fun, args = args)
                                   })
 
-                                  rbind_dfs(stats)
+                                  vec_rbind(!!!stats)
                                 },
                                 compute_group = function(self, data, scales,  fun = NULL, args = args){
 
@@ -106,7 +109,7 @@ StatSummarise <- ggplot2::ggproto("StatSummarise",
                                     scales <- layout$get_scales(data$PANEL[1])
                                     tryCatch(do.call(self$compute_panel, args), error = function(e) {
                                       warn(glue("Computation failed in `{snake_class(self)}()`:\n{e$message}"))
-                                      new_data_frame()
+                                      data_frame0()
                                     })
                                   })
                                 })
@@ -120,8 +123,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                   compute_panel = function(self, data, scales, domain = NULL,
                                                            fun = NULL, args = list()) {
                                     #
-                                    if (empty(data)) return(new_data_frame())
-                                    #browser()
+                                    if (empty(data)) return(data_frame0())
 
                                     if(is.null(fun)) {
                                       warn("fun is NULL, using length as default")
@@ -133,7 +135,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                       self$compute_group(data = group, fun = fun, args = args)
                                     })
 
-                                    rbind_dfs(stats)
+                                    vec_rbind(!!!stats)
                                   },
                                   compute_group = function(self, data, scales,  fun = NULL, args = args){
 
@@ -174,7 +176,7 @@ StatSummarize <- ggplot2::ggproto("StatSummarize",
                                       scales <- layout$get_scales(data$PANEL[1])
                                       tryCatch(do.call(self$compute_panel, args), error = function(e) {
                                         warn(glue("Computation failed in `{snake_class(self)}()`:\n{e$message}"))
-                                        new_data_frame()
+                                        data_frame0()
                                       })
                                     })
                                   })

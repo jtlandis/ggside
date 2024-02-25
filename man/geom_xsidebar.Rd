@@ -14,6 +14,7 @@ geom_xsidebar(
   stat = "count",
   position = "stack",
   ...,
+  just = 0.5,
   width = NULL,
   na.rm = FALSE,
   orientation = "x",
@@ -27,6 +28,7 @@ geom_ysidebar(
   stat = "count",
   position = "stack",
   ...,
+  just = 0.5,
   width = NULL,
   na.rm = FALSE,
   orientation = "y",
@@ -39,6 +41,7 @@ geom_xsidecol(
   data = NULL,
   position = "stack",
   ...,
+  just = 0.5,
   width = NULL,
   na.rm = FALSE,
   show.legend = NA,
@@ -50,6 +53,7 @@ geom_ysidecol(
   data = NULL,
   position = "stack",
   ...,
+  just = 0.5,
   width = NULL,
   na.rm = FALSE,
   show.legend = NA,
@@ -92,6 +96,12 @@ settings of the adjustment.}
 often aesthetics, used to set an aesthetic to a fixed value, like
 \code{colour = "red"} or \code{size = 3}. They may also be parameters
 to the paired geom/stat.}
+
+\item{just}{Adjustment for column placement. Set to \code{0.5} by default, meaning
+that columns will be centered about axis breaks. Set to \code{0} or \code{1} to place
+columns to the left/right of axis breaks. Note that this argument may have
+unintended behaviour when used with alternative positions, e.g.
+\code{position_dodge()}.}
 
 \item{width}{Bar width. By default, set to 90\% of the \code{\link[ggplot2:resolution]{resolution()}} of the
 data.}

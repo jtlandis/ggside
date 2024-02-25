@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-.R
+NULL
+### INCLUDE END
 #' @title Side Violin plots
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_violin}
@@ -13,6 +17,11 @@
 #'  maximum width.
 #' @param stat Use to override the default connection between
 #'   `geom_violin()` and `stat_ydensity()`.
+#' @param bounds Known lower and upper bounds for estimated data. Default
+#'  c(-Inf, Inf) means that there are no (finite) bounds. If any bound is
+#'  finite, boundary effect of default density estimation will be corrected
+#'  by reflecting tails outside bounds around their closest edge. Data points
+#'  outside of bounds are removed with a warning
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
 #' @examples
@@ -51,113 +60,20 @@
 #'
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
-geom_xsideviolin <- function(mapping = NULL, data = NULL,
-                              stat = "ydensity", position = "dodge",
-                              ...,
-                              draw_quantiles = NULL,
-                              trim = TRUE,
-                              scale = "area",
-                              na.rm = FALSE,
-                              orientation = NA,
-                              show.legend = NA,
-                              inherit.aes = TRUE) {
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsideviolin,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      trim = trim,
-      scale = scale,
-      draw_quantiles = draw_quantiles,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_xsideviolin <- ggside_layer_function(fun = geom_violin, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsideviolin <- ggplot2::ggproto("GeomXsideviolin",
-                                    ggplot2::GeomViolin,
-                                    default_aes = new_default_aes(
-                                      aes(xcolour = NA, xfill = NA),
-                                      ggplot2::GeomViolin$default_aes
-                                    ),
-                                    setup_data = function(data, params){
-                                      data <- parse_side_aes(data, params)
-                                      ggplot2::GeomViolin$setup_data(data, params)
-                                    },
-                                    draw_panel = function(self, data, panel_params, coord, ...){
-                                      data <- use_xside_aes(data)
-                                      ggplot2::GeomViolin$draw_panel(data = data, panel_params, coord = coord, ...)
-                                    },
-                                    draw_key = function(data, params, size){
-                                      data <- use_xside_aes(data)
-                                      ggplot2::GeomViolin$draw_key(data, params, size)
-                                    })
-
+GeomXsideviolin <- ggside_geom("GeomXsideviolin", GeomViolin, "x")
 
 #' @rdname geom_xsideviolin
 #' @export
-geom_ysideviolin <- function(mapping = NULL, data = NULL,
-                             stat = "ydensity", position = "dodge",
-                             ...,
-                             draw_quantiles = NULL,
-                             trim = TRUE,
-                             scale = "area",
-                             na.rm = FALSE,
-                             orientation = "y",
-                             show.legend = NA,
-                             inherit.aes = TRUE) {
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsideviolin,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      trim = trim,
-      scale = scale,
-      draw_quantiles = draw_quantiles,
-      na.rm = na.rm,
-      orientation = orientation,
-      ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_ysideviolin <- ggside_layer_function(fun = geom_violin, side = "y", orientation = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsideviolin <- ggplot2::ggproto("GeomYsideviolin",
-                                    ggplot2::GeomViolin,
-                                    default_aes = new_default_aes(
-                                      aes(ycolour = NA, yfill = NA),
-                                      ggplot2::GeomViolin$default_aes
-                                    ),
-                                    setup_data = function(data, params){
-                                      data <- parse_side_aes(data, params)
-                                      ggplot2::GeomViolin$setup_data(data, params)
-                                    },
-                                    draw_panel = function(self, data, panel_params, coord, ...){
-                                      data <- use_yside_aes(data)
-                                      ggplot2::GeomViolin$draw_panel(data = data, panel_params, coord = coord, ...)
-                                    },
-                                    draw_key = function(data, params, size){
-                                      data <- use_yside_aes(data)
-                                      ggplot2::GeomViolin$draw_key(data, params, size)
-                                    })
+GeomYsideviolin <- ggside_geom("GeomYsideviolin", GeomViolin, "y")

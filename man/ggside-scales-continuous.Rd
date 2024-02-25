@@ -3,8 +3,49 @@
 \name{ggside-scales-continuous}
 \alias{ggside-scales-continuous}
 \alias{scale_xsidey_continuous}
+\alias{scale_xsidey_log10}
+\alias{scale_xsidey_reverse}
+\alias{scale_xsidey_sqrt}
 \alias{scale_ysidex_continuous}
+\alias{scale_ysidex_log10}
+\alias{scale_ysidex_reverse}
+\alias{scale_ysidex_sqrt}
 \title{Position scales for continuous data ggside scales}
+\usage{
+scale_xsidey_continuous(
+  name = waiver(),
+  breaks = waiver(),
+  minor_breaks = waiver(),
+  n.breaks = NULL,
+  labels = waiver(),
+  limits = NULL,
+  expand = waiver(),
+  oob = scales::censor,
+  na.value = NA_real_,
+  transform = "identity",
+  guide = waiver(),
+  position = "left",
+  sec.axis = waiver()
+)
+
+scale_xsidey_log10(...)
+
+scale_xsidey_reverse(...)
+
+scale_xsidey_sqrt(...)
+
+scale_ysidex_log10(...)
+
+scale_ysidex_reverse(...)
+
+scale_ysidex_sqrt(...)
+
+scale_ysidex_log10(...)
+
+scale_ysidex_reverse(...)
+
+scale_ysidex_sqrt(...)
+}
 \arguments{
 \item{name}{The name of the scale. Used as the axis or legend title. If
 \code{waiver()}, the default, the name of the scale is taken from the first
@@ -15,7 +56,7 @@ omitted.}
 \itemize{
 \item \code{NULL} for no breaks
 \item \code{waiver()} for the default breaks computed by the
-\link[scales:trans_new]{transformation object}
+\link[scales:new_transform]{transformation object}
 \item A numeric vector of positions
 \item A function that takes the limits as input and returns breaks
 as output (e.g., a function returned by \code{\link[scales:breaks_extended]{scales::extended_breaks()}}).
@@ -29,7 +70,9 @@ Also accepts rlang \link[rlang:as_function]{lambda} function notation.
 each major break)
 \item A numeric vector of positions
 \item A function that given the limits returns a vector of minor breaks. Also
-accepts rlang \link[rlang:as_function]{lambda} function notation.
+accepts rlang \link[rlang:as_function]{lambda} function notation. When
+the function has two arguments, it will be given the limits and major
+breaks.
 }}
 
 \item{n.breaks}{An integer guiding the number of major breaks. The algorithm
@@ -82,7 +125,7 @@ bounds values with \code{NA}.
 
 \item{na.value}{Missing values will be replaced with this value.}
 
-\item{trans}{For continuous scales, the name of a transformation object
+\item{transform}{For continuous scales, the name of a transformation object
 or the object itself. Built-in transformations include "asn", "atanh",
 "boxcox", "date", "exp", "hms", "identity", "log", "log10", "log1p", "log2",
 "logit", "modulus", "probability", "probit", "pseudo_log", "reciprocal",
@@ -90,9 +133,10 @@ or the object itself. Built-in transformations include "asn", "atanh",
 
 A transformation object bundles together a transform, its inverse,
 and methods for generating breaks and labels. Transformation objects
-are defined in the scales package, and are called \verb{<name>_trans} (e.g.,
-\code{\link[scales:boxcox_trans]{scales::boxcox_trans()}}). You can create your own
-transformation with \code{\link[scales:trans_new]{scales::trans_new()}}.}
+are defined in the scales package, and are called \verb{transform_<name>}. If
+transformations require arguments, you can call them from the scales
+package, e.g. \code{\link[scales:transform_boxcox]{scales::transform_boxcox(p = 2)}}.
+You can create your own transformation with \code{\link[scales:new_transform]{scales::new_transform()}}.}
 
 \item{guide}{A function used to create a guide or its name. See
 \code{\link[ggplot2:guides]{guides()}} for more information.}
@@ -101,6 +145,8 @@ transformation with \code{\link[scales:trans_new]{scales::trans_new()}}.}
 \code{left} or \code{right} for y axes, \code{top} or \code{bottom} for x axes.}
 
 \item{sec.axis}{\code{\link[ggplot2:sec_axis]{sec_axis()}} is used to specify a secondary axis.}
+
+\item{...}{Other arguments passed on to scale_(y|x)side(x|y)_continuous()}
 }
 \value{
 ggside_scale object inheriting from ggplot2::ScaleContinuousPosition

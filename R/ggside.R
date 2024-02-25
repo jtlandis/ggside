@@ -1,5 +1,9 @@
+### INCLUDE BEGIN
+#' @include utils-.R
+NULL
+### INCLUDE END
 #' @title ggside options
-#' @rdname ggside
+#' @rdname ggside-options
 #' @description Set characteristics of side panels
 #' @param x.pos x side panel can either take "top" or "bottom"
 #' @param y.pos y side panel can either take "right" or "left"
@@ -22,31 +26,78 @@
 #' to all axis positions.
 #' @param strip Determines if the strip should be rendered on the main plot or
 #' on their default locations. Only has an effect on `facet_grid`.
+#' @param respect_side_labels Valid arguments are "default", "x", "y",
+#' "all", and "none" Indicates if panel spacing should respect the axis
+#' labels. The default is to respect side panel labels except when xside
+#' labels are on the same side as the yside panel. Note: setting this
+#' parameter to "x" is to "respect the labels of the xside panel" and
+#' consequently the yside labels, if present, are not respected.
 #'
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
 #' @return a object of class 'ggside_options' or to be added to a ggplot
 #' @export
-ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
+ggside <- function(x.pos = NULL, y.pos = NULL, scales = NULL, collapse = NULL,
+                   draw_x_on = NULL,
+                   draw_y_on = NULL,
+                   strip = NULL,
+                   respect_side_labels = NULL){
+
+  x.pos <- resolve_arg(x.pos, c("top", "bottom"))
+  y.pos <- resolve_arg(y.pos, c("right", "left"))
+  draw_x_on <- resolve_arg(draw_x_on, c("default","main","side"))
+  draw_y_on <- resolve_arg(draw_y_on, c("default","main","side"))
+  strip <- resolve_arg(strip, c("default", "main"))
+  collapse <- resolve_arg(collapse, c("all", "x", "y"))
+  respect_side_labels <- resolve_arg(respect_side_labels, c("default","x","y", "all", "none", "independent"))
+
+
+  ggproto(
+    "ggside_options",
+    x.pos = x.pos,
+    y.pos = y.pos,
+    scales = scales,
+    collapse = collapse,
+    xsidey = NULL,
+    ysidex = NULL,
+    draw_x_on = draw_x_on,
+    draw_y_on = draw_y_on,
+    strip = strip,
+    sides_used = NULL,
+    respect_side_labels = respect_side_labels
+  )
+}
+
+new_ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
                    draw_x_on = c("default","main","side"),
                    draw_y_on = c("default","main","side"),
-                   strip = c("default", "main")){
+                   strip = c("default", "main"),
+                   respect_side_labels = FALSE){
   draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
   draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
   strip <- match.arg(strip, c("default", "main"))
   if (!is.null(collapse)) {
     collapse <- match.arg(collapse, c("all", "x","y"))
   }
-  structure(list(x.pos = x.pos,
-                 y.pos = y.pos,
-                 scales = scales,
-                 collapse = collapse,
-                 xsidey = NULL,
-                 ysidex = NULL,
-                 draw_x_on = draw_x_on,
-                 draw_y_on = draw_y_on,
-                 strip = strip), class = c("ggside_options","gg"))
+
+
+  ggproto(
+    "ggside_options",
+    x.pos = x.pos,
+    y.pos = y.pos,
+    scales = scales,
+    collapse = collapse,
+    xsidey = NULL,
+    ysidex = NULL,
+    draw_x_on = draw_x_on,
+    draw_y_on = draw_y_on,
+    strip = strip,
+    sides_used = NULL,
+    respect_side_labels = respect_side_labels
+  )
 }
+
+
 
 #' @title Check ggside objects
 #' @param x Object to test

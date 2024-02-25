@@ -64,10 +64,27 @@
 #' \code{ggside.axis.ticks.length, ggside.axis.ticks.length.x,
 #' ggside.axis.ticks.length.y, ggside.axis.ticks.length.x.top, ggside.axis.ticks.length.x.bottom,
 #' ggside.axis.ticks.length.y.left, ggside.axis.ticks.length.y.right} \tab
-#' length of ticks along the side panel's axis.Due to the layout of side panels, `ggside.axis.ticks.length.x`
+#' length of ticks along the side panel's axis. Due to the layout of side panels, `ggside.axis.ticks.length.x`
 #' will only affect the yside panel's x-axis text and `ggside.axis.ticks.length.y` will
 #' only affect the xside panel's y-axis text. Theme elements inherit from `axis.ticks.length`
 #' and will default to the current theme's `axis.ticks.length` inheritance scheme unless
+#' specifically set. \cr
+#' \tab \cr
+#' \code{ggside.axis.minor.ticks, ggside.axis.minor.ticks.x, ggside.axis.minor.ticks.y,
+#' ggside.axis.minor.ticks.x.top, ggside.axis.minor.ticks.x.bottom, ggside.axis.minor.ticks.y.left, ggside.axis.minor.ticks.y.right} \tab
+#' Tick marks along the side panel's axis. Due to the layout of side panels, `ggside.axis.minor.ticks.x`
+#' will only affect the yside panel's x-axis text and `ggside.axis.minor.ticks.y` will
+#' only affect the xside panel's y-axis text. Theme elements inherit from `axis.minor.ticks`
+#' and will default to the current theme's `axis.minor.ticks` inheritance scheme unless
+#' specifically set. \cr
+#' \tab \cr
+#' \code{ggside.axis.minor.ticks.length, ggside.axis.minor.ticks.length.x,
+#' ggside.axis.minor.ticks.length.y, ggside.axis.minor.ticks.length.x.top, ggside.axis.minor.ticks.length.x.bottom,
+#' ggside.axis.minor.ticks.length.y.left, ggside.axis.minor.ticks.length.y.right} \tab
+#' length of minor ticks along the side panel's axis. Due to the layout of side panels, `ggside.axis.minor.ticks.length.x`
+#' will only affect the yside panel's x-axis text and `ggside.axis.minor.ticks.length.y` will
+#' only affect the xside panel's y-axis text. Theme elements inherit from `axis.minor.ticks.length`
+#' and will default to the current theme's `axis.minor.ticks.length` inheritance scheme unless
 #' specifically set. \cr
 #' \tab \cr
 #' }
@@ -168,6 +185,21 @@ NULL
     ggside.axis.ticks.length.y = NULL,
     ggside.axis.ticks.length.y.left = NULL,
     ggside.axis.ticks.length.y.right = NULL,
+    # 0.3.0 - minor ticks
+    ggside.axis.minor.ticks = NULL,
+    ggside.axis.minor.ticks.x = NULL,
+    ggside.axis.minor.ticks.x.top = NULL,
+    ggside.axis.minor.ticks.x.bottom = NULL,
+    ggside.axis.minor.ticks.y = NULL,
+    ggside.axis.minor.ticks.y.left = NULL,
+    ggside.axis.minor.ticks.y.right = NULL,
+    ggside.axis.minor.ticks.length = NULL,
+    ggside.axis.minor.ticks.length.x = NULL,
+    ggside.axis.minor.ticks.length.x.top = NULL,
+    ggside.axis.minor.ticks.length.x.bottom = NULL,
+    ggside.axis.minor.ticks.length.y = NULL,
+    ggside.axis.minor.ticks.length.y.left = NULL,
+    ggside.axis.minor.ticks.length.y.right = NULL,
     element_tree = list(ggside.line = el_def("element_line"),
                         ggside.rect = el_def("element_rect"),
                         ggside.text = el_def("element_text"),
@@ -222,6 +254,7 @@ NULL
                         ggside.axis.line.y = el_def("element_line", "ggside.axis.line"),
                         ggside.axis.line.y.left = el_def("element_line", c("ggside.axis.line.y","axis.line.y.left")),
                         ggside.axis.line.y.right = el_def("element_line", c("ggside.axis.line.y","axis.line.y.right")),
+
                         ggside.axis.ticks = el_def("element_line", "ggside.line"),
                         ggside.axis.ticks.x = el_def("element_line", "ggside.axis.ticks"),
                         ggside.axis.ticks.x.top = el_def("element_line", c("ggside.axis.ticks.x","axis.ticks.x.top")),
@@ -235,7 +268,22 @@ NULL
                         ggside.axis.ticks.length.x.bottom = el_def("unit", c("ggside.axis.ticks.length.x","axis.ticks.length.x.bottom")),
                         ggside.axis.ticks.length.y = el_def("unit", "ggside.axis.ticks.length"),
                         ggside.axis.ticks.length.y.left = el_def("unit", c("ggside.axis.ticks.length.y","axis.ticks.length.y.left")),
-                        ggside.axis.ticks.length.y.right = el_def("unit", c("ggside.axis.ticks.length.y","axis.ticks.length.y.right"))
+                        ggside.axis.ticks.length.y.right = el_def("unit", c("ggside.axis.ticks.length.y","axis.ticks.length.y.right")),
+
+                        ggside.axis.minor.ticks = el_def("element_line", "ggside.line"),
+                        ggside.axis.minor.ticks.x = el_def("element_line", "ggside.axis.minor.ticks"),
+                        ggside.axis.minor.ticks.x.top = el_def("element_line", c("ggside.axis.minor.ticks.x","axis.minor.ticks.x.top")),
+                        ggside.axis.minor.ticks.x.bottom = el_def("element_line", c("ggside.axis.minor.ticks.x","axis.minor.ticks.x.bottom")),
+                        ggside.axis.minor.ticks.y = el_def("element_line", "ggside.axis.minor.ticks"),
+                        ggside.axis.minor.ticks.y.left = el_def("element_line", c("ggside.axis.minor.ticks.y","axis.minor.ticks.y.left")),
+                        ggside.axis.minor.ticks.y.right = el_def("element_line", c("ggside.axis.minor.ticks.y","axis.minor.ticks.y.right")),
+                        ggside.axis.minor.ticks.length = el_def("unit", "axis.minor.ticks.length"),
+                        ggside.axis.minor.ticks.length.x = el_def("unit", "ggside.axis.minor.ticks.length"),
+                        ggside.axis.minor.ticks.length.x.top = el_def("unit", c("ggside.axis.minor.ticks.length.x","axis.minor.ticks.length.x.top")),
+                        ggside.axis.minor.ticks.length.x.bottom = el_def("unit", c("ggside.axis.minor.ticks.length.x","axis.minor.ticks.length.x.bottom")),
+                        ggside.axis.minor.ticks.length.y = el_def("unit", "ggside.axis.minor.ticks.length"),
+                        ggside.axis.minor.ticks.length.y.left = el_def("unit", c("ggside.axis.minor.ticks.length.y","axis.minor.ticks.length.y.left")),
+                        ggside.axis.minor.ticks.length.y.right = el_def("unit", c("ggside.axis.minor.ticks.length.y","axis.minor.ticks.length.y.right"))
                         )
     )
 }

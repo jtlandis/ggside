@@ -1,17 +1,30 @@
+### INCLUDE BEGIN
+#' @include side-coord-cartesian.R
+#' @include ggside.R
+#' @include side-facet_.R
+#' @include side-layout-.r
+NULL
+### INCLUDE END
 
-validate_ggside <- function(e2, object) UseMethod('validate_ggside')
-validate_ggside.default <- function(e2, object) object
-validate_ggside.Facet <- function(e2, object){
-  object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
-  object
-}
-validate_ggside.Coord <- function(e2, object) {
-  object[["coordinates"]] <- as_ggsideCoord(object[["coordinates"]])
-  object
-}
-
+#' @title Explicit conversion to ggside object
+#' @name as_ggside
+#' @description
+#' Function is only exported for possible extensions to ggside. ggplot2 objects
+#' are implicitly converted to ggside objects by 'adding' a ggside object
+#' such as a `ggside_layer` object.
+#'
+#' @param x an object to convert
+#' @param ... unused argument
+#' @export
 as_ggside <- function(x, ...) UseMethod('as_ggside')
-as_ggside.default <- function(x, ...) abort(glue("No as_ggside() method for class <", glue_collapse(class(x), sep = "/"),">"))
+
+#' @rdname as_ggside
+#' @export
+as_ggside.default <- function(x, ...) cli::cli_abort("No as_ggside() method for class {.cls {class(x)}}")
+
+#' @rdname as_ggside
+#' @param ggside new ggside object to add
+#' @export
 as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   if(inherits(x[['coordinates']], "CoordFlip")||inherits(x[['coordinates']], "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
@@ -22,14 +35,22 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   x[['ggside']] <- ggside
   update_ggside(x)
 }
+
+#' @rdname as_ggside
+#' @export
 as_ggside.ggside <- function(x, ggside = NULL, ...) {
   ggside <- ggside %||% x[['ggside']] %||% ggside()
   if(!is.ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
   update_ggside(x, ggside)
 }
 
+#' @keywords internal
 update_ggside <- function(object, ggside) UseMethod('update_ggside')
+
+#' @keywords internal
 update_ggside.default <- function(object, ggside) abort(glue("No update_ggside() method for class <", glue_collapse(class(object), sep = "/"),">"))
+
+#' @keywords internal
 update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   if(!object$ggside$x.pos%in%c("top","bottom")) {
@@ -45,119 +66,22 @@ update_ggside.ggplot <- function(object, ggside = NULL){
   }
   object$ggside$sides_used <- get_sides(object[["layers"]])
   object$ggside$collapse <- ggside$collapse %||% object$ggside$collapse %||% NULL
-  fp <- object[['facet']]$params
-  col <- object$ggside$collapse
-  if (!is.null(fp$free) &&
-      !is.null(col) &&
-      inherits(object[['facet']], "FacetWrap") &&
-      any(.lgl <- vapply(fp$free, identity, logical(1)))) {
-    # if ggside collapse all - but scales is free - prioritize the scale and dont
-    # collapse
-    # i.e. facet_wrap(..., scales='free_y') + ggside(collapse="y") --> warning
-    # main plots may have different y scales and thus we cannot collapse y.
-    s <- sum(c(1,2)*.lgl)
-    new_col <- switch(
-      s,
-      free_x = {
-        .f <- "free_x"
-        switch(col,
-               all = "y",
-               x = NULL,
-               col)
-      },
-      free_y = {
-        .f <- "free_y"
-        switch(col,
-               all = "x",
-               y = NULL,
-               col)
-      },
-      free = {
-        .f <- "free"
-        NULL
-      }
-    )
-
-    warning(glue("Plot's Facet parameter `scales = \"{.f}\"` is ",
-                 "incompatible with `ggside(..., collapse = \"{col}\")`.",
-                 " Setting collapse to ",
-                 if(is.null(new_col)) 'NULL' else glue('"{new_col}"')),
-            call. = F)
-    object$ggside$collapse <- new_col
-
-
-  }
   object$ggside$xsidey <- ggside$xsidey %||% object$ggside$xsidey %||% NULL
   object$ggside$ysidex <- ggside$ysidex %||% object$ggside$ysidex %||% NULL
   object$ggside$draw_x_on <- ggside$draw_x_on %||% object$ggside$draw_x_on %||% "default"
   object$ggside$draw_y_on <- ggside$draw_y_on %||% object$ggside$draw_y_on %||% "default"
   object$ggside$strip <- ggside$strip %||% object$ggside$strip %||% "default"
-  object[['facet']] <- as_ggsideFacet(object[['facet']], object[['ggside']])
+  object$ggside$respect_side_labels <- ggside$respect_side_labels %||% object$ggside$respect_side_labels %||% "default"
 
-  #verify the facet scales and ggside collapse is compatible
-
-
-  object[['coordinates']] <- as_ggsideCoord(object[['coordinates']])
+  object$facet <- ggside_facet(object$facet, object$ggside)
+  object$coordinates <- ggside_coord(object$coordinates)
+  object$layout <- ggside_layout(object$layout)
   return(object)
 }
 
-#' @export
-ggplot_add.ggside_layer <- function(object, plot, object_name){
-  p <- NextMethod("ggplot_add")
-  as_ggside(p)
-}
-
-#' @export
-ggplot_add.ggside_options <- function(object, plot, object_name){
-  as_ggside(plot, object)
-}
-
-
-#' @export
-ggplot_add.ggside_scale <- function(object, plot, object_name){
-  plot$ggside[[intersect(c("xsidey","ysidex"), object$aesthetics)]] <- object #save scale in appropriate place
-  old_scales <- plot$scales
-  if (!inherits(old_scales, "ggsideScalesList")) {
-    plot$scales <- ggproto("ggsideScalesList",
-                           old_scales,
-                           scales = lapply(old_scales$scales, function(s) s$clone()),
-                           get_scales = function(self, output) {
-                             s <- ggproto_parent(old_scales, self)$get_scales(output)
-                             if (inherits(s, "ScaleContinuousPosition")) {
-                               f <- s$oob
-                               s$oob <- muffle_opts_warn(f)
-                             }
-                             s
-                           })
-  }
-  as_ggside(plot)
-}
-
-muffle_opts_warn <- function(f) {
-  function(...) {
-    withCallingHandlers(
-      warning = function(cnd) {
-        msg <- conditionMessage(cnd)
-        if (grepl(".(<|>). not meaningful for factors", msg)) {
-          rlang::cnd_muffle(cnd)
-        }
-      },
-      f(...)
-    )
-  }
-}
-
-# as_ggside <- function(plot, ggside = NULL){
-#   plot <- make_ggside(plot, ggside)
-#   if(inherits(plot$coordinates, "CoordFlip")||inherits(plot$coordinates, "CoordPolar")){
-#     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
-#   }
-#   plot[["facet"]] <- as_ggsideFacet(plot[["facet"]], plot[["ggside"]])
-#   plot
-# }
 
 get_sides <- function(layers){
-  layer_mappings <- lapply(layers, guess_layer_mapping)
+  layer_mappings <- lapply(layers, layer_type)
   sides_used <- unlist(layer_mappings)
   sides_used <- unique(sides_used[!sides_used %in% "main"])
   return(sides_used)
@@ -165,24 +89,4 @@ get_sides <- function(layers){
 
 
 
-check_collapse <- function(collapse, sides){
-  if(!is.null(collapse)){
-    if(length(sides)==0) {
-      warn(glue('collapse set to "{collapse}" but no side geometry used. Setting collapse to NULL.'))
-      return(NULL)
-    } else if(collapse=="all"&!all(c("x","y") %in% sides)){
-      warn(glue("collapse set to \"all\" but only {sides} used. Setting collapse to {sides}."))
-      return(sides)
-    } else if(collapse %in% c("x","y") && !collapse %in% sides){
-      warn(glue('collapse set to "{collapse}", but no {collapse}side geometry used. Setting collapse to NULL.'))
-      return(NULL)
-    }
-  }
-  return(collapse)
-}
 
-# used   all , x , y
-# none   N     N   N
-# x      x     +   N
-# y      y     N   +
-# x, y   +     +   +

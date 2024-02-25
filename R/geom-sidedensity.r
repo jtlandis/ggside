@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-.R
+NULL
+### INCLUDE END
 #' @title Side density distributions
 #'
 #' @description
@@ -26,107 +30,20 @@
 #'  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 #'
 #' @export
-geom_xsidedensity <- function(mapping = NULL, data = NULL,
-         stat = "density", position = "identity",
-         ...,
-         na.rm = FALSE,
-         orientation = "x",
-         show.legend = NA,
-         inherit.aes = TRUE,
-         outline.type = "upper") {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidedensity,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      outline.type = outline.type,
-      ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_xsidedensity <- ggside_layer_function(fun = geom_density, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidedensity <- ggplot2::ggproto("GeomXsidedensity",
-                                     ggplot2::GeomDensity,
-                                     default_aes = new_default_aes(
-                                       aes(xcolour = NA, xfill = NA),
-                                       ggplot2::GeomDensity$default_aes),
-                                     setup_data = function(data, params) {
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomDensity$setup_data(data, params)
-                                     },
-                                     draw_group = function(data, panel_params, coord, na.rm = FALSE, flipped_aes = FALSE, outline.type = "both") {
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomDensity$draw_group(data = data, panel_params = panel_params, coord = coord, na.rm = na.rm,
-                                                                       flipped_aes = flipped_aes, outline.type = outline.type)},
-                                     draw_key = function(data, params, size) {
-                                       data <- use_xside_aes(data)
-                                       ggplot2::GeomDensity$draw_key(data, params, size)
-                                       })
+GeomXsidedensity <- ggside_geom("GeomXsidedensity", GeomDensity, "x")
 
 #' @rdname geom_xsidedensity
 #' @export
-geom_ysidedensity <- function(mapping = NULL, data = NULL,
-                              stat = "density", position = "identity",
-                              ...,
-                              na.rm = FALSE,
-                              orientation = "y",
-                              show.legend = NA,
-                              inherit.aes = TRUE,
-                              outline.type = "upper") {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  outline.type <- match.arg(outline.type, c("both", "upper", "lower", "full"))
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidedensity,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      na.rm = na.rm,
-      orientation = orientation,
-      outline.type = outline.type,
-      ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_ysidedensity <- ggside_layer_function(fun = geom_density, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidedensity <- ggplot2::ggproto("GeomYsidedensity",
-                                     ggplot2::GeomDensity,
-                                     default_aes = new_default_aes(
-                                       aes(ycolour = NA, yfill = NA),
-                                       ggplot2::GeomDensity$default_aes),
-                                     setup_data = function(data, params) {
-                                       data <- parse_side_aes(data, params)
-                                       ggplot2::GeomDensity$setup_data(data, params)
-                                     },
-                                     draw_group = function(data, panel_params, coord, na.rm = FALSE, flipped_aes = FALSE, outline.type = "both") {
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomDensity$draw_group(data = data, panel_params = panel_params, coord = coord, na.rm = na.rm,
-                                                                       flipped_aes = flipped_aes, outline.type = outline.type)
-                                     },
-                                     draw_key = function(data, params, size) {
-                                       data <- use_yside_aes(data)
-                                       ggplot2::GeomDensity$draw_key(data, params, size)
-                                     })
+GeomYsidedensity <- ggside_geom("GeomYsidedensity", GeomDensity, "y")

@@ -16,6 +16,7 @@ geom_xsidetext(
   nudge_x = 0,
   nudge_y = 0,
   check_overlap = FALSE,
+  size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -31,6 +32,7 @@ geom_ysidetext(
   nudge_x = 0,
   nudge_y = 0,
   check_overlap = FALSE,
+  size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -83,6 +85,10 @@ same layer will not be plotted. \code{check_overlap} happens at draw time and in
 the order of the data. Therefore data should be arranged by the label
 column before calling \code{geom_text()}. Note that this argument is not
 supported by \code{geom_label()}.}
+
+\item{size.unit}{How the \code{size} aesthetic is interpreted: as millimetres
+(\code{"mm"}, default), points (\code{"pt"}), centimetres (\code{"cm"}), inches (\code{"in"}),
+or picas (\code{"pc"}).}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}

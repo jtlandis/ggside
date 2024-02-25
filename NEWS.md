@@ -1,4 +1,32 @@
 
+# ggside 0.2.3.9999
+
+### Breaking Changes
+
+* The following classes are no longer exported.
+ * `FacetSideNull`, `FacetSideGrid`, `FacetSideWrap`
+* `ggplot2`'s GeomCol and GeomBar now compute resolution based on panels, and not the entire data as a whole. This may affect `ggside` plots that use these variant geometries. Set the `width` parameter manually to retain old figures. 
+* `ggside` now depends on `ggplot2 (>3.5.0)` as to make side positional scales work reliably, the `layer` slot of the `ggplot` object needs to be extended and modified. This slot is only available in the latest version of `ggplot2`. Attempting to render a `ggside` object whose Layout has not been subclassed by `ggside` may lead to unexpected results.
+* with `ggplot2 (3.5.0)`, there is slightly more spacing between the y-axis title and the panels when the y-axis is plotted on the right side. This may be attributed to the new guide's system.
+
+### Updates
+
+* Using `coord_cartesian(xlim = <limits>, ylim = <limits>)` will only apply to the main plotting scales and not side panel scales. For instance, using `p + coord_cartesian(xlim = c(0,1))` where `p` is a ggside object with a yside geometry will NOT set the limits on the ysidex scale. If the user wants to control the limits on the side scales, they should use `scale_(x|y)side(y|x)_*()` functions. Addresses issue #55
+* The `ggside_options` object now inherits from `ggproto` instead of a list.
+* The `ggside_options` defaults arguments are now `NULL`. This will help update the object appropriately without overriding previous options specified through `ggside()`.
+* `ggside` now subclasses `Layout` allowing for better control of how side scales are trained. This feature may be relatively unstable depending on the version of `ggplot2` installed. 
+* `ggside_options` object now has a new argument `respect_side_labels` which will control spacing given between panels for their axes text labels. See `?ggside` for argument options. Note, if theme option `ggside.panel.spacing` is smaller than space required for labels, then priority is given to the `respect_side_labels` option until `ggside.panel.spacing` is greater.
+* `ggside` now allows for the `trans` argument of the `scale_(x|y)side(y|x)_continuous(...)` functions to be used. Addresses issue #40. This feature is experimental and may be removed depending on how `ggplot2` develops in the future. Additional helper functions have been added:
+  * `scale_xsidey_log10()`, `scale_ysidex_log10()`
+  * `scale_xsidey_reverse()`, `scale_ysidex_reverse()`
+  * `scale_xsidey_sqrt()`, `scale_ysidex_reverse()`
+* all `ggside` Geom ggproto objects have their aesthetics changed. For example, `GeomXsidebar$required_aes` is set to `c("x", "xsidey")` instead of `c("x", "y")`. This is to ensure side panel's respective axis generates its own default scale. With this change, users no longer need to preemptively provide a `scale_(x|y)side(y|x)_*()` function.
+* The following functions have been deprecated
+  * `as_ggsideFacet` -> `ggside_facet`
+  * `as_ggsideCoord` -> `ggside_coord`
+* Much of the syntax for creating a compatible `ggside` layer has been wrapped into `ggside_layer`, which is similar to `ggplot2::layer` except with an additional argument `side`. This will allow users to attempt to make a compatible `ggside_layer` object with custom Geom and Stat combinations. Ideally, the user should not have to modify the Geom or Stat directly, as this is handled by subclassing the Layer ggproto class directly.
+* many of the `ggside` internals have been trimmed down for redundancy, resulting in a smaller package overall.
+
 # ggside 0.2.3
 
 ### Updates
@@ -12,9 +40,11 @@
 
 ### Updates
 
+* The `ggside_options` object now inherits from `ggproto` instead of a list.
 * fixed issue where `facet_wrap(..., scales = "free/free_x/free_y")` prevented the associated `scale_ysidex_*()`/`scale_xsidey_*()` functions from plotting the guides. Addresses issue #35
 * `ggside` now provides an informative warning if the user provides free scales to facets but an incompatible argument to `ggside(collapse = ...)`. This warning will force the collapse parameter to something that will comply with the facet scales specification.
-* `ggside` should be more resistant to `ggplot2`'s updates to their default aesthetics. `ggplot2 v3.3.6.9000` has included a new default aesthetic that has caused `ggside` geoms to break. Addresses issue #36
+* `ggside` should be more resistant to `ggplot2`'s updates to their default aesthetics. `ggplot2 v3.4.0` has included a new default aesthetic that has caused `ggside` geoms to break. Addresses issue #36
+
 
 # ggside 0.2.1
 

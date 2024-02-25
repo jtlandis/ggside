@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-.R
+NULL
+### INCLUDE END
 
 #' Side Histograms
 #'
@@ -27,67 +31,9 @@
 #' geom_xsidehistogram(aes(y = after_stat(density)), binwidth = 0.1) +
 #' geom_ysidehistogram(aes(x = after_stat(density)), binwidth = 0.1)
 #' @export
-geom_xsidehistogram <- function(mapping = NULL, data = NULL,
-                                stat = "bin", position = "stack",
-                                ...,
-                                binwidth = NULL,
-                                bins = NULL,
-                                na.rm = FALSE,
-                                orientation = "x",
-                                show.legend = NA,
-                                inherit.aes = TRUE) {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      binwidth = binwidth,
-      bins = bins,
-      na.rm = na.rm,
-      orientation = orientation,
-      pad = FALSE,
-      ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_xsidehistogram <- ggside_layer_function(fun = geom_histogram, side = "x")
 
 #' @rdname geom_xsidehistogram
 #' @aliases geom_ysidehistogram
 #' @export
-geom_ysidehistogram <- function(mapping = NULL, data = NULL,
-                                stat = "bin", position = "stack",
-                                ...,
-                                binwidth = NULL,
-                                bins = NULL,
-                                na.rm = FALSE,
-                                orientation = "y",
-                                show.legend = NA,
-                                inherit.aes = TRUE) {
-  mapping <- default_stat_aes(mapping, stat, orientation)
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidebar,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      binwidth = binwidth,
-      bins = bins,
-      na.rm = na.rm,
-      orientation = orientation,
-      pad = FALSE,
-      ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_ysidehistogram <- ggside_layer_function(fun = geom_histogram, side = "y")

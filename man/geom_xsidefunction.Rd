@@ -22,7 +22,7 @@ geom_xsidefunction(
 stat_xsidefunction(
   mapping = NULL,
   data = NULL,
-  geom = "xsidefunction",
+  geom = "function",
   position = "identity",
   ...,
   fun,

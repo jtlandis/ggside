@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include utils-ggplot2-reimpl-.R
+NULL
+### INCLUDE END
 #' Scales for the *fill aesthetics
 #'
 #' These are the various scales that can be applied to the xsidebar or ysidebar
@@ -30,47 +34,50 @@ NULL
 #' @rdname scale_xfill
 #' @usage NULL
 #' @export
-scale_xfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
+scale_xfill_hue <- function(name = waiver(), ..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
                             direction = 1, na.value = "grey50", aesthetics = "xfill")
 {
-  ggplot2::discrete_scale(aesthetics, "hue",
-                          scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+  ggplot2::discrete_scale(aesthetics = aesthetics,
+                          name = name,
+                          palette =  scales::hue_pal(h, c, l, h.start, direction),
+                          na.value = na.value,
+                          ...)
 }
 
 #' scale_xfill_manual
 #' @rdname scale_xfill
 #' @usage NULL
 #' @export
-scale_xfill_manual <- function(..., values, aesthetics = "xfill", breaks = waiver()) {
-  manual_scale(aesthetics, values, breaks, ...)
+scale_xfill_manual <- function(..., values, aesthetics = "xfill", breaks = waiver(), na.value = "grey50") {
+  manual_scale(aesthetics, values, breaks, ..., na.value = na.value)
 }
 
 #' scale_xfill_gradient
 #' @rdname scale_xfill
 #' @usage NULL
 #' @export
-scale_xfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
-                                  space = "Lab",na.value = "grey50",
+scale_xfill_gradient <- function (name = waiver(), ..., low = "#132B43", high = "#56B1F7",
+                                  space = "Lab", na.value = "grey50",
                                   guide = guide_colorbar(available_aes = "xfill"), aesthetics = "xfill")
 {
-  continuous_scale(aesthetics,
-                   "gradient",
-                   scales::seq_gradient_pal(low, high, space),
+  continuous_scale(aesthetics = aesthetics,
+                   name = name,
+                   palette = scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_xfill
 #' @usage NULL
 #' @export
-scale_xfill_gradientn <- function (..., colours, values = NULL,
+scale_xfill_gradientn <- function (name = waiver(), ..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "xfill"), aesthetics = "xfill", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, "gradientn", name = name,
+                   palette = scales::gradient_n_pal(colours, values, space),
                    na.value = na.value, guide = guide, ...)
 }
 
@@ -91,11 +98,11 @@ scale_xfill_continuous <- scale_xfill_gradient
 #' @rdname scale_yfill
 #' @usage NULL
 #' @export
-scale_yfill_hue <- function(..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
+scale_yfill_hue <- function(name = waiver(), ..., h = c(0, 360) + 15, c = 100, l = 65, h.start = 0,
                             direction = 1, na.value = "grey50", aesthetics = "yfill")
 {
-  ggplot2::discrete_scale(aesthetics, "hue",
-                          scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
+  ggplot2::discrete_scale(aesthetics = aesthetics, name = name,
+                          palette = scales::hue_pal(h, c, l, h.start, direction), na.value = na.value, ...)
 }
 
 #' scale_yfill_manual
@@ -110,28 +117,28 @@ scale_yfill_manual <- function(..., values, aesthetics = "yfill", breaks = waive
 #' @rdname scale_yfill
 #' @usage NULL
 #' @export
-scale_yfill_gradient <- function (..., low = "#132B43", high = "#56B1F7",
+scale_yfill_gradient <- function (name = waiver(), ..., low = "#132B43", high = "#56B1F7",
                                   space = "Lab",na.value = "grey50",
                                   guide = guide_colorbar(available_aes = "yfill"), aesthetics = "yfill")
 {
-  continuous_scale(aesthetics,
-                   "gradient",
-                   scales::seq_gradient_pal(low, high, space),
+  continuous_scale(aesthetics = aesthetics,
+                   name = name,
+                   palette = scales::seq_gradient_pal(low, high, space),
                    na.value = na.value, guide = guide, ...)
 }
 
 #' @rdname scale_xfill
 #' @usage NULL
 #' @export
-scale_yfill_gradientn <- function (..., colours, values = NULL,
+scale_yfill_gradientn <- function (name = waiver(), ..., colours, values = NULL,
                                    space = "Lab", na.value = "grey50",
                                    guide = guide_colorbar(available_aes = "yfill"), aesthetics = "yfill", colors)
 {
   colours <- if (missing(colours))
     colors
   else colours
-  continuous_scale(aesthetics, "gradientn",
-                   scales::gradient_n_pal(colours,values, space),
+  continuous_scale(aesthetics = aesthetics, name = name,
+                   palette = scales::gradient_n_pal(colours,values, space),
                    na.value = na.value, guide = guide, ...)
 }
 

@@ -4,9 +4,9 @@ df <- data.frame(x = 1:10, y = 21:30,
                  b = rep(c("t1","t2"), each = 5))
 p <- ggplot(df, aes(x, y)) +
   geom_point() + facet_grid(vars(a), vars(b))
-px <- p + geom_xsidecol()
-py <- p + geom_ysidecol()
-pxy <- px + geom_ysidecol()
+px <- p + geom_xsidecol(width = 0.9)
+py <- p + geom_ysidecol(width = 0.9)
+pxy <- px + geom_ysidecol(width = 0.9)
 test_that("ggside.panel.scale facetGrid",{
   expect_doppelganger("grid xside ggside.panel.scale.x .5", px + theme(ggside.panel.scale.x = .5))
   expect_doppelganger("grid xside ggside.panel.scale.y .5", px + theme(ggside.panel.scale.y = .5))

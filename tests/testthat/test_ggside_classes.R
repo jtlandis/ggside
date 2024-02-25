@@ -33,8 +33,9 @@ test_that("ggside function returns ggside_options",{
   expect_s3_class(ggside(), "ggside_options")
 })
 
+p <- ggplot(NULL) + geom_blank()
+
 test_that("adding ggside_layer to ggplot makes ggside object",{
-  p <- ggplot(NULL) + geom_blank()
   expect_s3_class(p, "ggplot")
   expect_is_ggside <- function(p, l) {
     p_ <- p + l
@@ -67,5 +68,35 @@ test_that("adding ggside_layer to ggplot makes ggside object",{
   expect_is_ggside(p, geom_ysidetext())
   expect_is_ggside(p, geom_ysidetile())
   expect_is_ggside(p, geom_ysideviolin())
+})
+
+test_that("ggside() class operates correctly", {
+  obj <- ggside()
+  expect_s3_class(obj, "ggside_options")
+  expect_equal(obj$collapse, NULL)
+  expect_equal(obj$draw_x_on, NULL)
+  expect_equal(obj$draw_y_on, NULL)
+  expect_equal(obj$scales, NULL)
+  expect_equal(obj$sides_used, NULL)
+  expect_equal(obj$respect_side_labels, NULL)
+  expect_equal(obj$strip, NULL)
+  expect_equal(obj$x.pos, NULL)
+  expect_equal(obj$y.pos, NULL)
+  expect_equal(obj$xsidey, NULL)
+  expect_equal(obj$ysidex, NULL)
+  p2 <- p + obj
+  obj2 <- p2$ggside
+  expect_s3_class(obj2, "ggside_options")
+  expect_equal(obj2$collapse, NULL)
+  expect_equal(obj2$draw_x_on, "default")
+  expect_equal(obj2$draw_y_on, "default")
+  expect_equal(obj2$scales, "fixed")
+  expect_equal(obj2$sides_used, character())
+  expect_equal(obj2$respect_side_labels, "default")
+  expect_equal(obj2$strip, "default")
+  expect_equal(obj2$x.pos, "top")
+  expect_equal(obj2$y.pos, "right")
+  expect_equal(obj2$xsidey, NULL)
+  expect_equal(obj2$ysidex, NULL)
 })
 

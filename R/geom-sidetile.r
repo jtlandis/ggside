@@ -1,3 +1,7 @@
+### INCLUDE BEGIN
+#' @include constructor-.R
+NULL
+### INCLUDE END
 #' @title Side tile plot
 #' @description
 #' The [xside] and [yside] variants of \link[ggplot2]{geom_tile}
@@ -27,101 +31,20 @@
 #' p + geom_xsidetile(data = xside_data, aes(y = name, xfill = value)) +
 #'    guides(xfill = guide_legend(nrow = 8))
 #' @export
-geom_xsidetile <- function(mapping = NULL, data = NULL,
-                          stat = "identity", position = "identity",
-                          ...,
-                          linejoin = "mitre",
-                          na.rm = FALSE,
-                          show.legend = NA,
-                          inherit.aes = TRUE) {
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomXsidetile,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      linejoin = linejoin,
-      na.rm = na.rm,
-      ...
-    ),
-    layer_class = XLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_xsidetile <- ggside_layer_function(fun = geom_tile, side = "x")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomXsidetile <- ggplot2::ggproto("GeomXsidetile",
-                                  ggplot2::GeomTile,
-                                  default_aes = new_default_aes(
-                                    aes(xcolour = NA, xfill = NA),
-                                    ggplot2::GeomTile$default_aes
-                                  ),
-                                  setup_data = function(data, params) {
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomTile$setup_data(data, params)
-                                  },
-                                  draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomTile$draw_panel(data = data, panel_params = panel_params, coord = coord, linejoin = linejoin)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_xside_aes(data)
-                                    ggplot2::GeomTile$draw_key(data, params, size)
-                                  })
+GeomXsidetile <- ggside_geom("GeomXsidetile", GeomTile, "x")
 
 #' @rdname geom_xsidetile
 #' @export
-geom_ysidetile <- function(mapping = NULL, data = NULL,
-                           stat = "identity", position = "identity",
-                           ...,
-                           linejoin = "mitre",
-                           na.rm = FALSE,
-                           show.legend = NA,
-                           inherit.aes = TRUE) {
-  l <- layer(
-    data = data,
-    mapping = mapping,
-    stat = stat,
-    geom = GeomYsidetile,
-    position = position,
-    show.legend = show.legend,
-    inherit.aes = inherit.aes,
-    params = list(
-      linejoin = linejoin,
-      na.rm = na.rm,
-      ...
-    ),
-    layer_class = YLayer
-  )
-  structure(l, class = c("ggside_layer",class(l)))
-}
+geom_ysidetile <- ggside_layer_function(fun = geom_tile, side = "y")
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
 #' @format NULL
 #' @export
-GeomYsidetile <- ggplot2::ggproto("GeomYsidetile",
-                                  ggplot2::GeomTile,
-                                  default_aes = new_default_aes(
-                                    aes(ycolour = NA, yfill = NA),
-                                    ggplot2::GeomTile$default_aes
-                                  ),
-                                  setup_data = function(data, params) {
-                                    data <- parse_side_aes(data, params)
-                                    ggplot2::GeomTile$setup_data(data, params)
-                                  },
-                                  draw_panel = function(self, data, panel_params, coord, linejoin = "mitre") {
-                                    #browser()
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomTile$draw_panel(data = data, panel_params = panel_params, coord = coord, linejoin = linejoin)
-                                  },
-                                  draw_key = function(data, params, size){
-                                    data <- use_yside_aes(data)
-                                    ggplot2::GeomTile$draw_key(data, params, size)
-                                  })
+GeomYsidetile <- ggside_geom("GeomYsidetile", GeomTile, "y")
