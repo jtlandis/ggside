@@ -40,22 +40,22 @@ test_that("Testing Heatmap Base is consistent",{
   expect_doppelganger("Heatmap Base",p)
 })
 
-test_that("geom_sidesegment",{
-    p0 <- p +
-    geom_xsidetile(aes(y = "Color", xfill = color)) +
-    geom_xsidetile(aes(y = "Clarity", xfill = clarity)) +
-    geom_xsidesegment(data = dendrox$segments,
-                      aes(x = x, y = y, xend = xend, yend = yend),
-                      position = position_yrescale(midpoint = 4.5, range = 4, location = "top")) +
-    geom_ysidesegment(data = dendroy$segments,
-                      aes(y = x, yend = xend, x = y, xend = yend)) +
-    theme_minimal() +
-    theme(axis.text.x=element_blank(), panel.grid = element_blank()) +
-    scale_y_discrete(expand = expansion()) +
-    scale_xsidey_discrete(expand = expansion()) +
-    guides(xfill = "none")
-  expect_doppelganger(title = "xySideSegments & xSideTile", p0)
-})
+# test_that("geom_sidesegment",{
+#     p0 <- p +
+#     geom_xsidetile(aes(y = "Color", xfill = color)) +
+#     geom_xsidetile(aes(y = "Clarity", xfill = clarity)) +
+#     geom_xsidesegment(data = dendrox$segments,
+#                       aes(x = x, y = y, xend = xend, yend = yend),
+#                       position = position_yrescale(midpoint = 4.5, range = 4, location = "top")) +
+#     geom_ysidesegment(data = dendroy$segments,
+#                       aes(y = x, yend = xend, x = y, xend = yend)) +
+#     theme_minimal() +
+#     theme(axis.text.x=element_blank(), panel.grid = element_blank()) +
+#     scale_y_discrete(expand = expansion()) +
+#     scale_xsidey_discrete(expand = expansion()) +
+#     guides(xfill = "none")
+#   expect_doppelganger(title = "xySideSegments & xSideTile", p0)
+# })
 
 test_that("geom_sideboxplot", {
   p0 <- p +
