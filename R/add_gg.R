@@ -12,7 +12,7 @@ validate_ggside.Facet <- function(e2, plot){
   plot
 }
 validate_ggside.Coord <- function(e2, plot) {
-  plot[["coordinates"]] <- as_ggsideCoord(plot[["coordinates"]])
+  plot[["coordinates"]] <- ggside_coord(plot[["coordinates"]])
   plot
 }
 
