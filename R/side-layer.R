@@ -8,7 +8,8 @@ NULL
 
 #' @name ggside_layer
 #' @title New ggside layer
-#' @description utility function to make a ggside layer compatible with `ggside` internals
+#' @description utility function to make a ggside layer compatible with
+#' `ggside` internals
 #' @inheritParams ggplot2::layer
 #' @export
 ggside_layer <-
@@ -24,16 +25,16 @@ ggside_layer <-
            show.legend = NA,
            key_glyph = NULL,
            side = NULL) {
+
     resolve_arg(side, c("x", "y"), null.ok = FALSE)
     `_class` <- switch(side, x = "XLayer", y = "YLayer")
     Side <- switch(side, x = "Xside", y = "Yside")
     names(mapping) <- rename_side(names(mapping), side)
-
     #check class
     geom <- check_subclass(geom, "Geom", env = parent.frame(),
-                           call = call_env)
+                           call = parent.frame())
     stat <- check_subclass(stat, "Stat", env = parent.frame(),
-                           call = call_env)
+                           call = parent.frame())
 
     # remaps
     geom_aes_map <- aes_to_map(geom, side)

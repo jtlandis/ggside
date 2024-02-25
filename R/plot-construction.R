@@ -14,14 +14,16 @@ NULL
 #' such as a `ggside_layer` object.
 #'
 #' @param x an object to convert
-#' @param ggside new ggside object to add
 #' @param ... unused argument
 #' @export
 as_ggside <- function(x, ...) UseMethod('as_ggside')
 
+#' @rdname as_ggside
 #' @export
 as_ggside.default <- function(x, ...) cli::cli_abort("No as_ggside() method for class {.cls {class(x)}}")
 
+#' @rdname as_ggside
+#' @param ggside new ggside object to add
 #' @export
 as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   if(inherits(x[['coordinates']], "CoordFlip")||inherits(x[['coordinates']], "CoordPolar")){
@@ -34,7 +36,7 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   update_ggside(x)
 }
 
-
+#' @rdname as_ggside
 #' @export
 as_ggside.ggside <- function(x, ggside = NULL, ...) {
   ggside <- ggside %||% x[['ggside']] %||% ggside()

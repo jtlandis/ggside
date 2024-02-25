@@ -4,8 +4,6 @@
 \alias{geom_xsidefunction}
 \alias{geom_*sidefunction}
 \alias{stat_xsidefunction}
-\alias{geom_ysidefunction2}
-\alias{stat_ysidefunction2}
 \alias{geom_ysidefunction}
 \alias{stat_ysidefunction}
 \title{Side function plot}
@@ -22,32 +20,6 @@ geom_xsidefunction(
 )
 
 stat_xsidefunction(
-  mapping = NULL,
-  data = NULL,
-  geom = "function",
-  position = "identity",
-  ...,
-  fun,
-  xlim = NULL,
-  n = 101,
-  args = list(),
-  na.rm = FALSE,
-  show.legend = NA,
-  inherit.aes = TRUE
-)
-
-geom_ysidefunction2(
-  mapping = NULL,
-  data = NULL,
-  stat = "function",
-  position = "identity",
-  ...,
-  na.rm = FALSE,
-  show.legend = NA,
-  inherit.aes = TRUE
-)
-
-stat_ysidefunction2(
   mapping = NULL,
   data = NULL,
   geom = "function",

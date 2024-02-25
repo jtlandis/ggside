@@ -4,9 +4,13 @@
 NULL
 ### INCLUDE END
 
+#global variables to pass RMD checks
 NO_PANEL <- -1L
 PANEL_TYPE <- c("x","y", "main")
 self <- NULL
+call_parent_method <- function(...) cli::cli_abort("method not implemented")
+orientation <- NULL
+`!<-` <- `(<-` <- function(x, value) cli::cli_abort("function not meant to be called")
 
 force_panel_type_mapping <- function(mapping, type) {
   if ("PANEL_TYPE" %in% names(mapping)) return(mapping)

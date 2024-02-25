@@ -37,13 +37,13 @@ stat_xsidefunction <- ggside_layer_function(fun = stat_function, side = "x")
 #' @export
 GeomXsidefunction <- ggside_geom("GeomXsidefunction", GeomFunction, "x")
 
-#' @rdname geom_xsidefunction
-#' @export
-geom_ysidefunction2 <- ggside_layer_function(fun = geom_function, side = "y")
-
-#' @rdname geom_xsidefunction
-#' @export
-stat_ysidefunction2 <- ggside_layer_function(fun = stat_function, side = "y")
+# # @rdname geom_xsidefunction
+# # @export
+# geom_ysidefunction2 <- ggside_layer_function(fun = geom_function, side = "y")
+#
+# # @rdname geom_xsidefunction
+# # @export
+# stat_ysidefunction2 <- ggside_layer_function(fun = stat_function, side = "y")
 
 #' @rdname geom_xsidefunction
 #' @export

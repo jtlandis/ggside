@@ -82,5 +82,6 @@ function name minus the \code{draw_key_} prefix. See \link[ggplot2]{draw_key} fo
 \item{layer}{a LayerInstance object made from \link[ggplot2]{layer}}
 }
 \description{
-utility function to make a ggside layer compatible with \code{ggside} internals
+utility function to make a ggside layer compatible with
+\code{ggside} internals
 }
