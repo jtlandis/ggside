@@ -6,8 +6,23 @@
 NULL
 ### INCLUDE END
 
+#' @title Explicit conversion to ggside object
+#' @name as_ggside
+#' @description
+#' Function is only exported for possible extensions to ggside. ggplot2 objects
+#' are implicitly converted to ggside objects by 'adding' a ggside object
+#' such as a `ggside_layer` object.
+#'
+#' @param x an object to convert
+#' @param ggside new ggside object to add
+#' @param ... unused argument
+#' @export
 as_ggside <- function(x, ...) UseMethod('as_ggside')
-as_ggside.default <- function(x, ...) abort(glue("No as_ggside() method for class <", glue_collapse(class(x), sep = "/"),">"))
+
+#' @export
+as_ggside.default <- function(x, ...) cli::cli_abort("No as_ggside() method for class {.cls {class(x)}}")
+
+#' @export
 as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   if(inherits(x[['coordinates']], "CoordFlip")||inherits(x[['coordinates']], "CoordPolar")){
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
@@ -18,14 +33,22 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
   x[['ggside']] <- ggside
   update_ggside(x)
 }
+
+
+#' @export
 as_ggside.ggside <- function(x, ggside = NULL, ...) {
   ggside <- ggside %||% x[['ggside']] %||% ggside()
   if(!is.ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
   update_ggside(x, ggside)
 }
 
+#' @keywords internal
 update_ggside <- function(object, ggside) UseMethod('update_ggside')
+
+#' @keywords internal
 update_ggside.default <- function(object, ggside) abort(glue("No update_ggside() method for class <", glue_collapse(class(object), sep = "/"),">"))
+
+#' @keywords internal
 update_ggside.ggplot <- function(object, ggside = NULL){
   object$ggside$x.pos <- ggside$x.pos %||% object$ggside$x.pos %||% "top"
   if(!object$ggside$x.pos%in%c("top","bottom")) {

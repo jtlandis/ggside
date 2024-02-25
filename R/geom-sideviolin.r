@@ -17,6 +17,11 @@ NULL
 #'  maximum width.
 #' @param stat Use to override the default connection between
 #'   `geom_violin()` and `stat_ydensity()`.
+#' @param bounds Known lower and upper bounds for estimated data. Default
+#'  c(-Inf, Inf) means that there are no (finite) bounds. If any bound is
+#'  finite, boundary effect of default density estimation will be corrected
+#'  by reflecting tails outside bounds around their closest edge. Data points
+#'  outside of bounds are removed with a warning
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
 #' @examples

@@ -37,11 +37,24 @@ find_side_scale <- function(side, data) {
   }, side = side)
 }
 
+#' @title Construct ggside layout
+#' @name ggside_layout
+#' @description
+#' Creates a new layout object required for ggside functionality
+#'
+#' @param layout a ggproto Layout object
+#' @export
 ggside_layout <- function(layout) UseMethod("ggside_layout")
+
+#' @export
 ggside_layout.Layout <- function(layout) {
   new_ggside_layout(layout = layout)
 }
+
+#' @export
 ggside_layout.ggsideLayout <- function(layout) layout
+
+#' @export
 ggside_layout.default <- function(layout) cli::cli_abort("cannot create ggside layout from {.cls {class(layout)}}")
 
 new_ggside_layout <- function(layout) {

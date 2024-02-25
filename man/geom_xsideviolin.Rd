@@ -78,6 +78,12 @@ at the given quantiles of the density estimate.}
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
+\item{bounds}{Known lower and upper bounds for estimated data. Default
+c(-Inf, Inf) means that there are no (finite) bounds. If any bound is
+finite, boundary effect of default density estimation will be corrected
+by reflecting tails outside bounds around their closest edge. Data points
+outside of bounds are removed with a warning}
+
 \item{scale}{if "area" (default), all violins have the same area
 (before trimming the tails). If "count", areas are scaled proportionally
 to the number of observations. If "width", all violins have the same
