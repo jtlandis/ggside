@@ -1,5 +1,5 @@
 
-# ggside 0.2.3.9999
+# ggside 0.3.0
 
 ### Breaking Changes
 
