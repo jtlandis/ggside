@@ -11,6 +11,8 @@ Justin Landis
 [![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/ggside)](https://cran.r-project.org/package=ggside)
 [![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside)](https://cran.r-project.org/package=ggside)
 [![R-CMD-check](https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml)
+[![Codecov test
+coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
 
 ## Overview
@@ -47,6 +49,9 @@ independent y axis. Take the following example from the ggplot2 readme.
 ``` r
 library(ggplot2)
 library(ggside)
+#> Registered S3 method overwritten by 'ggside':
+#>   method from   
+#>   +.gg   ggplot2
 
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
@@ -107,13 +112,4 @@ The following section will summarize issues that are present on the
 current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
-v0.2.3.
-
-- [\#40
-  ![](https://img.shields.io/badge/fixed-dev-green.svg?style=flat-square)](https://github.com/jtlandis/ggside/issues/40)
-  Side scales cannot be reliably transformed. This is “fixed” under the
-  dev version of `ggside`, but the overall new approach in the
-  development branch is not in a place where I am comfortable to release
-  just yet. This will be added in `ggside 0.3.0`.
-
-
+v0.3.0.
