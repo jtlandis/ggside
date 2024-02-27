@@ -1,7 +1,9 @@
 
 
 zap_dots <- function(call, zap = character(), ...) {
-  dots <- enexprs(...)
+  # force dots to be evaluated...
+  dots <- enquos(...) |>
+    lapply(rlang::eval_tidy)
   # remove dots and splice them in
   call <- call_modify(call, ... = zap(), !!!dots)
   if (length(zap) > 0) {
