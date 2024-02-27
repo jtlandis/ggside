@@ -76,14 +76,25 @@ NULL
 #   fun
 # }
 
+
+mod_scale_map_method <- function(scale) {
+  ggproto(
+    NULL,
+    scale,
+    map = mod_ggproto_fun(scale$map) |>
+      mod_fun_at(quote(if (length(x)==0) return(x)), 1)
+  )
+}
+
 new_side_pos_scale <- function(scale, side) {
   side <- match.arg(side, choices = c("x","y"))
   # other <- switch(side, x = "y", y =)
-  ggproto(
-    "ggside_scale",
-    scale,
-    aesthetics = sprintf("%sside%s", side, scale$aesthetics),
-    map = mod_ggproto_fun(scale$map) |> mod_fun_at(quote(if (length(x)==0) return(x)), 1)
+  mod_scale_map_method(
+    ggproto(
+      "ggside_scale",
+      scale,
+      aesthetics = sprintf("%sside%s", side, scale$aesthetics)
+    )
   )
 }
 

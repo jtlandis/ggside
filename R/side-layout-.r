@@ -68,8 +68,8 @@ new_ggside_layout <- function(layout) {
     find_ggside_scales = function(self, data) {
       params <- self$facet_params
       layout <- self$layout
-      x_scale <- self$panel_scales_x
-      y_scale <- self$panel_scales_y
+      x_scale <- lapply(self$panel_scales_x, mod_scale_map_method)
+      y_scale <- lapply(self$panel_scales_y, mod_scale_map_method)
 
       if ("y" %in% params$ggside$sides_used &&
           is.null(params$ggside$ysidex)) {
@@ -97,7 +97,7 @@ new_ggside_layout <- function(layout) {
         x_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
         self$panel_scales_x <- x_scale
       }
-      y_scale <- self$panel_scales_y
+
       if (!is.null(y_scale) && !is.null(params$ggside$xsidey) &&
           !any(vapply(y_scale, function(scale) "xsidey" %in% scale$aesthetics, logical(1)))){
         side_indx <-  layout[layout$PANEL_TYPE=="x",]$SCALE_Y
