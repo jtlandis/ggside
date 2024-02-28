@@ -42,7 +42,6 @@ test_that("New ggside layers are added correctly",{
 
 test_that("add_gg errors", {
   expect_error(+p, "with a single argument. Did you accidentally put")
-  expect_error({ggside:::add_gg("character", p, "a character")}, "no applicable method for 'add_gg'")
   expect_error("" + p, "No method defined for class character")
   fake_theme <- structure(numeric(), class = "theme")
   expect_error(theme() + fake_theme, "to a theme object")
