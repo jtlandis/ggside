@@ -18,9 +18,10 @@ test_that("Overwritten `+.gg` still adds layers as expected",{
   expect_false(identical(p3$scales,p4$scales))
 })
 
+p <- ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+  geom_point()
+
 test_that("New ggside layers are added correctly",{
-  p <- ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
-    geom_point()
   expect_s3_class(p, "ggplot")
   expect_s3_class(ggside(), "ggside_options")
   p1 <- p + geom_xsidedensity(aes(y=after_stat(density)))
@@ -36,6 +37,21 @@ test_that("New ggside layers are added correctly",{
   expect_warning(ggplot_build(p + ggside(collapse = "all")), regexp = "no side geometry used")
   expect_warning(ggplot_build(p1 + ggside(collapse = "y")), regex = "no yside geometry used")
 
+})
+
+
+test_that("add_gg errors", {
+  expect_error(+p, "with a single argument. Did you accidentally put")
+  expect_error({ggside:::add_gg("character", p, "a character")}, "no applicable method for 'add_gg'")
+  expect_error("" + p, "No method defined for class character")
+  fake_theme <- structure(numeric(), class = "theme")
+  expect_error(theme() + fake_theme, "to a theme object")
+  expect_error(ggproto() + p, "Cannot add ggproto objects together")
+})
+
+test_that("add_gg identities", {
+  expect_identical(p + NULL, p)
+  expect_identical(theme() + theme_bw(), theme_bw())
 })
 
 
