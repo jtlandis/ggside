@@ -1,4 +1,4 @@
-This is a major patch update that fixes lingering issues with `ggside` that were made possible thanks to the latest `ggplot2` update. Most changes were focused on subclassing the Layout ggproto object. `ggside` had a major rewrite in how it constructed its layer objects, once again in an effort to depend more closely on `ggplot2` internals.
+This is a minor hotfix for the `ggside` package. Previous `revdepcheck` had failed to catch a bug (introduced and found in reverse dependency `extraChIPs` on bioconductor) due to the `R CMD check` timing out. A `R CMD check` was ran locally to verify the hotfix removed the bug and resulted in a successful check in `extraChIPs`. I apologize for the inconvenience
 
 ## Test environments
 
