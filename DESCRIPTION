@@ -1,7 +1,7 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.3.1
+Version: 0.3.1.9999
 Authors@R: 
     person(given = "Justin",
            family = "Landis",
