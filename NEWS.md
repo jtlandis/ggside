@@ -1,7 +1,7 @@
 
 # ggside 0.3.1
 
-* Hotfix for missed bug caused in `extraChIPs` package. Addresses #58
+* Hot fix for missed bug caused in `extraChIPs` package. Addresses #58
   * Variables scoped by a function (and not passed to an aesthetic mapping) are now found and evaluated correctly
   * Resurgence of an old warning has been suppressed correctly again #33
 
