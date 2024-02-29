@@ -44,25 +44,35 @@ expect_ggproto_id <- function(object, expected) {
 
 }
 
-test_that("xsidey and ysidex appear",{
-  p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
-    geom_point(size = 2) +
-    geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
-    geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
-    theme(axis.text.x = element_text(angle = 90, vjust = .5))
+p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
+  geom_point(size = 2) +
+  geom_xsidedensity(aes(y = after_stat(density)), position = "stack") +
+  geom_ysidedensity(aes(x = after_stat(density)), position = "stack") +
+  theme(axis.text.x = element_text(angle = 90, vjust = .5))
 
+test_that("xsidey and ysidex are null", {
   expect_null(p$ggside$xsidey)
   expect_null(p$ggside$ysidex)
+})
+
+test_that("xsidey and ysidex appear",{
 
   xsidey_scale <- scale_xsidey_continuous(breaks = c(0,1,2))
-  p <- p + xsidey_scale
+  p2 <- p + xsidey_scale
 
-  expect_ggproto_id(p$ggside$xsidey, xsidey_scale)
+  expect_ggproto_id(p2$ggside$xsidey, xsidey_scale)
 
   ysidex_scale <- scale_ysidex_continuous(breaks = NULL, labels = NULL)
-  p <- p + ysidex_scale
+  p2 <- p + ysidex_scale
 
-  expect_ggproto_id(p$ggside$ysidex, ysidex_scale)
+  expect_ggproto_id(p2$ggside$ysidex, ysidex_scale)
+})
+
+test_that("xsidey and ysidex plot", {
+
+  p <- p +
+    scale_xsidey_continuous(breaks = c(0,1,2)) +
+    scale_ysidex_continuous(breaks = NULL, labels = NULL)
 
   expect_doppelganger("xsidey-ysidex-FacetNull", p)
 
