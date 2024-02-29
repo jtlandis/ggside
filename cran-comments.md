@@ -1,4 +1,4 @@
-This is a minor hotfix for the `ggside` package. Previous `revdepcheck` had failed to catch a bug (introduced and found in reverse dependency `extraChIPs` on bioconductor) due to the `R CMD check` timing out. A `R CMD check` was ran locally to verify the hotfix removed the bug and resulted in a successful check in `extraChIPs`. I apologize for the inconvenience
+This is a minor hotfix for the `ggside` package. Previous `revdepcheck` had failed to catch a bug (introduced and found in reverse dependency `extraChIPs` on bioconductor) due to the `R CMD check` timing out. A `R CMD check` was ran locally to verify the hotfix removed the bug and resulted in a successful check in `extraChIPs`. I apologize for the inconvenience of a resubmission.
 
 ## Test environments
 
