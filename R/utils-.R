@@ -4,6 +4,8 @@
 NULL
 ### INCLUDE END
 
+
+
 #global variables to pass RMD checks
 NO_PANEL <- -1L
 PANEL_TYPE <- c("x","y", "main")
