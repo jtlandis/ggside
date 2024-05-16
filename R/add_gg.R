@@ -6,8 +6,6 @@
 NULL
 ### INCLUDE END
 
-
-
 #' @keywords internal
 validate_ggside <- function(e2, plot) UseMethod('validate_ggside')
 #' @keywords internal
