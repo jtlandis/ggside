@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggside <img src="inst/figures/ggside.png" align="right" height="279" />
+# ggside <img src="inst/figures/ggside.png" style="float:right;z-index:1" height="279" />
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
@@ -94,5 +94,5 @@ If you find any issues or want to suggest an enhancement, please make a post at 
 ## Known Issues
 
 
-The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.3.0.
+The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.3.1.
 
