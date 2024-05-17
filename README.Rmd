@@ -13,6 +13,8 @@ knitr::opts_chunk$set(
 )
 ```
 
+<div>
+
 # ggside 
 
 <!-- badges: start -->
@@ -29,9 +31,12 @@ knitr::opts_chunk$set(
 
 The R package ggside expands on the ggplot2 package. This package allows the user to add graphical information about one of the main panel's axis. This is particularly useful for metadata for discrete axis, or summary graphics on a continuous axis such as a boxplot or a density distribution.
 
+
+
 ## Installation
 
 Please install from CRAN for the latest stable version of `ggside`. You can also install from the Github as seen below.
+
 
 ```{r, eval = FALSE}
 #CRAN
@@ -39,6 +44,8 @@ utils::install.packages("ggside")
 #Github
 devtools::install_github("jtlandis/ggside")
 ```
+
+</div>
 
 ## Usage
 

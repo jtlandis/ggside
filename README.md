@@ -3,6 +3,8 @@ README
 Justin Landis
 07/20/2022
 
+<div>
+
 # ggside
 
 <!-- badges: start -->
@@ -36,6 +38,8 @@ utils::install.packages("ggside")
 #Github
 devtools::install_github("jtlandis/ggside")
 ```
+
+</div>
 
 ## Usage
 
