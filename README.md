@@ -3,7 +3,7 @@ README
 Justin Landis
 07/20/2022
 
-# ggside <img src="inst/figures/ggside.png" style="float:right;z-index:1" height="279" />
+# ggside <img src="inst/figures/ggside.png" align="right" style="float:right;z-index:1" height="279" />
 
 <!-- badges: start -->
 
