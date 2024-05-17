@@ -3,6 +3,8 @@ README
 Justin Landis
 07/20/2022
 
+<div style="margin-bottom:200px">
+
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
 <!-- badges: start -->
@@ -14,6 +16,8 @@ Justin Landis
 [![Codecov test
 coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
+
+</div>
 
 ## Overview
 
