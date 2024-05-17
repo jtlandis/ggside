@@ -13,7 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
-# ggside <img src="inst/figures/ggside.png" align="right" text-align="center" style="transform: translate(0%,-50%)" height="279" />
+# ggside 
 
 <!-- badges: start -->
 [![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
@@ -23,6 +23,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
 
+<img src="inst/figures/ggside.png" align="right" height="279" />
 
 ## Overview
 
