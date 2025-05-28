@@ -1,5 +1,6 @@
 # ggside 0.3.1.9999
 
+* Updates code to get rid of deprecation warnings coming from `ggplot2` (v3.5.2). Addresses #64 (@IndrajeetPatil)
 
 # ggside 0.3.1
 
