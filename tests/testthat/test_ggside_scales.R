@@ -14,7 +14,7 @@ extract_ggproto_members <- function(proto, members) {
   objs <- lapply(members, function(mem, x) x[[mem]], x = proto)
   for (i in seq_along(objs)) {
     obj <- objs[[i]]
-    if (is.ggproto(obj))
+    if (is_ggproto(obj))
       objs[[i]] <- extract_ggproto_members(obj, ggproto_members(obj))
     if (is.function(obj))
       objs[[i]] <- environment(obj)$f

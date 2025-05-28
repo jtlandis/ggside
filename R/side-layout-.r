@@ -115,7 +115,7 @@ new_ggside_layout <- function(layout) {
       mod_fun_at(quote(self$panel_params <- Map(\(param, type) {
         param$ggside_panel_type <- type
         names(param) <- sub("(x|y)side","",names(param))
-        is_proto <- vapply(param, is.ggproto, logical(1))
+        is_proto <- vapply(param, is_ggproto, logical(1))
         param[is_proto] <- lapply(param[is_proto],\(x) {x$aesthetics <- sub("(x|y)side", "", x$aesthetics);x})
         param},
         self$panel_params, self$layout$PANEL_TYPE)), at = -1),
