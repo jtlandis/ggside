@@ -1,4 +1,6 @@
 ### INCLUDE BEGIN
+#' @include ggside.R
+#' @include utils-ggproto.R
 #' @include utils-side-coord.R
 NULL
 ### INCLUDE END

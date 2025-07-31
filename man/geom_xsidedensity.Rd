@@ -12,11 +12,14 @@ geom_xsidedensity(
   stat = "density",
   position = "identity",
   ...,
+  outline.type = "upper",
+  lineend = "butt",
+  linejoin = "round",
+  linemitre = 10,
   na.rm = FALSE,
-  orientation = "x",
   show.legend = NA,
   inherit.aes = TRUE,
-  outline.type = "upper"
+  orientation = "x"
 )
 
 geom_ysidedensity(
@@ -25,11 +28,14 @@ geom_ysidedensity(
   stat = "density",
   position = "identity",
   ...,
+  outline.type = "upper",
+  lineend = "butt",
+  linejoin = "round",
+  linemitre = 10,
   na.rm = FALSE,
-  orientation = "y",
   show.legend = NA,
   inherit.aes = TRUE,
-  outline.type = "upper"
+  orientation = "y"
 )
 }
 \arguments{
@@ -97,28 +103,36 @@ lists which parameters it can accept.
 \link[ggplot2:draw_key]{key glyphs}, to change the display of the layer in the legend.
 }}
 
+\item{outline.type}{Type of the outline of the area; \code{"both"} draws both the
+upper and lower lines, \code{"upper"}/\code{"lower"} draws the respective lines only.
+\code{"full"} draws a closed polygon around the area.}
+
+\item{lineend}{Line end style (round, butt, square).}
+
+\item{linejoin}{Line join style (round, mitre, bevel).}
+
+\item{linemitre}{Line mitre limit (number greater than 1).}
+
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
-
-\item{orientation}{The orientation of the layer. The default (\code{NA})
-automatically determines the orientation from the aesthetic mapping. In the
-rare event that this fails it can be given explicitly by setting \code{orientation}
-to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 
-\item{outline.type}{Type of the outline of the area; \code{"both"} draws both the
-upper and lower lines, \code{"upper"}/\code{"lower"} draws the respective lines only.
-\code{"full"} draws a closed polygon around the area.}
+\item{orientation}{The orientation of the layer. The default (\code{NA})
+automatically determines the orientation from the aesthetic mapping. In the
+rare event that this fails it can be given explicitly by setting \code{orientation}
+to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object

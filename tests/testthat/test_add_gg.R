@@ -28,16 +28,20 @@ test_that("New ggside layers are added correctly", {
   expect_s3_class(p, "ggplot")
   expect_s3_class(ggside(), "ggside_options")
   p1 <- p + geom_xsidedensity(aes(y = after_stat(density)))
-  expect_s3_class(p1, "ggside")
+  expect_s3_class(p1, "ggside::ggside")
+  expect_s7_calss(p1, class_ggside)
   expect_s3_class(p1, "ggplot")
   expect_s3_class(p1$layers[[2]], "ggside_layer")
   expect_s3_class(p1$layers[[2]]$geom, "GeomXsidedensity")
   p2 <- p1 + facet_wrap(~Species, ncol = 1)
-  expect_s3_class(p1, "ggside")
+  expect_s3_class(p1, "ggside::ggside")
+  expect_s7_calss(p1, class_ggside)
   expect_s3_class(p2$facet, "FacetWrap")
   p3 <- p2 + ggside(collapse = "all")
   expect_warning(ggplot_build(p3), regexp = "only x used")
-  expect_warning(ggplot_build(p + ggside(collapse = "all")), regexp = "no side geometry used")
+  expect_warning(ggplot_build(p + ggside(collapse = "all")),
+    regexp = "no side geometry used"
+  )
   expect_warning(ggplot_build(p1 + ggside(collapse = "y")), regex = "no yside geometry used")
 })
 
@@ -47,7 +51,7 @@ test_that("add_gg errors", {
   expect_error(p + "", "Can't add `\"\"` to a")
   fake_theme <- structure(numeric(), class = "theme")
   expect_error(theme() + fake_theme, "to a theme object")
-  expect_error(ggproto() + p, "Cannot add ggproto objects together")
+  expect_error(ggproto() + p, "Cannot add <ggproto> objects together")
 })
 
 test_that("add_gg identities", {

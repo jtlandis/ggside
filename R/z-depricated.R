@@ -1,4 +1,3 @@
-
 deprecated_fun <- function(fun) {
   fun_sub <- substitute(fun)
   function(...) {
@@ -16,7 +15,7 @@ deprecated_fun <- function(fun) {
 #'
 #' as_ggsideFacet <- [ggside_facet]
 #' as_ggsideCoord <- [ggside_coord]
-#'
+#' is.ggside <- [is_ggside]
 #' @aliases as_ggsideFacet
 #'
 
@@ -29,3 +28,9 @@ as_ggsideFacet <- deprecated_fun(ggside_facet)
 #' @usage NULL
 #' @export
 as_ggsideCoord <- deprecated_fun(ggside_coord)
+
+
+#' @rdname ggside-deprecated
+#' @usage NULL
+#' @export
+is.ggside <- deprecated_fun(is_ggside)

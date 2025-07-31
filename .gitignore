@@ -9,3 +9,5 @@ revdep/*
 /doc/
 /Meta/
 .Rprofile
+^README.qmd$
+^README_files/**$

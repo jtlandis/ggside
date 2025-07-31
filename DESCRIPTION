@@ -20,7 +20,7 @@ URL: https://github.com/jtlandis/ggside
 BugReports: https://github.com/jtlandis/ggside/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.1
+RoxygenNote: 7.3.2
 VignetteBuilder: knitr
 Depends: ggplot2 (>= 3.5.0)
 Imports: 
@@ -32,7 +32,8 @@ Imports:
     glue,
     stats,
     tibble,
-    vctrs
+    vctrs,
+    S7
 Suggests:
     tidyr,
     dplyr,
@@ -45,7 +46,6 @@ Suggests:
     waldo
 Config/testthat/edition: 3
 Collate: 
-    'z-depricated.R'
     'utils-ggproto.R'
     'utils-calls.R'
     'utils-ggplot2-reimpl-.R'
@@ -56,12 +56,10 @@ Collate:
     'ggside.R'
     'utils-side-facet.R'
     'side-facet_.R'
-    'side-layout-.r'
     'utils-side-coord.R'
     'side-coord-cartesian.R'
-    'plot-construction.R'
-    'ggplot_add.R'
     'add_gg.R'
+    'all_classes.r'
     'geom-sideabline.r'
     'geom-sidebar.r'
     'geom-sideboxplot.r'
@@ -80,6 +78,9 @@ Collate:
     'geom-sidetile.r'
     'geom-sideviolin.r'
     'geom-sidevline.r'
+    'side-layout-.r'
+    'plot-construction.R'
+    'ggplot_add.R'
     'ggside-ggproto.r'
     'ggside-package.r'
     'ggside-themes.R'
@@ -92,4 +93,5 @@ Collate:
     'side-facet-grid.R'
     'side-facet-null.R'
     'stats.r'
+    'z-depricated.R'
     'zzz.R'

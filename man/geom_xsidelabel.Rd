@@ -10,14 +10,16 @@ geom_xsidelabel(
   mapping = NULL,
   data = NULL,
   stat = "identity",
-  position = "identity",
+  position = "nudge",
   ...,
   parse = FALSE,
-  nudge_x = 0,
-  nudge_y = 0,
   label.padding = unit(0.25, "lines"),
   label.r = unit(0.15, "lines"),
-  label.size = 0.25,
+  label.size = deprecated(),
+  border.colour = NULL,
+  border.color = NULL,
+  text.colour = NULL,
+  text.color = NULL,
   size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
@@ -28,14 +30,16 @@ geom_ysidelabel(
   mapping = NULL,
   data = NULL,
   stat = "identity",
-  position = "identity",
+  position = "nudge",
   ...,
   parse = FALSE,
-  nudge_x = 0,
-  nudge_y = 0,
   label.padding = unit(0.25, "lines"),
   label.r = unit(0.15, "lines"),
-  label.size = 0.25,
+  label.size = deprecated(),
+  border.colour = NULL,
+  border.color = NULL,
+  text.colour = NULL,
+  text.color = NULL,
   size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
@@ -65,7 +69,7 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this layer.
 When using a \verb{geom_*()} function to construct a layer, the \code{stat}
-argument can be used the override the default coupling between geoms and
+argument can be used to override the default coupling between geoms and
 stats. The \code{stat} argument accepts the following:
 \itemize{
 \item A \code{Stat} ggproto subclass, for example \code{StatCount}.
@@ -76,13 +80,13 @@ give the stat as \code{"count"}.
 \link[ggplot2:layer_stats]{layer stat} documentation.
 }}
 
-\item{position}{A position adjustment to use on the data for this layer.
-Cannot be jointy specified with \code{nudge_x} or \code{nudge_y}. This
+\item{position}{A position adjustment to use on the data for this layer. This
 can be used in various ways, including to prevent overplotting and
 improving the display. The \code{position} argument accepts the following:
 \itemize{
 \item The result of calling a position function, such as \code{position_jitter()}.
-\item A string nameing the position adjustment. To give the position as a
+This method allows for passing extra arguments to the position.
+\item A string naming the position adjustment. To give the position as a
 string, strip the function name of the \code{position_} prefix. For example,
 to use \code{position_jitter()}, give the position as \code{"jitter"}.
 \item For more information and other ways to specify the position, see the
@@ -120,15 +124,20 @@ lists which parameters it can accept.
 \item{parse}{If \code{TRUE}, the labels will be parsed into expressions and
 displayed as described in \code{?plotmath}.}
 
-\item{nudge_x, nudge_y}{Horizontal and vertical adjustment to nudge labels by.
-Useful for offsetting text from points, particularly on discrete scales.
-Cannot be jointly specified with \code{position}.}
-
 \item{label.padding}{Amount of padding around label. Defaults to 0.25 lines.}
 
 \item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
 
-\item{label.size}{Size of label border, in mm.}
+\item{label.size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Replaced by the
+\code{linewidth} aesthetic. Size of label border, in mm.}
+
+\item{border.colour, border.color}{Colour of label border. When \code{NULL}
+(default), the \code{colour} aesthetic determines the colour of the label border.
+\code{border.color} is an alias for \code{border.colour}.}
+
+\item{text.colour, text.color}{Colour of the text. When \code{NULL} (default), the
+\code{colour} aesthetic determines the colour of the text. \code{text.color} is an
+alias for \code{text.colour}.}
 
 \item{size.unit}{How the \code{size} aesthetic is interpreted: as millimetres
 (\code{"mm"}, default), points (\code{"pt"}), centimetres (\code{"cm"}), inches (\code{"in"}),
@@ -141,12 +150,14 @@ a warning. If \code{TRUE}, missing values are silently removed.}
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object
