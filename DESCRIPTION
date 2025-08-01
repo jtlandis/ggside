@@ -33,7 +33,8 @@ Imports:
     stats,
     tibble,
     vctrs,
-    S7
+    S7,
+    lifecycle
 Suggests:
     tidyr,
     dplyr,

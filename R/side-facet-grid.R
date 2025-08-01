@@ -309,7 +309,7 @@ sideFacetGrid_draw_panels <- function(panels, layout, x_scales, y_scales, ranges
   Hstrip_panel_pos <- semi_join(layout, Hstrip_panel_pos, by = c("ROW", "COL"))
   Hstrip_panel_pos <- unique(Hstrip_panel_pos[!Hstrip_panel_pos[["PANEL_TYPE"]] == "x", c("PANEL", "panel_pos")])
 
-  strip_padding <- convertUnit(theme$strip.switch.pad.wrap, "cm")
+  strip_padding <- convertUnit(calc_element("strip.switch.pad.grid", theme), "cm")
 
   # Horizontal strips/ Rows
   if (!empty(row_vars)) {
