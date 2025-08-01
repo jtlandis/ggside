@@ -3,13 +3,15 @@ library(vdiffr)
 
 set.seed(1234)
 
-df <- data.frame(year = sample(2000:2020, 300, replace = T),
-                 month = sample(1:12, 300, replace = T),
-                 day = sample(1:28,300, replace = T),
-                 temperature = rnorm(300, 70, 8)) %>%
+df <- data.frame(
+  year = sample(2000:2020, 300, replace = T),
+  month = sample(1:12, 300, replace = T),
+  day = sample(1:28, 300, replace = T),
+  temperature = rnorm(300, 70, 8)
+) %>%
   mutate(
     month_name = month.name[month],
-    date = as.Date(sprintf("%04d-%02d-%02d",year, month, day))
+    date = as.Date(sprintf("%04d-%02d-%02d", year, month, day))
   )
 
 test_that("default ggplot2 error",{
