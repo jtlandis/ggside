@@ -50,25 +50,35 @@ clone_ggside <- function(ggside) {
 #' @importFrom ggplot2 ggplot_add
 #' @export
 ggplot_add.ggside_layer <- function(object, plot, object_name) {
-  p <- NextMethod("ggplot_add")
-  if (S7::S7_inherits(p, class_ggside)) {
-    p <- clone_ggside_plot(p)
-    as_ggside(p)
-  } else {
-    class_ggside(ggplot = p, ggside_opt = ggside())
+  plot <- NextMethod("ggplot_add")
+  if (is_ggside(plot)) {
+    plot <- clone_ggside_plot(plot)
   }
+  as_ggside(plot)
 }
 
 #' @export
 ggplot_add.ggside_options <- function(object, plot, object_name) {
+  ## adding a ggside_options object to a ggplot
+  #  will update the ggside options on the plot
+  #  since ggside_options is a ggproto, we do not
+  #  know where the resulting plot will be used.
+  #  we must clone the ggside_opt field so that
+  #  the ggside options are not shared between plots.
+
+  if (is_ggside(plot)) {
+    plot <- clone_ggside_plot(plot)
+  }
   as_ggside(plot, ggside = object)
 }
 
 
 #' @export
 ggplot_add.ggside_scale <- function(object, plot, object_name) {
-  ggside_opt <- if (is_ggside(plot)) {
-    plot@ggside_opt
+  is_ggside_obj <- is_ggside(plot)
+  ggside_opt <- if (is_ggside_obj) {
+    plot <- clone_ggside_plot(plot)
+    plot$ggside_opt
   } else {
     ggside()
   }
@@ -77,5 +87,8 @@ ggplot_add.ggside_scale <- function(object, plot, object_name) {
   new_scale <- object$clone()
   new_scale$guide <- waiver()
   plot$scales$add(new_scale)
-  as_ggside(plot, ggside = ggside_opt)
+  if (!is_ggside_obj) {
+    plot <- as_ggside(plot, ggside = ggside_opt)
+  }
+  plot
 }
