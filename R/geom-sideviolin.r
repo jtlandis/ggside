@@ -26,41 +26,41 @@ NULL
 #' @seealso [geom_*sideboxplot]
 #' @examples
 #' df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
-#' df$Combo_Index <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
+#' df$Combo_Index <- as.integer(df$UpperCase) * as.integer(df$LowerCase)
 #'
 #' p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
-#' geom_tile(aes(fill = Combo_Index))
+#'   geom_tile(aes(fill = Combo_Index))
 #'
-#' #sideviolins
-#' #Note - Mixing discrete and continuous axis scales
-#' #using xsideviolins when the y aesthetic was previously
-#' #mapped with a continuous varialbe will prevent
-#' #any labels from being plotted. This is a feature that
-#' #will hopefully be added to ggside in the future.
+#' # sideviolins
+#' # Note - Mixing discrete and continuous axis scales
+#' # using xsideviolins when the y aesthetic was previously
+#' # mapped with a continuous varialbe will prevent
+#' # any labels from being plotted. This is a feature that
+#' # will hopefully be added to ggside in the future.
 #'
 #' p1 + geom_xsideviolin(aes(y = Combo_Index)) +
-#'    geom_ysideviolin(aes(x = Combo_Index))
+#'   geom_ysideviolin(aes(x = Combo_Index))
 #'
-#' #sideviolins with swapped orientation
-#' #Note - Discrete before Continuous
-#' #If you are to mix Discrete and Continuous variables on
-#' #one axis, ggplot2 prefers the discrete variable to be mapped
-#' #BEFORE the continuous.
+#' # sideviolins with swapped orientation
+#' # Note - Discrete before Continuous
+#' # If you are to mix Discrete and Continuous variables on
+#' # one axis, ggplot2 prefers the discrete variable to be mapped
+#' # BEFORE the continuous.
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
-#'     geom_xsideviolin(aes(y = Species), orientation = "y") +
-#'     geom_point()
+#'   geom_xsideviolin(aes(y = Species), orientation = "y") +
+#'   geom_point()
 #'
-#' #Alternatively, you can recast the value as a factor and then
+#' # Alternatively, you can recast the value as a factor and then
 #' # a numeric
 #'
-#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
-#'     geom_point() +
-#'     geom_xsideviolin(aes(y = as.numeric(Species)), orientation = "y") +
-#'     geom_ysideviolin(aes(x = as.numeric(Species)), orientation = "x")
+#' ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+#'   geom_point() +
+#'   geom_xsideviolin(aes(y = as.numeric(Species)), orientation = "y") +
+#'   geom_ysideviolin(aes(x = as.numeric(Species)), orientation = "x")
 #'
 #' @return XLayer or YLayer object to be added to a ggplot object
 #' @export
-geom_xsideviolin <- ggside_layer_function(fun = geom_violin, side = "x")
+geom_xsideviolin <- ggside_layer_function(fun = geom_violin, side = "x", draw_quantiles = quote(lifecycle::deprecated()))
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
@@ -70,7 +70,10 @@ GeomXsideviolin <- ggside_geom("GeomXsideviolin", GeomViolin, "x")
 
 #' @rdname geom_xsideviolin
 #' @export
-geom_ysideviolin <- ggside_layer_function(fun = geom_violin, side = "y", orientation = "y")
+geom_ysideviolin <- ggside_layer_function(
+  fun = geom_violin, side = "y", orientation = "y",
+  draw_quantiles = quote(lifecycle::deprecated())
+)
 
 #' @rdname ggside-ggproto-geoms
 #' @usage NULL
