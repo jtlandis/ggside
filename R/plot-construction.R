@@ -31,7 +31,7 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
     abort("ggside is not currently compatable with CoordFlip or CoordPolar")
   }
   ggside <- ggside %||% ggside()
-  if (!is.ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
+  if (!is_ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
   class_ggside(ggplot = x, ggside)
 }
 
@@ -39,7 +39,7 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
 #' @export
 `as_ggside.ggside::ggside` <- function(x, ggside = NULL, ...) {
   ggside <- ggside %||% x[["ggside_opt"]] %||% ggside()
-  if (!is.ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
+  if (!is_ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
   update_ggside(x, ggside)
 }
 
@@ -47,7 +47,7 @@ as_ggside.ggplot <- function(x, ggside = NULL, ...) {
 #' @export
 as_ggside.ggside <- function(x, ggside = NULL, ...) {
   ggside <- ggside %||% x[["ggside_opt"]] %||% ggside()
-  if (!is.ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
+  if (!is_ggside_options(ggside)) stop("argument ggside must be of class `ggside_options` or NULL")
   update_ggside(x, ggside)
 }
 
