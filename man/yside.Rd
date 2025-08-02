@@ -28,7 +28,8 @@ to one geometry as continuous, you can still map \code{yfill} for a separate
 
 #' @section Exported Geometries:
 
-The following are the \code{yside} variants of the \link{ggplot2} Geometries
+The following are the \code{yside} variants of the \link[ggplot2]{ggplot2}
+Geometries
 
 \itemize{
 \item \link{geom_ysidebar}
