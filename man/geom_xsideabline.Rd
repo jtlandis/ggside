@@ -74,7 +74,8 @@ geom_ysidevline(
 )
 }
 \arguments{
-\item{mapping}{Set of aesthetic mappings created by \code{\link[=aes]{aes()}}.}
+\item{mapping}{Set of aesthetic mappings created by
+\link[ggplot2:aes]{aes()}.}
 
 \item{data}{The data to be displayed in this layer. There are three
 options:

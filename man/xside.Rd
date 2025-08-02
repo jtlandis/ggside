@@ -30,7 +30,8 @@ to one geometry as continuous, you can still map \code{xfill} for a separate
 \section{Exported Geometries}{
 
 
-The following are the \code{xside} variants of the \link{ggplot2} Geometries
+The following are the \code{xside} variants of the \link[ggplot2]{ggplot2}
+Geometries
 
 \itemize{
 \item \link{geom_xsidebar}

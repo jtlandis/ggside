@@ -141,7 +141,8 @@ is.ggside_scale <- function(x) inherits(x, "ggside_scale")
 #'
 #' @section Exported Geometries:
 #'
-#' The following are the `xside` variants of the \link{ggplot2} Geometries
+#' The following are the `xside` variants of the \link[ggplot2]{ggplot2}
+#' Geometries
 #'
 #' \itemize{
 #' \item [geom_xsidebar]
@@ -184,7 +185,8 @@ NULL
 #'
 #' #' @section Exported Geometries:
 #'
-#' The following are the `yside` variants of the \link{ggplot2} Geometries
+#' The following are the `yside` variants of the \link[ggplot2]{ggplot2}
+#' Geometries
 #'
 #' \itemize{
 #' \item [geom_ysidebar]

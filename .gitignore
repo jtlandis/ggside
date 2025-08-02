@@ -5,7 +5,7 @@
 doc
 Meta
 inst/doc
-revdep/*
+revdep/**
 /doc/
 /Meta/
 .Rprofile

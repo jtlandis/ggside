@@ -12,7 +12,8 @@ NULL
 #' @aliases geom_*abline
 #' @inheritParams ggplot2::layer
 #' @inheritParams ggplot2::geom_point
-#' @param mapping Set of aesthetic mappings created by [aes()].
+#' @param mapping Set of aesthetic mappings created by
+#' \link[ggplot2:aes]{aes()}.
 #' @param xintercept,yintercept,slope,intercept Parameters that control the
 #'   position of the line specifically for the [xside] or [yside] variants.
 #'   If these are set, `data`, `mapping` and `show.legend` are overridden.

@@ -63,7 +63,6 @@ test_that("xsidey and ysidex are null", {
 
 test_that("xsidey and ysidex appear", {
   xsidey_scale <- scale_xsidey_continuous(breaks = c(0, 1, 2))
-
   p2 <- p + xsidey_scale
 
   expect_ggproto_id(p2$ggside_opt$xsidey, xsidey_scale)
