@@ -49,7 +49,7 @@ clone_ggside <- function(ggside) {
 
 #' @importFrom ggplot2 ggplot_add
 #' @export
-ggplot_add.ggside_layer <- function(object, plot, object_name) {
+ggplot_add.ggside_layer <- function(object, plot, ...) {
   plot <- NextMethod("ggplot_add")
   if (is_ggside(plot)) {
     plot <- clone_ggside_plot(plot)
@@ -58,7 +58,7 @@ ggplot_add.ggside_layer <- function(object, plot, object_name) {
 }
 
 #' @export
-ggplot_add.ggside_options <- function(object, plot, object_name) {
+ggplot_add.ggside_options <- function(object, plot, ...) {
   ## adding a ggside_options object to a ggplot
   #  will update the ggside options on the plot
   #  since ggside_options is a ggproto, we do not
@@ -74,7 +74,7 @@ ggplot_add.ggside_options <- function(object, plot, object_name) {
 
 
 #' @export
-ggplot_add.ggside_scale <- function(object, plot, object_name) {
+ggplot_add.ggside_scale <- function(object, plot, ...) {
   is_ggside_obj <- is_ggside(plot)
   ggside_opt <- if (is_ggside_obj) {
     plot <- clone_ggside_plot(plot)
