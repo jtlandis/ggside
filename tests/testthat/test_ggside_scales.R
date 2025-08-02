@@ -40,7 +40,7 @@ expect_ggproto_id <- function(object, expected) {
     x = vals_act, y = vals_exp,
     x_arg = "object", y_arg = "expected"
   )
-  expect(length(comp) == 0,
+  testthat::expect(length(comp) == 0,
     sprintf(
       "%s (%s) not %s to %s (%s).\n\n%s",
       act$lab, "`actual`", "identical", exp$lab, "`expected`",
@@ -65,12 +65,12 @@ test_that("xsidey and ysidex appear", {
   xsidey_scale <- scale_xsidey_continuous(breaks = c(0, 1, 2))
   p2 <- p + xsidey_scale
 
-  expect_ggproto_id(p2$ggside$xsidey, xsidey_scale)
+  expect_ggproto_id(p2$ggside_opt$xsidey, xsidey_scale)
 
   ysidex_scale <- scale_ysidex_continuous(breaks = NULL, labels = NULL)
   p2 <- p + ysidex_scale
 
-  expect_ggproto_id(p2$ggside$ysidex, ysidex_scale)
+  expect_ggproto_id(p2$ggside_opt$ysidex, ysidex_scale)
 })
 
 test_that("xsidey and ysidex plot", {

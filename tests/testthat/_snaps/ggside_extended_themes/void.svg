@@ -243,16 +243,16 @@
 <text x='654.10' y='259.07' style='font-size: 11.00px; font-family: sans;' textLength='39.14px' lengthAdjust='spacingAndGlyphs'>Species</text>
 <rect x='654.10' y='265.69' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='274.33' r='1.95' style='stroke-width: 0.71; stroke: #F8766D; fill: #F8766D;' />
-<rect x='654.81' y='266.40' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
-<rect x='654.81' y='266.40' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='266.40' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt;' />
+<rect x='654.81' y='266.40' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt;' />
 <rect x='654.10' y='282.97' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='291.61' r='1.95' style='stroke-width: 0.71; stroke: #00BA38; fill: #00BA38;' />
-<rect x='654.81' y='283.68' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt; stroke-linejoin: miter;' />
-<rect x='654.81' y='283.68' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='283.68' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt;' />
+<rect x='654.81' y='283.68' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt;' />
 <rect x='654.10' y='300.25' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='308.89' r='1.95' style='stroke-width: 0.71; stroke: #619CFF; fill: #619CFF;' />
-<rect x='654.81' y='300.96' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt; stroke-linejoin: miter;' />
-<rect x='654.81' y='300.96' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='300.96' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt;' />
+<rect x='654.81' y='300.96' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt;' />
 <text x='676.86' y='277.36' style='font-size: 8.80px; font-family: sans;' textLength='25.94px' lengthAdjust='spacingAndGlyphs'>setosa</text>
 <text x='676.86' y='294.64' style='font-size: 8.80px; font-family: sans;' textLength='37.66px' lengthAdjust='spacingAndGlyphs'>versicolor</text>
 <text x='676.86' y='311.92' style='font-size: 8.80px; font-family: sans;' textLength='32.28px' lengthAdjust='spacingAndGlyphs'>virginica</text>

@@ -3,11 +3,13 @@ library(vdiffr)
 base_plot <- ggplot(
   data.frame(x = 1:3, y = 1:3),
   aes(x = x, y = y)
-) + geom_point() + ggside()
+) +
+  geom_point() +
+  ggside()
 
 
 test_that("plot abline", {
-  abline <- base_plot + geom_xsideabline(slope = 1/3) +
+  abline <- base_plot + geom_xsideabline(slope = 1 / 3) +
     geom_ysideabline(slope = 3)
 
   expect_doppelganger("abline", abline)
@@ -48,8 +50,8 @@ test_that("plot density", {
 
 test_that("plot freqpoly", {
   freqpoly <- base_plot +
-    geom_ysidefreqpoly(bins = 6) +
-    geom_xsidefreqpoly(bins = 6)
+    geom_ysidefreqpoly(bins = 5) +
+    geom_xsidefreqpoly(bins = 5)
   expect_doppelganger("freqpoly", freqpoly)
 })
 
@@ -62,8 +64,8 @@ test_that("plot Function", {
 
 test_that("plot histogram", {
   histogram <- base_plot +
-    geom_xsidehistogram(bins = 6) +
-    geom_ysidehistogram(bins = 6)
+    geom_xsidehistogram(bins = 5) +
+    geom_ysidehistogram(bins = 5)
   expect_doppelganger("histogram", histogram)
 })
 
@@ -76,8 +78,8 @@ test_that("plot hline", {
 
 test_that("plot label", {
   label <- base_plot +
-    geom_xsidelabel(aes(y = 2, label=letters[1:3])) +
-    geom_ysidelabel(aes(x = 2, label=letters[1:3]))
+    geom_xsidelabel(aes(y = 2, label = letters[1:3])) +
+    geom_ysidelabel(aes(x = 2, label = letters[1:3]))
   expect_doppelganger("label", label)
 })
 
@@ -112,8 +114,8 @@ test_that("plot segment", {
 
 test_that("plot text", {
   text <- base_plot +
-    geom_xsidetext(aes(y = 2, label=letters[1:3])) +
-    geom_ysidetext(aes(x = 2, label=letters[1:3]))
+    geom_xsidetext(aes(y = 2, label = letters[1:3])) +
+    geom_ysidetext(aes(x = 2, label = letters[1:3]))
   expect_doppelganger("text", text)
 })
 

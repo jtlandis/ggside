@@ -14,8 +14,10 @@ geom_xsidehistogram(
   ...,
   binwidth = NULL,
   bins = NULL,
-  na.rm = FALSE,
   orientation = "x",
+  lineend = "butt",
+  linejoin = "mitre",
+  na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
 )
@@ -28,8 +30,10 @@ geom_ysidehistogram(
   ...,
   binwidth = NULL,
   bins = NULL,
-  na.rm = FALSE,
   orientation = "y",
+  lineend = "butt",
+  linejoin = "mitre",
+  na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
 )
@@ -57,7 +61,7 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this layer.
 When using a \verb{geom_*()} function to construct a layer, the \code{stat}
-argument can be used the override the default coupling between geoms and
+argument can be used to override the default coupling between geoms and
 stats. The \code{stat} argument accepts the following:
 \itemize{
 \item A \code{Stat} ggproto subclass, for example \code{StatCount}.
@@ -110,10 +114,9 @@ lists which parameters it can accept.
 }}
 
 \item{binwidth}{The width of the bins. Can be specified as a numeric value
-or as a function that calculates width from unscaled x. Here, "unscaled x"
-refers to the original x values in the data, before application of any
-scale transformation. When specifying a function along with a grouping
-structure, the function will be called once per group.
+or as a function that takes x after scale transformation as input and
+returns a single numeric value. When specifying a function along with a
+grouping structure, the function will be called once per group.
 The default is to use the number of bins in \code{bins},
 covering the range of the data. You should always override
 this value, exploring multiple widths to find the best to illustrate the
@@ -124,24 +127,30 @@ bin width of a time variable is the number of seconds.}
 
 \item{bins}{Number of bins. Overridden by \code{binwidth}. Defaults to 30.}
 
-\item{na.rm}{If \code{FALSE}, the default, missing values are removed with
-a warning. If \code{TRUE}, missing values are silently removed.}
-
 \item{orientation}{The orientation of the layer. The default (\code{NA})
 automatically determines the orientation from the aesthetic mapping. In the
 rare event that this fails it can be given explicitly by setting \code{orientation}
 to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
 
+\item{lineend}{Line end style (round, butt, square).}
+
+\item{linejoin}{Line join style (round, mitre, bevel).}
+
+\item{na.rm}{If \code{FALSE}, the default, missing values are removed with
+a warning. If \code{TRUE}, missing values are silently removed.}
+
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object

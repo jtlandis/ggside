@@ -130,3 +130,11 @@ is_ggside_subclass <- function(obj) {
   class_ <- class(obj)
   any(grepl("((X|Y)Layer|(X|Y)side)", class_))
 }
+
+prop_try <- function(object, name) {
+  if (name %in% prop_names(name)) {
+    prop(object, name)
+  } else {
+    NULL
+  }
+}

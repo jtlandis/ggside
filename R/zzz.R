@@ -1,4 +1,3 @@
-
 #' @title ggside custom themes
 #' @name ggside-theme
 #' @description Theme elements to help customize the look and feel of
@@ -95,24 +94,23 @@
 #' library(ggside)
 #'
 #' p <- ggplot(iris, aes(Sepal.Width, Petal.Length, color = Species)) +
-#'  geom_point() +
-#'  geom_xsidedensity() +
-#'  geom_ysidedensity() +
-#'  theme_dark()
+#'   geom_point() +
+#'   geom_xsidedensity() +
+#'   geom_ysidedensity() +
+#'   theme_dark()
 #'
 #' p
 #'
 #' p + theme_ggside_classic()
 #' p + theme_ggside_void()
 #' p + theme_ggside_linedraw() +
-#' theme(ggside.panel.border = element_rect(colour = "red"))
+#'   theme(ggside.panel.border = element_rect(colour = "red"))
 NULL
 
 
 
 #'
-.onLoad <- function(libname, pkgname){
-
+.onLoad <- function(libname, pkgname) {
   # vctrs::s3_register("ggplot2::vec_ptype2.logical", "ggplot2_mapped_discrete", function(x, y, ...) if(length(y)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong"))
   # vctrs::s3_register("ggplot2::vec_ptype2.ggplot2_mapped_discrete", "logical", function(x, y, ...) if(length(x)==0) new_mapped_discrete() else vctrs::stop_incompatible_type(x,y, details = "something went wrong"))
 
@@ -125,12 +123,12 @@ NULL
     ggside.panel.scale = 0.1,
     ggside.panel.scale.x = NULL,
     ggside.panel.scale.y = NULL,
-    ggside.panel.spacing = unit(2,"pt"),
+    ggside.panel.spacing = unit(2, "pt"),
     ggside.panel.spacing.x = NULL,
     ggside.panel.spacing.y = NULL,
     # 0.2.0 - panel.*
     ggside.panel.background = NULL,
-    ggside.panel.border = NULL, #ensure we dont inherit a white background from element_rect default
+    ggside.panel.border = NULL, # ensure we dont inherit a white background from element_rect default
     ggside.panel.grid = NULL,
     ggside.panel.grid.major = NULL,
     ggside.panel.grid.major.x = NULL,
@@ -200,90 +198,85 @@ NULL
     ggside.axis.minor.ticks.length.y = NULL,
     ggside.axis.minor.ticks.length.y.left = NULL,
     ggside.axis.minor.ticks.length.y.right = NULL,
-    element_tree = list(ggside.line = el_def("element_line"),
-                        ggside.rect = el_def("element_rect"),
-                        ggside.text = el_def("element_text"),
-                        ggside.panel.scale = el_def("numeric", "numeric"),
-                        ggside.panel.scale.x = el_def("numeric", "ggside.panel.scale"),
-                        ggside.panel.scale.y = el_def("numeric", "ggside.panel.scale"),
-                        ggside.panel.spacing = el_def("unit", "unit"),
-                        ggside.panel.spacing.x = el_def("unit", "ggside.panel.spacing"),
-                        ggside.panel.spacing.y = el_def("unit", "ggside.panel.spacing"),
-                        ggside.panel.background = el_def("element_rect", c("ggside.rect","panel.background")),
-                        ggside.panel.border = el_def("element_rect", c("ggside.rect","panel.border")),
-                        ggside.panel.grid = el_def("element_line", "ggside.line"),
-                        ggside.panel.grid.major = el_def("element_line", "ggside.panel.grid"),
-                        ggside.panel.grid.major.x = el_def("element_line", c("ggside.panel.grid.major","panel.grid.major.x")),
-                        ggside.panel.grid.major.y = el_def("element_line", c("ggside.panel.grid.major","panel.grid.major.y")),
-                        ggside.panel.grid.minor = el_def("element_line", "ggside.panel.grid"),
-                        ggside.panel.grid.minor.x = el_def("element_line", c("ggside.panel.grid.minor","panel.grid.minor.x")),
-                        ggside.panel.grid.minor.y = el_def("element_line", c("ggside.panel.grid.minor","panel.grid.minor.y")),
-
-                        ggside.xside.panel.background = el_def("element_rect", c("ggside.rect","ggside.panel.background")),
-                        ggside.xside.panel.border = el_def("element_rect", c("ggside.rect", "ggside.panel.border")),
-                        ggside.xside.panel.grid = el_def("element_line", c("ggside.line")),
-                        ggside.xside.panel.grid.major = el_def("element_line", c("ggside.xside.panel.grid")),
-                        ggside.xside.panel.grid.major.x = el_def("element_line", c("ggside.xside.panel.grid.major","ggside.panel.grid.major.x")),
-                        ggside.xside.panel.grid.major.y = el_def("element_line", c("ggside.xside.panel.grid.major","ggside.panel.grid.major.y")),
-                        ggside.xside.panel.grid.minor = el_def("element_line", c("ggside.xside.panel.grid")),
-                        ggside.xside.panel.grid.minor.x = el_def("element_line", c("ggside.xside.panel.grid.minor","ggside.panel.grid.minor.x")),
-                        ggside.xside.panel.grid.minor.y = el_def("element_line", c("ggside.xside.panel.grid.minor","ggside.panel.grid.minor.y")),
-
-                        ggside.yside.panel.background = el_def("element_rect", c("ggside.rect","ggside.panel.background")),
-                        ggside.yside.panel.border = el_def("element_rect", c("ggside.rect", "ggside.panel.border")),
-                        ggside.yside.panel.grid = el_def("element_line", c("ggside.line","ggside.panel.grid")),
-                        ggside.yside.panel.grid.major = el_def("element_line", c("ggside.yside.panel.grid")),
-                        ggside.yside.panel.grid.major.x = el_def("element_line", c("ggside.yside.panel.grid.major","ggside.panel.grid.major.x")),
-                        ggside.yside.panel.grid.major.y = el_def("element_line", c("ggside.yside.panel.grid.major","ggside.panel.grid.major.y")),
-                        ggside.yside.panel.grid.minor = el_def("element_line", c("ggside.yside.panel.grid")),
-                        ggside.yside.panel.grid.minor.x = el_def("element_line", c("ggside.yside.panel.grid.minor","ggside.panel.grid.minor.x")),
-                        ggside.yside.panel.grid.minor.y = el_def("element_line", c("ggside.yside.panel.grid.minor","ggside.panel.grid.minor.y")),
-
-
-                        ggside.axis.text = el_def("element_text", "ggside.text"),
-                        ggside.axis.text.x = el_def("element_text", "ggside.axis.text"),
-                        ggside.axis.text.x.top = el_def("element_text", c("ggside.axis.text.x","axis.text.x.top")),
-                        ggside.axis.text.x.bottom = el_def("element_text", c("ggside.axis.text.x", "axis.text.x.bottom")),
-                        ggside.axis.text.y = el_def("element_text", "ggside.axis.text"),
-                        ggside.axis.text.y.left = el_def("element_text", c("ggside.axis.text.y", "axis.text.y.left")),
-                        ggside.axis.text.y.right = el_def("element_text", c("ggside.axis.text.y", "axis.text.y.right")),
-                        ggside.axis.line = el_def("element_line", "ggside.line"),
-                        ggside.axis.line.x = el_def("element_line", "ggside.axis.line"),
-                        ggside.axis.line.x.top = el_def("element_line", c("ggside.axis.line.x","axis.line.x.top")),
-                        ggside.axis.line.x.bottom = el_def("element_line", c("ggside.axis.line.x","axis.line.x.bottom")),
-                        ggside.axis.line.y = el_def("element_line", "ggside.axis.line"),
-                        ggside.axis.line.y.left = el_def("element_line", c("ggside.axis.line.y","axis.line.y.left")),
-                        ggside.axis.line.y.right = el_def("element_line", c("ggside.axis.line.y","axis.line.y.right")),
-
-                        ggside.axis.ticks = el_def("element_line", "ggside.line"),
-                        ggside.axis.ticks.x = el_def("element_line", "ggside.axis.ticks"),
-                        ggside.axis.ticks.x.top = el_def("element_line", c("ggside.axis.ticks.x","axis.ticks.x.top")),
-                        ggside.axis.ticks.x.bottom = el_def("element_line", c("ggside.axis.ticks.x","axis.ticks.x.bottom")),
-                        ggside.axis.ticks.y = el_def("element_line", "ggside.axis.ticks"),
-                        ggside.axis.ticks.y.left = el_def("element_line", c("ggside.axis.ticks.y","axis.ticks.y.left")),
-                        ggside.axis.ticks.y.right = el_def("element_line", c("ggside.axis.ticks.y","axis.ticks.y.right")),
-                        ggside.axis.ticks.length = el_def("unit", "axis.ticks.length"),
-                        ggside.axis.ticks.length.x = el_def("unit", "ggside.axis.ticks.length"),
-                        ggside.axis.ticks.length.x.top = el_def("unit", c("ggside.axis.ticks.length.x","axis.ticks.length.x.top")),
-                        ggside.axis.ticks.length.x.bottom = el_def("unit", c("ggside.axis.ticks.length.x","axis.ticks.length.x.bottom")),
-                        ggside.axis.ticks.length.y = el_def("unit", "ggside.axis.ticks.length"),
-                        ggside.axis.ticks.length.y.left = el_def("unit", c("ggside.axis.ticks.length.y","axis.ticks.length.y.left")),
-                        ggside.axis.ticks.length.y.right = el_def("unit", c("ggside.axis.ticks.length.y","axis.ticks.length.y.right")),
-
-                        ggside.axis.minor.ticks = el_def("element_line", "ggside.line"),
-                        ggside.axis.minor.ticks.x = el_def("element_line", "ggside.axis.minor.ticks"),
-                        ggside.axis.minor.ticks.x.top = el_def("element_line", c("ggside.axis.minor.ticks.x","axis.minor.ticks.x.top")),
-                        ggside.axis.minor.ticks.x.bottom = el_def("element_line", c("ggside.axis.minor.ticks.x","axis.minor.ticks.x.bottom")),
-                        ggside.axis.minor.ticks.y = el_def("element_line", "ggside.axis.minor.ticks"),
-                        ggside.axis.minor.ticks.y.left = el_def("element_line", c("ggside.axis.minor.ticks.y","axis.minor.ticks.y.left")),
-                        ggside.axis.minor.ticks.y.right = el_def("element_line", c("ggside.axis.minor.ticks.y","axis.minor.ticks.y.right")),
-                        ggside.axis.minor.ticks.length = el_def("unit", "axis.minor.ticks.length"),
-                        ggside.axis.minor.ticks.length.x = el_def("unit", "ggside.axis.minor.ticks.length"),
-                        ggside.axis.minor.ticks.length.x.top = el_def("unit", c("ggside.axis.minor.ticks.length.x","axis.minor.ticks.length.x.top")),
-                        ggside.axis.minor.ticks.length.x.bottom = el_def("unit", c("ggside.axis.minor.ticks.length.x","axis.minor.ticks.length.x.bottom")),
-                        ggside.axis.minor.ticks.length.y = el_def("unit", "ggside.axis.minor.ticks.length"),
-                        ggside.axis.minor.ticks.length.y.left = el_def("unit", c("ggside.axis.minor.ticks.length.y","axis.minor.ticks.length.y.left")),
-                        ggside.axis.minor.ticks.length.y.right = el_def("unit", c("ggside.axis.minor.ticks.length.y","axis.minor.ticks.length.y.right"))
-                        )
+    element_tree = list(
+      ggside.line = el_def("element_line"),
+      ggside.rect = el_def("element_rect"),
+      ggside.text = el_def("element_text"),
+      ggside.panel.scale = el_def("numeric", "numeric"),
+      ggside.panel.scale.x = el_def("numeric", "ggside.panel.scale"),
+      ggside.panel.scale.y = el_def("numeric", "ggside.panel.scale"),
+      ggside.panel.spacing = el_def("unit", "unit"),
+      ggside.panel.spacing.x = el_def("unit", "ggside.panel.spacing"),
+      ggside.panel.spacing.y = el_def("unit", "ggside.panel.spacing"),
+      ggside.panel.background = el_def("element_rect", c("ggside.rect", "panel.background")),
+      ggside.panel.border = el_def("element_rect", c("ggside.rect", "panel.border")),
+      ggside.panel.grid = el_def("element_line", "ggside.line"),
+      ggside.panel.grid.major = el_def("element_line", "ggside.panel.grid"),
+      ggside.panel.grid.major.x = el_def("element_line", c("ggside.panel.grid.major", "panel.grid.major.x")),
+      ggside.panel.grid.major.y = el_def("element_line", c("ggside.panel.grid.major", "panel.grid.major.y")),
+      ggside.panel.grid.minor = el_def("element_line", "ggside.panel.grid"),
+      ggside.panel.grid.minor.x = el_def("element_line", c("ggside.panel.grid.minor", "panel.grid.minor.x")),
+      ggside.panel.grid.minor.y = el_def("element_line", c("ggside.panel.grid.minor", "panel.grid.minor.y")),
+      ggside.xside.panel.background = el_def("element_rect", c("ggside.rect", "ggside.panel.background")),
+      ggside.xside.panel.border = el_def("element_rect", c("ggside.rect", "ggside.panel.border")),
+      ggside.xside.panel.grid = el_def("element_line", c("ggside.line")),
+      ggside.xside.panel.grid.major = el_def("element_line", c("ggside.xside.panel.grid")),
+      ggside.xside.panel.grid.major.x = el_def("element_line", c("ggside.xside.panel.grid.major", "ggside.panel.grid.major.x")),
+      ggside.xside.panel.grid.major.y = el_def("element_line", c("ggside.xside.panel.grid.major", "ggside.panel.grid.major.y")),
+      ggside.xside.panel.grid.minor = el_def("element_line", c("ggside.xside.panel.grid")),
+      ggside.xside.panel.grid.minor.x = el_def("element_line", c("ggside.xside.panel.grid.minor", "ggside.panel.grid.minor.x")),
+      ggside.xside.panel.grid.minor.y = el_def("element_line", c("ggside.xside.panel.grid.minor", "ggside.panel.grid.minor.y")),
+      ggside.yside.panel.background = el_def("element_rect", c("ggside.rect", "ggside.panel.background")),
+      ggside.yside.panel.border = el_def("element_rect", c("ggside.rect", "ggside.panel.border")),
+      ggside.yside.panel.grid = el_def("element_line", c("ggside.line", "ggside.panel.grid")),
+      ggside.yside.panel.grid.major = el_def("element_line", c("ggside.yside.panel.grid")),
+      ggside.yside.panel.grid.major.x = el_def("element_line", c("ggside.yside.panel.grid.major", "ggside.panel.grid.major.x")),
+      ggside.yside.panel.grid.major.y = el_def("element_line", c("ggside.yside.panel.grid.major", "ggside.panel.grid.major.y")),
+      ggside.yside.panel.grid.minor = el_def("element_line", c("ggside.yside.panel.grid")),
+      ggside.yside.panel.grid.minor.x = el_def("element_line", c("ggside.yside.panel.grid.minor", "ggside.panel.grid.minor.x")),
+      ggside.yside.panel.grid.minor.y = el_def("element_line", c("ggside.yside.panel.grid.minor", "ggside.panel.grid.minor.y")),
+      ggside.axis.text = el_def("element_text", "ggside.text"),
+      ggside.axis.text.x = el_def("element_text", "ggside.axis.text"),
+      ggside.axis.text.x.top = el_def("element_text", c("ggside.axis.text.x", "axis.text.x.top")),
+      ggside.axis.text.x.bottom = el_def("element_text", c("ggside.axis.text.x", "axis.text.x.bottom")),
+      ggside.axis.text.y = el_def("element_text", "ggside.axis.text"),
+      ggside.axis.text.y.left = el_def("element_text", c("ggside.axis.text.y", "axis.text.y.left")),
+      ggside.axis.text.y.right = el_def("element_text", c("ggside.axis.text.y", "axis.text.y.right")),
+      ggside.axis.line = el_def("element_line", "ggside.line"),
+      ggside.axis.line.x = el_def("element_line", "ggside.axis.line"),
+      ggside.axis.line.x.top = el_def("element_line", c("ggside.axis.line.x", "axis.line.x.top")),
+      ggside.axis.line.x.bottom = el_def("element_line", c("ggside.axis.line.x", "axis.line.x.bottom")),
+      ggside.axis.line.y = el_def("element_line", "ggside.axis.line"),
+      ggside.axis.line.y.left = el_def("element_line", c("ggside.axis.line.y", "axis.line.y.left")),
+      ggside.axis.line.y.right = el_def("element_line", c("ggside.axis.line.y", "axis.line.y.right")),
+      ggside.axis.ticks = el_def("element_line", "ggside.line"),
+      ggside.axis.ticks.x = el_def("element_line", "ggside.axis.ticks"),
+      ggside.axis.ticks.x.top = el_def("element_line", c("ggside.axis.ticks.x", "axis.ticks.x.top")),
+      ggside.axis.ticks.x.bottom = el_def("element_line", c("ggside.axis.ticks.x", "axis.ticks.x.bottom")),
+      ggside.axis.ticks.y = el_def("element_line", "ggside.axis.ticks"),
+      ggside.axis.ticks.y.left = el_def("element_line", c("ggside.axis.ticks.y", "axis.ticks.y.left")),
+      ggside.axis.ticks.y.right = el_def("element_line", c("ggside.axis.ticks.y", "axis.ticks.y.right")),
+      ggside.axis.ticks.length = el_def("unit", "axis.ticks.length"),
+      ggside.axis.ticks.length.x = el_def("unit", "ggside.axis.ticks.length"),
+      ggside.axis.ticks.length.x.top = el_def("unit", c("ggside.axis.ticks.length.x", "axis.ticks.length.x.top")),
+      ggside.axis.ticks.length.x.bottom = el_def("unit", c("ggside.axis.ticks.length.x", "axis.ticks.length.x.bottom")),
+      ggside.axis.ticks.length.y = el_def("unit", "ggside.axis.ticks.length"),
+      ggside.axis.ticks.length.y.left = el_def("unit", c("ggside.axis.ticks.length.y", "axis.ticks.length.y.left")),
+      ggside.axis.ticks.length.y.right = el_def("unit", c("ggside.axis.ticks.length.y", "axis.ticks.length.y.right")),
+      ggside.axis.minor.ticks = el_def("element_line", "ggside.line"),
+      ggside.axis.minor.ticks.x = el_def("element_line", "ggside.axis.minor.ticks"),
+      ggside.axis.minor.ticks.x.top = el_def("element_line", c("ggside.axis.minor.ticks.x", "axis.minor.ticks.x.top")),
+      ggside.axis.minor.ticks.x.bottom = el_def("element_line", c("ggside.axis.minor.ticks.x", "axis.minor.ticks.x.bottom")),
+      ggside.axis.minor.ticks.y = el_def("element_line", "ggside.axis.minor.ticks"),
+      ggside.axis.minor.ticks.y.left = el_def("element_line", c("ggside.axis.minor.ticks.y", "axis.minor.ticks.y.left")),
+      ggside.axis.minor.ticks.y.right = el_def("element_line", c("ggside.axis.minor.ticks.y", "axis.minor.ticks.y.right")),
+      ggside.axis.minor.ticks.length = el_def("unit", "axis.minor.ticks.length"),
+      ggside.axis.minor.ticks.length.x = el_def("unit", "ggside.axis.minor.ticks.length"),
+      ggside.axis.minor.ticks.length.x.top = el_def("unit", c("ggside.axis.minor.ticks.length.x", "axis.minor.ticks.length.x.top")),
+      ggside.axis.minor.ticks.length.x.bottom = el_def("unit", c("ggside.axis.minor.ticks.length.x", "axis.minor.ticks.length.x.bottom")),
+      ggside.axis.minor.ticks.length.y = el_def("unit", "ggside.axis.minor.ticks.length"),
+      ggside.axis.minor.ticks.length.y.left = el_def("unit", c("ggside.axis.minor.ticks.length.y", "axis.minor.ticks.length.y.left")),
+      ggside.axis.minor.ticks.length.y.right = el_def("unit", c("ggside.axis.minor.ticks.length.y", "axis.minor.ticks.length.y.right"))
     )
+  )
 }

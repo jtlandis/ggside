@@ -12,9 +12,13 @@ geom_xsideviolin(
   stat = "ydensity",
   position = "dodge",
   ...,
-  draw_quantiles = NULL,
   trim = TRUE,
   bounds = c(-Inf, Inf),
+  quantile.colour = NULL,
+  quantile.color = NULL,
+  quantile.linetype = 0L,
+  quantile.linewidth = NULL,
+  draw_quantiles = deprecated(),
   scale = "area",
   na.rm = FALSE,
   orientation = "x",
@@ -28,9 +32,13 @@ geom_ysideviolin(
   stat = "ydensity",
   position = "dodge",
   ...,
-  draw_quantiles = NULL,
   trim = TRUE,
   bounds = c(-Inf, Inf),
+  quantile.colour = NULL,
+  quantile.color = NULL,
+  quantile.linetype = 0L,
+  quantile.linewidth = NULL,
+  draw_quantiles = deprecated(),
   scale = "area",
   na.rm = FALSE,
   show.legend = NA,
@@ -103,9 +111,6 @@ lists which parameters it can accept.
 \link[ggplot2:draw_key]{key glyphs}, to change the display of the layer in the legend.
 }}
 
-\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
-at the given quantiles of the density estimate.}
-
 \item{trim}{If \code{TRUE} (default), trim the tails of the violins
 to the range of the data. If \code{FALSE}, don't trim the tails.}
 
@@ -114,6 +119,9 @@ c(-Inf, Inf) means that there are no (finite) bounds. If any bound is
 finite, boundary effect of default density estimation will be corrected
 by reflecting tails outside bounds around their closest edge. Data points
 outside of bounds are removed with a warning}
+
+\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
+at the given quantiles of the density estimate.}
 
 \item{scale}{if "area" (default), all violins have the same area
 (before trimming the tails). If "count", areas are scaled proportionally
@@ -132,12 +140,14 @@ to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more 
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object

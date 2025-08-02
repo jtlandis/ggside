@@ -102,7 +102,9 @@ new_ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collaps
 #' @param x Object to test
 #' @return A logical value
 #' @export
-is.ggside <- function(x) inherits(x, "ggside")
+is_ggside <- function(x) {
+  S7::S7_inherits(x, class_ggside) || inherits(x, "ggside")
+}
 
 #' @rdname is.ggside
 #' @export

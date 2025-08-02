@@ -1,3 +1,17 @@
+# ggside 0.3.2.9999
+
+## Details/Breaking Changes
+
+As `ggplot2` prepares for its next major release, `ggside` will try to move in kind.
+Below is a running log of changes that are required due to `ggplot2`'s welcome changes to S7.
+
+
+* Double dispatch on ``S7::method(`+`, list(<ggside>, class_any))`` is now available through `ggplot2`, meaning **we no longer need to overload `+.gg` for our own purposes.**
+* `ggplot2` still maintains some backward compatibility for R verions < 4.3, in that it will use their internal `add_gg()` function. This was always an internal function and I had to reimplement (and overload) as a hack to get `ggside` to behave correctly. Despite this, `ggside` will remove its own `add_gg()` function and solely rely on the S7 method dispatch for `+`. As a result, **`ggside > v0.3.1` will require R version >= 4.3.0** because we will no longer overload `+.gg` to maintain compatibility with older versions of R.
+  * This decision is so that `ggside`'s code complexity can be reduced and lower the burden of maintaining the package.
+* Additionally `ggside` (> v0.3.1) will now depend on `ggplot2 (> v3.5.2.xxx)`.
+
+
 # ggside 0.3.2
 
 * This version will sync with `ggplot2` (3.5.2). It fixing warnings when using `is.ggproto()`. `ggside` Now uses `is_ggproto()` instead. Addresses issue #64

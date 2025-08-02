@@ -3,20 +3,22 @@ library(vdiffr)
 
 set.seed(1234)
 
-df <- data.frame(year = sample(2000:2020, 300, replace = T),
-                 month = sample(1:12, 300, replace = T),
-                 day = sample(1:28,300, replace = T),
-                 temperature = rnorm(300, 70, 8)) %>%
+df <- data.frame(
+  year = sample(2000:2020, 300, replace = T),
+  month = sample(1:12, 300, replace = T),
+  day = sample(1:28, 300, replace = T),
+  temperature = rnorm(300, 70, 8)
+) %>%
   mutate(
     month_name = month.name[month],
-    date = as.Date(sprintf("%04d-%02d-%02d",year, month, day))
+    date = as.Date(sprintf("%04d-%02d-%02d", year, month, day))
   )
 
-test_that("default ggplot2 error",{
+test_that("default ggplot2 warning", {
   p <- ggplot(df, aes(y = temperature)) +
     geom_line(aes(x = date)) +
-    geom_histogram(orientation = "y",binwidth = 0.5)
-  expect_error(ggplot_build(p), regexp = "works with objects of class <Date> only")
+    geom_histogram(orientation = "y", binwidth = 0.5)
+  expect_warning(ggplot_build(p), regexp = "A <numeric> value was passed to a Date scale")
 })
 
 p <- ggplot(df, aes(x = date, y = temperature)) +
@@ -24,7 +26,7 @@ p <- ggplot(df, aes(x = date, y = temperature)) +
   geom_point(aes(color = month_name))
 p_yside <- p + geom_ysidehistogram(bins = 30)
 
-test_that("ggside work-around works",{
+test_that("ggside work-around works", {
   expect_doppelganger("date_x_yside_no_scale", p_yside)
 })
 
@@ -34,7 +36,7 @@ test_that("ggside adding ysidex continuous scale", {
   expect_doppelganger("date_x_yside", p_yside)
 })
 
-p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0,5,10,20))
+p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0, 5, 10, 20))
 
 test_that("ggside xsidey scales", {
   expect_doppelganger("date_x_xside", p_xside)

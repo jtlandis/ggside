@@ -15,11 +15,12 @@ geom_xsidebar(
   position = "stack",
   ...,
   just = 0.5,
-  width = NULL,
+  lineend = "butt",
+  linejoin = "mitre",
   na.rm = FALSE,
-  orientation = "x",
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  orientation = "x"
 )
 
 geom_ysidebar(
@@ -29,20 +30,23 @@ geom_ysidebar(
   position = "stack",
   ...,
   just = 0.5,
-  width = NULL,
+  lineend = "butt",
+  linejoin = "mitre",
   na.rm = FALSE,
-  orientation = "y",
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  orientation = "y"
 )
 
 geom_xsidecol(
   mapping = NULL,
   data = NULL,
+  stat = "identity",
   position = "stack",
   ...,
   just = 0.5,
-  width = NULL,
+  lineend = "butt",
+  linejoin = "mitre",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE
@@ -51,10 +55,12 @@ geom_xsidecol(
 geom_ysidecol(
   mapping = NULL,
   data = NULL,
+  stat = "identity",
   position = "stack",
   ...,
   just = 0.5,
-  width = NULL,
+  lineend = "butt",
+  linejoin = "mitre",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
@@ -84,7 +90,7 @@ from a \code{formula} (e.g. \code{~ head(.x, 10)}).}
 
 \item{stat}{The statistical transformation to use on the data for this layer.
 When using a \verb{geom_*()} function to construct a layer, the \code{stat}
-argument can be used the override the default coupling between geoms and
+argument can be used to override the default coupling between geoms and
 stats. The \code{stat} argument accepts the following:
 \itemize{
 \item A \code{Stat} ggproto subclass, for example \code{StatCount}.
@@ -142,27 +148,30 @@ columns to the left/right of axis breaks. Note that this argument may have
 unintended behaviour when used with alternative positions, e.g.
 \code{position_dodge()}.}
 
-\item{width}{Bar width. By default, set to 90\% of the \code{\link[ggplot2:resolution]{resolution()}} of the
-data.}
+\item{lineend}{Line end style (round, butt, square).}
+
+\item{linejoin}{Line join style (round, mitre, bevel).}
 
 \item{na.rm}{If \code{FALSE}, the default, missing values are removed with
 a warning. If \code{TRUE}, missing values are silently removed.}
-
-\item{orientation}{The orientation of the layer. The default (\code{NA})
-automatically determines the orientation from the aesthetic mapping. In the
-rare event that this fails it can be given explicitly by setting \code{orientation}
-to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
 
 \item{show.legend}{logical. Should this layer be included in the legends?
 \code{NA}, the default, includes if any aesthetics are mapped.
 \code{FALSE} never includes, and \code{TRUE} always includes.
 It can also be a named logical vector to finely select the aesthetics to
-display.}
+display. To include legend keys for all levels, even
+when no data exists, use \code{TRUE}.  If \code{NA}, all levels are shown in legend,
+but unobserved levels are omitted.}
 
 \item{inherit.aes}{If \code{FALSE}, overrides the default aesthetics,
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
-the default plot specification, e.g. \code{\link[ggplot2:borders]{borders()}}.}
+the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+
+\item{orientation}{The orientation of the layer. The default (\code{NA})
+automatically determines the orientation from the aesthetic mapping. In the
+rare event that this fails it can be given explicitly by setting \code{orientation}
+to either \code{"x"} or \code{"y"}. See the \emph{Orientation} section for more detail.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object

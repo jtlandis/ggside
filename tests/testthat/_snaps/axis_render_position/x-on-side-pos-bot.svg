@@ -260,11 +260,11 @@
 <rect x='654.10' y='275.77' width='60.42' height='67.17' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='654.10' y='284.48' style='font-size: 11.00px; font-family: sans;' textLength='39.14px' lengthAdjust='spacingAndGlyphs'>Species</text>
 <rect x='654.10' y='291.10' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='654.81' y='291.81' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='291.81' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #F8766D; stroke-linecap: butt;' />
 <rect x='654.10' y='308.38' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='654.81' y='309.09' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='309.09' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #00BA38; stroke-linecap: butt;' />
 <rect x='654.10' y='325.66' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='654.81' y='326.37' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt; stroke-linejoin: miter;' />
+<rect x='654.81' y='326.37' width='15.86' height='15.86' style='stroke-width: 1.07; stroke: #619CFF; stroke-linecap: butt;' />
 <text x='676.86' y='302.77' style='font-size: 8.80px; font-family: sans;' textLength='25.94px' lengthAdjust='spacingAndGlyphs'>setosa</text>
 <text x='676.86' y='320.05' style='font-size: 8.80px; font-family: sans;' textLength='37.66px' lengthAdjust='spacingAndGlyphs'>versicolor</text>
 <text x='676.86' y='337.33' style='font-size: 8.80px; font-family: sans;' textLength='32.28px' lengthAdjust='spacingAndGlyphs'>virginica</text>

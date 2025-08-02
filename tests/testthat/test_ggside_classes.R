@@ -1,6 +1,4 @@
-
-
-test_that("geom_*side* returns ggside_layer",{
+test_that("geom_*side* returns ggside_layer", {
   expect_s3_class(geom_xsidebar(), "ggside_layer")
   expect_s3_class(geom_xsideboxplot(), "ggside_layer")
   expect_s3_class(geom_xsidecol(), "ggside_layer")
@@ -29,17 +27,18 @@ test_that("geom_*side* returns ggside_layer",{
   expect_s3_class(geom_ysideviolin(), "ggside_layer")
 })
 
-test_that("ggside function returns ggside_options",{
+test_that("ggside function returns ggside_options", {
   expect_s3_class(ggside(), "ggside_options")
 })
 
-p <- ggplot(NULL) + geom_blank()
+p <- ggplot(NULL) +
+  geom_blank()
 
-test_that("adding ggside_layer to ggplot makes ggside object",{
+test_that("adding ggside_layer to ggplot makes ggside object", {
   expect_s3_class(p, "ggplot")
   expect_is_ggside <- function(p, l) {
     p_ <- p + l
-    expect_s3_class(p_, "ggside")
+    expect_s7_class(p_, class_ggside)
   }
   expect_is_ggside(p, ggside())
   expect_is_ggside(p, geom_xsidebar())
@@ -85,7 +84,7 @@ test_that("ggside() class operates correctly", {
   expect_equal(obj$xsidey, NULL)
   expect_equal(obj$ysidex, NULL)
   p2 <- p + obj
-  obj2 <- p2$ggside
+  obj2 <- p2$ggside_opt
   expect_s3_class(obj2, "ggside_options")
   expect_equal(obj2$collapse, NULL)
   expect_equal(obj2$draw_x_on, "default")
@@ -99,4 +98,3 @@ test_that("ggside() class operates correctly", {
   expect_equal(obj2$xsidey, NULL)
   expect_equal(obj2$ysidex, NULL)
 })
-
