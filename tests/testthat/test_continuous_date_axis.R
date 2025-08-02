@@ -19,19 +19,36 @@ test_that("default ggplot2 error",{
   expect_error(ggplot_build(p), regexp = "works with objects of class <Date> only")
 })
 
-test_that("ggside work-around works",{
-  p <- ggplot(df, aes(x = date, y = temperature)) +
-    geom_line() +
-    geom_point(aes(color = month_name))
-  p_yside <- p + geom_ysidehistogram(bins = 30)
-  expect_doppelganger("date_x_yside_no_scale", p_yside)
-  p_yside <- p_yside + scale_ysidex_continuous()
-  expect_doppelganger("date_x_yside", p_yside)
-  p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0,5,10,20))
-  expect_doppelganger("date_x_xside", p_xside)
-  p_both <- p_yside + geom_xsidehistogram(bins = 30)
-  expect_doppelganger("date_x_both", p_both)
-  p_wrap <- p_both + facet_wrap(~month) + ggside(collapse = "all")
-  expect_message(p_wrap, regexp = NA)
+p <- ggplot(df, aes(x = date, y = temperature)) +
+  geom_line() +
+  geom_point(aes(color = month_name))
+p_yside <- p + geom_ysidehistogram(bins = 30)
 
+test_that("ggside work-around works",{
+  expect_doppelganger("date_x_yside_no_scale", p_yside)
+})
+
+p_yside <- p_yside + scale_ysidex_continuous()
+
+test_that("ggside adding ysidex continuous scale", {
+  expect_doppelganger("date_x_yside", p_yside)
+})
+
+p_xside <- p + geom_xsidehistogram(bins = 30) + scale_xsidey_continuous(trans = "sqrt", breaks = c(0,5,10,20))
+
+test_that("ggside xsidey scales", {
+  expect_doppelganger("date_x_xside", p_xside)
+})
+
+p_both <- p_yside + geom_xsidehistogram(bins = 30)
+
+test_that("ggside xsidey and ysidex scales", {
+  expect_doppelganger("date_x_both", p_both)
+})
+
+p_wrap <- p_both + facet_wrap(~month) + ggside(collapse = "all")
+
+
+test_that("ggside xsidey and ysidex no message", {
+  expect_no_message(p_wrap)
 })

@@ -17,7 +17,7 @@ NULL
 #' @name ggside-ggproto-facets
 #' @section Extended Facets:
 #'
-#' The following is a list \link{ggplot2} facets that are
+#' The following is a list \link[ggplot2]{ggplot2} facets that are
 #' available to use by ggside base.
 #'
 #'  \itemize{

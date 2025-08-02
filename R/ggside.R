@@ -41,15 +41,14 @@ ggside <- function(x.pos = NULL, y.pos = NULL, scales = NULL, collapse = NULL,
                    draw_x_on = NULL,
                    draw_y_on = NULL,
                    strip = NULL,
-                   respect_side_labels = NULL){
-
+                   respect_side_labels = NULL) {
   x.pos <- resolve_arg(x.pos, c("top", "bottom"))
   y.pos <- resolve_arg(y.pos, c("right", "left"))
-  draw_x_on <- resolve_arg(draw_x_on, c("default","main","side"))
-  draw_y_on <- resolve_arg(draw_y_on, c("default","main","side"))
+  draw_x_on <- resolve_arg(draw_x_on, c("default", "main", "side"))
+  draw_y_on <- resolve_arg(draw_y_on, c("default", "main", "side"))
   strip <- resolve_arg(strip, c("default", "main"))
   collapse <- resolve_arg(collapse, c("all", "x", "y"))
-  respect_side_labels <- resolve_arg(respect_side_labels, c("default","x","y", "all", "none", "independent"))
+  respect_side_labels <- resolve_arg(respect_side_labels, c("default", "x", "y", "all", "none", "independent"))
 
 
   ggproto(
@@ -69,15 +68,15 @@ ggside <- function(x.pos = NULL, y.pos = NULL, scales = NULL, collapse = NULL,
 }
 
 new_ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collapse = NULL,
-                   draw_x_on = c("default","main","side"),
-                   draw_y_on = c("default","main","side"),
-                   strip = c("default", "main"),
-                   respect_side_labels = FALSE){
-  draw_x_on <- match.arg(draw_x_on, c("default","main","side"))
-  draw_y_on <- match.arg(draw_y_on, c("default","main","side"))
+                       draw_x_on = c("default", "main", "side"),
+                       draw_y_on = c("default", "main", "side"),
+                       strip = c("default", "main"),
+                       respect_side_labels = FALSE) {
+  draw_x_on <- match.arg(draw_x_on, c("default", "main", "side"))
+  draw_y_on <- match.arg(draw_y_on, c("default", "main", "side"))
   strip <- match.arg(strip, c("default", "main"))
   if (!is.null(collapse)) {
-    collapse <- match.arg(collapse, c("all", "x","y"))
+    collapse <- match.arg(collapse, c("all", "x", "y"))
   }
 
 
@@ -140,7 +139,8 @@ is.ggside_scale <- function(x) inherits(x, "ggside_scale")
 #'
 #' @section Exported Geometries:
 #'
-#' The following are the `xside` variants of the \link{ggplot2} Geometries
+#' The following are the `xside` variants of the \link[ggplot2]{ggplot2}
+#' Geometries
 #'
 #' \itemize{
 #' \item [geom_xsidebar]
@@ -183,7 +183,8 @@ NULL
 #'
 #' #' @section Exported Geometries:
 #'
-#' The following are the `yside` variants of the \link{ggplot2} Geometries
+#' The following are the `yside` variants of the \link[ggplot2]{ggplot2}
+#' Geometries
 #'
 #' \itemize{
 #' \item [geom_ysidebar]
@@ -202,7 +203,3 @@ NULL
 #' @return geom_yside* return a YLayer object to be added to a ggplot
 #' @seealso [xside]
 NULL
-
-
-
-

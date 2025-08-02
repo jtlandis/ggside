@@ -3,6 +3,8 @@ README
 Justin Landis
 07/20/2022
 
+<div style="margin-bottom:200px">
+
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
 <!-- badges: start -->
@@ -14,6 +16,8 @@ Justin Landis
 [![Codecov test
 coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
+
+</div>
 
 ## Overview
 
@@ -52,6 +56,9 @@ library(ggside)
 #> Registered S3 method overwritten by 'ggside':
 #>   method from   
 #>   +.gg   ggplot2
+```
+
+``` r
 
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
@@ -112,4 +119,4 @@ The following section will summarize issues that are present on the
 current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
-v0.3.0.
+v0.3.1.

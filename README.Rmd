@@ -13,6 +13,7 @@ knitr::opts_chunk$set(
 )
 ```
 
+<div style="margin-bottom:200px">
 # ggside <img src="inst/figures/ggside.png" align="right" height="279" />
 
 <!-- badges: start -->
@@ -23,6 +24,7 @@ knitr::opts_chunk$set(
 [![Codecov test coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
 
+</div>
 
 ## Overview
 
@@ -94,5 +96,5 @@ If you find any issues or want to suggest an enhancement, please make a post at 
 ## Known Issues
 
 
-The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.3.0.
+The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of `ggside` is v0.3.1.
 
