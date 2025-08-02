@@ -264,25 +264,25 @@
 <rect x='654.10' y='219.94' width='45.26' height='49.89' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='654.10' y='228.65' style='font-size: 11.00px; font-family: sans;' textLength='45.26px' lengthAdjust='spacingAndGlyphs'>Species2</text>
 <rect x='654.10' y='235.27' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='654.81' y='235.98' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
+<rect x='654.81' y='235.98' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #F8766D;' />
 <rect x='654.10' y='252.55' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
-<rect x='654.81' y='253.26' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #00BFC4;' />
+<rect x='654.81' y='253.26' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #00BFC4;' />
 <text x='676.86' y='246.94' style='font-size: 8.80px; font-family: sans;' textLength='5.87px' lengthAdjust='spacingAndGlyphs'>A</text>
 <text x='676.86' y='264.22' style='font-size: 8.80px; font-family: sans;' textLength='5.87px' lengthAdjust='spacingAndGlyphs'>B</text>
 <rect x='654.10' y='280.79' width='60.42' height='67.17' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <text x='654.10' y='289.50' style='font-size: 11.00px; font-family: sans;' textLength='39.14px' lengthAdjust='spacingAndGlyphs'>Species</text>
 <rect x='654.10' y='296.12' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='304.76' r='1.95' style='stroke-width: 0.71; stroke: #F8766D; fill: #F8766D;' />
-<rect x='654.81' y='296.83' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
-<rect x='654.81' y='296.83' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #F8766D;' />
+<rect x='654.81' y='296.83' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #F8766D;' />
+<rect x='654.81' y='296.83' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #F8766D;' />
 <rect x='654.10' y='313.40' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='322.04' r='1.95' style='stroke-width: 0.71; stroke: #00BA38; fill: #00BA38;' />
-<rect x='654.81' y='314.11' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #00BA38;' />
-<rect x='654.81' y='314.11' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #00BA38;' />
+<rect x='654.81' y='314.11' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #00BA38;' />
+<rect x='654.81' y='314.11' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #00BA38;' />
 <rect x='654.10' y='330.68' width='17.28' height='17.28' style='stroke-width: 1.07; stroke: none; fill: #FFFFFF;' />
 <circle cx='662.74' cy='339.32' r='1.95' style='stroke-width: 0.71; stroke: #619CFF; fill: #619CFF;' />
-<rect x='654.81' y='331.39' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #619CFF;' />
-<rect x='654.81' y='331.39' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; stroke-linejoin: miter; fill: #619CFF;' />
+<rect x='654.81' y='331.39' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #619CFF;' />
+<rect x='654.81' y='331.39' width='15.86' height='15.86' style='stroke-width: 1.07; stroke-linecap: butt; fill: #619CFF;' />
 <text x='676.86' y='307.79' style='font-size: 8.80px; font-family: sans;' textLength='25.94px' lengthAdjust='spacingAndGlyphs'>setosa</text>
 <text x='676.86' y='325.07' style='font-size: 8.80px; font-family: sans;' textLength='37.66px' lengthAdjust='spacingAndGlyphs'>versicolor</text>
 <text x='676.86' y='342.35' style='font-size: 8.80px; font-family: sans;' textLength='32.28px' lengthAdjust='spacingAndGlyphs'>virginica</text>
