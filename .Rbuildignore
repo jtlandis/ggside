@@ -5,6 +5,8 @@
 ggside.Rmd
 cran-comments.md
 README.Rmd
+README.qmd
+README_files/*
 ^LICENSE\.md$
 generate_ggside_hexsticker.R
 example-gganimate.R

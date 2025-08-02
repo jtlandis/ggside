@@ -1,8 +1,8 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.3.1.9999
-Authors@R: 
+Version: 0.3.2
+Authors@R:
     person(given = "Justin",
            family = "Landis",
            role = c("aut", "cre"),
@@ -10,7 +10,7 @@ Authors@R:
            comment = c(ORCID = "0000-0001-5501-4934"))
 Maintainer: Justin Landis <jtlandis314@gmail.com>
 Description: The grammar of graphics as shown in 'ggplot2' has provided
-  an expressive API for users to build plots. 'ggside' extends 'ggplot2' 
+  an expressive API for users to build plots. 'ggside' extends 'ggplot2'
   by allowing users to add graphical information about one of the main panel's
   axis using a familiar 'ggplot2' style API with tidy data. This package is
   particularly useful for visualizing metadata on a discrete axis, or summary
@@ -22,8 +22,10 @@ Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.2
 VignetteBuilder: knitr
-Depends: ggplot2 (>= 3.5.0)
-Imports: 
+Depends:
+    R (>= 4.1),
+    ggplot2 (>= 3.5.2)
+Imports:
     grid,
     gtable,
     rlang,
@@ -46,7 +48,8 @@ Suggests:
     viridis,
     waldo
 Config/testthat/edition: 3
-Collate: 
+Collate:
+    'z-depricated.R'
     'utils-ggproto.R'
     'utils-calls.R'
     'utils-ggplot2-reimpl-.R'
