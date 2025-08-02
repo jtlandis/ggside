@@ -9,11 +9,13 @@ theme_ggside_grey <- function(base_size = 11,
   half_line <- base_size/2
 
   t <- theme(
-    ggside.line = element_line(colour = "black", linewidth = base_line_size, linetype = 1, lineend = "butt"),
-    ggside.rect = element_rect(fill = "white", colour = "black", linewidth = base_rect_size, linetype = 1),
-    ggside.text = element_text(family = base_family, face = "plain", colour = "black",
-                               size = base_size, lineheight = 0.9, hjust = 0.5, vjust = 0.5,
-                               angle = 0, margin = margin(), debug = FALSE),
+    ggside.line = element_line(colour = "black", linewidth = base_line_size, linetype = 1, lineend = "butt", linejoin = "round"),
+    ggside.rect = element_rect(fill = "white", colour = "black", linewidth = base_rect_size, linetype = 1, linejoin = "round"),
+    ggside.text = element_text(
+      family = base_family, face = "plain", colour = "black",
+      size = base_size, lineheight = 0.9, hjust = 0.5, vjust = 0.5,
+      angle = 0, margin = margin(), debug = FALSE
+    ),
     ggside.axis.line = element_blank(),
     ggside.axis.text = element_text(size = rel(0.8), colour = "grey30"),
     ggside.axis.text.x = element_text(margin = margin(t = 0.8 * half_line/2), vjust = 1),
