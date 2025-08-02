@@ -1,6 +1,7 @@
 # ggside 0.3.2
 
 * This version will sync with `ggplot2` (3.5.2). It fixing warnings when using `is.ggproto()`. `ggside` Now uses `is_ggproto()` instead. Addresses issue #64
+* `ggside` will now depend on R (>= 4.1.0) as it already was doing so internally but not explicitly stated in the DESCRIPTION file.
 * Fixing Notes from cran regarding missing doc links.
 
 # ggside 0.3.1
