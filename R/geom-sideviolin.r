@@ -22,6 +22,12 @@ NULL
 #'  finite, boundary effect of default density estimation will be corrected
 #'  by reflecting tails outside bounds around their closest edge. Data points
 #'  outside of bounds are removed with a warning
+#' @param quantile.colour,quantile.color,quantile.linewidth,quantile.linetype
+#'   Default aesthetics for the quantile lines. Set to `NULL` to inherit from
+#'   the data's aesthetics. By default, quantile lines are hidden and can be
+#'   turned on by changing `quantile.linetype`.
+#' @param draw_quantiles `r lifecycle::badge("deprecated")` Previous
+#'   specification of drawing quantiles.
 #' @aliases geom_*sideviolin
 #' @seealso [geom_*sideboxplot]
 #' @examples

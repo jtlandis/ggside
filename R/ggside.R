@@ -33,6 +33,7 @@ NULL
 #' parameter to "x" is to "respect the labels of the xside panel" and
 #' consequently the yside labels, if present, are not respected.
 #'
+#' @aliases ggside-options ggside_options
 #' @seealso
 #' For more information regarding the ggside api: see [xside] or [yside]
 #' @return a object of class 'ggside_options' or to be added to a ggplot

@@ -10,7 +10,7 @@ NULL
 #' @rdname class_definitions
 #' @section ggproto classes:
 #' * `class_ggside_opt` is a subclass of `class_ggproto` and is
-#' more described in the [ggside-options] documentation.
+#' more described in the \link[ggside:ggside]{ggside-options} documentation.
 #' @export
 #' @format NULL
 #' @usage NULL
@@ -19,7 +19,8 @@ class_ggside_opt <- S7::new_S3_class("ggside_options")
 
 #' @rdname class_definitions
 #' @section S7 classes:
-#' * `class_ggside` is a subclass of `ggplot2::class_ggplot` and
+#' * `class_ggside` is a subclass of
+#' \link[ggplot2:class_ggplot]{`ggplot2::class_ggplot`} and
 #' is used to represent a ggplot object with ggside options.
 #' @export
 #' @format NULL

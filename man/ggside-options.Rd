@@ -2,6 +2,8 @@
 % Please edit documentation in R/ggside.R
 \name{ggside}
 \alias{ggside}
+\alias{ggside-options}
+\alias{ggside_options}
 \title{ggside options}
 \usage{
 ggside(

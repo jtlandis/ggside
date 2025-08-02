@@ -120,6 +120,10 @@ finite, boundary effect of default density estimation will be corrected
 by reflecting tails outside bounds around their closest edge. Data points
 outside of bounds are removed with a warning}
 
+\item{quantile.colour, quantile.color, quantile.linewidth, quantile.linetype}{Default aesthetics for the quantile lines. Set to \code{NULL} to inherit from
+the data's aesthetics. By default, quantile lines are hidden and can be
+turned on by changing \code{quantile.linetype}.}
+
 \item{scale}{if "area" (default), all violins have the same area
 (before trimming the tails). If "count", areas are scaled proportionally
 to the number of observations. If "width", all violins have the same
@@ -146,8 +150,8 @@ rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
 
-\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
-at the given quantiles of the density estimate.}
+\item{draw_quantiles}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previous
+specification of drawing quantiles.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object
