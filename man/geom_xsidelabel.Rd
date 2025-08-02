@@ -15,7 +15,6 @@ geom_xsidelabel(
   parse = FALSE,
   label.padding = unit(0.25, "lines"),
   label.r = unit(0.15, "lines"),
-  label.size = deprecated(),
   border.colour = NULL,
   border.color = NULL,
   text.colour = NULL,
@@ -23,7 +22,8 @@ geom_xsidelabel(
   size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  label.size = lifecycle::deprecated()
 )
 
 geom_ysidelabel(
@@ -35,7 +35,6 @@ geom_ysidelabel(
   parse = FALSE,
   label.padding = unit(0.25, "lines"),
   label.r = unit(0.15, "lines"),
-  label.size = deprecated(),
   border.colour = NULL,
   border.color = NULL,
   text.colour = NULL,
@@ -43,7 +42,8 @@ geom_ysidelabel(
   size.unit = "mm",
   na.rm = FALSE,
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  label.size = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -128,9 +128,6 @@ displayed as described in \code{?plotmath}.}
 
 \item{label.r}{Radius of rounded corners. Defaults to 0.15 lines.}
 
-\item{label.size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Replaced by the
-\code{linewidth} aesthetic. Size of label border, in mm.}
-
 \item{border.colour, border.color}{Colour of label border. When \code{NULL}
 (default), the \code{colour} aesthetic determines the colour of the label border.
 \code{border.color} is an alias for \code{border.colour}.}
@@ -158,6 +155,9 @@ but unobserved levels are omitted.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+
+\item{label.size}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Replaced by the
+\code{linewidth} aesthetic. Size of label border, in mm.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object

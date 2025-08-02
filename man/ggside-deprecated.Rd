@@ -4,10 +4,12 @@
 \alias{ggside-deprecated}
 \alias{as_ggsideFacet}
 \alias{as_ggsideCoord}
+\alias{is.ggside}
 \title{Deprecated Functions}
 \description{
 The following functions have been deprecated.
 
 as_ggsideFacet <- \link{ggside_facet}
 as_ggsideCoord <- \link{ggside_coord}
+is.ggside <- \link{is_ggside}
 }
