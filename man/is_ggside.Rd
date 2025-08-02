@@ -2,9 +2,18 @@
 % Please edit documentation in R/ggside.R
 \name{is_ggside}
 \alias{is_ggside}
+\alias{is_ggside_layer}
+\alias{is_ggside_options}
+\alias{is_ggside_scale}
 \title{Check ggside objects}
 \usage{
 is_ggside(x)
+
+is_ggside_layer(x)
+
+is_ggside_options(x)
+
+is_ggside_scale(x)
 }
 \arguments{
 \item{x}{Object to test}

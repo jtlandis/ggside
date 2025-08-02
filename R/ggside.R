@@ -106,17 +106,17 @@ is_ggside <- function(x) {
   S7::S7_inherits(x, class_ggside) || inherits(x, "ggside")
 }
 
-#' @rdname is.ggside
+#' @rdname is_ggside
 #' @export
-is.ggside_layer <- function(x) inherits(x, "ggside_layer")
+is_ggside_layer <- function(x) inherits(x, "ggside_layer")
 
-#' @rdname is.ggside
+#' @rdname is_ggside
 #' @export
-is.ggside_options <- function(x) inherits(x, "ggside_options")
+is_ggside_options <- function(x) inherits(x, "ggside_options")
 
-#' @rdname is.ggside
+#' @rdname is_ggside
 #' @export
-is.ggside_scale <- function(x) inherits(x, "ggside_scale")
+is_ggside_scale <- function(x) inherits(x, "ggside_scale")
 
 #' @name xside
 #' @title The xside geometries
