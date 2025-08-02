@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [main, dev]
 
-name: R-CMD-check
+name: R-CMD-check-ggplot-dev
 
 jobs:
   R-CMD-check:
