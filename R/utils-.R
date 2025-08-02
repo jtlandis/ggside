@@ -6,29 +6,36 @@ NULL
 
 
 
-#global variables to pass RMD checks
+# global variables to pass RMD checks
 NO_PANEL <- -1L
-PANEL_TYPE <- c("x","y", "main")
+PANEL_TYPE <- c("x", "y", "main")
 self <- NULL
 call_parent_method <- function(...) cli::cli_abort("method not implemented")
 orientation <- NULL
 `!<-` <- `(<-` <- function(x, value) cli::cli_abort("function not meant to be called")
 
 force_panel_type_mapping <- function(mapping, type) {
-  if ("PANEL_TYPE" %in% names(mapping)) return(mapping)
+  if ("PANEL_TYPE" %in% names(mapping)) {
+    return(mapping)
+  }
   switch(type,
-         x = aes(!!!mapping, PANEL_TYPE = "x"),
-         y = aes(!!!mapping, PANEL_TYPE = "y"))
+    x = aes(!!!mapping, PANEL_TYPE = "x"),
+    y = aes(!!!mapping, PANEL_TYPE = "y")
+  )
 }
 
 .ggside_global <- new.env(parent = emptyenv())
-.ggside_global$.y_aes <- c("y", "ymin", "ymax", "yend", "yintercept", "ymin_final",
-                           "ymax_final", "lower", "middle", "upper", "y0")
-.ggside_global$.x_aes <- c("x", "xmin", "xmax", "xend", "xintercept", "xmin_final",
-                           "xmax_final", "xlower", "xmiddle", "xupper", "x0")
+.ggside_global$.y_aes <- c(
+  "y", "ymin", "ymax", "yend", "yintercept", "ymin_final",
+  "ymax_final", "lower", "middle", "upper", "y0"
+)
+.ggside_global$.x_aes <- c(
+  "x", "xmin", "xmax", "xend", "xintercept", "xmin_final",
+  "xmax_final", "xlower", "xmiddle", "xupper", "x0"
+)
 
 `%NA%` <- function(a, b) {
-  if(all(is.na(a))) b else a
+  if (all(is.na(a))) b else a
 }
 
 use_side_aes <- function(data, side) {
@@ -38,13 +45,17 @@ use_side_aes <- function(data, side) {
 }
 
 rename_side <- function(str, side) {
-  other <- switch(side, x = "y", y = "x")
+  other <- switch(side,
+    x = "y",
+    y = "x"
+  )
   is_or <- grepl("|", str, fixed = T)
-  aes <- .ggside_global[[paste0(".", other,"_aes")]]
+  aes <- .ggside_global[[paste0(".", other, "_aes")]]
   rename_aes <- function(x) {
     to_rename <- x %in% aes
-    if (any(to_rename))
+    if (any(to_rename)) {
       x[to_rename] <- sprintf("%sside%s", side, x[to_rename])
+    }
     x
   }
   if (any(is_or)) {
@@ -79,20 +90,22 @@ new_default_aes <- function(geom, side) {
   defaults <- geom$default_aes
   names(defaults) <- rename_side(names(defaults), side)
   new_defaults <- list(NA, NA, PANEL_TYPE = side)
-  names(new_defaults)[c(1,2)] <- paste0(side, c("colour", "fill"))
+  names(new_defaults)[c(1, 2)] <- paste0(side, c("colour", "fill"))
   args <- dots_list(!!!defaults, !!!new_defaults, .homonyms = "first")
-  do.call('aes', args)
+  do.call("aes", args)
 }
 
 assert_lgl <- function(arg) {
   arg_sym <- caller_arg(arg)
-  vctrs::vec_assert(x = arg,
-                    ptype = logical(), size = 1L,
-                    arg = arg_sym,
-                    call = parent.frame())
-  if (is.na(arg))
+  vctrs::vec_assert(
+    x = arg,
+    ptype = logical(), size = 1L,
+    arg = arg_sym,
+    call = parent.frame()
+  )
+  if (is.na(arg)) {
     cli::cli_abort("{.arg {arg_sym}} cannot be {.obj_type_friendly {NA}}", call = parent.frame())
-
+  }
 }
 
 resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
@@ -103,12 +116,16 @@ resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
     arg <- opt[opt %in% arg]
     len <- length(arg)
     opt_len <- length(opt)
-    if (len==0)
+    if (len == 0) {
       cli::cli_abort("valid {cli::qty(opt_len)} option{?s} for argument {.arg {arg_sym}} {?is/are} {.val {opt}}",
-                     call = parent.frame())
-    if (length(arg)>1 && !several.ok)
+        call = parent.frame()
+      )
+    }
+    if (length(arg) > 1 && !several.ok) {
       cli::cli_abort("you specified {length(arg)} value{?s} to argument {.arg {arg_sym}}, but only one of {.or {.val {opt}}} are allowed",
-                     call = parent.frame())
+        call = parent.frame()
+      )
+    }
   } else if (!null.ok) {
     cli::cli_abort("argument {.arg {arg_sym}} cannot be {.obj_type_friendly {NULL}}", call = parent.frame())
   }
@@ -117,11 +134,11 @@ resolve_arg <- function(arg, opt, several.ok = FALSE, null.ok = TRUE) {
 
 layer_type <- function(layer) {
   layer_class <- str_extr(class(layer), "(X|Y)Layer")
-  val <- if(all(is.na(layer_class))){
+  val <- if (all(is.na(layer_class))) {
     "main"
   } else {
     layer_class <- layer_class[!is.na(layer_class)]
-    to_lower_ascii(substr(layer_class,1,1))
+    to_lower_ascii(substr(layer_class, 1, 1))
   }
   return(val)
 }
@@ -129,12 +146,4 @@ layer_type <- function(layer) {
 is_ggside_subclass <- function(obj) {
   class_ <- class(obj)
   any(grepl("((X|Y)Layer|(X|Y)side)", class_))
-}
-
-prop_try <- function(object, name) {
-  if (name %in% prop_names(name)) {
-    prop(object, name)
-  } else {
-    NULL
-  }
 }
