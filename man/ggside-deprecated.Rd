@@ -4,10 +4,18 @@
 \alias{ggside-deprecated}
 \alias{as_ggsideFacet}
 \alias{as_ggsideCoord}
+\alias{is.ggside}
+\alias{is.ggside_layer}
+\alias{is.ggside_options}
+\alias{is.ggside_scale}
 \title{Deprecated Functions}
 \description{
 The following functions have been deprecated.
 
 as_ggsideFacet <- \link{ggside_facet}
 as_ggsideCoord <- \link{ggside_coord}
+is.ggside <- \link{is_ggside}
+is.ggside_layer <- \link{is_ggside_layer}
+is.ggside_options <- \link{is_ggside_options}
+is.ggside_scale <- \link{is_ggside_scale}
 }

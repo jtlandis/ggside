@@ -4,6 +4,7 @@
 \alias{as_ggside}
 \alias{as_ggside.default}
 \alias{as_ggside.ggplot}
+\alias{as_ggside.ggside::ggside}
 \alias{as_ggside.ggside}
 \title{Explicit conversion to ggside object}
 \usage{
@@ -12,6 +13,8 @@ as_ggside(x, ...)
 \method{as_ggside}{default}(x, ...)
 
 \method{as_ggside}{ggplot}(x, ggside = NULL, ...)
+
+\method{as_ggside}{`ggside::ggside`}(x, ggside = NULL, ...)
 
 \method{as_ggside}{ggside}(x, ggside = NULL, ...)
 }

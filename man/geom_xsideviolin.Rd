@@ -18,12 +18,12 @@ geom_xsideviolin(
   quantile.color = NULL,
   quantile.linetype = 0L,
   quantile.linewidth = NULL,
-  draw_quantiles = deprecated(),
   scale = "area",
   na.rm = FALSE,
   orientation = "x",
   show.legend = NA,
-  inherit.aes = TRUE
+  inherit.aes = TRUE,
+  draw_quantiles = lifecycle::deprecated()
 )
 
 geom_ysideviolin(
@@ -38,12 +38,12 @@ geom_ysideviolin(
   quantile.color = NULL,
   quantile.linetype = 0L,
   quantile.linewidth = NULL,
-  draw_quantiles = deprecated(),
   scale = "area",
   na.rm = FALSE,
   show.legend = NA,
   inherit.aes = TRUE,
-  orientation = "y"
+  orientation = "y",
+  draw_quantiles = lifecycle::deprecated()
 )
 }
 \arguments{
@@ -120,8 +120,9 @@ finite, boundary effect of default density estimation will be corrected
 by reflecting tails outside bounds around their closest edge. Data points
 outside of bounds are removed with a warning}
 
-\item{draw_quantiles}{If \code{not(NULL)} (default), draw horizontal lines
-at the given quantiles of the density estimate.}
+\item{quantile.colour, quantile.color, quantile.linewidth, quantile.linetype}{Default aesthetics for the quantile lines. Set to \code{NULL} to inherit from
+the data's aesthetics. By default, quantile lines are hidden and can be
+turned on by changing \code{quantile.linetype}.}
 
 \item{scale}{if "area" (default), all violins have the same area
 (before trimming the tails). If "count", areas are scaled proportionally
@@ -148,6 +149,9 @@ but unobserved levels are omitted.}
 rather than combining with them. This is most useful for helper functions
 that define both data and aesthetics and shouldn't inherit behaviour from
 the default plot specification, e.g. \code{\link[ggplot2:annotation_borders]{annotation_borders()}}.}
+
+\item{draw_quantiles}{\ifelse{html}{\href{https://lifecycle.r-lib.org/articles/stages.html#deprecated}{\figure{lifecycle-deprecated.svg}{options: alt='[Deprecated]'}}}{\strong{[Deprecated]}} Previous
+specification of drawing quantiles.}
 }
 \value{
 XLayer or YLayer object to be added to a ggplot object
@@ -157,37 +161,37 @@ The \link{xside} and \link{yside} variants of \link[ggplot2]{geom_violin}
 }
 \examples{
 df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
-df$Combo_Index <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
+df$Combo_Index <- as.integer(df$UpperCase) * as.integer(df$LowerCase)
 
 p1 <- ggplot(df, aes(UpperCase, LowerCase)) +
-geom_tile(aes(fill = Combo_Index))
+  geom_tile(aes(fill = Combo_Index))
 
-#sideviolins
-#Note - Mixing discrete and continuous axis scales
-#using xsideviolins when the y aesthetic was previously
-#mapped with a continuous varialbe will prevent
-#any labels from being plotted. This is a feature that
-#will hopefully be added to ggside in the future.
+# sideviolins
+# Note - Mixing discrete and continuous axis scales
+# using xsideviolins when the y aesthetic was previously
+# mapped with a continuous varialbe will prevent
+# any labels from being plotted. This is a feature that
+# will hopefully be added to ggside in the future.
 
 p1 + geom_xsideviolin(aes(y = Combo_Index)) +
-   geom_ysideviolin(aes(x = Combo_Index))
+  geom_ysideviolin(aes(x = Combo_Index))
 
-#sideviolins with swapped orientation
-#Note - Discrete before Continuous
-#If you are to mix Discrete and Continuous variables on
-#one axis, ggplot2 prefers the discrete variable to be mapped
-#BEFORE the continuous.
+# sideviolins with swapped orientation
+# Note - Discrete before Continuous
+# If you are to mix Discrete and Continuous variables on
+# one axis, ggplot2 prefers the discrete variable to be mapped
+# BEFORE the continuous.
 ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
-    geom_xsideviolin(aes(y = Species), orientation = "y") +
-    geom_point()
+  geom_xsideviolin(aes(y = Species), orientation = "y") +
+  geom_point()
 
-#Alternatively, you can recast the value as a factor and then
+# Alternatively, you can recast the value as a factor and then
 # a numeric
 
-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species))+
-    geom_point() +
-    geom_xsideviolin(aes(y = as.numeric(Species)), orientation = "y") +
-    geom_ysideviolin(aes(x = as.numeric(Species)), orientation = "x")
+ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species)) +
+  geom_point() +
+  geom_xsideviolin(aes(y = as.numeric(Species)), orientation = "y") +
+  geom_ysideviolin(aes(x = as.numeric(Species)), orientation = "x")
 
 }
 \seealso{

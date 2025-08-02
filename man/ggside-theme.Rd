@@ -181,15 +181,15 @@ library(ggplot2)
 library(ggside)
 
 p <- ggplot(iris, aes(Sepal.Width, Petal.Length, color = Species)) +
- geom_point() +
- geom_xsidedensity() +
- geom_ysidedensity() +
- theme_dark()
+  geom_point() +
+  geom_xsidedensity() +
+  geom_ysidedensity() +
+  theme_dark()
 
 p
 
 p + theme_ggside_classic()
 p + theme_ggside_void()
 p + theme_ggside_linedraw() +
-theme(ggside.panel.border = element_rect(colour = "red"))
+  theme(ggside.panel.border = element_rect(colour = "red"))
 }

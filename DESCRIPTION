@@ -49,7 +49,6 @@ Suggests:
     waldo
 Config/testthat/edition: 3
 Collate:
-    'z-depricated.R'
     'utils-ggproto.R'
     'utils-calls.R'
     'utils-ggplot2-reimpl-.R'

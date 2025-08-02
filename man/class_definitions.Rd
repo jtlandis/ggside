@@ -13,14 +13,15 @@ This documentation provides an overview of the S7 and ggproto classes used in th
 
 \itemize{
 \item \code{class_ggside_opt} is a subclass of \code{class_ggproto} and is
-more described in the \link{ggside-options} documentation.
+more described in the \link[ggside:ggside]{ggside-options} documentation.
 }
 }
 
 \section{S7 classes}{
 
 \itemize{
-\item \code{class_ggside} is a subclass of \code{ggplot2::class_ggplot} and
+\item \code{class_ggside} is a subclass of
+\link[ggplot2:class_ggplot]{\code{ggplot2::class_ggplot}} and
 is used to represent a ggplot object with ggside options.
 }
 }

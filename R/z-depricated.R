@@ -16,6 +16,9 @@ deprecated_fun <- function(fun) {
 #' as_ggsideFacet <- [ggside_facet]
 #' as_ggsideCoord <- [ggside_coord]
 #' is.ggside <- [is_ggside]
+#' is.ggside_layer <- [is_ggside_layer]
+#' is.ggside_options <- [is_ggside_options]
+#' is.ggside_scale <- [is_ggside_scale]
 #' @aliases as_ggsideFacet
 #'
 
@@ -34,3 +37,19 @@ as_ggsideCoord <- deprecated_fun(ggside_coord)
 #' @usage NULL
 #' @export
 is.ggside <- deprecated_fun(is_ggside)
+
+#' @rdname ggside-deprecated
+#' @usage NULL
+#' @export
+is.ggside_layer <- deprecated_fun(is_ggside_layer)
+
+
+#' @rdname ggside-deprecated
+#' @usage NULL
+#' @export
+is.ggside_options <- deprecated_fun(is_ggside_options)
+
+#' @rdname ggside-deprecated
+#' @usage NULL
+#' @export
+is.ggside_scale <- deprecated_fun(is_ggside_scale)
