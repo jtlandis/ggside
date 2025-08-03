@@ -155,9 +155,11 @@ You can create your own transformation with \code{\link[scales:new_transform]{sc
 ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
 }
 \description{
-The \link{xside} and \link{yside} variants of \link[ggplot2]{scale_x_continuous}/\link[ggplot2]{scale_y_continuous}.
-\link{scale_xsidey_continuous} enables better control on how the y-axis is rendered on the xside panel and
-\link{scale_ysidex_continuous} enables better control on how the x-axis is rendered on the yside panel.
+The \link{xside} and \link{yside} variants of \link[ggplot2]{scale_x_continuous}/
+\link[ggplot2]{scale_y_continuous}. \link{scale_xsidey_continuous} enables
+better control on how the y-axis is rendered on the xside panel and
+\link{scale_ysidex_continuous} enables better control on how the x-axis is
+rendered on the yside panel.
 }
 \examples{
 
@@ -168,19 +170,19 @@ ggplot(mpg, aes(hwy, class, colour = class)) +
   geom_boxplot() +
   geom_xsidedensity(position = "stack") +
   theme(ggside.panel.scale = .3) +
-  scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA,1))
+  scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA, 1))
 
-#If you need to specify the main scale, but need to prevent this from
-#affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+# If you need to specify the main scale, but need to prevent this from
+# affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
 ggplot(mtcars, aes(wt, mpg)) +
   geom_point() +
   geom_xsidehistogram() +
-  geom_ysidehistogram()  +
+  geom_ysidehistogram() +
   scale_x_continuous(
-      breaks = seq(1, 6, 1),
-      #would otherwise remove the histogram
-      #as they have a lower value of 0.
-      limits = (c(1, 6))
-      ) +
-  scale_ysidex_continuous() #ensures the x-axis of the y-side panel has its own scale.
+    breaks = seq(1, 6, 1),
+    # would otherwise remove the histogram
+    # as they have a lower value of 0.
+    limits = (c(1, 6))
+  ) +
+  scale_ysidex_continuous() # ensures the x-axis of the y-side panel has its own scale.
 }

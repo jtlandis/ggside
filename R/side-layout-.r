@@ -1,4 +1,5 @@
 ### INCLUDE BEGIN
+#' @include ggplot_add.R
 #' @include utils-ggplot2-reimpl-.R
 #' @include utils-calls.R
 NULL
@@ -70,6 +71,10 @@ new_ggside_layout <- function(layout) {
       mod_fun_at(quote(self$find_ggside_scales(data)), at = -1),
     find_ggside_scales = function(self, data) {
       params <- self$facet_params
+      # ggside_opt <- clone_ggside(params$ggside)
+      # self$facet$params[["ggside"]] <- ggside_opt
+      # params$ggside <- ggside_opt
+      # self$facet_params <- params
       layout <- self$layout
       x_scale <- lapply(self$panel_scales_x, mod_scale_map_method)
       y_scale <- lapply(self$panel_scales_y, mod_scale_map_method)

@@ -3,91 +3,37 @@
 NULL
 ### INCLUDE END
 
-# is_active <- function(f) {
-#   class(f) <- "is_active"
-#   f
-# }
-#
-# extract_active <- function(x, name) {
-#   res <- fetch_ggproto(x, name)
-#   if (!is.function(res)) {
-#     return(res)
-#   }
-#   method <- make_proto_method(x, res, name)
-#   if (inherits(res, "is_active")) {
-#     return(method())
-#   }
-#   method
-# }
-#
-# replace_active <- function(x, name, value) {
-#   res <- fetch_ggproto(x, name)
-#   if (inherits(res, "is_active")) {
-#     make_proto_method(x, res, name)(value)
-#   } else {
-#     NextMethod()
-#   }
-# }
-
-# # #' @export
-# #`$.ggside_scale` <- extract_active
-#
-# #' @export
-# `[[.ggside_scale` <- extract_active
-#
-# #' @export
-# `$<-.ggside_scale` <- replace_active
-#
-# #' @export
-# `[[<-.ggside_scale` <- replace_active
-
-
-# fetch_ggproto <- function (x, name) {
-#   res <- NULL
-#   val <- .subset2(x, name)
-#   if (!is.null(val) || exists(name, envir = x, inherits = FALSE)) {
-#     res <- val
-#   }
-#   else {
-#     super <- .subset2(x, "super")
-#     if (is.null(super)) {
-#     }
-#     else if (is.function(super)) {
-#       res <- fetch_ggproto(super(), name)
-#     }
-#     else {
-#       cli::cli_abort(c("{class(x)[[1]]} was built with an incompatible version of ggproto.",
-#                        i = "Please reinstall the package that provides this extension."))
-#     }
-#   }
-#   res
-# }
-#
-# make_proto_method <- function (self, f, name) {
-#   args <- formals(f)
-#   has_self <- !is.null(args[["self"]]) || "self" %in% names(args)
-#   assign(name, f, envir = environment())
-#   args <- list(quote(...))
-#   if (has_self) {
-#     args$self <- quote(self)
-#   }
-#   fun <- inject(function(...) !!call2(name, !!!args))
-#   class(fun) <- "ggproto_method"
-#   fun
-# }
-
+#' @title Specifying side scales
+#'
+#' @name ggside-scales
+#' @aliases ggside_scales
+#' @description
+#' The [xside] and [yside] variants of \link[ggplot2:geoms]{geoms} are plotted
+#' along the x-axis and y-axis respectively of their main panel's data mapping.
+#' The positional scale here is shared between the main panel and the side
+#' panel. The related positional scale type of the side panel, i.e. the y axis
+#' of the xside panel (xsidey) or the x axis of the yside panel (ysidex), is
+#' determened automatically by `ggplot2` default scales. However, you can
+#' override this by using the [ggside-scales-continuous]{continuous} or
+#' [ggside-scales-discrete]{discrete} variants within `ggside`. This allows the
+#' user to select the scale type or transform most approprate for their side
+#' panels.
+#'
+NULL
 
 mod_scale_map_method <- function(scale) {
   ggproto(
     NULL,
     scale,
     map = mod_ggproto_fun(scale$map) |>
-      mod_fun_at(quote(if (length(x)==0) return(x)), 1)
+      mod_fun_at(quote(if (length(x) == 0) {
+        return(x)
+      }), 1)
   )
 }
 
 new_side_pos_scale <- function(scale, side) {
-  side <- match.arg(side, choices = c("x","y"))
+  side <- match.arg(side, choices = c("x", "y"))
   # other <- switch(side, x = "y", y =)
   mod_scale_map_method(
     ggproto(
@@ -106,9 +52,11 @@ new_side_pos_scale <- function(scale, side) {
 #' @name ggside-scales-continuous
 #'
 #' @description
-#' The [xside] and [yside] variants of \link[ggplot2]{scale_x_continuous}/\link[ggplot2]{scale_y_continuous}.
-#' [scale_xsidey_continuous] enables better control on how the y-axis is rendered on the xside panel and
-#' [scale_ysidex_continuous] enables better control on how the x-axis is rendered on the yside panel.
+#' The [xside] and [yside] variants of \link[ggplot2]{scale_x_continuous}/
+#' \link[ggplot2]{scale_y_continuous}. [scale_xsidey_continuous] enables
+#' better control on how the y-axis is rendered on the xside panel and
+#' [scale_ysidex_continuous] enables better control on how the x-axis is
+#' rendered on the yside panel.
 #'
 
 #' @param ... Other arguments passed on to scale_(y|x)side(x|y)_continuous()
@@ -123,21 +71,21 @@ new_side_pos_scale <- function(scale, side) {
 #'   geom_boxplot() +
 #'   geom_xsidedensity(position = "stack") +
 #'   theme(ggside.panel.scale = .3) +
-#'   scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA,1))
+#'   scale_xsidey_continuous(minor_breaks = NULL, limits = c(NA, 1))
 #'
-#' #If you need to specify the main scale, but need to prevent this from
-#' #affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+#' # If you need to specify the main scale, but need to prevent this from
+#' # affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
 #' ggplot(mtcars, aes(wt, mpg)) +
 #'   geom_point() +
 #'   geom_xsidehistogram() +
-#'   geom_ysidehistogram()  +
+#'   geom_ysidehistogram() +
 #'   scale_x_continuous(
-#'       breaks = seq(1, 6, 1),
-#'       #would otherwise remove the histogram
-#'       #as they have a lower value of 0.
-#'       limits = (c(1, 6))
-#'       ) +
-#'   scale_ysidex_continuous() #ensures the x-axis of the y-side panel has its own scale.
+#'     breaks = seq(1, 6, 1),
+#'     # would otherwise remove the histogram
+#'     # as they have a lower value of 0.
+#'     limits = (c(1, 6))
+#'   ) +
+#'   scale_ysidex_continuous() # ensures the x-axis of the y-side panel has its own scale.
 NULL
 
 #' @rdname ggside-scales-continuous
@@ -145,16 +93,16 @@ NULL
 scale_xsidey_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, transform = "identity", guide = waiver(),
-                                    position = "left", sec.axis = waiver()){
-
+                                    position = "left", sec.axis = waiver()) {
   new_side_pos_scale(
     side = "x",
-    scale_y_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
-                       n.breaks = n.breaks, labels = labels, limits = limits,
-                       expand = expand, oob = oob, na.value = na.value,
-                       transform = transform, guide = guide, position = position, sec.axis = sec.axis)
+    scale_y_continuous(
+      name = name, breaks = breaks, minor_breaks = minor_breaks,
+      n.breaks = n.breaks, labels = labels, limits = limits,
+      expand = expand, oob = oob, na.value = na.value,
+      transform = transform, guide = guide, position = position, sec.axis = sec.axis
+    )
   )
-
 }
 
 #' @rdname ggside-scales-continuous
@@ -182,15 +130,16 @@ scale_xsidey_sqrt <- function(...) {
 scale_ysidex_continuous <- function(name = waiver(), breaks = waiver(), minor_breaks = waiver(),
                                     n.breaks = NULL, labels = waiver(), limits = NULL, expand = waiver(),
                                     oob = scales::censor, na.value = NA_real_, transform = "identity", guide = waiver(),
-                                    position = "bottom", sec.axis = waiver()){
+                                    position = "bottom", sec.axis = waiver()) {
   new_side_pos_scale(
     side = "y",
-    scale_x_continuous(name = name, breaks = breaks, minor_breaks = minor_breaks,
-                       n.breaks = n.breaks, labels = labels, limits = limits,
-                       expand = expand, oob = oob, na.value = na.value,
-                       transform = transform, guide = guide, position = position, sec.axis = sec.axis)
+    scale_x_continuous(
+      name = name, breaks = breaks, minor_breaks = minor_breaks,
+      n.breaks = n.breaks, labels = labels, limits = limits,
+      expand = expand, oob = oob, na.value = na.value,
+      transform = transform, guide = guide, position = position, sec.axis = sec.axis
+    )
   )
-
 }
 
 
@@ -248,17 +197,18 @@ scale_ysidex_sqrt <- function(...) {
 #' # adding discrete y-scale to the x-side panel, when main panel mapped to continuous data
 #' ggplot(mpg, aes(displ, hwy, colour = class)) +
 #'   geom_point() +
-#'   geom_xsideboxplot(aes(y=class), orientation = "y") +
+#'   geom_xsideboxplot(aes(y = class), orientation = "y") +
 #'   theme(ggside.panel.scale = .3) +
 #'   scale_xsidey_discrete(guide = guide_axis(angle = 45))
 #'
-#' #If you need to specify the main scale, but need to prevent this from
-#' #affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+#' # If you need to specify the main scale, but need to prevent this from
+#' # affecting the side scale. Simply add the appropriate `scale_*side*_*()`
+#' # function.
 #' ggplot(mpg, aes(class, displ)) +
 #'   geom_boxplot() +
 #'   geom_ysideboxplot(aes(x = "all"), orientation = "x") +
-#'   scale_x_discrete(guide = guide_axis(angle = 90)) + #rotate the main panel text
-#'   scale_ysidex_discrete() #leave side panel as default
+#'   scale_x_discrete(guide = guide_axis(angle = 90)) + # rotate the main panel text
+#'   scale_ysidex_discrete() # leave side panel as default
 NULL
 
 #' @rdname ggside-scales-discrete
@@ -266,12 +216,10 @@ NULL
 #' @export
 scale_xsidey_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "left") {
-
   new_side_pos_scale(
     side = "x",
     scale_y_discrete(..., expand = expand, guide = guide, position = position)
   )
-
 }
 
 #' @rdname ggside-scales-discrete
@@ -279,12 +227,10 @@ scale_xsidey_discrete <- function(..., expand = waiver(),
 #' @export
 scale_ysidex_discrete <- function(..., expand = waiver(),
                                   guide = waiver(), position = "bottom") {
-
   new_side_pos_scale(
     side = "y",
     scale_x_discrete(..., expand = expand, guide = guide, position = position)
   )
-
 }
 
 
@@ -300,40 +246,41 @@ scale_ysidex_discrete <- function(..., expand = waiver(),
 #' @examples
 #'
 #' ggplot(iris, aes(Sepal.Width, Sepal.Length)) +
-#'   geom_point() + geom_xsidepoint(aes(y = Petal.Width, xcolour = Petal.Length)) +
+#'   geom_point() +
+#'   geom_xsidepoint(aes(y = Petal.Width, xcolour = Petal.Length)) +
 #'   scale_xsidey_binned(n.breaks = 4) +
-#'   scale_colour_steps(aesthetics ="xcolour", guide = guide_colorbar(available_aes = "xcolour")) +
+#'   scale_colour_steps(aesthetics = "xcolour", guide = guide_colorbar(available_aes = "xcolour")) +
 #'   theme(ggside.panel.scale.x = .3)
 #'
 #' @export
-scale_xsidey_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
-                                 breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
-                                 oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
-                                 transform = "identity", guide = waiver(), position = "left")
-{
-
+scale_xsidey_binned <- function(name = waiver(), n.breaks = 10, nice.breaks = TRUE,
+                                breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
+                                oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
+                                transform = "identity", guide = waiver(), position = "left") {
   new_side_pos_scale(
     side = "x",
-    scale_y_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
-                   breaks = breaks, labels = labels, limits = limits, expand = expand,
-                   oob = oob, na.value = na.value, right = right, show.limits = show.limits,
-                   transform = transform, guide = guide, position = position)
+    scale_y_binned(
+      name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
+      breaks = breaks, labels = labels, limits = limits, expand = expand,
+      oob = oob, na.value = na.value, right = right, show.limits = show.limits,
+      transform = transform, guide = guide, position = position
+    )
   )
 }
 
 #' @rdname ggside-scales-binned
 #' @export
-scale_ysidex_binned <- function (name = waiver(), n.breaks = 10, nice.breaks = TRUE,
-                                 breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
-                                 oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
-                                 transform = "identity", guide = waiver(), position = "bottom")
-{
-
+scale_ysidex_binned <- function(name = waiver(), n.breaks = 10, nice.breaks = TRUE,
+                                breaks = waiver(), labels = waiver(), limits = NULL, expand = waiver(),
+                                oob = squish, na.value = NA_real_, right = TRUE, show.limits = FALSE,
+                                transform = "identity", guide = waiver(), position = "bottom") {
   new_side_pos_scale(
     side = "y",
-    scale_x_binned(name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
-                   breaks = breaks, labels = labels, limits = limits, expand = expand,
-                   oob = oob, na.value = na.value, right = right, show.limits = show.limits,
-                   transform = transform, guide = guide, position = position)
+    scale_x_binned(
+      name = name, n.breaks = n.breaks, nice.breaks = nice.breaks,
+      breaks = breaks, labels = labels, limits = limits, expand = expand,
+      oob = oob, na.value = na.value, right = right, show.limits = show.limits,
+      transform = transform, guide = guide, position = position
+    )
   )
 }
