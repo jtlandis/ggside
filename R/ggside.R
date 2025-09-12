@@ -72,7 +72,7 @@ new_ggside <- function(x.pos = "top", y.pos = "right", scales = "fixed", collaps
                        draw_x_on = c("default", "main", "side"),
                        draw_y_on = c("default", "main", "side"),
                        strip = c("default", "main"),
-                       respect_side_labels = FALSE) {
+                       respect_side_labels = "default") {
   draw_x_on <- match.arg(draw_x_on, c("default", "main", "side"))
   draw_y_on <- match.arg(draw_y_on, c("default", "main", "side"))
   strip <- match.arg(strip, c("default", "main"))
