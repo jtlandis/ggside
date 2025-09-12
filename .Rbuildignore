@@ -12,6 +12,8 @@ generate_ggside_hexsticker.R
 example-gganimate.R
 examples/*
 ^doc$
+^docs$
+^pkgdown$
 examples.r
 Generate_Data.R
 ^\.travis\.yml$
