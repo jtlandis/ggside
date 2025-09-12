@@ -3,9 +3,7 @@ README
 Justin Landis
 07/20/2022
 
-<div style="margin-bottom:200px">
-
-# ggside <img src="inst/figures/ggside.png" align="right" height="279" />
+# ggside <a href="https://jtlandis.github.io/ggside/"><img src="inst/figures/ggside.png" align="right" style="float:right" height="279" alt="plyxp website" /></a>
 
 <!-- badges: start -->
 
