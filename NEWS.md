@@ -1,4 +1,4 @@
-# ggside 0.3.2.9999
+# ggside 0.4.0
 
 ## Details/Breaking Changes
 
@@ -7,10 +7,10 @@ Below is a running log of changes that are required due to `ggplot2`'s welcome c
 
 
 * Double dispatch on ``S7::method(`+`, list(<ggside>, class_any))`` is now available through `ggplot2`, meaning **we no longer need to overload `+.gg` for our own purposes.**
-* `ggplot2` still maintains some backward compatibility for R verions < 4.3, in that it will use their internal `add_gg()` function. This was always an internal function and I had to reimplement (and overload) as a hack to get `ggside` to behave correctly. Despite this, `ggside` will remove its own `add_gg()` function and solely rely on the S7 method dispatch for `+`. As a result, **`ggside > v0.3.1` will require R version >= 4.3.0** because we will no longer overload `+.gg` to maintain compatibility with older versions of R.
-  * This decision is so that `ggside`'s code complexity can be reduced and lower the burden of maintaining the package.
-* Additionally `ggside` (> v0.3.1) will now depend on `ggplot2 (> v3.5.2.xxx)`.
-* Deprecating various `is.ggside*()` functions in favor of `is_ggside*()`.
+  * `ggside` no longer exports its own overload of `+.gg`.
+  * `ggside` now uses the recommened generic `ggplot2::update_ggplot()` to control how `ggside` objects are added to this object.
+  * previously, `ggside` would rely on `NextMethod()` to flexibly dispatch on other `ggplot2` subclasses. With `S7` this is no longer easily done. For example, `update_ggplot(object = <class_any>, plot = <class_ggside>)` explicitly forces the `plot` argument to be dispatched as a `class_ggplot` object. This prevents possible multiple inheritance interactions with `ggside` and other extensions of `ggplot2`.
+* `ggside` (>= v0.4.0) will now depend on `ggplot2 (>= v4.0.0)`.
 
 # ggside 0.3.2
 

@@ -3,7 +3,6 @@
 #' @include ggside.R
 #' @include side-facet_.R
 #' @include side-layout-.r
-#' @include all_classes.r
 NULL
 ### INCLUDE END
 

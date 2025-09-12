@@ -1,7 +1,7 @@
 Package: ggside
 Type: Package
 Title: Side Grammar Graphics
-Version: 0.3.2
+Version: 0.4.0
 Authors@R:
     person(given = "Justin",
            family = "Landis",
@@ -20,11 +20,11 @@ URL: https://github.com/jtlandis/ggside
 BugReports: https://github.com/jtlandis/ggside/issues
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Depends:
     R (>= 4.1),
-    ggplot2 (>= 3.5.2)
+    ggplot2 (>= 4.0.0)
 Imports:
     grid,
     gtable,
@@ -62,6 +62,8 @@ Collate:
     'utils-side-coord.R'
     'side-coord-cartesian.R'
     'add_gg.R'
+    'ggplot_add.R'
+    'side-layout-.r'
     'all_classes.r'
     'geom-sideabline.r'
     'geom-sidebar.r'
@@ -81,12 +83,10 @@ Collate:
     'geom-sidetile.r'
     'geom-sideviolin.r'
     'geom-sidevline.r'
-    'side-layout-.r'
-    'plot-construction.R'
-    'ggplot_add.R'
     'ggside-ggproto.r'
     'ggside-package.r'
     'ggside-themes.R'
+    'plot-construction.R'
     'position_rescale.r'
     'scales-sides-.R'
     'scales-xycolour.R'
@@ -96,5 +96,6 @@ Collate:
     'side-facet-grid.R'
     'side-facet-null.R'
     'stats.r'
+    'update_ggplot.R'
     'z-depricated.R'
     'zzz.R'

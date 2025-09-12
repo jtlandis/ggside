@@ -1,7 +1,7 @@
-This is a minor patch to `ggside` in that we depend on ggplot2 3.5.2 and greater as they introduced a deprecation warning with `ggplot2::is.ggproto()`.
-Additionally, I added some missing documentation links specified by [cran checks](https://cran.r-project.org/web/checks/check_results_ggside.html).
-Finally, `ggside` now explicitly depends on R 4.1.0 or greater, since ggplot2 3.5.2 requires R 4.1.0 or greater.
-Note: This package may recieve a new update when ggplot2 releases its next major version soon.
+This is a patch to `ggside` in that we depend on ggplot2 4.0.0 and greater.
+The ggplot2 4.0.0 release was anticipated to have breaking changes. This patch
+fixes `ggside` to be compatible with the latest release. We now adopt the
+S7 framework and now use proper double dispatch for adding custom layers.
 
 ## Test environments
 

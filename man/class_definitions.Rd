@@ -4,6 +4,8 @@
 \name{class_definitions}
 \alias{class_definitions}
 \alias{class_ggside_opt}
+\alias{class_ggside_layer}
+\alias{class_ggside_scale}
 \alias{class_ggside}
 \title{Class Definitions}
 \description{
@@ -15,13 +17,27 @@ This documentation provides an overview of the S7 and ggproto classes used in th
 \item \code{class_ggside_opt} is a subclass of \code{class_ggproto} and is
 more described in the \link[ggside:ggside]{ggside-options} documentation.
 }
+
+
+\itemize{
+\item \code{class_ggside_layer} is a subclass of \code{class_ggproto} and is
+more described in the \link[ggside:ggside_layer]{ggside-layers}
+documentation.
+}
+
+
+\itemize{
+\item \code{class_ggside_scale} is a subclass of \code{class_ggproto} and is
+more described in the \link[ggside:ggside_scales]{ggside-scales}
+documentation.
+}
 }
 
 \section{S7 classes}{
 
 \itemize{
 \item \code{class_ggside} is a subclass of
-\link[ggplot2:class_ggplot]{\code{ggplot2::class_ggplot}} and
+\link[ggplot2:class_ggplot]{ggplot2's class_ggplot} and
 is used to represent a ggplot object with ggside options.
 }
 }
