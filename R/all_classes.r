@@ -7,10 +7,8 @@ NULL
 ### INCLUDE END
 
 #' @title Class Definitions
-#' @name class_definitions
 #' @description
 #' This documentation provides an overview of the S7 and ggproto classes used in the `ggside` package.
-#' @rdname class_definitions
 #' @section ggproto classes:
 #' * `class_ggside_opt` is a subclass of `class_ggproto` and is
 #' more described in the \link[ggside:ggside]{ggside-options} documentation.
@@ -19,7 +17,7 @@ NULL
 #' @usage NULL
 class_ggside_opt <- S7::new_S3_class("ggside_options")
 
-#' @rdname class_definitions
+#' @title Class Definitions
 #' @section ggproto classes:
 #' * `class_ggside_layer` is a subclass of `class_ggproto` and is
 #' more described in the \link[ggside:ggside_layer]{ggside-layers}
@@ -29,7 +27,7 @@ class_ggside_opt <- S7::new_S3_class("ggside_options")
 #' @usage NULL
 class_ggside_layer <- S7::new_S3_class("ggside_layer")
 
-#' @rdname class_definitions
+#' @title Class Definitions
 #' @section ggproto classes:
 #' * `class_ggside_scale` is a subclass of `class_ggproto` and is
 #' more described in the \link[ggside:ggside_scales]{ggside-scales}
@@ -40,7 +38,7 @@ class_ggside_layer <- S7::new_S3_class("ggside_layer")
 class_ggside_scale <- S7::new_S3_class("ggside_scale")
 
 
-#' @rdname class_definitions
+#' @title Class Definitions
 #' @section S7 classes:
 #' * `class_ggside` is a subclass of
 #' \link[ggplot2:class_ggplot]{`ggplot2::class_ggplot`} and
