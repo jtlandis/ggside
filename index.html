@@ -33,7 +33,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="index.html">ggside</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -84,7 +84,7 @@
 <div class="section level1">
 <div class="page-header"><h1 id="readme">README<a class="anchor" aria-label="anchor" href="#readme"></a>
 </h1></div>
-<p>Justin Landis 07/20/2022</p>
+<p>Justin Landis 2025-09-12</p>
 </div>
 <div class="section level1">
 <h1 id="ggside-">ggside <a href="https://jtlandis.github.io/ggside/" class="external-link"><img src="inst/figures/ggside.png" align="right" style="float:right" height="279" alt="plyxp website"></a>
@@ -92,7 +92,6 @@
 </h1>
 <!-- badges: start -->
 
-</div>
 <div class="section level2">
 <h2 id="overview">Overview<a class="anchor" aria-label="anchor" href="#overview"></a>
 </h2>
@@ -115,28 +114,24 @@
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/jtlandis/ggside" class="external-link">ggside</a></span><span class="op">)</span></span>
-<span><span class="co">#&gt; Registered S3 method overwritten by 'ggside':</span></span>
-<span><span class="co">#&gt;   method from   </span></span>
-<span><span class="co">#&gt;   +.gg   ggplot2</span></span></code></pre></div>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span></span>
-<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<span></span>
+<span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsidedensity.html">geom_xsidedensity</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">after_stat</a></span><span class="op">(</span><span class="va">density</span><span class="op">)</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsidedensity.html">geom_ysidedensity</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">after_stat</a></span><span class="op">(</span><span class="va">density</span><span class="op">)</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_text</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-example-1.png"><!-- --></p>
+<p><img src="reference/figures/README-example-1.png"></p>
 <p>After version <code>0.3.0</code> you no longer <strong>need</strong> to use <code>scale_(y|x)side(x|y)_*()</code> to mix discrete and continuous axes. <code>ggside</code> geom’s have their default positional aesthetics <code>x</code> and <code>y</code> aesthetics to be prepended with <code>ysidex</code> and <code>xsidey</code> respectively under the hood. Now you may mix discrete and continuous axes with ease.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">mpg</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">displ</span>, <span class="va">hwy</span>, colour <span class="op">=</span> <span class="va">class</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span>size <span class="op">=</span> <span class="fl">2</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsideboxplot.html">geom_xsideboxplot</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span><span class="va">class</span><span class="op">)</span>, orientation <span class="op">=</span> <span class="st">"y"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsidedensity.html">geom_ysidedensity</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>x <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes_eval.html" class="external-link">after_stat</a></span><span class="op">(</span><span class="va">density</span><span class="op">)</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/ggside-scales-continuous.html">scale_ysidex_continuous</a></span><span class="op">(</span>guide <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guide_axis.html" class="external-link">guide_axis</a></span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span><span class="op">)</span>, minor_breaks <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/theme.html" class="external-link">theme</a></span><span class="op">(</span>ggside.panel.scale <span class="op">=</span> <span class="fl">.3</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-example-mix-scales-1.png"><!-- --></p>
+<p><img src="reference/figures/README-example-mix-scales-1.png"></p>
 <p>With version 0.2.0, more theme elements allow for better control over how side panels are rendered.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Sepal.Width</span>, <span class="va">Sepal.Length</span>, fill <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_point.html" class="external-link">geom_point</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>color <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsidedensity.html">geom_xsidedensity</a></span><span class="op">(</span>alpha <span class="op">=</span> <span class="fl">.3</span>, position <span class="op">=</span> <span class="st">"stack"</span><span class="op">)</span> <span class="op">+</span></span>
@@ -148,7 +143,7 @@
 <span>        ggside.panel.grid <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_line</a></span><span class="op">(</span><span class="st">"black"</span>, linewidth <span class="op">=</span> <span class="fl">.1</span>, linetype <span class="op">=</span> <span class="st">"dotted"</span><span class="op">)</span>,</span>
 <span>        ggside.panel.background <span class="op">=</span> <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/element.html" class="external-link">element_blank</a></span><span class="op">(</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/guides.html" class="external-link">guides</a></span><span class="op">(</span>color <span class="op">=</span> <span class="st">"none"</span>, fill <span class="op">=</span> <span class="st">"none"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-example-side-themes-1.png"><!-- --></p>
+<p><img src="reference/figures/README-example-side-themes-1.png"></p>
 <p>For a more detailed guide please see <code><a href="articles/ggside_basic_usage.html">vignette('ggside_basic_usage')</a></code> for more information.</p>
 </div>
 <div class="section level2">
@@ -159,7 +154,8 @@
 <div class="section level2">
 <h2 id="known-issues">Known Issues<a class="anchor" aria-label="anchor" href="#known-issues"></a>
 </h2>
-<p>The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of <code>ggside</code> is v0.3.1.</p>
+<p>The following section will summarize issues that are present on the current CRAN release. These will either be fixed on the main branch of this git repository, or currently in development to be fixed on one of the development branches. The current CRAN version of <code>ggside</code> is v0.4.0.</p>
+</div>
 </div>
 
   </div>
@@ -200,9 +196,9 @@
 <div class="dev-status">
 <h2 data-toc-skip>Dev status</h2>
 <ul class="list-unstyled">
-<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://www.r-pkg.org/badges/version-ago/ggside" alt="CRAN_Status_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/ggside" alt="CRAN_Download_Badge"></a></li>
-<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/ggside" alt="CRAN_Download_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://www.r-pkg.org/badges/version-ago/ggside.png" alt="CRAN_Status_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/ggside.png" alt="CRAN_Download_Badge"></a></li>
+<li><a href="https://cran.r-project.org/package=ggside" class="external-link"><img src="http://cranlogs.r-pkg.org/badges/grand-total/ggside.png" alt="CRAN_Download_Badge"></a></li>
 <li><a href="https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml" class="external-link"><img src="https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml/badge.svg" alt="R-CMD-check"></a></li>
 <li><a href="https://app.codecov.io/gh/jtlandis/ggside?branch=main" class="external-link"><img src="https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg" alt="Codecov test coverage"></a></li>
 </ul>

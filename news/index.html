@@ -17,7 +17,7 @@
       </button>
       <span class="navbar-brand">
         <a class="navbar-link" href="../index.html">ggside</a>
-        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.3.2</span>
+        <span class="version label label-default" data-toggle="tooltip" data-placement="bottom" title="">0.4.0</span>
       </span>
     </div>
 
@@ -61,18 +61,19 @@
     </div>
 
     <div class="section level2">
-<h2 class="page-header" data-toc-text="0.3.2.9999" id="ggside-0329999">ggside 0.3.2.9999<a class="anchor" aria-label="anchor" href="#ggside-0329999"></a></h2>
+<h2 class="page-header" data-toc-text="0.4.0" id="ggside-040">ggside 0.4.0<a class="anchor" aria-label="anchor" href="#ggside-040"></a></h2>
 <div class="section level3">
-<h3 id="detailsbreaking-changes-0-3-2-9999">Details/Breaking Changes<a class="anchor" aria-label="anchor" href="#detailsbreaking-changes-0-3-2-9999"></a></h3>
+<h3 id="detailsbreaking-changes-0-4-0">Details/Breaking Changes<a class="anchor" aria-label="anchor" href="#detailsbreaking-changes-0-4-0"></a></h3>
 <p>As <code>ggplot2</code> prepares for its next major release, <code>ggside</code> will try to move in kind. Below is a running log of changes that are required due to <code>ggplot2</code>’s welcome changes to S7.</p>
 <ul><li>Double dispatch on <code>S7::method(`+`, list(&lt;ggside&gt;, class_any))</code> is now available through <code>ggplot2</code>, meaning <strong>we no longer need to overload <code>+.gg</code> for our own purposes.</strong>
-</li>
+<ul><li>
+<code>ggside</code> no longer exports its own overload of <code>+.gg</code>.</li>
 <li>
-<code>ggplot2</code> still maintains some backward compatibility for R verions &lt; 4.3, in that it will use their internal <code><a href="https://ggplot2.tidyverse.org/reference/gg-add.html" class="external-link">add_gg()</a></code> function. This was always an internal function and I had to reimplement (and overload) as a hack to get <code>ggside</code> to behave correctly. Despite this, <code>ggside</code> will remove its own <code><a href="https://ggplot2.tidyverse.org/reference/gg-add.html" class="external-link">add_gg()</a></code> function and solely rely on the S7 method dispatch for <code>+</code>. As a result, <strong><code>ggside &gt; v0.3.1</code> will require R version &gt;= 4.3.0</strong> because we will no longer overload <code>+.gg</code> to maintain compatibility with older versions of R.
-<ul><li>This decision is so that <code>ggside</code>’s code complexity can be reduced and lower the burden of maintaining the package.</li>
+<code>ggside</code> now uses the recommened generic <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot2::update_ggplot()</a></code> to control how <code>ggside</code> objects are added to this object.</li>
+<li>previously, <code>ggside</code> would rely on <code><a href="https://rdrr.io/r/base/UseMethod.html" class="external-link">NextMethod()</a></code> to flexibly dispatch on other <code>ggplot2</code> subclasses. With <code>S7</code> this is no longer easily done. For example, <code>update_ggplot(object = &lt;class_any&gt;, plot = &lt;class_ggside&gt;)</code> explicitly forces the <code>plot</code> argument to be dispatched as a <code>class_ggplot</code> object. This prevents possible multiple inheritance interactions with <code>ggside</code> and other extensions of <code>ggplot2</code>.</li>
 </ul></li>
-<li>Additionally <code>ggside</code> (&gt; v0.3.1) will now depend on <code>ggplot2 (&gt; v3.5.2.xxx)</code>.</li>
-<li>Deprecating various <code>is.ggside*()</code> functions in favor of <code>is_ggside*()</code>.</li>
+<li>
+<code>ggside</code> (&gt;= v0.4.0) will now depend on <code>ggplot2 (&gt;= v4.0.0)</code>.</li>
 </ul></div>
 </div>
     <div class="section level2">
