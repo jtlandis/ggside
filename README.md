@@ -14,6 +14,11 @@ Justin Landis
 coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
 
+  
+  
+  
+  
+
 ## Overview
 
 The R package ggside expands on the ggplot2 package. This package allows
