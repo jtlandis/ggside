@@ -1,0 +1,10 @@
+url: https://jtlandis.github.io/ggside
+
+title: ggside
+
+template:
+  bootstrap: 5
+
+authors:
+  Justin Landis:
+    href: https://github.com/jtlandis
