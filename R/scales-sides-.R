@@ -8,16 +8,16 @@ NULL
 #' @name ggside-scales
 #' @aliases ggside_scales
 #' @description
-#' The [xside] and [yside] variants of \link[ggplot2:geoms]{geoms} are plotted
+#' The [xside] and [yside] variants of \link[ggplot2:Geom]{geoms} are plotted
 #' along the x-axis and y-axis respectively of their main panel's data mapping.
 #' The positional scale here is shared between the main panel and the side
 #' panel. The related positional scale type of the side panel, i.e. the y axis
 #' of the xside panel (xsidey) or the x axis of the yside panel (ysidex), is
 #' determened automatically by `ggplot2` default scales. However, you can
-#' override this by using the [ggside-scales-continuous]{continuous} or
-#' [ggside-scales-discrete]{discrete} variants within `ggside`. This allows the
-#' user to select the scale type or transform most approprate for their side
-#' panels.
+#' override this by using the \link[=ggside-scales-continuous]{continuous} or
+#' \link[=ggside-scales-discrete]{discrete} variants within `ggside`. This
+#' allows the user to select the scale type or transform most approprate for
+#' their side panels.
 #'
 NULL
 
