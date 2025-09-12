@@ -7,8 +7,8 @@
 NULL
 ### INCLUDE END
 
-#'@rdname ggside-ggproto-facets
-#'@description
+#' @rdname ggside-ggproto-facets
+#' @description
 #' S3 class that converts old Facet into one that
 #' is compatible with ggside. Can also update
 #' ggside on the object. Typically, the new ggproto
@@ -17,8 +17,9 @@ NULL
 #' @param ggside ggside object to update
 #' @export
 ggside_facet <-
-  function(facet, ggside)
+  function(facet, ggside) {
     UseMethod("ggside_facet", facet)
+  }
 
 #' @exportS3Method ggside::ggside_facet
 ggside_facet.default <- function(facet, ggside = ggside()) {
@@ -26,14 +27,28 @@ ggside_facet.default <- function(facet, ggside = ggside()) {
     "No %s() method for object of class <%s>",
     "ggside_facet",
     class(facet)[1]
-  ),)
+  ), )
+}
+
+find_super_facet <- function(facet, class = "ggsideFacet") {
+  while (class(facet)[1] != class) {
+    facet <- facet$super()
+  }
+
+  while (class(facet)[1] == class) {
+    candidate <- facet
+    facet <- facet$super()
+  }
+  candidate
 }
 
 #' @exportS3Method ggside::ggside_facet
 ggside_facet.ggsideFacet <- function(facet, ggside = ggside()) {
-  param <- facet$params
-  param$ggside <- ggside
-  check_facet(ggproto(NULL, facet, params = param))
+  facet_dispatch <- find_super_facet(facet, "ggsideFacet")$super()
+  ggside_facet(
+    facet_dispatch,
+    ggside = ggside
+  )
 }
 
 #' @exportS3Method ggside::ggside_facet
@@ -47,7 +62,6 @@ ggside_facet.FacetNull <- function(facet, ggside = ggside()) {
       map_data = sideFacetNull_map_data
     )
   )
-
 }
 
 #' @exportS3Method ggside::ggside_facet
@@ -61,7 +75,6 @@ ggside_facet.FacetGrid <- function(facet, ggside = ggside()) {
       map_data = sideFacetGrid_map_data
     )
   )
-
 }
 
 #' @exportS3Method ggside::ggside_facet
@@ -95,14 +108,13 @@ new_ggside_facet <- function(facet, ggside) {
         y_scales, `[[`, "aesthetics"
       )))
     ),
-    finish_data = new_ggproto_fun(facet$finish_data,
-                                  {
-                                    if ("PANEL_TYPE" %in% names(data) &&
-                                        all(data$PANEL_TYPE != "main")) {
-                                      data <- use_side_aes(data, unique(data$PANEL_TYPE))
-                                    }
-                                    call_parent_method
-                                  })
+    finish_data = new_ggproto_fun(facet$finish_data, {
+      if ("PANEL_TYPE" %in% names(data) &&
+        all(data$PANEL_TYPE != "main")) {
+        data <- use_side_aes(data, unique(data$PANEL_TYPE))
+      }
+      call_parent_method
+    })
   )
 }
 
@@ -119,54 +131,55 @@ ggside_compute_layout <- function(facet) {
 
 check_facet <- function(facet) {
   fp <- facet$params
-  #this proto should be the same as the one on the plot
+  # this proto should be the same as the one on the plot
   ggside <- facet$ggside
   col <- ggside$collapse
   if (!is.null(fp$free) &&
-      !is.null(col) &&
-      inherits(facet, "FacetWrap") &&
-      any(.lgl <- vapply(fp$free, identity, logical(1)))) {
+    !is.null(col) &&
+    inherits(facet, "FacetWrap") &&
+    any(.lgl <- vapply(fp$free, identity, logical(1)))) {
     # if ggside collapse all - but scales is free - prioritize the scale and dont
     # collapse
     # i.e. facet_wrap(..., scales='free_y') + ggside(collapse="y") --> warning
     # main plots may have different y scales and thus we cannot collapse y.
     s <- sum(c(1, 2) * .lgl)
     new_col <- switch(s,
-                      free_x = {
-                        .f <- "free_x"
-                        switch(col,
-                               all = "y",
-                               x = NULL,
-                               col)
-                      },
-                      free_y = {
-                        .f <- "free_y"
-                        switch(col,
-                               all = "x",
-                               y = NULL,
-                               col)
-                      },
-                      free = {
-                        .f <- "free"
-                        NULL
-                      })
+      free_x = {
+        .f <- "free_x"
+        switch(col,
+          all = "y",
+          x = NULL,
+          col
+        )
+      },
+      free_y = {
+        .f <- "free_y"
+        switch(col,
+          all = "x",
+          y = NULL,
+          col
+        )
+      },
+      free = {
+        .f <- "free"
+        NULL
+      }
+    )
 
     warning(
       glue(
         "Plot's Facet parameter `scales = \"{.f}\"` is ",
         "incompatible with `ggside(..., collapse = \"{col}\")`.",
         " Setting collapse to ",
-        if (is.null(new_col))
-          'NULL'
-        else
+        if (is.null(new_col)) {
+          "NULL"
+        } else {
           glue('"{new_col}"')
+        }
       ),
       call. = F
     )
     ggside$collapse <- new_col
-
   }
   invisible(facet)
 }
-
-

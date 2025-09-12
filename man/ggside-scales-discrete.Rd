@@ -94,15 +94,16 @@ library(ggplot2)
 # adding discrete y-scale to the x-side panel, when main panel mapped to continuous data
 ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point() +
-  geom_xsideboxplot(aes(y=class), orientation = "y") +
+  geom_xsideboxplot(aes(y = class), orientation = "y") +
   theme(ggside.panel.scale = .3) +
   scale_xsidey_discrete(guide = guide_axis(angle = 45))
 
-#If you need to specify the main scale, but need to prevent this from
-#affecting the side scale. Simply add the appropriate `scale_*side*_*()` function.
+# If you need to specify the main scale, but need to prevent this from
+# affecting the side scale. Simply add the appropriate `scale_*side*_*()`
+# function.
 ggplot(mpg, aes(class, displ)) +
   geom_boxplot() +
   geom_ysideboxplot(aes(x = "all"), orientation = "x") +
-  scale_x_discrete(guide = guide_axis(angle = 90)) + #rotate the main panel text
-  scale_ysidex_discrete() #leave side panel as default
+  scale_x_discrete(guide = guide_axis(angle = 90)) + # rotate the main panel text
+  scale_ysidex_discrete() # leave side panel as default
 }
