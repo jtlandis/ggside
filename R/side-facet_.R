@@ -30,15 +30,25 @@ ggside_facet.default <- function(facet, ggside = ggside()) {
   ), )
 }
 
+find_super_facet <- function(facet, class = "ggsideFacet") {
+  while (class(facet)[1] != class) {
+    facet <- facet$super()
+  }
+
+  while (class(facet)[1] == class) {
+    candidate <- facet
+    facet <- facet$super()
+  }
+  candidate
+}
+
 #' @exportS3Method ggside::ggside_facet
 ggside_facet.ggsideFacet <- function(facet, ggside = ggside()) {
+  facet_dispatch <- find_super_facet(facet, "ggsideFacet")$super()
   ggside_facet(
-    facet$super()$super(),
+    facet_dispatch,
     ggside = ggside
   )
-  # param <- facet$params
-  # param$ggside <- ggside
-  # check_facet(ggproto(NULL, facet, params = param))
 }
 
 #' @exportS3Method ggside::ggside_facet

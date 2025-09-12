@@ -1,5 +1,3 @@
-
-
 zap_dots <- function(call, zap = character(), ...) {
   # force dots to be evaluated...
   dots <- enquos(...) |>
@@ -27,20 +25,21 @@ call_layer_param_aware <-
       ind <- which(dot_names %in% zap)
       new_name <- sub("color", "colour", dot_names[ind], fixed = TRUE)
       lst <- vector("list", length(ind))
-      for (i in seq_along(lst))
+      for (i in seq_along(lst)) {
         lst[[i]] <- ...elt(ind[i])
+      }
       layer$aes_params[new_name] <- lst
     }
     layer
-}
+  }
 
 modify_body <- function(call_body, from, to) {
   for (i in seq_along(call_body)) {
     call <- call_body[[i]]
-    if(!rlang::is_missing(call)) {
-      if(identical(call, from)) {
+    if (!rlang::is_missing(call)) {
+      if (identical(call, from)) {
         call_body[[i]] <- to
-      } else if (length(call)>1) {
+      } else if (length(call) > 1) {
         call_body[[i]] <- modify_body(call, from, to)
       }
     }
@@ -48,9 +47,9 @@ modify_body <- function(call_body, from, to) {
   call_body
 }
 
-list_of_calls <- function(x) {
-  vapply(x, function(y) is.call(y) || is.name(y) || (length(y)==1 && is.character(y)), logical(1))
-}
+# list_of_calls <- function(x) {
+#   vapply(x, function(y) is.call(y) || is.name(y) || (length(y) == 1 && is.character(y)), logical(1))
+# }
 
 mod_ggproto_fun <- function(ggproto_method, ...) {
   call <- match.call(expand.dots = F)
@@ -66,7 +65,8 @@ mod_ggproto_fun <- function(ggproto_method, ...) {
   rlang::new_function(
     args = formals(proto_env$f),
     body = body,
-    env = proto_env)
+    env = proto_env
+  )
 }
 
 mod_fun_at <- function(fun, insert, at) {
@@ -75,8 +75,10 @@ mod_fun_at <- function(fun, insert, at) {
 }
 
 insert_call_at <- function(call, insert, at) {
-  stopifnot("`call` isnt a call"=is.call(call),
-            "`at` isnt integer"=is.numeric(at))
+  stopifnot(
+    "`call` isnt a call" = is.call(call),
+    "`at` isnt integer" = is.numeric(at)
+  )
   len <- length(call)
   at <- as.integer(at)
   if (at < 0) {
@@ -89,21 +91,20 @@ insert_call_at <- function(call, insert, at) {
   }
 
   seq_args <- seq_along(call)[-1]
-  seq_upto <- seq_args[seq_len(at-1)]
+  seq_upto <- seq_args[seq_len(at - 1)]
   seq_after <- setdiff(seq_args, seq_upto)
 
   new_call <- as.call(list(call[[1]]))
   for (i in seq_upto) {
     new_call[[i]] <- call[[i]]
   }
-  new_call[[at+1]] <- insert
+  new_call[[at + 1]] <- insert
 
   for (i in seq_after) {
     new_call[[i + 1]] <- call[[i]]
   }
 
   new_call
-
 }
 
 browse_fun <- function(fun, at = 1) {
