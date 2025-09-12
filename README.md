@@ -14,13 +14,6 @@ Justin Landis
 coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
 <!-- badges: end -->
 
-  
-  
-  
-  
-
-## Overview
-
 The R package ggside expands on the ggplot2 package. This package allows
 the user to add graphical information about one of the main panel’s
 axis. This is particularly useful for metadata for discrete axis, or
