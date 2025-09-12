@@ -10,7 +10,7 @@ Class Definitions
 
 \itemize{
 \item \code{class_ggside} is a subclass of
-\link[ggplot2:class_ggplot]{foo} and
+\link[ggplot2:class_ggplot]{\code{ggplot2::class_ggplot}} and
 is used to represent a ggplot object with ggside options.
 }
 }
