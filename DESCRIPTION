@@ -24,7 +24,7 @@ RoxygenNote: 7.3.3
 VignetteBuilder: knitr
 Depends:
     R (>= 4.1),
-    ggplot2 (>= 3.5.2)
+    ggplot2 (>= 4.0.0)
 Imports:
     grid,
     gtable,

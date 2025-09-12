@@ -2,7 +2,7 @@
 Justin Landis
 2025-09-12
 
-# ggside <img src="inst/figures/ggside.png" align="right" style="transform: translate(0%,-50%)" height="279" />
+# ggside <a href="https://jtlandis.github.io/plyxp"><img src="inst/figures/ggside.png" align="right" style="float:right" height="279" alt="plyxp website" /></a>
 
 <!-- badges: start -->
 
