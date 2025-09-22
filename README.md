@@ -1,14 +1,14 @@
 # README
 Justin Landis
-2025-09-12
+2025-09-21
 
 # ggside <a href="https://jtlandis.github.io/ggside/"><img src="inst/figures/ggside.png" align="right" style="float:right" height="200" alt="plyxp website" /></a>
 
 <!-- badges: start -->
 
-[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/ggside.png)](https://cran.r-project.org/package=ggside)
-[![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/ggside.png)](https://cran.r-project.org/package=ggside)
-[![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside.png)](https://cran.r-project.org/package=ggside)
+[![CRAN_Status_Badge](http://www.r-pkg.org/badges/version-ago/ggside)](https://cran.r-project.org/package=ggside)
+[![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/ggside)](https://cran.r-project.org/package=ggside)
+[![CRAN_Download_Badge](http://cranlogs.r-pkg.org/badges/grand-total/ggside)](https://cran.r-project.org/package=ggside)
 [![R-CMD-check](https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/jtlandis/ggside/actions/workflows/R-CMD-check.yaml)
 [![Codecov test
 coverage](https://codecov.io/gh/jtlandis/ggside/branch/main/graph/badge.svg)](https://app.codecov.io/gh/jtlandis/ggside?branch=main)
