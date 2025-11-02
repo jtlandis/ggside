@@ -393,7 +393,7 @@ sideFacetWrap_map_data <- function(data, layout, params) {
       drop = FALSE
     ], to_add[facet_rep, , drop = FALSE]))
   }
-
+  layout[names(vars)] <- lapply(layout[names(vars)], as.factor)
   keys <- join_keys(facet_vals, layout, by = names(vars))
   data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
   data

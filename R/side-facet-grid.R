@@ -394,6 +394,7 @@ sideFacetGrid_map_data <- function(data, layout, params) {
   } else {
     facet_vals[] <- lapply(facet_vals[], as.factor)
     facet_vals[] <- lapply(facet_vals[], addNA, ifany = TRUE)
+    layout[vars] <- lapply(layout[vars], as.factor)
     keys <- join_keys(facet_vals, layout, by = vars)
     data$PANEL <- layout$PANEL[match(keys$x, keys$y)]
   }
