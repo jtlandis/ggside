@@ -1,0 +1,15 @@
+# scale_ycolour_hue
+
+scale_ycolour_hue
+
+scale_ycolour_manual
+
+scale_ycolour_gradient
+
+scale_ycolour_discrete
+
+scale_ycolour_discrete
+
+scale_ycolour_continuous
+
+scale_ycolour_continuous

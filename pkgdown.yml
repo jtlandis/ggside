@@ -1,10 +1,10 @@
 pandoc: 3.1.11
-pkgdown: 2.1.3
+pkgdown: 2.2.0
 pkgdown_sha: ~
 articles:
   ggside_aes_mapping: ggside_aes_mapping.html
   ggside_basic_usage: ggside_basic_usage.html
-last_built: 2025-11-02T21:46Z
+last_built: 2025-11-21T22:45Z
 urls:
   reference: https://jtlandis.github.io/ggside/reference
   article: https://jtlandis.github.io/ggside/articles
