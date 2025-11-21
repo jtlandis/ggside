@@ -45,8 +45,6 @@ new_side_pos_scale <- function(scale, side) {
 }
 
 
-
-
 #' @title Position scales for continuous data ggside scales
 #'
 #' @name ggside-scales-continuous

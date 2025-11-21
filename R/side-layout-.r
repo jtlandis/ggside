@@ -85,7 +85,7 @@ new_ggside_layout <- function(layout) {
         ysidex <- unlist(ysidex)[[1]]
         # assume that if it being added this way
         # we follow the x_scale's position
-        if (!is.null(ysidex) && !is.null(x_scale)) {
+        if (!is.null(ysidex) && !is_empty(x_scale)) {
           ysidex$position <- x_scale[[1]]$position
         }
         params$ggside$ysidex <- ysidex
@@ -95,20 +95,20 @@ new_ggside_layout <- function(layout) {
         is.null(params$ggside$xsidey)) {
         xsidey <- find_side_scale("xsidey", data)
         xsidey <- unlist(xsidey)[[1]]
-        if (!is.null(xsidey) && !is.null(y_scale)) {
+        if (!is.null(xsidey) && !is_empty(y_scale)) {
           xsidey$position <- y_scale[[1]]$position
         }
         params$ggside$xsidey <- xsidey
       }
 
-      if (!is.null(x_scale) && !is.null(params$ggside$ysidex) &&
+      if (!is_empty(x_scale) && !is.null(params$ggside$ysidex) &&
         !any(vapply(x_scale, function(scale) "ysidex" %in% scale$aesthetics, logical(1)))) {
         side_indx <- layout[layout$PANEL_TYPE == "y", ]$SCALE_X
         x_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$ysidex$clone())
         self$panel_scales_x <- x_scale
       }
 
-      if (!is.null(y_scale) && !is.null(params$ggside$xsidey) &&
+      if (!is_empty(y_scale) && !is.null(params$ggside$xsidey) &&
         !any(vapply(y_scale, function(scale) "xsidey" %in% scale$aesthetics, logical(1)))) {
         side_indx <- layout[layout$PANEL_TYPE == "x", ]$SCALE_Y
         y_scale[side_indx] <- lapply(side_indx, function(i) params$ggside$xsidey$clone())
