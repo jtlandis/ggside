@@ -1,6 +1,6 @@
 # README
 Justin Landis
-2025-09-21
+2025-11-21
 
 # ggside <a href="https://jtlandis.github.io/ggside/"><img src="inst/figures/ggside.png" align="right" style="float:right" height="200" alt="plyxp website" /></a>
 
@@ -107,3 +107,26 @@ current CRAN release. These will either be fixed on the main branch of
 this git repository, or currently in development to be fixed on one of
 the development branches. The current CRAN version of `ggside` is
 v0.4.0.
+
+-   When using layer that requires its some positional scale on the main
+    panel to be computed later, but the same positional scale is present
+    on the parallel side layer that is meant to be discrete, you may see
+    a warning and the data may be missing. Below is an example:
+
+    ``` r
+    ggplot(iris, aes(Sepal.Width)) + 
+      # main panel y scale initializes later
+      geom_density() + 
+      # xsidey scale is discrete but misses initial training
+      geom_xsidepoint(aes(y = Species))
+    ```
+
+    To remedy this, please explicity declare the scale for the main
+    panels:
+
+    ``` r
+    ggplot(iris, aes(Sepal.Width)) + 
+      geom_density() + 
+      geom_xsidepoint(aes(y = Species)) +
+      scale_y_continuous() 
+    ```
