@@ -48,6 +48,8 @@ Suggests:
     viridis,
     waldo
 Config/testthat/edition: 3
+Config/testthat/parallel: true
+Config/testthat/start-first: all_ggside_layers, *themes
 Collate:
     'utils-ggproto.R'
     'utils-calls.R'
