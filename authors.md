@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/jtlandis/ggside/blob/main/DESCRIPTION)
 
 Landis J (2025). *ggside: Side Grammar Graphics*. R package version
-0.4.1, <https://github.com/jtlandis/ggside>.
+0.4.2, <https://github.com/jtlandis/ggside>.
 
     @Manual{,
       title = {ggside: Side Grammar Graphics},
       author = {Justin Landis},
       year = {2025},
-      note = {R package version 0.4.1},
+      note = {R package version 0.4.2},
       url = {https://github.com/jtlandis/ggside},
     }
