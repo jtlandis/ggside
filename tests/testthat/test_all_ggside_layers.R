@@ -16,7 +16,7 @@ p <- ggplot(df, aes(x, y)) +
 
 expect_side_ <- function(plot, context, layers, name) {
   expect_doppelganger(
-    sprintf("%s with layers %s", context, name),
+    sprintf("%s %s", context, name),
     plot + layers
   )
 }
