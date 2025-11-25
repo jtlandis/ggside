@@ -1,7 +1,7 @@
-This is a patch to `ggside` in that we depend on ggplot2 4.0.0 and greater.
-The ggplot2 4.0.0 release was anticipated to have breaking changes. This patch
-fixes `ggside` to be compatible with the latest release. We now adopt the
-S7 framework and now use proper double dispatch for adding custom layers.
+This is a minor patch to `ggside`. A small error has been found in the plotting
+of some side geometries and facet combinations. It has been fixed with this 
+update and additional tests have been added to check for this regression in 
+the future.
 
 ## Test environments
 
