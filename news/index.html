@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggside</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -38,6 +38,10 @@
     </div>
 
     <div class="section level2">
+<h2 class="pkg-version" data-toc-text="0.4.1" id="ggside-041">ggside 0.4.1<a class="anchor" aria-label="anchor" href="#ggside-041"></a></h2>
+<p>Some geometries would not properly map to the correct side panels depending on the facet that was provided. This has been fixed and additional tests were added.</p>
+</div>
+    <div class="section level2">
 <h2 class="pkg-version" data-toc-text="0.4.0" id="ggside-040">ggside 0.4.0<a class="anchor" aria-label="anchor" href="#ggside-040"></a></h2><p class="text-muted">CRAN release: 2025-09-13</p>
 <div class="section level3">
 <h3 id="detailsbreaking-changes-0-4-0">Details/Breaking Changes<a class="anchor" aria-label="anchor" href="#detailsbreaking-changes-0-4-0"></a></h3>
@@ -46,7 +50,7 @@
 <ul><li>
 <code>ggside</code> no longer exports its own overload of <code>+.gg</code>.</li>
 <li>
-<code>ggside</code> now uses the recommened generic <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot2::update_ggplot()</a></code> to control how <code>ggside</code> objects are added to this object.</li>
+<code>ggside</code> now uses the recommended generic <code><a href="https://ggplot2.tidyverse.org/reference/update_ggplot.html" class="external-link">ggplot2::update_ggplot()</a></code> to control how <code>ggside</code> objects are added to this object.</li>
 <li>previously, <code>ggside</code> would rely on <code><a href="https://rdrr.io/r/base/UseMethod.html" class="external-link">NextMethod()</a></code> to flexibly dispatch on other <code>ggplot2</code> subclasses. With <code>S7</code> this is no longer easily done. For example, <code>update_ggplot(object = &lt;class_any&gt;, plot = &lt;class_ggside&gt;)</code> explicitly forces the <code>plot</code> argument to be dispatched as a <code>class_ggplot</code> object. This prevents possible multiple inheritance interactions with <code>ggside</code> and other extensions of <code>ggplot2</code>.</li>
 </ul></li>
 <li>

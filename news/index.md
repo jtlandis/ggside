@@ -1,5 +1,11 @@
 # Changelog
 
+## ggside 0.4.1
+
+Some geometries would not properly map to the correct side panels
+depending on the facet that was provided. This has been fixed and
+additional tests were added.
+
 ## ggside 0.4.0
 
 CRAN release: 2025-09-13
@@ -14,7 +20,7 @@ move in kind. Below is a running log of changes that are required due to
   now available through `ggplot2`, meaning **we no longer need to
   overload `+.gg` for our own purposes.**
   - `ggside` no longer exports its own overload of `+.gg`.
-  - `ggside` now uses the recommened generic
+  - `ggside` now uses the recommended generic
     [`ggplot2::update_ggplot()`](https://ggplot2.tidyverse.org/reference/update_ggplot.html)
     to control how `ggside` objects are added to this object.
   - previously, `ggside` would rely on

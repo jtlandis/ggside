@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">ggside</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -56,7 +56,7 @@
   <main id="main" class="col-md-9"><div class="section level1">
 <div class="page-header"><h1 id="readme">README<a class="anchor" aria-label="anchor" href="#readme"></a>
 </h1></div>
-<p>Justin Landis 2025-11-21</p>
+<p>Justin Landis 2025-11-24</p>
 </div>
 <div class="section level1">
 <h1 id="ggside-">ggside <a href="https://jtlandis.github.io/ggside/"><img src="inst/figures/ggside.png" align="right" style="float:right" height="200" alt="plyxp website"></a>
@@ -132,7 +132,7 @@
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="co"># xsidey scale is discrete but misses initial training</span></span>
 <span>  <span class="fu"><a href="reference/geom_xsidepoint.html">geom_xsidepoint</a></span><span class="op">(</span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span>y <span class="op">=</span> <span class="va">Species</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>To remedy this, please explicity declare the scale for the main panels:</p>
+<p>To remedy this, please explicitly declare the scale for the main panels:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://ggplot2.tidyverse.org/reference/ggplot.html" class="external-link">ggplot</a></span><span class="op">(</span><span class="va">iris</span>, <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/aes.html" class="external-link">aes</a></span><span class="op">(</span><span class="va">Sepal.Width</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> </span>
 <span>  <span class="fu"><a href="https://ggplot2.tidyverse.org/reference/geom_density.html" class="external-link">geom_density</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span> </span>
