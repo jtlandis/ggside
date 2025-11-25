@@ -13,10 +13,10 @@ NULL
 #' The positional scale here is shared between the main panel and the side
 #' panel. The related positional scale type of the side panel, i.e. the y axis
 #' of the xside panel (xsidey) or the x axis of the yside panel (ysidex), is
-#' determened automatically by `ggplot2` default scales. However, you can
+#' determined automatically by `ggplot2` default scales. However, you can
 #' override this by using the \link[=ggside-scales-continuous]{continuous} or
 #' \link[=ggside-scales-discrete]{discrete} variants within `ggside`. This
-#' allows the user to select the scale type or transform most approprate for
+#' allows the user to select the scale type or transform most appropriate for
 #' their side panels.
 #'
 NULL

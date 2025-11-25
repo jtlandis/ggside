@@ -1,6 +1,6 @@
 # README
 Justin Landis
-2025-11-21
+2025-11-24
 
 # ggside <a href="https://jtlandis.github.io/ggside/"><img src="inst/figures/ggside.png" align="right" style="float:right" height="200" alt="plyxp website" /></a>
 
@@ -121,7 +121,7 @@ v0.4.0.
       geom_xsidepoint(aes(y = Species))
     ```
 
-    To remedy this, please explicity declare the scale for the main
+    To remedy this, please explicitly declare the scale for the main
     panels:
 
     ``` r
