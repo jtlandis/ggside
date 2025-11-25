@@ -4,7 +4,7 @@ pkgdown_sha: ~
 articles:
   ggside_aes_mapping: ggside_aes_mapping.html
   ggside_basic_usage: ggside_basic_usage.html
-last_built: 2025-11-22T20:12Z
+last_built: 2025-11-25T03:05Z
 urls:
   reference: https://jtlandis.github.io/ggside/reference
   article: https://jtlandis.github.io/ggside/articles
