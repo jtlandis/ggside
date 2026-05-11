@@ -3,6 +3,7 @@
 ## ggside 0.4.2
 
 - added geom\_\*siderect
+- fixed bug in which multiple required aesthetics may not be remapped
 
 ## ggside 0.4.1
 
