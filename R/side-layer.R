@@ -14,34 +14,34 @@ NULL
 #' @inheritParams ggplot2::layer
 #' @export
 ggside_layer <-
-  function(geom = NULL,
-           stat = NULL,
-           data = NULL,
-           mapping = NULL,
-           position = NULL,
-           params = list(),
-           inherit.aes = TRUE,
-           check.aes = TRUE,
-           check.param = TRUE,
-           show.legend = NA,
-           key_glyph = NULL,
-           side = NULL) {
+  function(
+    geom = NULL,
+    stat = NULL,
+    data = NULL,
+    mapping = NULL,
+    position = NULL,
+    params = list(),
+    inherit.aes = TRUE,
+    check.aes = TRUE,
+    check.param = TRUE,
+    show.legend = NA,
+    key_glyph = NULL,
+    side = NULL
+  ) {
     resolve_arg(side, c("x", "y"), null.ok = FALSE)
-    `_class` <- switch(side,
-      x = "XLayer",
-      y = "YLayer"
-    )
-    Side <- switch(side,
-      x = "Xside",
-      y = "Yside"
-    )
+    `_class` <- switch(side, x = "XLayer", y = "YLayer")
+    Side <- switch(side, x = "Xside", y = "Yside")
     names(mapping) <- rename_side(names(mapping), side)
     # check class
-    geom <- check_subclass(geom, "Geom",
+    geom <- check_subclass(
+      geom,
+      "Geom",
       env = parent.frame(),
       call = parent.frame()
     )
-    stat <- check_subclass(stat, "Stat",
+    stat <- check_subclass(
+      stat,
+      "Stat",
       env = parent.frame(),
       call = parent.frame()
     )
@@ -51,14 +51,8 @@ ggside_layer <-
     stat_aes_map <- aes_to_map(stat, side)
     remap <- union(geom_aes_map, stat_aes_map)
     # ggside_geom
-    geom <- ggside_geom(paste0(Side, class(geom)[1]),
-      geom = geom,
-      side = side
-    )
-    stat <- ggside_stat(paste0(Side, class(stat)[1]),
-      stat = stat,
-      side = side
-    )
+    geom <- ggside_geom(paste0(Side, class(geom)[1]), geom = geom, side = side)
+    stat <- ggside_stat(paste0(Side, class(stat)[1]), stat = stat, side = side)
     layer <- ggplot2::layer(
       geom = geom,
       stat = stat,
@@ -105,10 +99,7 @@ as_ggside_layer.LayerInstance <- function(layer, side = NULL) {
 }
 
 new_ggside_layer <- function(layer, side, remap, constructor) {
-  other <- switch(side,
-    x = "y",
-    y = "x"
-  )
+  other <- switch(side, x = "y", y = "x")
   type <- sprintf("%sside", side)
   ggproto(
     "ggside_layer",
@@ -175,13 +166,13 @@ drop_plot_aes <- function(plot_map, layer_map, side) {
   # remove it
   p_nms <- names(plot_map)
   l_nms <- names(layer_map)
-  if (paste0(side, "colour") %in% l_nms &&
-    any(to_drop <- p_nms %in% "colour")) {
+  if (
+    paste0(side, "colour") %in% l_nms && any(to_drop <- p_nms %in% "colour")
+  ) {
     plot_map <- plot_map[!to_drop]
   }
 
-  if (paste0(side, "fill") %in% l_nms &&
-    any(to_drop <- p_nms %in% "fill")) {
+  if (paste0(side, "fill") %in% l_nms && any(to_drop <- p_nms %in% "fill")) {
     plot_map <- plot_map[!to_drop]
   }
 
@@ -232,7 +223,7 @@ push_aes <- function(ggproto, member, side) {
   env <- caller_env()
   old_value <- ggproto[[member]]
 
-  ggproto[[member]] <- sub(side, "", old_value)
+  ggproto[[member]] <- gsub(side, "", old_value)
   expr <- expr(on.exit((!!ggproto_arg)[[!!member]] <- !!old_value, add = TRUE))
   eval_bare(expr, env = env)
 }
