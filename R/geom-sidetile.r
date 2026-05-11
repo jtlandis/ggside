@@ -48,3 +48,25 @@ geom_ysidetile <- ggside_layer_function(fun = geom_tile, side = "y")
 #' @format NULL
 #' @export
 GeomYsidetile <- ggside_geom("GeomYsidetile", GeomTile, "y")
+
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
+geom_xsiderect <- ggside_layer_function(fun = geom_rect, side = "x")
+
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
+GeomXsiderect <- ggside_geom("GeomXsiderect", GeomRect, "x")
+
+#' @rdname geom_xsidetile
+#' @export
+geom_ysiderect <- ggside_layer_function(fun = geom_rect, side = "y")
+
+#' @rdname ggside-ggproto-geoms
+#' @usage NULL
+#' @format NULL
+#' @export
+GeomYsiderect <- ggside_geom("GeomYsiderect", GeomRect, "y")
