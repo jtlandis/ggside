@@ -209,8 +209,12 @@ colclar = interaction(color, clarity,
 df1 <- df0 %>%
   group_by(color, clarity, colclar, cut) %>%
   summarise(m_price = mean(price))
-#> `summarise()` has grouped output by 'color', 'clarity', 'colclar'. You can
-#> override using the `.groups` argument.
+#> `summarise()` has regrouped the output.
+#> ℹ Summaries were computed grouped by color, clarity, colclar, and cut.
+#> ℹ Output is grouped by color, clarity, and colclar.
+#> ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+#> ℹ Use `summarise(.by = c(color, clarity, colclar, cut))` for per-operation
+#>   grouping (`?dplyr::dplyr_by`) instead.
 df <- df1 %>%
   pivot_wider(id_cols = colclar,
               names_from = cut,

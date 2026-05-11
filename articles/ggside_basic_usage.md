@@ -1,6 +1,7 @@
 # ggside walkthrough
 
 ``` r
+
 library(dplyr)
 #> 
 #> Attaching package: 'dplyr'
@@ -30,14 +31,19 @@ Lets look at a very simple example set using `dplyr` to summarise the
 `diamonds` dataset.
 
 ``` r
+
 summariseDiamond <- diamonds %>%
   mutate(`Cut Clarity` = paste(cut, clarity)) %>%
   group_by(`Cut Clarity`,cut, clarity, color) %>%
   summarise(n = n(),
             `mean Price` = mean(price),
             sd = sd(price))
-#> `summarise()` has grouped output by 'Cut Clarity', 'cut', 'clarity'. You can
-#> override using the `.groups` argument.
+#> `summarise()` has regrouped the output.
+#> ℹ Summaries were computed grouped by Cut Clarity, cut, clarity, and color.
+#> ℹ Output is grouped by Cut Clarity, cut, and clarity.
+#> ℹ Use `summarise(.groups = "drop_last")` to silence this message.
+#> ℹ Use `summarise(.by = c(Cut Clarity, cut, clarity, color))` for per-operation
+#>   grouping (`?dplyr::dplyr_by`) instead.
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`))
 ```
@@ -45,6 +51,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 ![](ggside_basic_usage_files/figure-html/summarise_diamond-1.png)
 
 ``` r
+
 p <-ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_tile(aes(x=0, fill = cut))
@@ -61,6 +68,7 @@ However, you could map another continuous variable, but this will place
 these to the same guide, shifting the limits and washing out all color.
 
 ``` r
+
 summariseDiamond <- summariseDiamond %>%
   group_by(`Cut Clarity`) %>%
   mutate(`sd of means` = sd(`mean Price`))
@@ -77,6 +85,7 @@ which can also be controlled with `scale_*fill_gradient` functions (more
 on this later).
 
 ``` r
+
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_ysidetile(aes(x = "sd of means", yfill = `sd of means`))  +
@@ -86,6 +95,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 ![](ggside_basic_usage_files/figure-html/ggside_summarise_diamond_base-1.png)
 
 ``` r
+
 ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_ysidetile(aes(x = "max", yfill = after_stat(summarise),
@@ -102,6 +112,7 @@ ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
 ![](ggside_basic_usage_files/figure-html/ggside_summarise_diamond_multi-1.png)
 
 ``` r
+
 .tmp <- summariseDiamond %>% group_by(`Cut Clarity`) %>%
   summarise_at(vars(`mean Price`),.funs = list(max,median,mean,min)) %>%
   tidyr::gather(key = key, value = value, -`Cut Clarity`)
@@ -124,6 +135,7 @@ least **ggside** can give some ease to plotting information to the sides
 of the main figure.
 
 ``` r
+
 p <- ggplot(summariseDiamond, aes(x = color, y = `Cut Clarity`)) +
   geom_tile(aes(fill = `mean Price`)) +
   geom_ysidetile(aes(yfill = `sd of means`)) + #sets yfill to a continuous scale
@@ -221,6 +233,7 @@ help you draw panels for you custom facet with `ggside`.
 #### Examples with Facets
 
 ``` r
+
 i2 <- iris %>%
   mutate(Species2 = rep(c("A","B"), 75))
 p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
@@ -228,6 +241,7 @@ p <- ggplot(i2, aes(Sepal.Width, Sepal.Length, color = Species)) +
 ```
 
 ``` r
+
 p2 <- p + geom_xsidedensity(aes(y = after_stat(density))) +
   geom_ysidedensity(aes(x = after_stat(density))) +
   theme_bw()
@@ -237,6 +251,7 @@ p2 + labs(title = "FacetNull")
 ![](ggside_basic_usage_files/figure-html/base_example_FacetNull-1.png)
 
 ``` r
+
 p2 + facet_wrap(Species~Species2) +
   labs(title = "FacetWrap") +
   guides(x = guide_axis(check.overlap = T))
@@ -245,6 +260,7 @@ p2 + facet_wrap(Species~Species2) +
 ![](ggside_basic_usage_files/figure-html/base_example_FacetWrap-1.png)
 
 ``` r
+
 p2 + facet_grid(Species~Species2, space = "free", scale = "free_y") 
 ```
 
@@ -254,6 +270,7 @@ Further control on how the `sideFacets` are handled may be done with the
 `ggside` function.
 
 ``` r
+
 p2 + ggside(x.pos = "bottom", y.pos = "left") +
   labs(title = "FacetNull", subtitle = "Xside placed bottom, Yside placed left")
 ```
@@ -264,6 +281,7 @@ When using having multiple panels, it may be handy to collapse side
 panels to one side, which helps save space and computation time!
 
 ``` r
+
 p2 + facet_wrap(Species~Species2) +
   labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
   ggside(collapse = "x") 
@@ -272,6 +290,7 @@ p2 + facet_wrap(Species~Species2) +
 ![](ggside_basic_usage_files/figure-html/base_examplebase_example_collapseX-1.png)
 
 ``` r
+
 p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing All Side Panels") +
   ggside(collapse = "all")
@@ -280,6 +299,7 @@ p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
 ![](ggside_basic_usage_files/figure-html/base_example_collapseAll-1.png)
 
 ``` r
+
 p + geom_xsidedensity(aes(y=after_stat(density)))+
   geom_ysidedensity(aes(x=after_stat(density), ycolor = Species2)) +
   theme_bw() + 
@@ -291,6 +311,7 @@ p + geom_xsidedensity(aes(y=after_stat(density)))+
 ![](ggside_basic_usage_files/figure-html/base_example_custom2-1.png)
 
 ``` r
+
 p + geom_xsidedensity(aes(y=after_stat(density), xfill = Species), position = "stack")+
   geom_ysidedensity(aes(x=after_stat(density), yfill = Species2), position = "stack") +
   theme_bw() + 
@@ -315,6 +336,7 @@ same scale, thus `scales = "free_x"` is incompatible with
 `collapse = "x"`.
 
 ``` r
+
 p2 + facet_wrap(Species~Species2, scales = "free") +
   labs(title = "FacetWrap", subtitle = "Collapsing X side Panels") +
   ggside(collapse = "x") 
@@ -334,6 +356,7 @@ panel’s heights (or if x is collapsed, is equal to the sum of the
 heights).
 
 ``` r
+
 p2 + facet_grid(Species~Species2, space = "free", scales = "free") +
   labs(title = "FacetGrid", subtitle = "Collapsing X Side Panels and \nAdjusted Side Panel Relative Size") +
   ggside(collapse = "all", x.pos = "bottom", scales = "free_x",
@@ -363,6 +386,7 @@ continuous and the side panel y axis may be discrete. Take the following
 example that was not possible prior to this version:
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
   geom_xsideboxplot(aes(y =class), orientation = "y") +
@@ -376,6 +400,7 @@ customize how the text is rendered, the `breaks` argument to control the
 location or visibility of the tick marks.
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy, colour = class)) + 
   geom_point(size = 2) +
   geom_xsideboxplot(aes(y =class), orientation = "y") +

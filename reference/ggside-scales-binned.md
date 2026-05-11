@@ -205,6 +205,7 @@ ggside_scale object inheriting from ggplot2::ScaleBinnedPosition
 ## Examples
 
 ``` r
+
 ggplot(iris, aes(Sepal.Width, Sepal.Length)) +
   geom_point() +
   geom_xsidepoint(aes(y = Petal.Width, xcolour = Petal.Length)) +

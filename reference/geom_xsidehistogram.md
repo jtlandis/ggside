@@ -218,6 +218,7 @@ XLayer or YLayer object to be added to a ggplot object
 ## Examples
 
 ``` r
+
 p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
 geom_point()
 

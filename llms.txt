@@ -16,6 +16,7 @@ Please install from CRAN for the latest stable version of `ggside`. You
 can also install from the Github as seen below.
 
 ``` r
+
 #CRAN
 utils::install.packages("ggside")
 #Github
@@ -34,6 +35,7 @@ panel will share the same x axis of the main panel but will have an
 independent y axis. Take the following example from the ggplot2 readme.
 
 ``` r
+
 library(ggplot2)
 library(ggside)
 
@@ -53,6 +55,7 @@ to be prepended with `ysidex` and `xsidey` respectively under the hood.
 Now you may mix discrete and continuous axes with ease.
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy, colour = class)) +
   geom_point(size = 2) +
   geom_xsideboxplot(aes(y =class), orientation = "y") +
@@ -67,6 +70,7 @@ With version 0.2.0, more theme elements allow for better control over
 how side panels are rendered.
 
 ``` r
+
 ggplot(iris, aes(Sepal.Width, Sepal.Length, fill = Species)) +
   geom_point(aes(color = Species)) +
   geom_xsidedensity(alpha = .3, position = "stack") +
@@ -105,6 +109,7 @@ v0.4.0.
   warning and the data may be missing. Below is an example:
 
   ``` r
+
   ggplot(iris, aes(Sepal.Width)) + 
     # main panel y scale initializes later
     geom_density() + 
@@ -116,6 +121,7 @@ v0.4.0.
   panels:
 
   ``` r
+
   ggplot(iris, aes(Sepal.Width)) + 
     geom_density() + 
     geom_xsidepoint(aes(y = Species)) +

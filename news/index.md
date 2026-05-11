@@ -1,6 +1,12 @@
 # Changelog
 
+## ggside 0.4.2
+
+- added geom\_\*siderect
+
 ## ggside 0.4.1
+
+CRAN release: 2025-11-25
 
 Some geometries would not properly map to the correct side panels
 depending on the facet that was provided. This has been fixed and

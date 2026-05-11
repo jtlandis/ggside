@@ -298,6 +298,7 @@ XLayer or YLayer object to be added to a ggplot object
 ## Examples
 
 ``` r
+
 df <- expand.grid(UpperCase = LETTERS, LowerCase = letters)
 df$Combo_Index <- as.integer(df$UpperCase)*as.integer(df$LowerCase)
 

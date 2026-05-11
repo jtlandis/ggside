@@ -1,11 +1,13 @@
 # Global Aesthetics Mappings and Side Geometries
 
 ``` r
+
 library(ggside)
 #> Loading required package: ggplot2
 ```
 
 ``` r
+
 p <- ggplot(mpg, aes(displ, hwy, colour = class)) +
    geom_point(size = 2) +
    theme_bw()
@@ -24,7 +26,7 @@ different to `y`.
 
 This decision was made in order to keep all `geom_*side*` geometries as
 similar to their `ggplot2::geom_*` geometry counterparts. However, using
-`ggside` becomes a tad bit annoying when you must specify **every**
+`ggside` becomes a tad bit annoying when you must specify every
 positional aesthetic, especially when it obvious what the user may want.
 
 In `ggside (>=0.1.0)`, certain `geom_*side*` geometries will use the
@@ -40,6 +42,7 @@ no `y` mapping was specified. The same can be said for
 This should be much less typing.
 
 ``` r
+
 p + 
   geom_xsidedensity() +
   geom_ysidedensity()
@@ -51,6 +54,7 @@ Of course, if you would like to use a different computed variables, you
 will need to specify it like normal.
 
 ``` r
+
 p + 
   geom_xsidedensity(aes(y = after_stat(count))) +
   geom_ysidedensity(aes(x = after_stat(scaled)))
@@ -64,6 +68,7 @@ don’t expect many users will do this, but the option is available
 nonetheless.
 
 ``` r
+
 #
 p + 
   geom_xsidedensity(orientation = "y") #just use geom_ysidedensity() 

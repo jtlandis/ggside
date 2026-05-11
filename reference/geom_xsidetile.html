@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">ggside</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.4.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -193,8 +193,12 @@ the default plot specification, e.g. <code><a href="https://ggplot2.tidyverse.or
 <span class="r-in"><span>             colclar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/interaction.html" class="external-link">interaction</a></span><span class="op">(</span><span class="va">color</span>, <span class="va">clarity</span>, sep <span class="op">=</span> <span class="st">"_"</span>, drop <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">group_by</a></span><span class="op">(</span><span class="va">color</span>, <span class="va">clarity</span>, <span class="va">colclar</span>, <span class="va">cut</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>      <span class="fu"><a href="https://dplyr.tidyverse.org/reference/summarise.html" class="external-link">summarise</a></span><span class="op">(</span>m_price <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">price</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> `summarise()` has grouped output by 'color', 'clarity', 'colclar'. You can</span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> override using the `.groups` argument.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> `summarise()` has regrouped the output.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Summaries were computed grouped by <span style="color: #0000BB;">color</span>, <span style="color: #0000BB;">clarity</span>, <span style="color: #0000BB;">colclar</span>, and <span style="color: #0000BB;">cut</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Output is grouped by <span style="color: #0000BB;">color</span>, <span style="color: #0000BB;">clarity</span>, and <span style="color: #0000BB;">colclar</span>.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `summarise(.groups = "drop_last")` to silence this message.</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> Use `summarise(.by = c(color, clarity, colclar, cut))` for per-operation</span>
+<span class="r-msg co"><span class="r-pr">#&gt;</span>   grouping (`?dplyr::dplyr_by`) instead.</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">xside_data</span> <span class="op">&lt;-</span> <span class="va">df</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="https://dplyr.tidyverse.org/reference/group_by.html" class="external-link">ungroup</a></span><span class="op">(</span><span class="op">)</span> <span class="op"><a href="https://magrittr.tidyverse.org/reference/pipe.html" class="external-link">%&gt;%</a></span></span></span>

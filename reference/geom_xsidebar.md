@@ -261,6 +261,7 @@ Required aesthetics are in bold.
 ## Examples
 
 ``` r
+
 p <-ggplot(iris, aes(Sepal.Width, Sepal.Length, color = Species, fill = Species)) +
 geom_point()
 

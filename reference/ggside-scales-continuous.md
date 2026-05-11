@@ -216,6 +216,7 @@ ggside_scale object inheriting from ggplot2::ScaleContinuousPosition
 ## Examples
 
 ``` r
+
 library(ggside)
 library(ggplot2)
 # adding continuous y-scale to the x-side panel, when main panel mapped to discrete data

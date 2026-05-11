@@ -191,6 +191,7 @@ XLayer or YLayer object to be added to a ggplot object
 ## Examples
 
 ``` r
+
 ggplot(mpg, aes(displ, hwy, colour = class)) +
  geom_point(size = 2) +
  geom_xsidedensity() +
