@@ -6,7 +6,6 @@
 %   R/geom-sidepoint.r, R/geom-sidesegment.r, R/geom-sidetext.r,
 %   R/geom-sidetile.r, R/geom-sideviolin.r, R/geom-sidevline.r,
 %   R/ggside-ggproto.r
-\docType{data}
 \name{parse_side_aes}
 \alias{parse_side_aes}
 \alias{GeomXsideabline}
@@ -37,6 +36,9 @@
 \alias{GeomYsidetext}
 \alias{GeomXsidetile}
 \alias{GeomYsidetile}
+\alias{geom_xsiderect}
+\alias{GeomXsiderect}
+\alias{GeomYsiderect}
 \alias{GeomXsideviolin}
 \alias{GeomYsideviolin}
 \alias{GeomXsidevline}
@@ -60,4 +62,3 @@ respective inherited \link[ggplot2]{ggproto} class. The
 biggest difference is exposing 'x/yfill', 'x/ycolour', and
 'x/ycolor' as viable aesthetic mappings.
 }
-\keyword{datasets}

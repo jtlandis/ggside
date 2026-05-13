@@ -18,5 +18,10 @@ Useful links:
 \author{
 \strong{Maintainer}: Justin Landis \email{jtlandis314@gmail.com} (\href{https://orcid.org/0000-0001-5501-4934}{ORCID})
 
+Authors:
+\itemize{
+  \item Justin Landis \email{jtlandis314@gmail.com} (\href{https://orcid.org/0000-0001-5501-4934}{ORCID})
+}
+
 }
 \keyword{internal}

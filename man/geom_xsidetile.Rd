@@ -4,6 +4,7 @@
 \alias{geom_xsidetile}
 \alias{geom_*sidetile}
 \alias{geom_ysidetile}
+\alias{geom_ysiderect}
 \title{Side tile plot}
 \usage{
 geom_xsidetile(
@@ -20,6 +21,19 @@ geom_xsidetile(
 )
 
 geom_ysidetile(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  lineend = "butt",
+  linejoin = "mitre",
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
+
+geom_ysiderect(
   mapping = NULL,
   data = NULL,
   stat = "identity",
