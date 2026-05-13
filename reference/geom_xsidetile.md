@@ -32,6 +32,19 @@ geom_ysidetile(
   show.legend = NA,
   inherit.aes = TRUE
 )
+
+geom_ysiderect(
+  mapping = NULL,
+  data = NULL,
+  stat = "identity",
+  position = "identity",
+  ...,
+  lineend = "butt",
+  linejoin = "mitre",
+  na.rm = FALSE,
+  show.legend = NA,
+  inherit.aes = TRUE
+)
 ```
 
 ## Arguments

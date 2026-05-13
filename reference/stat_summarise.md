@@ -30,14 +30,6 @@ stat_summarize(
 )
 ```
 
-## Format
-
-An object of class `StatSummarise` (inherits from `Stat`, `ggproto`,
-`gg`) of length 5.
-
-An object of class `StatSummarize` (inherits from `Stat`, `ggproto`,
-`gg`) of length 5.
-
 ## Arguments
 
 - mapping:

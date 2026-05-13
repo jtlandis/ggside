@@ -58,6 +58,7 @@
   : Side text
 - [`geom_xsidetile()`](https://jtlandis.github.io/ggside/reference/geom_xsidetile.md)
   [`geom_ysidetile()`](https://jtlandis.github.io/ggside/reference/geom_xsidetile.md)
+  [`geom_ysiderect()`](https://jtlandis.github.io/ggside/reference/geom_xsidetile.md)
   : Side tile plot
 - [`geom_xsideviolin()`](https://jtlandis.github.io/ggside/reference/geom_xsideviolin.md)
   [`geom_ysideviolin()`](https://jtlandis.github.io/ggside/reference/geom_xsideviolin.md)

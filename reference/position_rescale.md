@@ -37,11 +37,6 @@ position_xrescale(
 )
 ```
 
-## Format
-
-An object of class `PositionRescale` (inherits from `Position`,
-`ggproto`, `gg`) of length 10.
-
 ## Arguments
 
 - rescale:

@@ -20,3 +20,8 @@ Useful links:
 
 **Maintainer**: Justin Landis <jtlandis314@gmail.com>
 ([ORCID](https://orcid.org/0000-0001-5501-4934))
+
+Authors:
+
+- Justin Landis <jtlandis314@gmail.com>
+  ([ORCID](https://orcid.org/0000-0001-5501-4934))
